@@ -1,19 +1,24 @@
-#ifndef BUFFER_H
-#define BUFFER_H
+#ifndef INDEX_BUFFER_H
+#define INDEX_BUFFER_H
 
-#include <QOpenGLFunctions_4_4_Core>
-#include <QOpenGLBuffer>
+#include "buffer.h"
 
 namespace CGFF {
-	class Buffer
+	class IndexBuffer
 	{
 	public:
-		Buffer();
-		~Buffer();
+		IndexBuffer() = default;
+		IndexBuffer(QOpenGLFunctions_4_4_Core * f, GLuint * data, GLsizei count);
+		~IndexBuffer();
 		void bind();
 		void unbind();
+		inline GLuint getCount() {
+			return m_count;
+		}
 	private:
-		GLuint m_bufferID;
+		QOpenGLFunctions_4_4_Core * m_function;
+		GLuint m_indexBufferID;
+		GLuint m_count;
 	};
 }
 

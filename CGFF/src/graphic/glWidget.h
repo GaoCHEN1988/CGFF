@@ -8,6 +8,12 @@
 #include <QOpenGLShaderProgram>
 #include <QMatrix4x4>
 
+#include "buffer/buffer.h"
+#include "buffer/indexBuffer.h"
+#include "buffer/vertexArray.h"
+
+#define TEST
+
 QT_FORWARD_DECLARE_CLASS(QOpenGLShaderProgram)
 
 class GLWidget : public QOpenGLWidget, protected QOpenGLFunctions_4_4_Core
@@ -41,6 +47,12 @@ private:
 	GLuint vertexbuffer;
 	GLuint color_location;
 	GLuint colorbuffer;
+
+#ifdef TEST
+	CGFF::VertexArray * m_sprite1;
+	CGFF::VertexArray * m_sprite2;
+	CGFF::IndexBuffer * m_ibo;
+#endif
 
 	QMatrix4x4 m_proj;
 	QMatrix4x4 m_camera;
