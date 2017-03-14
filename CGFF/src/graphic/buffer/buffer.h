@@ -1,15 +1,14 @@
 #ifndef BUFFER_H
 #define BUFFER_H
 
-#include <QOpenGLFunctions_4_4_Core>
-#include <QOpenGLBuffer>
+#include "../utils/qtopengl.h"
 
 namespace CGFF {
-	class Buffer
+	class Buffer : protected QOpenGLFunctions_4_4_Core
 	{
 	public:
 		Buffer() = default;
-		Buffer(QOpenGLFunctions_4_4_Core * f, GLfloat * data, GLsizei count, GLuint componentCount);
+		Buffer(GLfloat * data, GLsizei count, GLuint componentCount);
 		~Buffer();
 		void bind();
 		void unbind();
@@ -19,7 +18,7 @@ namespace CGFF {
 		}
 
 	private:
-		QOpenGLFunctions_4_4_Core * m_function;
+		//QOpenGLFunctions_4_4_Core * m_function;
 		GLuint m_bufferID;
 		GLuint m_componentCount;
 	};

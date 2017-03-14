@@ -6,9 +6,9 @@
 #include <iostream>
 GLWidget::GLWidget(QWidget *parent)
 	: QOpenGLWidget(parent)
-	, m_sprite1(nullptr)
-	, m_sprite2(nullptr)
-	, m_ibo(nullptr)
+	//, m_sprite1(nullptr)
+	//, m_sprite2(nullptr)
+	//, m_ibo(nullptr)
 {
 
 }
@@ -17,27 +17,22 @@ GLWidget::~GLWidget()
 {
 
 
-#ifdef TEST
-	if (m_sprite1) {
-		m_sprite1->unbind();
-		delete m_sprite1;
-	}
-
-	if (m_sprite2) {
-		m_sprite2->unbind();
-		delete m_sprite2;
-	}
-
-	if (m_ibo) {
-		m_ibo->unbind();
-		delete m_ibo;
-	}
-#else
-
-	glDeleteBuffers(1, &vertexbuffer);
-	glDeleteBuffers(1, &colorbuffer);
-
-#endif
+//#ifdef TEST
+//	if (m_sprite1) {
+//		m_sprite1->unbind();
+//		delete m_sprite1;
+//	}
+//
+//	if (m_sprite2) {
+//		m_sprite2->unbind();
+//		delete m_sprite2;
+//	}
+//
+//	if (m_ibo) {
+//		m_ibo->unbind();
+//		delete m_ibo;
+//	}
+//#else
 }
 
 static void qNormalizeAngle(int &angle)
@@ -78,18 +73,6 @@ void GLWidget::setZRotation(int angle)
 	}
 }
 
-static const GLfloat g_vertex_buffer_data[] = {
-	0.0f, 0.707f, 0.0f,
-	-0.5f, -0.5f, 0.0f,
-	0.5f, -0.5f, 0.0f,
-};
-
-static const GLfloat colors[] = {
-	1.0f, 0.0f, 0.0f,
-	0.0f, 1.0f, 0.0f,
-	0.0f, 0.0f, 1.0f
-};
-
 void GLWidget::initializeGL()
 {
 	double a = 1.0 / 3;
@@ -112,80 +95,12 @@ void GLWidget::initializeGL()
 	m_camera.setToIdentity();
 	m_camera.translate(0, 0, -1);
 
-#ifdef  TEST
-
-	GLfloat vertices[] =
-	{
-		-0.5, -0.5, 0,
-		-0.5, 0.5, 0,
-		0.5, 0.5, 0,
-		0.5, -0.5, 0
-	};
-
-	GLuint indices[] =
-	{
-		0, 1, 2,
-		2, 3, 0
-	};
-
-	GLfloat colors1[] =
-	{
-		1.0, 0, 0, 1.0,
-		1.0, 0, 0, 1.0,
-		1.0, 0, 0, 1.0,
-		1.0, 0, 0, 1.0
-	};
-
-	GLfloat colors2[] =
-	{
-		1.0, 0, 0, 1.0,
-		0, 1.0, 0, 1.0,
-		0, 0, 1.0, 1.0,
-		1.0, 1.0, 0, 1.0
-	};
-
+	m_renderable2d = QSharedPointer<CGFF::StaticSprite>(new CGFF::StaticSprite(0,0,0.5, 0.5, QVector4D(1.0, 0, 0, 1.0), shaderProgram));
+	m_simpleRenderer = QSharedPointer<CGFF::Simple2DRenderer>(new CGFF::Simple2DRenderer());
 	
+	m_sprite = QSharedPointer<CGFF::Renderable2D>(new CGFF::Sprite(0.0, 0.0, 1, 1, QVector4D(1.0, 0, 0, 1.0)));
 
-	m_sprite1 = new CGFF::VertexArray(this);
-	m_sprite2 = new CGFF::VertexArray(this);
-
-	m_sprite1->addBuffer(new CGFF::Buffer(this, vertices, 4 * 3, 3), vertexPosition_modelspaceID);
-	m_sprite1->addBuffer(new CGFF::Buffer(this, colors1, 4 * 4, 4), color_location);
-
-	m_sprite2->addBuffer(new CGFF::Buffer(this, vertices, 4 * 3, 3), vertexPosition_modelspaceID);
-	m_sprite2->addBuffer(new CGFF::Buffer(this, colors2, 4 * 4, 4), color_location);
-
-	m_ibo = new CGFF::IndexBuffer(this, indices, 6);
-
-#else
-	glGenBuffers(1, &vertexbuffer);
-	glBindBuffer(GL_ARRAY_BUFFER, vertexbuffer);
-	glBufferData(GL_ARRAY_BUFFER, sizeof(g_vertex_buffer_data), g_vertex_buffer_data, GL_STATIC_DRAW);
-	glGenBuffers(1, &colorbuffer);
-	glBindBuffer(GL_ARRAY_BUFFER, colorbuffer);
-	glBufferData(GL_ARRAY_BUFFER, sizeof(colors), colors, GL_STATIC_DRAW);
-
-
-	glBindBuffer(GL_ARRAY_BUFFER, vertexbuffer);
-	glVertexAttribPointer(
-		vertexPosition_modelspaceID, // The attribute we want to configure
-		3,                  // size
-		GL_FLOAT,           // type
-		GL_FALSE,           // normalized?
-		0,                  // stride
-		(void*)0            // array buffer offset
-		);
-
-	glBindBuffer(GL_ARRAY_BUFFER, colorbuffer);
-	glVertexAttribPointer(
-		color_location, // The attribute we want to configure
-		3,                  // size
-		GL_FLOAT,           // type
-		GL_FALSE,           // normalized?
-		0,                  // stride
-		(void*)0            // array buffer offset
-		);
-#endif
+	m_batch = QSharedPointer<CGFF::BatchRenderer2D>(new CGFF::BatchRenderer2D());
 
 	glClearColor(0.0f, 0.0f, 0.0f, 1.0f);
 }
@@ -206,38 +121,22 @@ void GLWidget::paintGL()
 	glUseProgram(shaderProgram.programId());
 
 	shaderProgram.setUniformValue(m_projMatrixLoc, m_proj);
-	
 
-#ifdef  TEST
-	m_sprite1->bind();
-	m_ibo->bind();
-	QMatrix4x4 m = m_camera * m_world;
-	m.translate(0.0, 0.0, 0.3);
+	QMatrix4x4 m;
+	m.translate(0, 0, -4.0);
+
 	shaderProgram.setUniformValue(m_mvMatrixLoc, m);
-	glDrawElements(GL_TRIANGLES, m_ibo->getCount(), GL_UNSIGNED_INT, 0);
-	m_sprite1->unbind();
-	m_ibo->unbind();
+	
+	//m_simpleRenderer->submit(m_renderable2d);
 
-	m_sprite2->bind();
-	m_ibo->bind();
-	shaderProgram.setUniformValue(m_mvMatrixLoc, m_camera * m_world);
-	glDrawElements(GL_TRIANGLES, m_ibo->getCount(), GL_UNSIGNED_INT, 0);
-	m_sprite2->unbind();
-	m_ibo->unbind();
+	//m_simpleRenderer->flush();
 
+	m_batch->begin();
 
-#else
-	// 1rst attribute buffer : vertices
-	glEnableVertexAttribArray(0);
-	glEnableVertexAttribArray(1);
+	m_batch->submit(m_sprite);
+	m_batch->flush();
 
-	// Draw the triangle !
-	glDrawArrays(GL_TRIANGLES, 0, 3); // Starting from vertex 0; 3 vertices total -> 1 triangle
-
-	glDisableVertexAttribArray(0);
-	glDisableVertexAttribArray(1);
-
-#endif
+	m_batch->end();
 
 	GLenum error = glGetError();
 	if (error != GL_NO_ERROR)

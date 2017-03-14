@@ -2,15 +2,19 @@
 #define GLWIDGET_H
 
 #include <QOpenGLWidget>
-#include <QOpenGLFunctions_4_4_Core>
 #include <QOpenGLVertexArrayObject>
-#include <QOpenGLBuffer>
 #include <QOpenGLShaderProgram>
-#include <QMatrix4x4>
+#include <QSharedPointer>
 
+#include "../maths/qtmaths.h"
 #include "buffer/buffer.h"
 #include "buffer/indexBuffer.h"
 #include "buffer/vertexArray.h"
+#include "renderable2d.h"
+#include "simple2Drenderer.h"
+#include "batchRenderer2d.h"
+#include "sprite.h"
+#include "staticSprite.h"
 
 #define TEST
 
@@ -44,15 +48,15 @@ protected:
 private:
 	QOpenGLShaderProgram shaderProgram;
 	GLuint vertexPosition_modelspaceID;
-	GLuint vertexbuffer;
+	//GLuint vertexbuffer;
 	GLuint color_location;
-	GLuint colorbuffer;
+	//GLuint colorbuffer;
 
-#ifdef TEST
-	CGFF::VertexArray * m_sprite1;
-	CGFF::VertexArray * m_sprite2;
-	CGFF::IndexBuffer * m_ibo;
-#endif
+//#ifdef TEST
+//	CGFF::VertexArray * m_sprite1;
+//	CGFF::VertexArray * m_sprite2;
+//	CGFF::IndexBuffer * m_ibo;
+//#endif
 
 	QMatrix4x4 m_proj;
 	QMatrix4x4 m_camera;
@@ -63,6 +67,11 @@ private:
 	GLuint m_projMatrixLoc;
 	GLuint m_mvMatrixLoc;
 	QPoint m_lastPos;
+
+	QSharedPointer<CGFF::StaticSprite> m_renderable2d;
+	QSharedPointer<CGFF::Renderable2D> m_sprite;
+	QSharedPointer<CGFF::Simple2DRenderer> m_simpleRenderer;
+	QSharedPointer<CGFF::BatchRenderer2D> m_batch;
 };
 
 #endif
