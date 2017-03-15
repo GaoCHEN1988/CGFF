@@ -127,16 +127,16 @@ void GLWidget::paintGL()
 
 	shaderProgram.setUniformValue(m_mvMatrixLoc, m);
 	
-	m_simpleRenderer->submit(m_renderable2d);
+	//m_simpleRenderer->submit(m_renderable2d);
 
-	m_simpleRenderer->flush();
+	//m_simpleRenderer->flush();
 
-	//m_batch->begin();
+	m_batch->begin();
 
-	//m_batch->submit(m_sprite);
-	//m_batch->flush();
+	m_batch->submit(m_sprite);
+	m_batch->flush();
 
-	//m_batch->end();
+	m_batch->end();
 
 	GLenum error = glGetError();
 	if (error != GL_NO_ERROR)
