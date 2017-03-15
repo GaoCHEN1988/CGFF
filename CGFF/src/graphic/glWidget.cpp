@@ -128,7 +128,6 @@ void GLWidget::paintGL()
 	shaderProgram.setUniformValue(m_mvMatrixLoc, m);
 	
 	//m_simpleRenderer->submit(m_renderable2d);
-
 	//m_simpleRenderer->flush();
 
 	m_batch->begin();

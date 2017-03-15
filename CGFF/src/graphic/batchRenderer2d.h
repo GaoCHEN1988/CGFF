@@ -3,11 +3,13 @@
 
 #include "renderer2d.h"
 #include "../maths/qtmaths.h"
-
+#include <QOpenGLBuffer>
+#include <QOpenGLVertexArrayObject>
+#include <cstddef>
 
 namespace CGFF {
 
-#define RENDERER_MAX_SPRITES 60000
+#define RENDERER_MAX_SPRITES 10000
 #define RENDERER_VERTEX_SIZE sizeof(VertexData)
 #define RENDERER_SPRITES_SIZE RENDERER_VERTEX_SIZE*4
 #define RENDERER_BUFFER_SIZE RENDERER_SPRITES_SIZE*RENDERER_MAX_SPRITES
@@ -31,10 +33,13 @@ namespace CGFF {
 		void init();
 
 	private:
-		GLuint m_VAO;
-		GLuint m_VBO;
+		//GLuint m_VAO;
+		//GLuint m_VBO;
+		QOpenGLVertexArrayObject m_vao;
+		QOpenGLBuffer* m_vboBuffer;
+		QOpenGLBuffer* m_iboBuffer;
 		VertexData* m_buffer;
-		QSharedPointer<IndexBuffer> m_IBO;
+		//QSharedPointer<IndexBuffer> m_IBO;
 		GLsizei m_indexCount;
 	};
 }
