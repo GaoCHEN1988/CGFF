@@ -15,6 +15,7 @@
 #include "batchRenderer2d.h"
 #include "sprite.h"
 #include "staticSprite.h"
+#include "layer/tileLayer.h"
 
 #define TEST
 
@@ -72,6 +73,10 @@ private:
 	QSharedPointer<CGFF::Renderable2D> m_sprite;
 	QSharedPointer<CGFF::Simple2DRenderer> m_simpleRenderer;
 	QSharedPointer<CGFF::BatchRenderer2D> m_batch;
+
+	std::vector<QSharedPointer<CGFF::Renderable2D>> sprites;
+
+	QSharedPointer<CGFF::TileLayer> m_tileLayer;
 };
 
 #endif

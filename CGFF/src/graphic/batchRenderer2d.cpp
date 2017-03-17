@@ -50,8 +50,8 @@ namespace CGFF {
 		//glBindBuffer(GL_ARRAY_BUFFER, 0);
 		//m_vboBuffer->release();
 
-		//GLuint* indices = new GLuint[RENDERER_INDICES_SIZE];
-		GLuint indices[RENDERER_INDICES_SIZE];
+		GLuint* indices = new GLuint[RENDERER_INDICES_SIZE];
+
 		int offset = 0;
 
 		for (int i = 0; i < RENDERER_INDICES_SIZE; i+=6)
@@ -103,23 +103,15 @@ namespace CGFF {
 		m_buffer->color = color;
 		m_buffer++;
 
-		m_buffer->vertex.setX(position.x());// = QVector3D(position.x(), position.y() + size.y(), position.z());
-		m_buffer->vertex.setY(position.y() + size.y());
-		m_buffer->vertex.setZ(position.z());
+		m_buffer->vertex = QVector3D(position.x(), position.y() + size.y(), position.z());
 		m_buffer->color = color;
 		m_buffer++;
 
-		//m_buffer->vertex = QVector3D(position.x() + size.x(), position.y() + size.y(), position.z());
-		m_buffer->vertex.setX(position.x() + size.x());
-		m_buffer->vertex.setY(position.y() + size.y());
-		m_buffer->vertex.setZ(position.z());
+		m_buffer->vertex = QVector3D(position.x() + size.x(), position.y() + size.y(), position.z());
 		m_buffer->color = color;
 		m_buffer++;
 
-		//m_buffer->vertex = QVector3D(position.x() + size.x(), position.y(), position.z());
-		m_buffer->vertex.setX(position.x() + size.x());
-		m_buffer->vertex.setY(position.y() + size.y());
-		m_buffer->vertex.setZ(position.z());
+		m_buffer->vertex = QVector3D(position.x() + size.x(), position.y(), position.z());
 		m_buffer->color = color;
 		m_buffer++;
 

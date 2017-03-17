@@ -95,10 +95,20 @@ void GLWidget::initializeGL()
 	m_camera.setToIdentity();
 	m_camera.translate(0, 0, -1);
 
-	m_renderable2d = QSharedPointer<CGFF::StaticSprite>(new CGFF::StaticSprite(0,0,0.5, 0.5, QVector4D(1.0, 0, 0, 1.0), shaderProgram));
-	m_simpleRenderer = QSharedPointer<CGFF::Simple2DRenderer>(new CGFF::Simple2DRenderer());
-	
+	//m_renderable2d = QSharedPointer<CGFF::StaticSprite>(new CGFF::StaticSprite(0,0,0.5, 0.5, QVector4D(1.0, 0, 0, 1.0), shaderProgram));
+	//m_simpleRenderer = QSharedPointer<CGFF::Simple2DRenderer>(new CGFF::Simple2DRenderer());
+	//
 	m_sprite = QSharedPointer<CGFF::Renderable2D>(new CGFF::Sprite(0.0, 0.0, 1, 1, QVector4D(1.0, 0, 0, 1.0)));
+
+	for (float y = 0; y < 9.0f; y += 0.05)
+	{
+		for (float x = 0; x < 16.0f; x += 0.05)
+		{
+			sprites.push_back(
+				QSharedPointer<CGFF::Renderable2D>(
+					new CGFF::Sprite(x, y, 0.04f, 0.04f, QVector4D(rand() % 1000 / 1000.0f, 0, 1, 1))));
+		}
+	}
 
 	m_batch = QSharedPointer<CGFF::BatchRenderer2D>(new CGFF::BatchRenderer2D());
 
@@ -115,15 +125,14 @@ void GLWidget::paintGL()
 	m_world.rotate(m_yRot / 16.0f, 0, 1, 0);
 	m_world.rotate(m_zRot / 16.0f, 0, 0, 1);
 
-	shaderProgram.bind();
-
 	// Use our shader
-	glUseProgram(shaderProgram.programId());
+	//glUseProgram(shaderProgram.programId());
+	shaderProgram.bind(); //Equal to glUseProgram
 
 	shaderProgram.setUniformValue(m_projMatrixLoc, m_proj);
 
 	QMatrix4x4 m;
-	m.translate(0, 0, -4.0);
+	m.translate(-8, -4.5, -4.0);
 
 	shaderProgram.setUniformValue(m_mvMatrixLoc, m);
 	
@@ -132,10 +141,14 @@ void GLWidget::paintGL()
 
 	m_batch->begin();
 
-	m_batch->submit(m_sprite);
-	m_batch->flush();
+	//m_batch->submit(m_sprite);
+	for (int i = 0; i < sprites.size(); i++)
+	{
+		m_batch->submit(sprites[i]);
+	}
 
 	m_batch->end();
+	m_batch->flush();
 
 	GLenum error = glGetError();
 	if (error != GL_NO_ERROR)
