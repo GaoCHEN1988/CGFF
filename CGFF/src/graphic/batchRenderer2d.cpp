@@ -85,11 +85,6 @@ namespace CGFF {
 		int test = sizeof(*m_vboBuffer);
 		m_vboBuffer->bind();
 		m_buffer = (VertexData*)m_vboBuffer->map(QOpenGLBuffer::WriteOnly);
-		//m_buffer = (VertexData*)glMapBuffer(GL_ARRAY_BUFFER, GL_WRITE_ONLY);
-
-		test = sizeof(m_buffer);
-
-		int x = 0;
 	}
 	void BatchRenderer2D::submit(QSharedPointer<Renderable2D> renderable)
 	{
@@ -97,21 +92,19 @@ namespace CGFF {
 		const QVector2D& size = renderable->getSize();
 		const QVector4D& color = renderable->getColor();
 
-		//memcpy(m_buffer, &position, sizeof(position));
-
-		m_buffer->vertex = position;
+		m_buffer->vertex = *m_tranformationBack * position;
 		m_buffer->color = color;
 		m_buffer++;
 
-		m_buffer->vertex = QVector3D(position.x(), position.y() + size.y(), position.z());
+		m_buffer->vertex = *m_tranformationBack * QVector3D(position.x(), position.y() + size.y(), position.z());
 		m_buffer->color = color;
 		m_buffer++;
 
-		m_buffer->vertex = QVector3D(position.x() + size.x(), position.y() + size.y(), position.z());
+		m_buffer->vertex = *m_tranformationBack * QVector3D(position.x() + size.x(), position.y() + size.y(), position.z());
 		m_buffer->color = color;
 		m_buffer++;
 
-		m_buffer->vertex = QVector3D(position.x() + size.x(), position.y(), position.z());
+		m_buffer->vertex = *m_tranformationBack * QVector3D(position.x() + size.x(), position.y(), position.z());
 		m_buffer->color = color;
 		m_buffer++;
 
@@ -123,21 +116,18 @@ namespace CGFF {
 		//glBindVertexArray(m_VAO);
 		//m_IBO->bind();
 		m_vao.bind();
-
+		m_iboBuffer->bind();
 		glDrawElements(GL_TRIANGLES, m_indexCount, GL_UNSIGNED_INT, NULL);
 
+		m_iboBuffer->release();
 		m_vao.release();
 		//m_IBO->unbind();
 		//glBindVertexArray(0);
-
+		m_vboBuffer->release();
 		m_indexCount = 0;
 	}
 	void BatchRenderer2D::end()
 	{
-		//glUnmapBuffer(GL_ARRAY_BUFFER);
-		//glBindBuffer(GL_ARRAY_BUFFER, 0);
-		
-		//m_vboBuffer->release();
 		m_vboBuffer->unmap();
 	}
 }

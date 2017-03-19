@@ -6,9 +6,6 @@
 #include <iostream>
 GLWidget::GLWidget(QWidget *parent)
 	: QOpenGLWidget(parent)
-	//, m_sprite1(nullptr)
-	//, m_sprite2(nullptr)
-	//, m_ibo(nullptr)
 {
 
 }
@@ -16,23 +13,6 @@ GLWidget::GLWidget(QWidget *parent)
 GLWidget::~GLWidget()
 {
 
-
-//#ifdef TEST
-//	if (m_sprite1) {
-//		m_sprite1->unbind();
-//		delete m_sprite1;
-//	}
-//
-//	if (m_sprite2) {
-//		m_sprite2->unbind();
-//		delete m_sprite2;
-//	}
-//
-//	if (m_ibo) {
-//		m_ibo->unbind();
-//		delete m_ibo;
-//	}
-//#else
 }
 
 static void qNormalizeAngle(int &angle)
@@ -75,18 +55,18 @@ void GLWidget::setZRotation(int angle)
 
 void GLWidget::initializeGL()
 {
-	double a = 1.0 / 3;
 	// initialize OpenGL
 	initializeOpenGLFunctions();
 
+	m_shaderProgram = QSharedPointer<QOpenGLShaderProgram>(new QOpenGLShaderProgram);
 	// load and compile vertex shader
 	bool success;
-	success = shaderProgram.addShaderFromSourceFile(QOpenGLShader::Vertex, "src/graphic/shader/SimpleVertexShader.vert");
+	success = m_shaderProgram->addShaderFromSourceFile(QOpenGLShader::Vertex, "src/graphic/shader/SimpleVertexShader.vert");
 	// load and compile fragment shader
-	success = shaderProgram.addShaderFromSourceFile(QOpenGLShader::Fragment, "src/graphic/shader/SimpleFragmentShader.frag");
-	shaderProgram.link();
+	success = m_shaderProgram->addShaderFromSourceFile(QOpenGLShader::Fragment, "src/graphic/shader/SimpleFragmentShader.frag");
+	m_shaderProgram->link();
 
-	GLuint programID = shaderProgram.programId();
+	GLuint programID = m_shaderProgram->programId();
 
 	vertexPosition_modelspaceID = glGetAttribLocation(programID, "vertexPosition_modelspace");
 	m_projMatrixLoc = glGetUniformLocation(programID, "projMatrix");
@@ -98,19 +78,29 @@ void GLWidget::initializeGL()
 	//m_renderable2d = QSharedPointer<CGFF::StaticSprite>(new CGFF::StaticSprite(0,0,0.5, 0.5, QVector4D(1.0, 0, 0, 1.0), shaderProgram));
 	//m_simpleRenderer = QSharedPointer<CGFF::Simple2DRenderer>(new CGFF::Simple2DRenderer());
 	//
-	m_sprite = QSharedPointer<CGFF::Renderable2D>(new CGFF::Sprite(0.0, 0.0, 1, 1, QVector4D(1.0, 0, 0, 1.0)));
+	//m_sprite = QSharedPointer<CGFF::Renderable2D>(new CGFF::Sprite(0.0, 0.0, 1, 1, QVector4D(1.0, 0, 0, 1.0)));
 
+	//for (float y = 0; y < 9.0f; y += 0.05)
+	//{
+	//	for (float x = 0; x < 16.0f; x += 0.05)
+	//	{
+	//		sprites.push_back(
+	//			QSharedPointer<CGFF::Renderable2D>(
+	//				new CGFF::Sprite(x, y, 0.04f, 0.04f, QVector4D(rand() % 1000 / 1000.0f, 0, 1, 1))));
+	//	}
+	//}
+
+	m_tileLayer = QSharedPointer<CGFF::TileLayer>(new CGFF::TileLayer(m_shaderProgram, m_proj));
 	for (float y = 0; y < 9.0f; y += 0.05)
 	{
 		for (float x = 0; x < 16.0f; x += 0.05)
 		{
-			sprites.push_back(
+			m_tileLayer->add(
 				QSharedPointer<CGFF::Renderable2D>(
 					new CGFF::Sprite(x, y, 0.04f, 0.04f, QVector4D(rand() % 1000 / 1000.0f, 0, 1, 1))));
 		}
 	}
-
-	m_batch = QSharedPointer<CGFF::BatchRenderer2D>(new CGFF::BatchRenderer2D());
+	//m_batch = QSharedPointer<CGFF::BatchRenderer2D>(new CGFF::BatchRenderer2D());
 
 	glClearColor(0.0f, 0.0f, 0.0f, 1.0f);
 }
@@ -127,34 +117,31 @@ void GLWidget::paintGL()
 
 	// Use our shader
 	//glUseProgram(shaderProgram.programId());
-	shaderProgram.bind(); //Equal to glUseProgram
+	m_shaderProgram->bind(); //Equal to glUseProgram
 
-	shaderProgram.setUniformValue(m_projMatrixLoc, m_proj);
+	m_shaderProgram->setUniformValue(m_projMatrixLoc, m_proj);
 
 	QMatrix4x4 m;
 	m.translate(-8, -4.5, -4.0);
 
-	shaderProgram.setUniformValue(m_mvMatrixLoc, m);
-	
-	//m_simpleRenderer->submit(m_renderable2d);
-	//m_simpleRenderer->flush();
+	m_shaderProgram->setUniformValue(m_mvMatrixLoc, m);
+	m_shaderProgram->release();
 
-	m_batch->begin();
+	//m_batch->begin();
+	////m_batch->submit(m_sprite);
+	//for (int i = 0; i < sprites.size(); i++)
+	//{
+	//	m_batch->submit(sprites[i]);
+	//}
+	//m_batch->end();
+	//m_batch->flush();
 
-	//m_batch->submit(m_sprite);
-	for (int i = 0; i < sprites.size(); i++)
-	{
-		m_batch->submit(sprites[i]);
-	}
-
-	m_batch->end();
-	m_batch->flush();
+	m_tileLayer->render();
 
 	GLenum error = glGetError();
 	if (error != GL_NO_ERROR)
 		std::cout << "OPENGL Error:" << error << std::endl;
 
-	shaderProgram.release();
 
 }
 

@@ -9,13 +9,14 @@ namespace CGFF {
 
 	Layer::~Layer() 
 	{
-		m_renderables.clear();
+
 	}
-	Layer::Layer(QSharedPointer<QOpenGLShaderProgram> shader, QSharedPointer<Renderer2D> renderer, QMatrix4x4 projectionMatrix)
-		:m_shader(shader)
-		, m_renderer(renderer)
+	Layer::Layer(QSharedPointer<QOpenGLShaderProgram>  shader, /*QSharedPointer<Renderer2D> renderer,*/ QMatrix4x4 projectionMatrix)
+		: m_shader(shader)
+		//, m_renderer(renderer)
 		, m_projectionMatrix(projectionMatrix)
 	{
+		m_renderer = QSharedPointer<BatchRenderer2D>(new BatchRenderer2D());
 		m_shader->bind();
 		m_shader->setUniformValue("projMatrix", m_projectionMatrix);
 		m_shader->release();
@@ -31,13 +32,20 @@ namespace CGFF {
 		m_shader->bind();
 		
 		m_renderer->begin();
+		QMatrix4x4 mTrans;
+		mTrans.translate(3.0, 4.0, 0);
+		m_renderer->push(mTrans);
 		for (QSharedPointer<Renderable2D> r : m_renderables)
 		{
 			m_renderer->submit(r);
 		}
+		m_renderer->pop();
+
 		m_renderer->end();
 
 		m_renderer->flush();
+
+		m_shader->release();
 	}
 
 }

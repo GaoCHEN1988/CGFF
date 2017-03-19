@@ -3,6 +3,7 @@
 
 #include "../renderable2d.h"
 #include "../renderer2d.h"
+#include "../batchRenderer2d.h"
 #include "../maths/qtmaths.h"
 #include <QOpenGLShaderProgram>
 
@@ -18,11 +19,11 @@ namespace CGFF {
 		virtual void render();
 
 	protected:
-		Layer(QSharedPointer<QOpenGLShaderProgram> shader, QSharedPointer<Renderer2D> renderer, QMatrix4x4 projectionMatrix);
+		Layer(QSharedPointer<QOpenGLShaderProgram> shader,/* QSharedPointer<Renderer2D> renderer, */QMatrix4x4 projectionMatrix);
 
 	protected:
 		QSharedPointer<QOpenGLShaderProgram> m_shader;
-		QSharedPointer<Renderer2D> m_renderer;
+		QSharedPointer<BatchRenderer2D> m_renderer;
 		std::vector<QSharedPointer<Renderable2D>> m_renderables;
 		QMatrix4x4 m_projectionMatrix;
 	};

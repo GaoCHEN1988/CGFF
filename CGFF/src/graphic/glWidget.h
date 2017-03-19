@@ -17,7 +17,7 @@
 #include "staticSprite.h"
 #include "layer/tileLayer.h"
 
-#define TEST
+#define TEST_50K
 
 QT_FORWARD_DECLARE_CLASS(QOpenGLShaderProgram)
 
@@ -47,17 +47,11 @@ protected:
 	void mouseMoveEvent(QMouseEvent *event) Q_DECL_OVERRIDE;
 
 private:
-	QOpenGLShaderProgram shaderProgram;
+	QSharedPointer<QOpenGLShaderProgram> m_shaderProgram;
 	GLuint vertexPosition_modelspaceID;
 	//GLuint vertexbuffer;
 	GLuint color_location;
 	//GLuint colorbuffer;
-
-//#ifdef TEST
-//	CGFF::VertexArray * m_sprite1;
-//	CGFF::VertexArray * m_sprite2;
-//	CGFF::IndexBuffer * m_ibo;
-//#endif
 
 	QMatrix4x4 m_proj;
 	QMatrix4x4 m_camera;
@@ -69,12 +63,12 @@ private:
 	GLuint m_mvMatrixLoc;
 	QPoint m_lastPos;
 
-	QSharedPointer<CGFF::StaticSprite> m_renderable2d;
-	QSharedPointer<CGFF::Renderable2D> m_sprite;
-	QSharedPointer<CGFF::Simple2DRenderer> m_simpleRenderer;
+	//QSharedPointer<CGFF::StaticSprite> m_renderable2d;
+	//QSharedPointer<CGFF::Renderable2D> m_sprite;
+	//QSharedPointer<CGFF::Simple2DRenderer> m_simpleRenderer;
 	QSharedPointer<CGFF::BatchRenderer2D> m_batch;
 
-	std::vector<QSharedPointer<CGFF::Renderable2D>> sprites;
+	//std::vector<QSharedPointer<CGFF::Renderable2D>> sprites;
 
 	QSharedPointer<CGFF::TileLayer> m_tileLayer;
 };
