@@ -2,6 +2,7 @@
 #define SIMPLE_2D_RENDERER_H
 
 #include "renderer2d.h"
+#include "renderable2d.h"
 #include "../maths/qtmaths.h"
 #include "staticSprite.h"
 #include <deque>

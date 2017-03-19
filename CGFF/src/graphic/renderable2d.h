@@ -5,6 +5,7 @@
 #include "buffer/indexBuffer.h"
 #include "buffer/vertexArray.h"
 #include "../maths/qtmaths.h"
+#include "renderer2d.h"
 #include <QOpenGLShaderProgram>
 
 namespace CGFF {
@@ -14,8 +15,11 @@ namespace CGFF {
 		QVector4D color;
 	};
 
-	class Renderable2D
+	class Renderable2D : public QEnableSharedFromThis<Renderable2D>
 	{
+	protected:
+		Renderable2D()
+		{}
 	public:
 		Renderable2D(QVector3D position, QVector2D size, QVector4D color)
 			: m_position(position)
@@ -26,6 +30,11 @@ namespace CGFF {
 
 		virtual ~Renderable2D() 
 		{
+		}
+
+		virtual void submit(QSharedPointer<Renderer2D> renderer) 
+		{
+			renderer->submit(sharedFromThis());
 		}
 
 	public:

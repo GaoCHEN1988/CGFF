@@ -1,10 +1,12 @@
 #ifndef RENDERER_2D_H
 #define RENDERER_2D_H
-
-#include "renderable2d.h"
+#include "../maths/qtmaths.h"
 #include <QSharedPointer>
 
 namespace CGFF {
+
+	class Renderable2D;
+
 	class Renderer2D
 	{
 	protected:

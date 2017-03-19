@@ -16,8 +16,9 @@
 #include "sprite.h"
 #include "staticSprite.h"
 #include "layer/tileLayer.h"
+#include "layer/group.h"
 
-#define TEST_50K
+//#define TEST_50K
 
 QT_FORWARD_DECLARE_CLASS(QOpenGLShaderProgram)
 
@@ -71,6 +72,7 @@ private:
 	//std::vector<QSharedPointer<CGFF::Renderable2D>> sprites;
 
 	QSharedPointer<CGFF::TileLayer> m_tileLayer;
+	QSharedPointer<CGFF::Group> m_group;
 };
 
 #endif

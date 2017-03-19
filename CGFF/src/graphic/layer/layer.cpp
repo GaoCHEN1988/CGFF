@@ -9,7 +9,6 @@ namespace CGFF {
 
 	Layer::~Layer() 
 	{
-
 	}
 	Layer::Layer(QSharedPointer<QOpenGLShaderProgram>  shader, /*QSharedPointer<Renderer2D> renderer,*/ QMatrix4x4 projectionMatrix)
 		: m_shader(shader)
@@ -29,22 +28,15 @@ namespace CGFF {
 
 	void Layer::render()
 	{
-		m_shader->bind();
-		
+		m_shader->bind();	
 		m_renderer->begin();
-		QMatrix4x4 mTrans;
-		mTrans.translate(3.0, 4.0, 0);
-		m_renderer->push(mTrans);
-		for (QSharedPointer<Renderable2D> r : m_renderables)
+		for (const QSharedPointer<Renderable2D> r : m_renderables)
 		{
-			m_renderer->submit(r);
+			//m_renderer->submit(r);
+			r->submit(m_renderer);
 		}
-		m_renderer->pop();
-
 		m_renderer->end();
-
 		m_renderer->flush();
-
 		m_shader->release();
 	}
 

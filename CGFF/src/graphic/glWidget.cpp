@@ -75,22 +75,9 @@ void GLWidget::initializeGL()
 	m_camera.setToIdentity();
 	m_camera.translate(0, 0, -1);
 
-	//m_renderable2d = QSharedPointer<CGFF::StaticSprite>(new CGFF::StaticSprite(0,0,0.5, 0.5, QVector4D(1.0, 0, 0, 1.0), shaderProgram));
-	//m_simpleRenderer = QSharedPointer<CGFF::Simple2DRenderer>(new CGFF::Simple2DRenderer());
-	//
-	//m_sprite = QSharedPointer<CGFF::Renderable2D>(new CGFF::Sprite(0.0, 0.0, 1, 1, QVector4D(1.0, 0, 0, 1.0)));
-
-	//for (float y = 0; y < 9.0f; y += 0.05)
-	//{
-	//	for (float x = 0; x < 16.0f; x += 0.05)
-	//	{
-	//		sprites.push_back(
-	//			QSharedPointer<CGFF::Renderable2D>(
-	//				new CGFF::Sprite(x, y, 0.04f, 0.04f, QVector4D(rand() % 1000 / 1000.0f, 0, 1, 1))));
-	//	}
-	//}
-
 	m_tileLayer = QSharedPointer<CGFF::TileLayer>(new CGFF::TileLayer(m_shaderProgram, m_proj));
+
+#ifdef TEST_50K
 	for (float y = 0; y < 9.0f; y += 0.05)
 	{
 		for (float x = 0; x < 16.0f; x += 0.05)
@@ -100,15 +87,31 @@ void GLWidget::initializeGL()
 					new CGFF::Sprite(x, y, 0.04f, 0.04f, QVector4D(rand() % 1000 / 1000.0f, 0, 1, 1))));
 		}
 	}
-	//m_batch = QSharedPointer<CGFF::BatchRenderer2D>(new CGFF::BatchRenderer2D());
+#else
+	QMatrix4x4 mTrans;
+	mTrans.translate(-2, -2, 0);
+	QSharedPointer<CGFF::Group> group = QSharedPointer<CGFF::Group>(new CGFF::Group(mTrans));
+	group->add(QSharedPointer<CGFF::Renderable2D>(new CGFF::Sprite(0, 0, 3, 3, QVector4D(1, 1, 1, 1))));
+	group->add(QSharedPointer<CGFF::Renderable2D>(new CGFF::Sprite(0.2, 0.2, 2, 2, QVector4D(1, 0, 1, 1))));
 
+	QMatrix4x4 mTrans2;
+	mTrans2.translate(0.2, 0.2, 0);
+	QSharedPointer<CGFF::Group> button = QSharedPointer<CGFF::Group>(new CGFF::Group(mTrans2));
+	button->add(QSharedPointer<CGFF::Renderable2D>(new CGFF::Sprite(0, 0, 1, 1, QVector4D(0.2f, 0.3f, 0.8f, 1))));
+
+	group->add(qSharedPointerDynamicCast<CGFF::Renderable2D>(button));
+
+	//m_tileLayer->add(QSharedPointer<CGFF::Renderable2D>(new CGFF::Sprite(-1.5, -1.5, 3, 3, QVector4D(1, 1, 1, 1))));
+	m_tileLayer->add(QSharedPointer<CGFF::Renderable2D>(group));
+
+#endif
 	glClearColor(0.0f, 0.0f, 0.0f, 1.0f);
 }
 
 void GLWidget::paintGL()
 {
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-	glEnable(GL_DEPTH_TEST);
+	//glEnable(GL_DEPTH_TEST);
 
 	m_world.setToIdentity();
 	m_world.rotate(180.0f - (m_xRot / 16.0f), 1, 0, 0);
@@ -122,19 +125,14 @@ void GLWidget::paintGL()
 	m_shaderProgram->setUniformValue(m_projMatrixLoc, m_proj);
 
 	QMatrix4x4 m;
+#ifdef TEST_50K
 	m.translate(-8, -4.5, -4.0);
+#else
+	m.translate(0, 0, -8.0);
+#endif
 
 	m_shaderProgram->setUniformValue(m_mvMatrixLoc, m);
 	m_shaderProgram->release();
-
-	//m_batch->begin();
-	////m_batch->submit(m_sprite);
-	//for (int i = 0; i < sprites.size(); i++)
-	//{
-	//	m_batch->submit(sprites[i]);
-	//}
-	//m_batch->end();
-	//m_batch->flush();
 
 	m_tileLayer->render();
 

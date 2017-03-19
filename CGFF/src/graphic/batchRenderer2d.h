@@ -3,6 +3,7 @@
 
 #include "renderer2d.h"
 #include "../maths/qtmaths.h"
+#include "renderable2d.h"
 #include <QOpenGLBuffer>
 #include <QOpenGLVertexArrayObject>
 #include <cstddef>

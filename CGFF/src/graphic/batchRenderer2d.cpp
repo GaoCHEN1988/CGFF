@@ -1,5 +1,6 @@
 #include "batchRenderer2d.h"
 
+
 namespace CGFF {
 
 	BatchRenderer2D::BatchRenderer2D() 
