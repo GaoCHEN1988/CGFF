@@ -5,6 +5,7 @@
 #include <QOpenGLVertexArrayObject>
 #include <QOpenGLShaderProgram>
 #include <QSharedPointer>
+#include <QOpenGLTexture>
 
 #include "../maths/qtmaths.h"
 #include "buffer/buffer.h"
@@ -18,9 +19,10 @@
 #include "layer/tileLayer.h"
 #include "layer/group.h"
 
-//#define TEST_50K
+#define TEST_50K
 
-QT_FORWARD_DECLARE_CLASS(QOpenGLShaderProgram)
+QT_FORWARD_DECLARE_CLASS(QOpenGLShaderProgram);
+QT_FORWARD_DECLARE_CLASS(QOpenGLTexture)
 
 class GLWidget : public QOpenGLWidget, protected QOpenGLFunctions_4_4_Core
 {
@@ -70,7 +72,7 @@ private:
 	QSharedPointer<CGFF::BatchRenderer2D> m_batch;
 
 	//std::vector<QSharedPointer<CGFF::Renderable2D>> sprites;
-
+	QSharedPointer<QOpenGLTexture> m_texture;
 	QSharedPointer<CGFF::TileLayer> m_tileLayer;
 	QSharedPointer<CGFF::Group> m_group;
 };

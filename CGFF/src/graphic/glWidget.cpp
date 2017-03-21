@@ -66,25 +66,36 @@ void GLWidget::initializeGL()
 	success = m_shaderProgram->addShaderFromSourceFile(QOpenGLShader::Fragment, "src/graphic/shader/SimpleFragmentShader.frag");
 	m_shaderProgram->link();
 
+	m_texture = QSharedPointer<QOpenGLTexture>(new QOpenGLTexture(QImage("src/graphic/shader/particle.png").mirrored()));
+	m_texture->bind();
+
+	m_shaderProgram->bind();
+	m_shaderProgram->setUniformValue("texture", 0);
+	m_shaderProgram->setUniformValue("projMatrix", m_proj);
+
 	GLuint programID = m_shaderProgram->programId();
 
 	vertexPosition_modelspaceID = glGetAttribLocation(programID, "vertexPosition_modelspace");
 	m_projMatrixLoc = glGetUniformLocation(programID, "projMatrix");
 	m_mvMatrixLoc = glGetUniformLocation(programID, "mvMatrix");
 	color_location = glGetAttribLocation(programID, "v_color");
+	GLuint uv_id = glGetAttribLocation(programID, "in_uv");
 	m_camera.setToIdentity();
 	m_camera.translate(0, 0, -1);
 
 	m_tileLayer = QSharedPointer<CGFF::TileLayer>(new CGFF::TileLayer(m_shaderProgram, m_proj));
 
+	m_shaderProgram->release();
+
 #ifdef TEST_50K
-	for (float y = 0; y < 9.0f; y += 0.05)
+
+	for (float y = 0; y < 9.0f; y += 0.4)
 	{
-		for (float x = 0; x < 16.0f; x += 0.05)
+		for (float x = 0; x < 16.0f; x += 0.4)
 		{
 			m_tileLayer->add(
 				QSharedPointer<CGFF::Renderable2D>(
-					new CGFF::Sprite(x, y, 0.04f, 0.04f, QVector4D(rand() % 1000 / 1000.0f, 0, 1, 1))));
+					new CGFF::Sprite(x, y, 0.39f, 0.39f, QVector4D(rand() % 1000 / 1000.0f, 0, 1, 1))));
 		}
 	}
 #else
@@ -118,12 +129,10 @@ void GLWidget::paintGL()
 	m_world.rotate(m_yRot / 16.0f, 0, 1, 0);
 	m_world.rotate(m_zRot / 16.0f, 0, 0, 1);
 
-	// Use our shader
-	//glUseProgram(shaderProgram.programId());
+	//// Use our shader
+	m_texture->bind();
 	m_shaderProgram->bind(); //Equal to glUseProgram
-
-	m_shaderProgram->setUniformValue(m_projMatrixLoc, m_proj);
-
+	m_shaderProgram->setUniformValue("projMatrix", m_proj);
 	QMatrix4x4 m;
 #ifdef TEST_50K
 	m.translate(-8, -4.5, -4.0);
@@ -132,6 +141,7 @@ void GLWidget::paintGL()
 #endif
 
 	m_shaderProgram->setUniformValue(m_mvMatrixLoc, m);
+
 	m_shaderProgram->release();
 
 	m_tileLayer->render();
@@ -139,8 +149,6 @@ void GLWidget::paintGL()
 	GLenum error = glGetError();
 	if (error != GL_NO_ERROR)
 		std::cout << "OPENGL Error:" << error << std::endl;
-
-
 }
 
 void GLWidget::resizeGL(int width, int height)
