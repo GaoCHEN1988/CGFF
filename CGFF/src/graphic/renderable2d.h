@@ -7,12 +7,14 @@
 #include "../maths/qtmaths.h"
 #include "renderer2d.h"
 #include <QOpenGLShaderProgram>
+#include <QOpenGLTexture>
 
 namespace CGFF {
 	struct VertexData
 	{
 		QVector3D vertex;
 		QVector2D uv;
+		float tid;
 		QVector4D color;
 	};
 
@@ -47,6 +49,7 @@ namespace CGFF {
 		inline const QVector2D& getSize() const { return m_size; }
 		inline const QVector4D& getColor() const { return m_color; }
 		inline const std::vector<QVector2D>& getUV() const { return m_UVs; }
+		inline const GLuint getTextureID() const { return m_texture.isNull() ? -1 : m_texture->textureId(); }
 
 	private:
 		void setDefaultUV()
@@ -61,6 +64,7 @@ namespace CGFF {
 		QVector2D m_size;
 		QVector4D m_color;
 		std::vector<QVector2D> m_UVs;
+		QSharedPointer<QOpenGLTexture> m_texture;
 	};
 }
 

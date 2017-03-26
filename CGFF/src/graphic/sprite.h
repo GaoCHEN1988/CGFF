@@ -9,6 +9,7 @@ namespace CGFF {
 	{
 	public:
 		Sprite(float x, float y, float width, float height, QVector4D color);
+		Sprite(float x, float y, float width, float height, QSharedPointer<QOpenGLTexture> texture);
 		~Sprite() {	};
 	};
 }

@@ -35,10 +35,12 @@ namespace CGFF {
 		
 		glEnableVertexAttribArray(SHADER_VERTEX_INDEX);
 		glEnableVertexAttribArray(SHADER_UV_INDEX);
+		glEnableVertexAttribArray(SHADER_TID_INDEX);
 		glEnableVertexAttribArray(SHADER_COLOR_INDEX);
 
 		glVertexAttribPointer(SHADER_VERTEX_INDEX, 3, GL_FLOAT, GL_FALSE, RENDERER_VERTEX_SIZE, (GLvoid*)0);
 		glVertexAttribPointer(SHADER_UV_INDEX, 2, GL_FLOAT, GL_FALSE, RENDERER_VERTEX_SIZE, (GLvoid*)(offsetof(VertexData, VertexData::uv)));
+		glVertexAttribPointer(SHADER_TID_INDEX, 1, GL_FLOAT, GL_FALSE, RENDERER_VERTEX_SIZE, (GLvoid*)(offsetof(VertexData, VertexData::tid)));
 		glVertexAttribPointer(SHADER_COLOR_INDEX, 4, GL_FLOAT, GL_FALSE, RENDERER_VERTEX_SIZE, (GLvoid*)(offsetof(VertexData, VertexData::color)));
 		
 		GLuint* indices = new GLuint[RENDERER_INDICES_SIZE];
@@ -78,24 +80,57 @@ namespace CGFF {
 		const QVector2D& size = renderable->getSize();
 		const QVector4D& color = renderable->getColor();
 		const std::vector<QVector2D>& UV = renderable->getUV();
+		const GLuint textureId = renderable->getTextureID();
+
+		float ts = 0.0;
+
+		if (textureId > 0)
+		{
+			bool found = false;
+			for (int i = 0; i < m_textureSlots.size(); i++)
+			{
+				if (m_textureSlots[i] == textureId)
+				{
+					found = true;
+					ts = static_cast<float>(i+1);
+					break;
+				}
+			}
+
+			if (!found)
+			{
+				if (m_textureSlots.size() >= 32)
+				{
+					end();
+					flush();
+					begin();
+				}
+				m_textureSlots.push_back(textureId);
+				ts = static_cast<float>(m_textureSlots.size());
+			}
+		}
 
 		m_buffer->vertex = *m_tranformationBack * position;
 		m_buffer->uv = UV[0];
+		m_buffer->tid = ts;
 		m_buffer->color = color;
 		m_buffer++;
 
 		m_buffer->vertex = *m_tranformationBack * QVector3D(position.x(), position.y() + size.y(), position.z());
 		m_buffer->uv = UV[1];
+		m_buffer->tid = ts;
 		m_buffer->color = color;
 		m_buffer++;
 
 		m_buffer->vertex = *m_tranformationBack * QVector3D(position.x() + size.x(), position.y() + size.y(), position.z());
 		m_buffer->uv = UV[2];
+		m_buffer->tid = ts;
 		m_buffer->color = color;
 		m_buffer++;
 
 		m_buffer->vertex = *m_tranformationBack * QVector3D(position.x() + size.x(), position.y(), position.z());
 		m_buffer->uv = UV[3];
+		m_buffer->tid = ts;
 		m_buffer->color = color;
 		m_buffer++;
 
@@ -104,6 +139,11 @@ namespace CGFF {
 
 	void BatchRenderer2D::flush() 
 	{
+		for (int i = 0; i < m_textureSlots.size(); i++)
+		{
+			glActiveTexture(GL_TEXTURE0 + i);
+			glBindTexture(GL_TEXTURE_2D, m_textureSlots[i]);
+		}
 		m_vao.bind();
 		m_iboBuffer->bind();
 		glDrawElements(GL_TRIANGLES, m_indexCount, GL_UNSIGNED_INT, NULL);

@@ -66,20 +66,28 @@ void GLWidget::initializeGL()
 	success = m_shaderProgram->addShaderFromSourceFile(QOpenGLShader::Fragment, "src/graphic/shader/SimpleFragmentShader.frag");
 	m_shaderProgram->link();
 
-	m_texture = QSharedPointer<QOpenGLTexture>(new QOpenGLTexture(QImage("src/graphic/shader/particle.png").mirrored()));
-	m_texture->bind();
+	//m_texture = QSharedPointer<QOpenGLTexture>(new QOpenGLTexture(QImage("src/graphic/shader/particle.png").mirrored()));
+	//m_texture->bind();
+
+	m_vTextures.push_back(QSharedPointer<QOpenGLTexture>(new QOpenGLTexture(QImage("src/graphic/shader/particle.png").mirrored())));
+	m_vTextures.push_back(QSharedPointer<QOpenGLTexture>(new QOpenGLTexture(QImage("src/graphic/shader/tb.png").mirrored())));
+	m_vTextures.push_back(QSharedPointer<QOpenGLTexture>(new QOpenGLTexture(QImage("src/graphic/shader/tc.png").mirrored())));
+
+	GLint texIDs[] =
+	{
+		0, 1, 2, 3, 4, 5, 6, 7, 8, 9
+	};
 
 	m_shaderProgram->bind();
-	m_shaderProgram->setUniformValue("texture", 0);
+	//m_shaderProgram->setUniformValue("texture", 0);
+	m_shaderProgram->setUniformValueArray("textures", texIDs, 10);
 	m_shaderProgram->setUniformValue("projMatrix", m_proj);
 
 	GLuint programID = m_shaderProgram->programId();
 
-	vertexPosition_modelspaceID = glGetAttribLocation(programID, "vertexPosition_modelspace");
-	m_projMatrixLoc = glGetUniformLocation(programID, "projMatrix");
-	m_mvMatrixLoc = glGetUniformLocation(programID, "mvMatrix");
-	color_location = glGetAttribLocation(programID, "v_color");
-	GLuint uv_id = glGetAttribLocation(programID, "in_uv");
+	//vertexPosition_modelspaceID = glGetAttribLocation(programID, "vertexPosition_modelspace");
+	//color_location = glGetAttribLocation(programID, "v_color");
+	//GLuint uv_id = glGetAttribLocation(programID, "in_uv");
 	m_camera.setToIdentity();
 	m_camera.translate(0, 0, -1);
 
@@ -89,15 +97,27 @@ void GLWidget::initializeGL()
 
 #ifdef TEST_50K
 
-	for (float y = 0; y < 9.0f; y += 0.4)
+	//for (float y = 0; y < 9.0f; y += 0.4)
+	//{
+	//	for (float x = 0; x < 16.0f; x += 0.4)
+	//	{
+	//		m_tileLayer->add(
+	//			QSharedPointer<CGFF::Renderable2D>(
+	//				new CGFF::Sprite(x, y, 0.39f, 0.39f, QVector4D(rand() % 1000 / 1000.0f, 0, 1, 1))));
+	//	}
+	//}
+
+	for (float y = 0; y < 9.0f; y += 0.2)
 	{
-		for (float x = 0; x < 16.0f; x += 0.4)
+		for (float x = 0; x < 16.0f; x += 0.2)
 		{
 			m_tileLayer->add(
 				QSharedPointer<CGFF::Renderable2D>(
-					new CGFF::Sprite(x, y, 0.39f, 0.39f, QVector4D(rand() % 1000 / 1000.0f, 0, 1, 1))));
+					new CGFF::Sprite(x, y, 0.19f, 0.19f, m_vTextures[rand() % 3])));
 		}
 	}
+
+
 #else
 	QMatrix4x4 mTrans;
 	mTrans.translate(-2, -2, 0);
@@ -130,7 +150,7 @@ void GLWidget::paintGL()
 	m_world.rotate(m_zRot / 16.0f, 0, 0, 1);
 
 	//// Use our shader
-	m_texture->bind();
+	//m_texture->bind();
 	m_shaderProgram->bind(); //Equal to glUseProgram
 	m_shaderProgram->setUniformValue("projMatrix", m_proj);
 	QMatrix4x4 m;
@@ -140,7 +160,7 @@ void GLWidget::paintGL()
 	m.translate(0, 0, -8.0);
 #endif
 
-	m_shaderProgram->setUniformValue(m_mvMatrixLoc, m);
+	m_shaderProgram->setUniformValue("mvMatrix", m);
 
 	m_shaderProgram->release();
 

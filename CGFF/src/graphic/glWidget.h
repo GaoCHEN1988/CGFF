@@ -51,9 +51,9 @@ protected:
 
 private:
 	QSharedPointer<QOpenGLShaderProgram> m_shaderProgram;
-	GLuint vertexPosition_modelspaceID;
+	//GLuint vertexPosition_modelspaceID;
 	//GLuint vertexbuffer;
-	GLuint color_location;
+	//GLuint color_location;
 	//GLuint colorbuffer;
 
 	QMatrix4x4 m_proj;
@@ -73,6 +73,7 @@ private:
 
 	//std::vector<QSharedPointer<CGFF::Renderable2D>> sprites;
 	QSharedPointer<QOpenGLTexture> m_texture;
+	std::vector<QSharedPointer<QOpenGLTexture> > m_vTextures;
 	QSharedPointer<CGFF::TileLayer> m_tileLayer;
 	QSharedPointer<CGFF::Group> m_group;
 };
