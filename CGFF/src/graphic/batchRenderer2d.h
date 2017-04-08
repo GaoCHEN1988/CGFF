@@ -29,6 +29,7 @@ namespace CGFF {
 
 		void begin() override;
 		void submit(QSharedPointer<Renderable2D> renderable) override;
+	    void drawString(const std::string& text, const QVector3D& position, QVector4D& color) override;
 		void flush() override;
 		void end() override;
 
@@ -43,6 +44,8 @@ namespace CGFF {
 		VertexData* m_buffer;
 		GLsizei m_indexCount;
 		std::vector<GLuint> m_textureSlots;
+		//ftgl::texture_atlas_t* m_FTAtlas;
+		//ftgl::texture_font_t* m_FTFont;
 	};
 }
 #endif

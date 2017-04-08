@@ -1,8 +1,8 @@
 #ifndef LAYER_H
 #define LAYER_H
 
-#include "../renderable2d.h"
 #include "../renderer2d.h"
+#include "../renderable2d.h"
 #include "../batchRenderer2d.h"
 #include "../maths/qtmaths.h"
 #include <QOpenGLShaderProgram>

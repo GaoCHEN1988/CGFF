@@ -136,13 +136,15 @@ void GLWidget::initializeGL()
 	m_tileLayer->add(QSharedPointer<CGFF::Renderable2D>(group));
 
 #endif
-	glClearColor(0.0f, 0.0f, 0.0f, 1.0f);
+	glClearColor(0.0f, 0.2f, 0.2f, 1.0f);
 }
 
 void GLWidget::paintGL()
 {
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 	//glEnable(GL_DEPTH_TEST);
+	glEnable(GL_BLEND);
+	glBlendFunc(GL_SRC_ALPHA, GL_SRC_ALPHA);
 
 	m_world.setToIdentity();
 	m_world.rotate(180.0f - (m_xRot / 16.0f), 1, 0, 0);

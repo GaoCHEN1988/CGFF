@@ -7,6 +7,10 @@ namespace CGFF {
 	{
 	}
 
+	Group::~Group()
+	{
+	}
+
 	void Group::submit(QSharedPointer<Renderer2D> renderer) 
 	{
 		renderer->push(m_transformationMatrix);

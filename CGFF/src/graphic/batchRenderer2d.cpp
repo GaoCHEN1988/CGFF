@@ -66,6 +66,13 @@ namespace CGFF {
 		m_iboBuffer->allocate(indices, RENDERER_INDICES_SIZE* sizeof(GLuint));
 
 		m_indexCount = 0;
+
+		m_iboBuffer->release();
+		m_vao.release();
+		m_vboBuffer->release();
+
+		//m_FTAtlas = ftgl::texture_atlas_new(512, 512, 1);
+		//m_FTFont = ftgl::texture_font_new_from_file(m_FTAtlas, 20, "arial.ttf");
 	}
 
 	void BatchRenderer2D::begin()
@@ -137,6 +144,93 @@ namespace CGFF {
 		m_indexCount += 6;
 	}
 
+	void BatchRenderer2D::drawString(const std::string& text, const QVector3D& position, QVector4D& color)
+	{
+		//using namespace ftgl;
+
+		//float ts = 0.0;
+
+		//bool found = false;
+		//for (int i = 0; i < m_textureSlots.size(); i++)
+		//{
+		//	if (m_textureSlots[i] == m_FTAtlas->id)
+		//	{
+		//		found = true;
+		//		ts = static_cast<float>(i + 1);
+		//		break;
+		//	}
+		//}
+
+		//if (!found)
+		//{
+		//	if (m_textureSlots.size() >= 32)
+		//	{
+		//		end();
+		//		flush();
+		//		begin();
+		//	}
+		//	m_textureSlots.push_back(m_FTAtlas->id);
+		//	ts = static_cast<float>(m_textureSlots.size());
+		//}
+
+		//float scaleX = 800 / 32.0f;
+		//float scaleY = 600 / 18.0f;
+
+		//float x = position.x();
+
+		//for (int i = 0; i < text.length(); i++)
+		//{
+		//	const char c = text[i];
+		//	texture_glyph_t* glyph = texture_font_get_glyph(m_FTFont, &c);
+
+		//	if (glyph != NULL)
+		//	{
+		//		if (i > 0)
+		//		{
+		//			float kerning = texture_glyph_get_kerning(glyph, &text[i - 1]);
+		//			x += kerning / scaleX;
+		//		}
+
+		//		float x0 = x + glyph->offset_x / scaleX;
+		//		float y0 = position.y() + glyph->offset_y / scaleY;
+		//		float x1 = x0 + glyph->width / scaleX;
+		//		float y1 = y0 - glyph->height / scaleY;
+
+		//		float u0 = glyph->s0;
+		//		float v0 = glyph->t0;
+		//		float u1 = glyph->s1;
+		//		float v1 = glyph->t1;
+
+		//		m_buffer->vertex = *m_tranformationBack * QVector3D(x0, y0, 0);
+		//		m_buffer->uv = QVector2D(u0, v0);
+		//		m_buffer->tid = ts;
+		//		m_buffer->color = color;
+		//		m_buffer++;
+
+		//		m_buffer->vertex = *m_tranformationBack * QVector3D(x0, y1, 0);
+		//		m_buffer->uv = QVector2D(u0, v1);
+		//		m_buffer->tid = ts;
+		//		m_buffer->color = color;
+		//		m_buffer++;
+
+		//		m_buffer->vertex = *m_tranformationBack * QVector3D(x1, y1, 0);
+		//		m_buffer->uv = QVector2D(u1, v1);
+		//		m_buffer->tid = ts;
+		//		m_buffer->color = color;
+		//		m_buffer++;
+
+		//		m_buffer->vertex = *m_tranformationBack * QVector3D(x1, y0, 0);
+		//		m_buffer->uv = QVector2D(u1, v0);
+		//		m_buffer->tid = ts;
+		//		m_buffer->color = color;
+		//		m_buffer++;
+
+		//		m_indexCount += 6;
+		//		x += glyph->advance_x / scaleX;
+		//	}
+
+		//}
+	}
 	void BatchRenderer2D::flush() 
 	{
 		for (int i = 0; i < m_textureSlots.size(); i++)
@@ -156,5 +250,6 @@ namespace CGFF {
 	void BatchRenderer2D::end()
 	{
 		m_vboBuffer->unmap();
+		m_vboBuffer->release();
 	}
 }

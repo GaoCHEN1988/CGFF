@@ -16,7 +16,7 @@ namespace CGFF {
 			return m_count;
 		}
 	private:
-		//QOpenGLFunctions_4_4_Core * m_function;
+
 		GLuint m_indexBufferID;
 		GLuint m_count;
 	};

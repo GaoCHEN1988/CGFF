@@ -1,11 +1,12 @@
 #ifndef RENDERABLE_2D_H
 #define RENDERABLE_2D_H
-
+//#include "freetype-gl.h"
+#include "renderer2d.h"
 #include "buffer/buffer.h"
 #include "buffer/indexBuffer.h"
 #include "buffer/vertexArray.h"
 #include "../maths/qtmaths.h"
-#include "renderer2d.h"
+
 #include <QOpenGLShaderProgram>
 #include <QOpenGLTexture>
 
@@ -21,7 +22,7 @@ namespace CGFF {
 	class Renderable2D : public QEnableSharedFromThis<Renderable2D>
 	{
 	protected:
-		Renderable2D()
+		Renderable2D() : m_texture(nullptr)
 		{
 			setDefaultUV();
 		}
@@ -30,6 +31,7 @@ namespace CGFF {
 			: m_position(position)
 			, m_size(size)
 			, m_color(color)
+			, m_texture(nullptr)
 		{
 			setDefaultUV();
 		}

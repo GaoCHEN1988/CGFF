@@ -35,6 +35,7 @@ namespace CGFF {
 			//m_renderer->submit(r);
 			r->submit(m_renderer);
 		}
+		//m_renderer->drawString("test", QVector3D(6, 4, 0), QVector4D(1, 1, 1, 0));
 		m_renderer->end();
 		m_renderer->flush();
 		m_shader->release();

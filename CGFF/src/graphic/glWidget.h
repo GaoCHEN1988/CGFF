@@ -1,23 +1,24 @@
 #ifndef GLWIDGET_H
 #define GLWIDGET_H
 
-#include <QOpenGLWidget>
-#include <QOpenGLVertexArrayObject>
-#include <QOpenGLShaderProgram>
-#include <QSharedPointer>
-#include <QOpenGLTexture>
-
+#include "batchRenderer2d.h"
 #include "../maths/qtmaths.h"
 #include "buffer/buffer.h"
 #include "buffer/indexBuffer.h"
 #include "buffer/vertexArray.h"
 #include "renderable2d.h"
 #include "simple2Drenderer.h"
-#include "batchRenderer2d.h"
 #include "sprite.h"
 #include "staticSprite.h"
 #include "layer/tileLayer.h"
 #include "layer/group.h"
+
+#include <QOpenGLWidget>
+#include <QOpenGLVertexArrayObject>
+#include <QOpenGLShaderProgram>
+#include <QSharedPointer>
+#include <QOpenGLTexture>
+#include <QPainter>
 
 #define TEST_50K
 

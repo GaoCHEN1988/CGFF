@@ -1,8 +1,9 @@
 #ifndef TILE_LAYER_H
 #define TILE_LAYER_H
 
-#include "layer.h"
 #include "batchRenderer2d.h"
+#include "layer.h"
+
 
 namespace CGFF {
 	class TileLayer : public Layer

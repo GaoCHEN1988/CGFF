@@ -1,9 +1,11 @@
-#version 440
+#version 440 core
 //uniform sampler2D texture;
 uniform sampler2D textures[32];
-varying vec2 uv;
-varying float tid;
-varying vec4 color;
+in vec2 uv;
+in float tid;
+in vec4 color;
+
+out vec4 out_color;
 
 void main()
 {
@@ -12,8 +14,8 @@ void main()
 	if(tid>0.0)
 	{
 		int t = int(tid - 0.5);
-		texColor = texture2D(textures[t], uv.st);
+		texColor = color*texture(textures[t], uv);
 	}
-	gl_FragColor = texColor;
+	out_color = texColor;
 	//gl_FragColor = color;
 }

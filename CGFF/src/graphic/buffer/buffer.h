@@ -18,7 +18,7 @@ namespace CGFF {
 		}
 
 	private:
-		//QOpenGLFunctions_4_4_Core * m_function;
+
 		GLuint m_bufferID;
 		GLuint m_componentCount;
 	};

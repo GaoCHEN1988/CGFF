@@ -1,5 +1,7 @@
 #ifndef RENDERER_2D_H
 #define RENDERER_2D_H
+
+//#include "freetype-gl.h"
 #include "../maths/qtmaths.h"
 #include <QSharedPointer>
 
@@ -18,6 +20,7 @@ namespace CGFF {
 		}
 	public:
 		virtual void submit(QSharedPointer<Renderable2D> renderable) = 0;
+		virtual void drawString(const std::string& text, const QVector3D& position, QVector4D& color) {};
 		virtual void flush() = 0;
 		virtual void begin() {}
 		virtual void end() {}
