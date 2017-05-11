@@ -18,6 +18,14 @@ namespace CGFF {
 		m_renderer = QSharedPointer<BatchRenderer2D>(new BatchRenderer2D());
 		m_shader->bind();
 		m_shader->setUniformValue("projMatrix", m_projectionMatrix);
+		GLint texIDs[] =
+		{
+			0,  1,  2,  3,  4,  5,  6,  7,  8,  9,  10,
+			11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21,
+			22, 23, 24, 25, 26, 27, 28, 29, 30, 31
+		};
+		m_shader->setUniformValueArray("textures", texIDs, 32);
+
 		m_shader->release();
 	}
 

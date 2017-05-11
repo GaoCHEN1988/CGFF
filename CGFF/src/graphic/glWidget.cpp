@@ -59,11 +59,21 @@ void GLWidget::initializeGL()
 	initializeOpenGLFunctions();
 
 	m_shaderProgram = QSharedPointer<QOpenGLShaderProgram>(new QOpenGLShaderProgram);
-	// load and compile vertex shader
-	bool success;
-	success = m_shaderProgram->addShaderFromSourceFile(QOpenGLShader::Vertex, "src/graphic/shader/SimpleVertexShader.vert");
+    
+    bool success;
+	
+#ifdef OPENGL_ES
+    // load and compile vertex shader
+	success = m_shaderProgram->addShaderFromSourceFile(QOpenGLShader::Vertex, "src/graphic/shader_es/SimpleVertexShader.vert");
 	// load and compile fragment shader
-	success = m_shaderProgram->addShaderFromSourceFile(QOpenGLShader::Fragment, "src/graphic/shader/SimpleFragmentShader.frag");
+	success = m_shaderProgram->addShaderFromSourceFile(QOpenGLShader::Fragment, "src/graphic/shader_es/SimpleFragmentShader.frag");
+#else
+    // load and compile vertex shader
+    success = m_shaderProgram->addShaderFromSourceFile(QOpenGLShader::Vertex, "src/graphic/shader/SimpleVertexShader.vert");
+    // load and compile fragment shader
+    success = m_shaderProgram->addShaderFromSourceFile(QOpenGLShader::Fragment, "src/graphic/shader/SimpleFragmentShader.frag");
+#endif
+
 	m_shaderProgram->link();
 
 	//m_texture = QSharedPointer<QOpenGLTexture>(new QOpenGLTexture(QImage("src/graphic/shader/particle.png").mirrored()));
@@ -73,14 +83,14 @@ void GLWidget::initializeGL()
 	m_vTextures.push_back(QSharedPointer<QOpenGLTexture>(new QOpenGLTexture(QImage("src/graphic/shader/tb.png").mirrored())));
 	m_vTextures.push_back(QSharedPointer<QOpenGLTexture>(new QOpenGLTexture(QImage("src/graphic/shader/tc.png").mirrored())));
 
-	GLint texIDs[] =
-	{
-		0, 1, 2, 3, 4, 5, 6, 7, 8, 9
-	};
+	//GLint texIDs[] =
+	//{
+	//	0, 1, 2, 3, 4, 5, 6, 7, 8, 9
+	//};
 
 	m_shaderProgram->bind();
 	//m_shaderProgram->setUniformValue("texture", 0);
-	m_shaderProgram->setUniformValueArray("textures", texIDs, 10);
+	//m_shaderProgram->setUniformValueArray("textures", texIDs, 10);
 	m_shaderProgram->setUniformValue("projMatrix", m_proj);
 
 	GLuint programID = m_shaderProgram->programId();
@@ -126,7 +136,7 @@ void GLWidget::initializeGL()
 	group->add(QSharedPointer<CGFF::Renderable2D>(new CGFF::Sprite(0.2, 0.2, 2, 2, QVector4D(1, 0, 1, 1))));
 
 	QMatrix4x4 mTrans2;
-	mTrans2.translate(0.2, 0.2, 0);
+	mTrans2.translate(0.2, 0.2, 0.1);
 	QSharedPointer<CGFF::Group> button = QSharedPointer<CGFF::Group>(new CGFF::Group(mTrans2));
 	button->add(QSharedPointer<CGFF::Renderable2D>(new CGFF::Sprite(0, 0, 1, 1, QVector4D(0.2f, 0.3f, 0.8f, 1))));
 
@@ -137,14 +147,16 @@ void GLWidget::initializeGL()
 
 #endif
 	glClearColor(0.0f, 0.2f, 0.2f, 1.0f);
+    m_time.start();
+    last_count = 0;
 }
 
 void GLWidget::paintGL()
 {
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-	//glEnable(GL_DEPTH_TEST);
-	glEnable(GL_BLEND);
-	glBlendFunc(GL_SRC_ALPHA, GL_SRC_ALPHA);
+	glEnable(GL_DEPTH_TEST);
+	//glEnable(GL_BLEND);
+	//glBlendFunc(GL_SRC_ALPHA, GL_SRC_ALPHA);
 
 	m_world.setToIdentity();
 	m_world.rotate(180.0f - (m_xRot / 16.0f), 1, 0, 0);
@@ -171,6 +183,25 @@ void GLWidget::paintGL()
 	GLenum error = glGetError();
 	if (error != GL_NO_ERROR)
 		std::cout << "OPENGL Error:" << error << std::endl;
+
+    // FPS count
+    ++m_frameCount;
+    int elapsed = m_time.elapsed();
+    if (elapsed >= 1000)
+    {
+        /*
+        TO DO: Show FPS
+        */
+        last_count = m_frameCount;
+        m_frameCount = 0;
+        m_time.restart();
+    }
+
+#ifdef OPENGL_ES
+    QPainter painter(this);
+    painter.setPen(Qt::white);
+    painter.drawText(QRectF(10.0f, 10.0f, 200.0f, 100.0f), QString("FPS:%1").arg(last_count));
+#endif
 }
 
 void GLWidget::resizeGL(int width, int height)

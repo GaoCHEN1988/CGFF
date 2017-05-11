@@ -19,8 +19,9 @@
 #include <QSharedPointer>
 #include <QOpenGLTexture>
 #include <QPainter>
+#include <Qtime>
 
-#define TEST_50K
+//#define TEST_50K
 
 QT_FORWARD_DECLARE_CLASS(QOpenGLShaderProgram);
 QT_FORWARD_DECLARE_CLASS(QOpenGLTexture)
@@ -77,6 +78,9 @@ private:
 	std::vector<QSharedPointer<QOpenGLTexture> > m_vTextures;
 	QSharedPointer<CGFF::TileLayer> m_tileLayer;
 	QSharedPointer<CGFF::Group> m_group;
+    QTime m_time;
+    int m_frameCount;
+    int last_count;
 };
 
 #endif

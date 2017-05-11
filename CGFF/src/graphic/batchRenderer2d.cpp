@@ -106,7 +106,7 @@ namespace CGFF {
 
 			if (!found)
 			{
-				if (m_textureSlots.size() >= 32)
+				if (m_textureSlots.size() >= RENDERER_MAX_TEXTURES)
 				{
 					end();
 					flush();
@@ -246,6 +246,7 @@ namespace CGFF {
 		m_vao.release();
 		m_vboBuffer->release();
 		m_indexCount = 0;
+		m_textureSlots.clear();
 	}
 	void BatchRenderer2D::end()
 	{

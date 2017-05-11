@@ -4,9 +4,14 @@ mainWindow::mainWindow(QWidget *parent)
 	: QMainWindow(parent)
 {
 	ui.setupUi(this);
-	QSurfaceFormat qFormat;
+#ifdef OPENGL_ES
+
+#else
+    QSurfaceFormat qFormat;
 	qFormat.setProfile(QSurfaceFormat::CoreProfile);
 	qFormat.setVersion(4, 4);
-	ui.openGLWidget->setFormat(qFormat);
+    ui.openGLWidget->setFormat(qFormat);
+
+#endif
 }
 

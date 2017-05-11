@@ -51,7 +51,7 @@ namespace CGFF {
 		inline const QVector2D& getSize() const { return m_size; }
 		inline const QVector4D& getColor() const { return m_color; }
 		inline const std::vector<QVector2D>& getUV() const { return m_UVs; }
-		inline const GLuint getTextureID() const { return m_texture.isNull() ? -1 : m_texture->textureId(); }
+		inline const GLuint getTextureID() const { return m_texture==nullptr ? 0 : m_texture->textureId(); }
 
 	private:
 		void setDefaultUV()
