@@ -2,20 +2,15 @@
 
 namespace CGFF {
 
-	Layer::Layer() 
-	{
-		
-	}
-
 	Layer::~Layer() 
 	{
 	}
-	Layer::Layer(QSharedPointer<QOpenGLShaderProgram>  shader, /*QSharedPointer<Renderer2D> renderer,*/ QMatrix4x4 projectionMatrix)
-		: m_shader(shader)
-		//, m_renderer(renderer)
+	Layer::Layer(QSharedPointer<Renderer2D> renderer, QSharedPointer<QOpenGLShaderProgram>  shader, /*QSharedPointer<Renderer2D> renderer,*/ QMatrix4x4 projectionMatrix)
+		: m_renderer(renderer)
+        , m_shader(shader)
 		, m_projectionMatrix(projectionMatrix)
 	{
-		m_renderer = QSharedPointer<BatchRenderer2D>(new BatchRenderer2D());
+		//m_renderer = QSharedPointer<BatchRenderer2D>(new BatchRenderer2D());
 		m_shader->bind();
 		m_shader->setUniformValue("projMatrix", m_projectionMatrix);
 		GLint texIDs[] =

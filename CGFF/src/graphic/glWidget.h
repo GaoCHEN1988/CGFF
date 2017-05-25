@@ -50,6 +50,7 @@ protected:
 	void resizeGL(int width, int height) Q_DECL_OVERRIDE;
 	void mousePressEvent(QMouseEvent *event) Q_DECL_OVERRIDE;
 	void mouseMoveEvent(QMouseEvent *event) Q_DECL_OVERRIDE;
+    void keyPressEvent(QKeyEvent *event) Q_DECL_OVERRIDE;
 
 private:
 	QSharedPointer<QOpenGLShaderProgram> m_shaderProgram;
@@ -76,8 +77,11 @@ private:
 	//std::vector<QSharedPointer<CGFF::Renderable2D>> sprites;
 	QSharedPointer<QOpenGLTexture> m_texture;
 	std::vector<QSharedPointer<QOpenGLTexture> > m_vTextures;
-	QSharedPointer<CGFF::TileLayer> m_tileLayer;
-	QSharedPointer<CGFF::Group> m_group;
+    //QSharedPointer<CGFF::TileLayer> m_tileLayer;
+    QSharedPointer<CGFF::Layer> m_layer;
+    QSharedPointer<CGFF::Sprite> m_sprite;
+	//QSharedPointer<CGFF::Group> m_group;
+    QSharedPointer<CGFF::Mask> m_mask;
     QTime m_time;
     int m_frameCount;
     int last_count;

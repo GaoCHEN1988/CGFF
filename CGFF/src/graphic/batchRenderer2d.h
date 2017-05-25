@@ -17,10 +17,12 @@ namespace CGFF {
 #define RENDERER_INDICES_SIZE RENDERER_MAX_SPRITES*6
 #define RENDERER_MAX_TEXTURES 32
 
-#define SHADER_VERTEX_INDEX 0
-#define SHADER_UV_INDEX 1
-#define SHADER_TID_INDEX 2
-#define SHADER_COLOR_INDEX 3
+#define SHADER_VERTEX_INDEX     0
+#define SHADER_UV_INDEX         1
+#define SHADER_MASK_UV_INDEX	2
+#define SHADER_TID_INDEX        3
+#define SHADER_MID_INDEX        4
+#define SHADER_COLOR_INDEX      5
 	
 	class BatchRenderer2D : public Renderer2D, protected QOpenGLFunctions_4_4_Core
 	{
@@ -36,6 +38,8 @@ namespace CGFF {
 
 	private:
 		void init();
+        float submitTexture(uint textureID);
+        float submitTexture(const QSharedPointer<QOpenGLTexture>& texture);
 
 	private:
 
@@ -45,8 +49,6 @@ namespace CGFF {
 		VertexData* m_buffer;
 		GLsizei m_indexCount;
 		std::vector<GLuint> m_textureSlots;
-		//ftgl::texture_atlas_t* m_FTAtlas;
-		//ftgl::texture_font_t* m_FTFont;
 	};
 }
 #endif

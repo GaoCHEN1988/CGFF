@@ -1,8 +1,8 @@
 #ifndef RENDERER_2D_H
 #define RENDERER_2D_H
 
-//#include "freetype-gl.h"
 #include "../maths/qtmaths.h"
+#include "mask.h"
 #include <QSharedPointer>
 
 namespace CGFF {
@@ -13,6 +13,7 @@ namespace CGFF {
 	{
 	protected:
 		Renderer2D()
+            : m_mask(nullptr)
 		{
 			m_transformationStack.push_back(QMatrix4x4());
 
@@ -44,9 +45,15 @@ namespace CGFF {
 			//To do: Add to log system
 		}
 
+        void setMask(QSharedPointer<CGFF::Mask> mask)
+        {
+            m_mask = mask;
+        }
+
 	protected:
 		std::vector<QMatrix4x4> m_transformationStack;
 		QMatrix4x4* m_tranformationBack;
+        QSharedPointer<CGFF::Mask> m_mask;
 	};
 }
 

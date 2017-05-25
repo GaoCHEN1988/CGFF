@@ -1,6 +1,6 @@
 #ifndef RENDERABLE_2D_H
 #define RENDERABLE_2D_H
-//#include "freetype-gl.h"
+
 #include "renderer2d.h"
 #include "buffer/buffer.h"
 #include "buffer/indexBuffer.h"
@@ -15,7 +15,9 @@ namespace CGFF {
 	{
 		QVector3D vertex;
 		QVector2D uv;
+        QVector2D mask_uv;
 		float tid;
+        float mid;
 		QVector4D color;
 	};
 
@@ -51,7 +53,8 @@ namespace CGFF {
 		inline const QVector2D& getSize() const { return m_size; }
 		inline const QVector4D& getColor() const { return m_color; }
 		inline const std::vector<QVector2D>& getUV() const { return m_UVs; }
-		inline const GLuint getTextureID() const { return m_texture==nullptr ? 0 : m_texture->textureId(); }
+        inline const GLuint getTextureID() const { return m_texture == nullptr ? 0 : m_texture->textureId(); }
+        inline const QSharedPointer<QOpenGLTexture> getTexture() const { return m_texture; }
 
 	private:
 		void setDefaultUV()

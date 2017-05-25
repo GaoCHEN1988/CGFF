@@ -7,7 +7,7 @@
 GLWidget::GLWidget(QWidget *parent)
 	: QOpenGLWidget(parent)
 {
-
+    setFocusPolicy(Qt::ClickFocus);
 }
 
 GLWidget::~GLWidget()
@@ -101,7 +101,9 @@ void GLWidget::initializeGL()
 	m_camera.setToIdentity();
 	m_camera.translate(0, 0, -1);
 
-	m_tileLayer = QSharedPointer<CGFF::TileLayer>(new CGFF::TileLayer(m_shaderProgram, m_proj));
+	//m_tileLayer = QSharedPointer<CGFF::TileLayer>(new CGFF::TileLayer(m_shaderProgram, m_proj));
+    m_layer = QSharedPointer<CGFF::Layer>(new CGFF::Layer(QSharedPointer<CGFF::BatchRenderer2D>(new CGFF::BatchRenderer2D()), 
+        m_shaderProgram, m_proj));
 
 	m_shaderProgram->release();
 
@@ -129,21 +131,29 @@ void GLWidget::initializeGL()
 
 
 #else
-	QMatrix4x4 mTrans;
-	mTrans.translate(-2, -2, 0);
-	QSharedPointer<CGFF::Group> group = QSharedPointer<CGFF::Group>(new CGFF::Group(mTrans));
-	group->add(QSharedPointer<CGFF::Renderable2D>(new CGFF::Sprite(0, 0, 3, 3, QVector4D(1, 1, 1, 1))));
-	group->add(QSharedPointer<CGFF::Renderable2D>(new CGFF::Sprite(0.2, 0.2, 2, 2, QVector4D(1, 0, 1, 1))));
+	//QMatrix4x4 mTrans;
+	//mTrans.translate(-2, -2, 0);
+	//QSharedPointer<CGFF::Group> group = QSharedPointer<CGFF::Group>(new CGFF::Group(mTrans));
+	//group->add(QSharedPointer<CGFF::Renderable2D>(new CGFF::Sprite(0, 0, 3, 3, QVector4D(1, 1, 1, 1))));
+	//group->add(QSharedPointer<CGFF::Renderable2D>(new CGFF::Sprite(0.2, 0.2, 2, 2, QVector4D(1, 0, 1, 1))));
+	//QMatrix4x4 mTrans2;
+	//mTrans2.translate(0.2, 0.2, 0.1);
+	//QSharedPointer<CGFF::Group> button = QSharedPointer<CGFF::Group>(new CGFF::Group(mTrans2));
+	//button->add(QSharedPointer<CGFF::Renderable2D>(new CGFF::Sprite(0, 0, 1, 1, QVector4D(0.2f, 0.3f, 0.8f, 1))));
 
-	QMatrix4x4 mTrans2;
-	mTrans2.translate(0.2, 0.2, 0.1);
-	QSharedPointer<CGFF::Group> button = QSharedPointer<CGFF::Group>(new CGFF::Group(mTrans2));
-	button->add(QSharedPointer<CGFF::Renderable2D>(new CGFF::Sprite(0, 0, 1, 1, QVector4D(0.2f, 0.3f, 0.8f, 1))));
-
-	group->add(qSharedPointerDynamicCast<CGFF::Renderable2D>(button));
+	//group->add(qSharedPointerDynamicCast<CGFF::Renderable2D>(button));
 
 	//m_tileLayer->add(QSharedPointer<CGFF::Renderable2D>(new CGFF::Sprite(-1.5, -1.5, 3, 3, QVector4D(1, 1, 1, 1))));
-	m_tileLayer->add(QSharedPointer<CGFF::Renderable2D>(group));
+	//m_tileLayer->add(QSharedPointer<CGFF::Renderable2D>(group));
+
+    m_sprite = QSharedPointer<CGFF::Sprite>(new CGFF::Sprite(0.0f, 0.0f, 2, 2, 
+        QSharedPointer<QOpenGLTexture>(new QOpenGLTexture(QImage("src/graphic/shader/tb.png").mirrored()))));
+
+    m_layer->add(m_sprite);
+    QSharedPointer<QOpenGLTexture> tempTexture = QSharedPointer<QOpenGLTexture>(new QOpenGLTexture(QImage("Resources/mask.png"))); 
+    tempTexture->setWrapMode(QOpenGLTexture::ClampToBorder);
+    m_mask = QSharedPointer<CGFF::Mask>(new CGFF::Mask(tempTexture));
+    m_layer->setMask(m_mask);
 
 #endif
 	glClearColor(0.0f, 0.2f, 0.2f, 1.0f);
@@ -154,7 +164,7 @@ void GLWidget::initializeGL()
 void GLWidget::paintGL()
 {
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-	glEnable(GL_DEPTH_TEST);
+	//glEnable(GL_DEPTH_TEST);
 	//glEnable(GL_BLEND);
 	//glBlendFunc(GL_SRC_ALPHA, GL_SRC_ALPHA);
 
@@ -178,7 +188,8 @@ void GLWidget::paintGL()
 
 	m_shaderProgram->release();
 
-	m_tileLayer->render();
+	//m_tileLayer->render();
+    m_layer->render();
 
 	GLenum error = glGetError();
 	if (error != GL_NO_ERROR)
@@ -232,3 +243,35 @@ void GLWidget::mouseMoveEvent(QMouseEvent *event)
 	m_lastPos = event->pos();
 }
 
+
+void GLWidget::keyPressEvent(QKeyEvent *event)
+{
+    float speed = 0.5f;
+    switch (event->key())
+    {
+    case (Qt::Key_W) :
+    {
+        m_sprite->position.setY(m_sprite->position.y() + speed);
+        break;
+    }
+    case (Qt::Key_S) :
+    {
+        m_sprite->position.setY(m_sprite->position.y() - speed);
+        break;
+    }
+    case (Qt::Key_A) :
+    {
+        m_sprite->position.setX(m_sprite->position.x() - speed);
+        break;
+    }
+        
+    case (Qt::Key_D) :
+    {
+        m_sprite->position.setX(m_sprite->position.x() + speed);
+        break;
+    }
+        
+    }
+     
+    update();
+}
