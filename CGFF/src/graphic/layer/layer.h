@@ -22,10 +22,14 @@ namespace CGFF {
         {
             m_renderer->setMask(mask);
         }
+        inline QSharedPointer<Renderer2D> getRenderer()
+        {
+            return m_renderer;
+        }
 	protected:
 		QSharedPointer<QOpenGLShaderProgram> m_shader;
 		QSharedPointer<Renderer2D> m_renderer;
-		std::vector<QSharedPointer<Renderable2D>> m_renderables;
+		QVector<QSharedPointer<Renderable2D>> m_renderables;
 		QMatrix4x4 m_projectionMatrix;
 	};
 }

@@ -3,13 +3,8 @@
 
 #include "batchRenderer2d.h"
 #include "../maths/qtmaths.h"
-#include "buffer/buffer.h"
-#include "buffer/indexBuffer.h"
-#include "buffer/vertexArray.h"
 #include "renderable2d.h"
-#include "simple2Drenderer.h"
 #include "sprite.h"
-#include "staticSprite.h"
 #include "layer/tileLayer.h"
 #include "layer/group.h"
 
@@ -74,9 +69,9 @@ private:
 	//QSharedPointer<CGFF::Simple2DRenderer> m_simpleRenderer;
 	QSharedPointer<CGFF::BatchRenderer2D> m_batch;
 
-	//std::vector<QSharedPointer<CGFF::Renderable2D>> sprites;
+	//QVector<QSharedPointer<CGFF::Renderable2D>> sprites;
 	QSharedPointer<QOpenGLTexture> m_texture;
-	std::vector<QSharedPointer<QOpenGLTexture> > m_vTextures;
+	QVector<QSharedPointer<QOpenGLTexture> > m_vTextures;
     //QSharedPointer<CGFF::TileLayer> m_tileLayer;
     QSharedPointer<CGFF::Layer> m_layer;
     QSharedPointer<CGFF::Sprite> m_sprite;

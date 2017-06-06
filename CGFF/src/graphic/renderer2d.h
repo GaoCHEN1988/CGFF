@@ -51,7 +51,7 @@ namespace CGFF {
         }
 
 	protected:
-		std::vector<QMatrix4x4> m_transformationStack;
+		QVector<QMatrix4x4> m_transformationStack;
 		QMatrix4x4* m_tranformationBack;
         QSharedPointer<CGFF::Mask> m_mask;
 	};

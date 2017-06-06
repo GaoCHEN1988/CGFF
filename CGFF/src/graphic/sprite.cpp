@@ -36,7 +36,7 @@ namespace CGFF {
 		m_texture = texture;
 	}
 
-    void Sprite::setUV(const std::vector<QVector2D>& uv)
+    void Sprite::setUV(const QVector<QVector2D>& uv)
     {
         m_UVs = uv;
     }

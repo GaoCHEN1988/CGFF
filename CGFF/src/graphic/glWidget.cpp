@@ -102,9 +102,9 @@ void GLWidget::initializeGL()
 	m_camera.translate(0, 0, -1);
 
 	//m_tileLayer = QSharedPointer<CGFF::TileLayer>(new CGFF::TileLayer(m_shaderProgram, m_proj));
-    m_layer = QSharedPointer<CGFF::Layer>(new CGFF::Layer(QSharedPointer<CGFF::BatchRenderer2D>(new CGFF::BatchRenderer2D()), 
+    m_layer = QSharedPointer<CGFF::Layer>(new CGFF::Layer(QSharedPointer<CGFF::BatchRenderer2D>(new CGFF::BatchRenderer2D(this->size())),
         m_shaderProgram, m_proj));
-
+    
 	m_shaderProgram->release();
 
 #ifdef TEST_50K
@@ -268,6 +268,18 @@ void GLWidget::keyPressEvent(QKeyEvent *event)
     case (Qt::Key_D) :
     {
         m_sprite->position.setX(m_sprite->position.x() + speed);
+        break;
+    }
+
+    case (Qt::Key_1) :
+    {
+        (qSharedPointerCast<CGFF::BatchRenderer2D>(m_layer->getRenderer()))->SetRenderTarget(CGFF::RenderTarget::SCREEN);
+        break;
+    }
+
+    case (Qt::Key_2) :
+    {
+        (qSharedPointerCast<CGFF::BatchRenderer2D>(m_layer->getRenderer()))->SetRenderTarget(CGFF::RenderTarget::BUFFER);
         break;
     }
         

@@ -1,11 +1,16 @@
 #include "batchRenderer2d.h"
-
+#include "meshFactory.h"
 
 namespace CGFF {
 
-	BatchRenderer2D::BatchRenderer2D() 
+	BatchRenderer2D::BatchRenderer2D(const QSize& screenSize)
 		: Renderer2D()
 		, m_indexCount(0)
+        , m_viewportSize(screenSize)
+        , m_screenSize(screenSize)
+        , m_renderTarget(RenderTarget::SCREEN)
+        , m_screenQuad(0)
+        , m_screenBuffer(0)
 	{
 		initializeOpenGLFunctions();
 		
@@ -74,6 +79,24 @@ namespace CGFF {
 		m_iboBuffer->release();
 		m_vao.release();
 		m_vboBuffer->release();
+
+        //set frame buffer
+        glGetIntegerv(GL_FRAMEBUFFER_BINDING, &m_screenBuffer);
+        m_frameBuffer = new QOpenGLFramebufferObject(m_viewportSize); 
+        //m_frameBuffer->addColorAttachment(m_viewportSize);
+        m_framebufferShader = QSharedPointer<QOpenGLShaderProgram>(new QOpenGLShaderProgram);
+        // load and compile vertex shader
+        bool success = m_framebufferShader->addShaderFromSourceFile(QOpenGLShader::Vertex, "src/graphic/shader/fbVertexShader.vert");
+        // load and compile fragment shader
+        success = m_framebufferShader->addShaderFromSourceFile(QOpenGLShader::Fragment, "src/graphic/shader/fbfragmentShader.frag");
+        m_framebufferShader->link();
+        m_framebufferShader->bind();
+        QMatrix4x4 proj = QMatrix4x4();
+        proj.ortho(0, (float)m_screenSize.width(), (float)m_screenSize.height(), 0, -1.0f, 1.0f);
+        m_framebufferShader->setUniformValue("projMatrix", proj);
+        m_framebufferShader->setUniformValue("tex", 0);
+        m_screenQuad = MeshFactory::CreateQuad(0, 0, (float)m_screenSize.width(), (float)m_screenSize.height());
+        m_framebufferShader->release();
 	}
 
     float BatchRenderer2D::submitTexture(uint textureID)
@@ -111,7 +134,24 @@ namespace CGFF {
 
 	void BatchRenderer2D::begin()
 	{
-		int test = sizeof(*m_vboBuffer);
+        if (m_renderTarget == RenderTarget::BUFFER)
+        {
+            if (m_viewportSize != m_frameBuffer->size())
+            {
+                delete m_frameBuffer;
+                m_frameBuffer = new QOpenGLFramebufferObject(m_viewportSize);
+            }
+
+            m_frameBuffer->bind();
+            glClearColor(0.5f, 0.5f, 0.5f, 1.0f);
+            glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+        }
+        else
+        {
+            glBindFramebuffer(GL_FRAMEBUFFER, m_screenBuffer);
+            glViewport(0, 0, m_screenSize.width(), m_screenSize.height());
+        }
+
 		m_vboBuffer->bind();
 		m_buffer = (VertexData*)m_vboBuffer->map(QOpenGLBuffer::WriteOnly);
 	}
@@ -121,7 +161,7 @@ namespace CGFF {
 		const QVector3D& position = renderable->getPosition();
 		const QVector2D& size = renderable->getSize();
 		const QVector4D& color = renderable->getColor();
-		const std::vector<QVector2D>& UV = renderable->getUV();
+		const QVector<QVector2D>& UV = renderable->getUV();
 		const GLuint textureId = renderable->getTextureID();
 
 		float ts = 0.0;
@@ -205,10 +245,34 @@ namespace CGFF {
 		m_vboBuffer->release();
 		m_indexCount = 0;
 		m_textureSlots.clear();
+
+        if (m_renderTarget == RenderTarget::BUFFER)
+        {
+            // Display Framebuffer - potentially move to Framebuffer class
+            glBindFramebuffer(GL_FRAMEBUFFER, m_screenBuffer);
+            glViewport(0, 0, m_screenSize.width(), m_screenSize.height());
+            m_framebufferShader->bind();
+
+            //Need to test
+            glActiveTexture(GL_TEXTURE0);
+            glBindTexture(GL_TEXTURE_2D, m_frameBuffer->texture());
+
+            glBindVertexArray(m_screenQuad);
+            m_iboBuffer->bind();
+            glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, NULL);
+            m_iboBuffer->release();
+            glBindVertexArray(0);
+            m_framebufferShader->release();
+
+            //Test
+            m_frameBuffer->release();
+        }
 	}
+
 	void BatchRenderer2D::end()
 	{
 		m_vboBuffer->unmap();
 		m_vboBuffer->release();
+        m_frameBuffer->release();
 	}
 }

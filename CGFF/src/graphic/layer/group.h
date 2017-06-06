@@ -15,7 +15,7 @@ namespace CGFF {
 		void add(QSharedPointer<Renderable2D> renderable);
 
 	private:
-		std::vector<QSharedPointer<Renderable2D>> m_renderables;
+		QVector<QSharedPointer<Renderable2D>> m_renderables;
 		QMatrix4x4 m_transformationMatrix;
 	};
 
