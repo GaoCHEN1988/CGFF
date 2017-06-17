@@ -9,17 +9,8 @@
 #include <QOpenGLTexture>
 
 namespace CGFF {
-	struct VertexData
-	{
-		QVector3D vertex;
-		QVector2D uv;
-        QVector2D mask_uv;
-		float tid;
-        float mid;
-		QVector4D color;
-	};
 
-#define RENDERER_VERTEX_SIZE	sizeof(VertexData)
+
 
 	class Renderable2D : public QEnableSharedFromThis<Renderable2D>
 	{

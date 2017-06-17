@@ -3,17 +3,28 @@
 
 #include "../maths/qtmaths.h"
 #include "mask.h"
+#include "postfx/postEffects.h"
+
 #include <QSharedPointer>
 
 namespace CGFF {
 
 	class Renderable2D;
 
+    enum class RenderTarget
+    {
+        SCREEN = 0,
+        BUFFER = 1
+    };
+
 	class Renderer2D
 	{
 	protected:
 		Renderer2D()
             : m_mask(nullptr)
+            , m_postEffectsEnabled(true)
+            , m_target(RenderTarget::SCREEN)
+            , m_postEffects(nullptr)
 		{
 			m_transformationStack.push_back(QMatrix4x4());
 
@@ -50,10 +61,22 @@ namespace CGFF {
             m_mask = mask;
         }
 
+        inline void setRenderTarget(RenderTarget target) { m_renderTarget = target; }
+        inline const RenderTarget getRenderTarget() const { return m_renderTarget; }
+
+        inline void setPostEffects(bool enabled) { m_postEffectsEnabled = enabled; }
+        inline bool getPostEffects() const { return m_postEffectsEnabled; }
+        inline void addPostEffectsPass(QSharedPointer<PostEffectsPass>& pass) { m_postEffects->push(pass); }
+
 	protected:
 		QVector<QMatrix4x4> m_transformationStack;
 		QMatrix4x4* m_tranformationBack;
         QSharedPointer<CGFF::Mask> m_mask;
+        RenderTarget m_renderTarget;
+
+        RenderTarget m_target;
+        QSharedPointer<PostEffects> m_postEffects;
+        bool m_postEffectsEnabled;
 	};
 }
 

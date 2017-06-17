@@ -30,7 +30,7 @@ namespace CGFF {
 
             gl.glBindVertexArray(result);
             gl.glBindBuffer(GL_ARRAY_BUFFER, buffer);
-            gl.glBufferData(GL_ARRAY_BUFFER, RENDERER_VERTEX_SIZE * 4, data, GL_STATIC_DRAW);
+            gl.glBufferData(GL_ARRAY_BUFFER, RENDERER_VERTEX_SIZE * 4, data, GL_DYNAMIC_DRAW);
 
             gl.glEnableVertexAttribArray(SHADER_VERTEX_INDEX);
             gl.glEnableVertexAttribArray(SHADER_UV_INDEX);

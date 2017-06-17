@@ -76,9 +76,6 @@ void GLWidget::initializeGL()
 
 	m_shaderProgram->link();
 
-	//m_texture = QSharedPointer<QOpenGLTexture>(new QOpenGLTexture(QImage("src/graphic/shader/particle.png").mirrored()));
-	//m_texture->bind();
-
 	m_vTextures.push_back(QSharedPointer<QOpenGLTexture>(new QOpenGLTexture(QImage("src/graphic/shader/particle.png").mirrored())));
 	m_vTextures.push_back(QSharedPointer<QOpenGLTexture>(new QOpenGLTexture(QImage("src/graphic/shader/tb.png").mirrored())));
 	m_vTextures.push_back(QSharedPointer<QOpenGLTexture>(new QOpenGLTexture(QImage("src/graphic/shader/tc.png").mirrored())));
@@ -146,27 +143,39 @@ void GLWidget::initializeGL()
 	//m_tileLayer->add(QSharedPointer<CGFF::Renderable2D>(new CGFF::Sprite(-1.5, -1.5, 3, 3, QVector4D(1, 1, 1, 1))));
 	//m_tileLayer->add(QSharedPointer<CGFF::Renderable2D>(group));
 
+    m_layer->getRenderer()->setRenderTarget(CGFF::RenderTarget::BUFFER);
+    QSharedPointer<QOpenGLShaderProgram> pfShader = QSharedPointer<QOpenGLShaderProgram>(new QOpenGLShaderProgram);
+    success = pfShader->addShaderFromSourceFile(QOpenGLShader::Vertex, "src/graphic/shader/postfx.vert");
+    // load and compile fragment shader
+    success = pfShader->addShaderFromSourceFile(QOpenGLShader::Fragment, "src/graphic/shader/postfx.frag");
+    m_layer->getRenderer()->addPostEffectsPass(QSharedPointer<CGFF::PostEffectsPass>(new CGFF::PostEffectsPass(pfShader, this->size())));
+    m_layer->getRenderer()->setPostEffects(false);
+
     m_sprite = QSharedPointer<CGFF::Sprite>(new CGFF::Sprite(0.0f, 0.0f, 2, 2, 
-        QSharedPointer<QOpenGLTexture>(new QOpenGLTexture(QImage("src/graphic/shader/tb.png").mirrored()))));
+        QSharedPointer<QOpenGLTexture>(new QOpenGLTexture(QImage("Resources/tb.png").mirrored()))));
 
     m_layer->add(m_sprite);
     QSharedPointer<QOpenGLTexture> tempTexture = QSharedPointer<QOpenGLTexture>(new QOpenGLTexture(QImage("Resources/mask.png"))); 
     tempTexture->setWrapMode(QOpenGLTexture::ClampToBorder);
     m_mask = QSharedPointer<CGFF::Mask>(new CGFF::Mask(tempTexture));
-    m_layer->setMask(m_mask);
+    //m_layer->setMask(m_mask);
+
+    m_fpsLabel = QSharedPointer<CGFF::Label>(new CGFF::Label("Test", -4, 2, QVector4D(1, 1, 1, 1)));
+    m_layer->add(m_fpsLabel);
 
 #endif
 	glClearColor(0.0f, 0.2f, 0.2f, 1.0f);
     m_time.start();
     last_count = 0;
+    m_frameCount = 0;
 }
 
 void GLWidget::paintGL()
 {
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 	//glEnable(GL_DEPTH_TEST);
-	//glEnable(GL_BLEND);
-	//glBlendFunc(GL_SRC_ALPHA, GL_SRC_ALPHA);
+	glEnable(GL_BLEND);
+	glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 
 	m_world.setToIdentity();
 	m_world.rotate(180.0f - (m_xRot / 16.0f), 1, 0, 0);
@@ -174,7 +183,6 @@ void GLWidget::paintGL()
 	m_world.rotate(m_zRot / 16.0f, 0, 0, 1);
 
 	//// Use our shader
-	//m_texture->bind();
 	m_shaderProgram->bind(); //Equal to glUseProgram
 	m_shaderProgram->setUniformValue("projMatrix", m_proj);
 	QMatrix4x4 m;
@@ -207,6 +215,8 @@ void GLWidget::paintGL()
         m_frameCount = 0;
         m_time.restart();
     }
+
+    m_fpsLabel->setText(QString::number(last_count).toStdString());
 
 #ifdef OPENGL_ES
     QPainter painter(this);
@@ -273,15 +283,28 @@ void GLWidget::keyPressEvent(QKeyEvent *event)
 
     case (Qt::Key_1) :
     {
-        (qSharedPointerCast<CGFF::BatchRenderer2D>(m_layer->getRenderer()))->SetRenderTarget(CGFF::RenderTarget::SCREEN);
+        (qSharedPointerCast<CGFF::BatchRenderer2D>(m_layer->getRenderer()))->setRenderTarget(CGFF::RenderTarget::SCREEN);
         break;
     }
 
     case (Qt::Key_2) :
     {
-        (qSharedPointerCast<CGFF::BatchRenderer2D>(m_layer->getRenderer()))->SetRenderTarget(CGFF::RenderTarget::BUFFER);
+        (qSharedPointerCast<CGFF::BatchRenderer2D>(m_layer->getRenderer()))->setRenderTarget(CGFF::RenderTarget::BUFFER);
         break;
     }
+
+    case (Qt::Key_3) :
+    {
+        m_layer->getRenderer()->setPostEffects(true);
+        break;
+    }
+
+    case (Qt::Key_4) :
+    {
+        m_layer->getRenderer()->setPostEffects(false);
+        break;
+    }
+
         
     }
      

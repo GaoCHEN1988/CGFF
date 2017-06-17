@@ -7,6 +7,8 @@
 #include "sprite.h"
 #include "layer/tileLayer.h"
 #include "layer/group.h"
+#include "postfx/postEffects.h"
+#include "label.h"
 
 #include <QOpenGLWidget>
 #include <QOpenGLVertexArrayObject>
@@ -17,6 +19,9 @@
 #include <Qtime>
 
 //#define TEST_50K
+
+#define WIDTH 1280
+#define HEIGHT 720
 
 QT_FORWARD_DECLARE_CLASS(QOpenGLShaderProgram);
 QT_FORWARD_DECLARE_CLASS(QOpenGLTexture)
@@ -70,7 +75,6 @@ private:
 	QSharedPointer<CGFF::BatchRenderer2D> m_batch;
 
 	//QVector<QSharedPointer<CGFF::Renderable2D>> sprites;
-	QSharedPointer<QOpenGLTexture> m_texture;
 	QVector<QSharedPointer<QOpenGLTexture> > m_vTextures;
     //QSharedPointer<CGFF::TileLayer> m_tileLayer;
     QSharedPointer<CGFF::Layer> m_layer;
@@ -80,6 +84,7 @@ private:
     QTime m_time;
     int m_frameCount;
     int last_count;
+    QSharedPointer<CGFF::Label> m_fpsLabel;
 };
 
 #endif

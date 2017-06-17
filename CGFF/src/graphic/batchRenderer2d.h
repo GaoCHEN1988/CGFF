@@ -8,6 +8,7 @@
 #include <QOpenGLBuffer>
 #include <QOpenGLVertexArrayObject>
 #include <QOpenGLFramebufferObject>
+#include <QPainter>
 #include <cstddef>
 
 namespace CGFF {
@@ -25,12 +26,6 @@ namespace CGFF {
 //#define SHADER_TID_INDEX        3
 //#define SHADER_MID_INDEX        4
 //#define SHADER_COLOR_INDEX      5
-
-    enum class RenderTarget
-    {
-        SCREEN = 0,
-        BUFFER = 1
-    };
 	
 	class BatchRenderer2D : public Renderer2D, protected QOpenGLFunctions_4_4_Core
 	{
@@ -44,17 +39,18 @@ namespace CGFF {
 		void flush() override;
 		void end() override;
 
-        inline void SetScreenSize(const QSize& size) { m_screenSize = size; }
-        inline const QSize& GetScreenSize() const { return m_screenSize; }
-        inline void SetViewportSize(const QSize& size) { m_viewportSize = size; }
-        inline const QSize& GetViewportSize() const { return m_viewportSize; }
+        inline void setScreenSize(const QSize& size) { m_screenSize = size; }
+        inline const QSize& getScreenSize() const { return m_screenSize; }
+        inline void setViewportSize(const QSize& size) { m_viewportSize = size; }
+        inline const QSize& getViewportSize() const { return m_viewportSize; }
 
-        inline void SetRenderTarget(RenderTarget target) { m_renderTarget = target; }
-        inline const RenderTarget GetRenderTarget() const { return m_renderTarget; }
+        //inline void SetRenderTarget(RenderTarget target) { m_renderTarget = target; }
+        //inline const RenderTarget GetRenderTarget() const { return m_renderTarget; }
 	private:
 		void init();
         float submitTexture(uint textureID);
         float submitTexture(const QSharedPointer<QOpenGLTexture>& texture);
+        void createQuad(float x, float y, float width, float height);
 
 	private:
 
@@ -62,15 +58,22 @@ namespace CGFF {
 		QOpenGLBuffer* m_vboBuffer;
 		QOpenGLBuffer* m_iboBuffer;
 		VertexData* m_buffer;
-        QOpenGLFramebufferObject* m_frameBuffer;
+        QSharedPointer<QOpenGLFramebufferObject> m_frameBuffer;
         QSharedPointer<QOpenGLShaderProgram> m_framebufferShader;
+        QSharedPointer<QOpenGLFramebufferObject> m_postEffectsBuffer;
 		GLsizei m_indexCount;
 		QVector<GLuint> m_textureSlots;
         QSize m_viewportSize;
         QSize m_screenSize;
-        RenderTarget m_renderTarget;
+        //RenderTarget m_renderTarget;
         GLuint m_screenQuad;
         int m_screenBuffer;
+        QOpenGLFramebufferObjectFormat m_format;
+        QSharedPointer<QOpenGLTexture> m_strTexture;
+
+        //Framebuffer members
+        QOpenGLBuffer vbuf, nbuf;
+        QOpenGLVertexArrayObject vao;
 	};
 }
 #endif
