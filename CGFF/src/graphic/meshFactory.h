@@ -11,18 +11,12 @@
 namespace CGFF {
     namespace MeshFactory {
 
-
-        GLuint CreateQuad(float x, float y, float width, float height);
-        GLuint CreateQuad(const QVector2D& position, const QVector2D& size);
-
         struct Quad {
             QOpenGLBuffer vbuf, nbuf;
             QOpenGLVertexArrayObject vao;
             VertexData data[4];        
 
-            Quad() {
-                
-            }
+            Quad() {}
 
             void load(QSharedPointer<QOpenGLShaderProgram>& shader, float x, float y, float width, float height) {
                 data[0].vertex = QVector3D(x, y, 0);
@@ -68,8 +62,47 @@ namespace CGFF {
                 glVertexAttribPointer(SHADER_MID_INDEX, 1, GL_FLOAT, GL_FALSE, RENDERER_VERTEX_SIZE, (const GLvoid*)(offsetof(VertexData, mid)));
                 glVertexAttribPointer(SHADER_COLOR_INDEX, 4, GL_UNSIGNED_BYTE, GL_TRUE, RENDERER_VERTEX_SIZE, (const GLvoid*)(offsetof(VertexData, color)));*/
                 vao.release();
-                vbuf.release();            
+                vbuf.release();
                 shader->release();
+            }
+
+            void load(float x, float y, float width, float height) {
+                data[0].vertex = QVector3D(x, y, 0);
+                data[0].uv = QVector2D(0, 1);
+
+                data[1].vertex = QVector3D(x, y + height, 0);
+                data[1].uv = QVector2D(0, 0);
+
+                data[2].vertex = QVector3D(x + width, y + height, 0);
+                data[2].uv = QVector2D(1, 0);
+
+                data[3].vertex = QVector3D(x + width, y, 0);
+                data[3].uv = QVector2D(1, 1);
+
+                vao.create();
+                vao.bind();
+
+                vbuf.create();
+                vbuf.bind();
+                vbuf.setUsagePattern(QOpenGLBuffer::DynamicDraw);
+                vbuf.allocate(data, RENDERER_VERTEX_SIZE * 4);
+
+                GL->glEnableVertexAttribArray(SHADER_VERTEX_INDEX);
+                GL->glEnableVertexAttribArray(SHADER_UV_INDEX);
+                GL->glEnableVertexAttribArray(SHADER_MASK_UV_INDEX);
+                GL->glEnableVertexAttribArray(SHADER_TID_INDEX);
+                GL->glEnableVertexAttribArray(SHADER_MID_INDEX);
+                GL->glEnableVertexAttribArray(SHADER_COLOR_INDEX);
+
+                GL->glVertexAttribPointer(SHADER_VERTEX_INDEX, 3, GL_FLOAT, GL_FALSE, RENDERER_VERTEX_SIZE, (const GLvoid*)0);
+                GL->glVertexAttribPointer(SHADER_UV_INDEX, 2, GL_FLOAT, GL_FALSE, RENDERER_VERTEX_SIZE, (const GLvoid*)(offsetof(VertexData, uv)));
+                GL->glVertexAttribPointer(SHADER_MASK_UV_INDEX, 2, GL_FLOAT, GL_FALSE, RENDERER_VERTEX_SIZE, (const GLvoid*)(offsetof(VertexData, mask_uv)));
+                GL->glVertexAttribPointer(SHADER_TID_INDEX, 1, GL_FLOAT, GL_FALSE, RENDERER_VERTEX_SIZE, (const GLvoid*)(offsetof(VertexData, tid)));
+                GL->glVertexAttribPointer(SHADER_MID_INDEX, 1, GL_FLOAT, GL_FALSE, RENDERER_VERTEX_SIZE, (const GLvoid*)(offsetof(VertexData, mid)));
+                GL->glVertexAttribPointer(SHADER_COLOR_INDEX, 4, GL_UNSIGNED_BYTE, GL_TRUE, RENDERER_VERTEX_SIZE, (const GLvoid*)(offsetof(VertexData, color)));
+
+                vao.release();
+                vbuf.release();            
             }
         };
 

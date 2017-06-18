@@ -26,7 +26,7 @@
 QT_FORWARD_DECLARE_CLASS(QOpenGLShaderProgram);
 QT_FORWARD_DECLARE_CLASS(QOpenGLTexture)
 
-class GLWidget : public QOpenGLWidget, protected QOpenGLFunctions_4_4_Core
+class GLWidget : public QOpenGLWidget/*, protected QOpenGLFunctions_4_4_Core*/
 {
 	Q_OBJECT
 

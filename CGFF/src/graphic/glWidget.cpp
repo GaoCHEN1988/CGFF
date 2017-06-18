@@ -7,12 +7,23 @@
 GLWidget::GLWidget(QWidget *parent)
 	: QOpenGLWidget(parent)
 {
+    //QSurfaceFormat qFormat = QOpenGLWidget::format();
+    //QOpenGLContext* context = new QOpenGLContext(this);
+#ifdef OPENGL_ES
+
+#else
+    ////QSurfaceFormat qFormat;
+    //qFormat.setProfile(QSurfaceFormat::CoreProfile);
+    //qFormat.setVersion(4, 4);
+    //QOpenGLContext::currentContext()->setFormat(qFormat);
+
+#endif
+
     setFocusPolicy(Qt::ClickFocus);
 }
 
 GLWidget::~GLWidget()
 {
-
 }
 
 static void qNormalizeAngle(int &angle)
@@ -55,8 +66,17 @@ void GLWidget::setZRotation(int angle)
 
 void GLWidget::initializeGL()
 {
-	// initialize OpenGL
-	initializeOpenGLFunctions();
+#ifdef OPENGL_ES
+#else
+    QSurfaceFormat qFormat = QOpenGLWidget::format();
+    qFormat.setProfile(QSurfaceFormat::CoreProfile);
+    qFormat.setVersion(4, 4);
+    QOpenGLContext::currentContext()->setFormat(qFormat);
+#endif
+
+    // initialize OpenGL
+    CGFF::GL = QOpenGLContext::currentContext()->functions();
+    CGFF::GL->initializeOpenGLFunctions();
 
 	m_shaderProgram = QSharedPointer<QOpenGLShaderProgram>(new QOpenGLShaderProgram);
     
@@ -76,25 +96,17 @@ void GLWidget::initializeGL()
 
 	m_shaderProgram->link();
 
+#ifdef TEST_50K
 	m_vTextures.push_back(QSharedPointer<QOpenGLTexture>(new QOpenGLTexture(QImage("src/graphic/shader/particle.png").mirrored())));
 	m_vTextures.push_back(QSharedPointer<QOpenGLTexture>(new QOpenGLTexture(QImage("src/graphic/shader/tb.png").mirrored())));
 	m_vTextures.push_back(QSharedPointer<QOpenGLTexture>(new QOpenGLTexture(QImage("src/graphic/shader/tc.png").mirrored())));
-
-	//GLint texIDs[] =
-	//{
-	//	0, 1, 2, 3, 4, 5, 6, 7, 8, 9
-	//};
+#endif
 
 	m_shaderProgram->bind();
-	//m_shaderProgram->setUniformValue("texture", 0);
-	//m_shaderProgram->setUniformValueArray("textures", texIDs, 10);
 	m_shaderProgram->setUniformValue("projMatrix", m_proj);
 
 	GLuint programID = m_shaderProgram->programId();
 
-	//vertexPosition_modelspaceID = glGetAttribLocation(programID, "vertexPosition_modelspace");
-	//color_location = glGetAttribLocation(programID, "v_color");
-	//GLuint uv_id = glGetAttribLocation(programID, "in_uv");
 	m_camera.setToIdentity();
 	m_camera.translate(0, 0, -1);
 
@@ -164,7 +176,8 @@ void GLWidget::initializeGL()
     m_layer->add(m_fpsLabel);
 
 #endif
-	glClearColor(0.0f, 0.2f, 0.2f, 1.0f);
+
+    CGFF::GL->glClearColor(0.0f, 0.2f, 0.2f, 1.0f);
     m_time.start();
     last_count = 0;
     m_frameCount = 0;
@@ -172,10 +185,10 @@ void GLWidget::initializeGL()
 
 void GLWidget::paintGL()
 {
-	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-	//glEnable(GL_DEPTH_TEST);
-	glEnable(GL_BLEND);
-	glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+    CGFF::GL->glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+	//CGFF::GL->glEnable(GL_DEPTH_TEST);
+    CGFF::GL->glEnable(GL_BLEND);
+    CGFF::GL->glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 
 	m_world.setToIdentity();
 	m_world.rotate(180.0f - (m_xRot / 16.0f), 1, 0, 0);
@@ -199,7 +212,7 @@ void GLWidget::paintGL()
 	//m_tileLayer->render();
     m_layer->render();
 
-	GLenum error = glGetError();
+	GLenum error = CGFF::GL->glGetError();
 	if (error != GL_NO_ERROR)
 		std::cout << "OPENGL Error:" << error << std::endl;
 
@@ -217,19 +230,14 @@ void GLWidget::paintGL()
     }
 
     m_fpsLabel->setText(QString::number(last_count).toStdString());
-
-#ifdef OPENGL_ES
-    QPainter painter(this);
-    painter.setPen(Qt::white);
-    painter.drawText(QRectF(10.0f, 10.0f, 200.0f, 100.0f), QString("FPS:%1").arg(last_count));
-#endif
 }
 
 void GLWidget::resizeGL(int width, int height)
 {
-	glViewport(0, 0, (GLsizei)width, (GLsizei)height);
+    CGFF::GL->glViewport(0, 0, (GLsizei)width, (GLsizei)height);
 	m_proj.setToIdentity();
 	m_proj.perspective(45.0f, GLfloat(width) / height, 0.01f, 100.0f);
+    (qSharedPointerCast<CGFF::BatchRenderer2D>(m_layer->getRenderer()))->setViewportSize(QSize((GLsizei)width, (GLsizei)height));
 }
 
 void GLWidget::mousePressEvent(QMouseEvent *event)
@@ -307,6 +315,6 @@ void GLWidget::keyPressEvent(QKeyEvent *event)
 
         
     }
-     
+
     update();
 }

@@ -8,12 +8,9 @@ namespace CGFF {
 		, m_indexCount(0)
         , m_viewportSize(screenSize)
         , m_screenSize(screenSize)
-        , m_screenQuad(0)
         , m_screenBuffer(0)
         , m_strTexture(nullptr)
 	{
-		initializeOpenGLFunctions();
-		
 		init();
 	}
 
@@ -38,19 +35,19 @@ namespace CGFF {
 		m_vboBuffer->setUsagePattern(QOpenGLBuffer::DynamicDraw);
 		m_vboBuffer->allocate(NULL, RENDERER_BUFFER_SIZE);
 		
-		glEnableVertexAttribArray(SHADER_VERTEX_INDEX);
-        glEnableVertexAttribArray(SHADER_MASK_UV_INDEX);
-        glEnableVertexAttribArray(SHADER_UV_INDEX);
-        glEnableVertexAttribArray(SHADER_TID_INDEX);
-        glEnableVertexAttribArray(SHADER_MID_INDEX);
-		glEnableVertexAttribArray(SHADER_COLOR_INDEX);
+		GL->glEnableVertexAttribArray(SHADER_VERTEX_INDEX);
+        GL->glEnableVertexAttribArray(SHADER_MASK_UV_INDEX);
+        GL->glEnableVertexAttribArray(SHADER_UV_INDEX);
+        GL->glEnableVertexAttribArray(SHADER_TID_INDEX);
+        GL->glEnableVertexAttribArray(SHADER_MID_INDEX);
+		GL->glEnableVertexAttribArray(SHADER_COLOR_INDEX);
 
-		glVertexAttribPointer(SHADER_VERTEX_INDEX, 3, GL_FLOAT, GL_FALSE, RENDERER_VERTEX_SIZE, (const GLvoid*)0);
-		glVertexAttribPointer(SHADER_UV_INDEX, 2, GL_FLOAT, GL_FALSE, RENDERER_VERTEX_SIZE, (const GLvoid*)(offsetof(VertexData, VertexData::uv)));
-        glVertexAttribPointer(SHADER_MASK_UV_INDEX, 2, GL_FLOAT, GL_FALSE, RENDERER_VERTEX_SIZE, (const GLvoid*)(offsetof(VertexData, VertexData::mask_uv)));
-        glVertexAttribPointer(SHADER_TID_INDEX, 1, GL_FLOAT, GL_FALSE, RENDERER_VERTEX_SIZE, (const GLvoid*)(offsetof(VertexData, VertexData::tid)));
-        glVertexAttribPointer(SHADER_MID_INDEX, 1, GL_FLOAT, GL_FALSE, RENDERER_VERTEX_SIZE, (const GLvoid*)(offsetof(VertexData, VertexData::mid)));
-        glVertexAttribPointer(SHADER_COLOR_INDEX, 4, GL_FLOAT, GL_FALSE, RENDERER_VERTEX_SIZE, (const GLvoid*)(offsetof(VertexData, VertexData::color)));
+		GL->glVertexAttribPointer(SHADER_VERTEX_INDEX, 3, GL_FLOAT, GL_FALSE, RENDERER_VERTEX_SIZE, (const GLvoid*)0);
+		GL->glVertexAttribPointer(SHADER_UV_INDEX, 2, GL_FLOAT, GL_FALSE, RENDERER_VERTEX_SIZE, (const GLvoid*)(offsetof(VertexData, VertexData::uv)));
+        GL->glVertexAttribPointer(SHADER_MASK_UV_INDEX, 2, GL_FLOAT, GL_FALSE, RENDERER_VERTEX_SIZE, (const GLvoid*)(offsetof(VertexData, VertexData::mask_uv)));
+        GL->glVertexAttribPointer(SHADER_TID_INDEX, 1, GL_FLOAT, GL_FALSE, RENDERER_VERTEX_SIZE, (const GLvoid*)(offsetof(VertexData, VertexData::tid)));
+        GL->glVertexAttribPointer(SHADER_MID_INDEX, 1, GL_FLOAT, GL_FALSE, RENDERER_VERTEX_SIZE, (const GLvoid*)(offsetof(VertexData, VertexData::mid)));
+        GL->glVertexAttribPointer(SHADER_COLOR_INDEX, 4, GL_FLOAT, GL_FALSE, RENDERER_VERTEX_SIZE, (const GLvoid*)(offsetof(VertexData, VertexData::color)));
 		
 		GLuint* indices = new GLuint[RENDERER_INDICES_SIZE];
 
@@ -81,8 +78,8 @@ namespace CGFF {
 		m_vboBuffer->release();
 
         //set frame buffer
-        /*m_format.setAttachment(QOpenGLFramebufferObject::CombinedDepthStencil);
-        m_format.setSamples(4);*/
+        //m_format.setAttachment(QOpenGLFramebufferObject::CombinedDepthStencil);
+        //m_format.setSamples(4);
         glGetIntegerv(GL_FRAMEBUFFER_BINDING, &m_screenBuffer);
         m_frameBuffer = QSharedPointer<QOpenGLFramebufferObject>(new QOpenGLFramebufferObject(m_viewportSize, m_format));
         //m_frameBuffer->addColorAttachment(m_viewportSize);
@@ -97,10 +94,9 @@ namespace CGFF {
         proj.ortho(0, (float)m_screenSize.width(), (float)m_screenSize.height(), 0, -1.0f, 1.0f);
         m_framebufferShader->setUniformValue("projMatrix", proj);
         m_framebufferShader->setUniformValue("tex", 0);
-        //m_screenQuad = MeshFactory::CreateQuad(0, 0, (float)m_screenSize.width(), (float)m_screenSize.height());
         m_framebufferShader->release();
 
-        createQuad(0, 0, (float)m_screenSize.width(), (float)m_screenSize.height());
+        m_screenQuad.load(0, 0, (float)m_screenSize.width(), (float)m_screenSize.height());
 
         m_postEffects = QSharedPointer<PostEffects>(new PostEffects());
         m_postEffectsBuffer = QSharedPointer<QOpenGLFramebufferObject>(new QOpenGLFramebufferObject(m_viewportSize, m_format));
@@ -140,47 +136,6 @@ namespace CGFF {
         return submitTexture(texture->textureId());
     }
 
-    void BatchRenderer2D::createQuad(float x, float y, float width, float height)
-    {
-        VertexData data[4];
-        data[0].vertex = QVector3D(x, y, 0);
-        data[0].uv = QVector2D(0, 1);
-
-        data[1].vertex = QVector3D(x, y + height, 0);
-        data[1].uv = QVector2D(0, 0);
-
-        data[2].vertex = QVector3D(x + width, y + height, 0);
-        data[2].uv = QVector2D(1, 0);
-
-        data[3].vertex = QVector3D(x + width, y, 0);
-        data[3].uv = QVector2D(1, 1);
-
-        vao.create();
-        vao.bind();
-
-        vbuf.create();
-        vbuf.bind();
-        vbuf.setUsagePattern(QOpenGLBuffer::DynamicDraw);
-        vbuf.allocate(data, RENDERER_VERTEX_SIZE * 4);
-
-        glEnableVertexAttribArray(SHADER_VERTEX_INDEX);
-        glEnableVertexAttribArray(SHADER_UV_INDEX);
-        glEnableVertexAttribArray(SHADER_MASK_UV_INDEX);
-        glEnableVertexAttribArray(SHADER_TID_INDEX);
-        glEnableVertexAttribArray(SHADER_MID_INDEX);
-        glEnableVertexAttribArray(SHADER_COLOR_INDEX);
-
-        glVertexAttribPointer(SHADER_VERTEX_INDEX, 3, GL_FLOAT, GL_FALSE, RENDERER_VERTEX_SIZE, (const GLvoid*)0);
-        glVertexAttribPointer(SHADER_UV_INDEX, 2, GL_FLOAT, GL_FALSE, RENDERER_VERTEX_SIZE, (const GLvoid*)(offsetof(VertexData, uv)));
-        glVertexAttribPointer(SHADER_MASK_UV_INDEX, 2, GL_FLOAT, GL_FALSE, RENDERER_VERTEX_SIZE, (const GLvoid*)(offsetof(VertexData, mask_uv)));
-        glVertexAttribPointer(SHADER_TID_INDEX, 1, GL_FLOAT, GL_FALSE, RENDERER_VERTEX_SIZE, (const GLvoid*)(offsetof(VertexData, tid)));
-        glVertexAttribPointer(SHADER_MID_INDEX, 1, GL_FLOAT, GL_FALSE, RENDERER_VERTEX_SIZE, (const GLvoid*)(offsetof(VertexData, mid)));
-        glVertexAttribPointer(SHADER_COLOR_INDEX, 4, GL_UNSIGNED_BYTE, GL_TRUE, RENDERER_VERTEX_SIZE, (const GLvoid*)(offsetof(VertexData, color)));
-
-        vao.release();
-        vbuf.release();
-    }
-
 	void BatchRenderer2D::begin()
 	{
         if (m_renderTarget == RenderTarget::BUFFER)
@@ -189,28 +144,16 @@ namespace CGFF {
             {
                 m_frameBuffer.clear();
                 m_frameBuffer = QSharedPointer<QOpenGLFramebufferObject>(new QOpenGLFramebufferObject(m_viewportSize));
-
-                //if (m_postEffectsEnabled)
-                //{
-                //    m_postEffectsBuffer.clear();
-                //    m_postEffectsBuffer = QSharedPointer<QOpenGLFramebufferObject>(new QOpenGLFramebufferObject(m_viewportSize));
-                //}
+                m_postEffectsBuffer.clear();
+                m_postEffectsBuffer = QSharedPointer<QOpenGLFramebufferObject>(new QOpenGLFramebufferObject(m_viewportSize));
             }
 
-
-            //if (m_postEffectsEnabled)
-            //{
-            //    m_postEffectsBuffer->bind();
-            //}
-
             m_frameBuffer->bind();
-
-            //glClearColor(0.5f, 0.5f, 0.5f, 1.0f);
-            glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+            GL->glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
         }
         else
         {
-            glBindFramebuffer(GL_FRAMEBUFFER, m_screenBuffer);
+            GL->glBindFramebuffer(GL_FRAMEBUFFER, m_screenBuffer);
             //glViewport(0, 0, m_screenSize.width(), m_screenSize.height());
         }
 
@@ -339,22 +282,14 @@ namespace CGFF {
 	}
 	void BatchRenderer2D::flush() 
 	{
-        ////test
-        //if (m_postEffectsEnabled)
-        //{
-        //    m_postEffectsBuffer->bind();
-        //}
-        //m_frameBuffer->bind();
-        //glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-
 		for (int i = 0; i < m_textureSlots.size(); i++)
 		{
-			glActiveTexture(GL_TEXTURE0 + i);
-			glBindTexture(GL_TEXTURE_2D, m_textureSlots[i]);
+            GL->glActiveTexture(GL_TEXTURE0 + i);
+            GL->glBindTexture(GL_TEXTURE_2D, m_textureSlots[i]);
 		}
 		m_vao.bind();
 		m_iboBuffer->bind();
-		glDrawElements(GL_TRIANGLES, m_indexCount, GL_UNSIGNED_INT, NULL);
+        GL->glDrawElements(GL_TRIANGLES, m_indexCount, GL_UNSIGNED_INT, NULL);
    
 		m_iboBuffer->release();
 		m_vao.release();
@@ -362,52 +297,39 @@ namespace CGFF {
 		m_indexCount = 0;
 		m_textureSlots.clear();
 
-        if (m_postEffectsEnabled)
-        {
-            m_postEffectsBuffer->release();
-            //m_postEffectsBuffer->toImage().save("testPost.png");
-        }
-
         m_frameBuffer->release();
-       // m_frameBuffer->toImage().save("testPost2.png");
 
         if (m_renderTarget == RenderTarget::BUFFER)
         {
             // Post Effects pass should go here!
             if (m_postEffectsEnabled)
             {
-                m_postEffects->renderPostEffects(m_frameBuffer, m_postEffectsBuffer, m_vao, m_iboBuffer);
+                m_postEffects->renderPostEffects(m_frameBuffer, m_postEffectsBuffer, m_screenQuad.vao, m_iboBuffer);
             }
+
+            //// Display Framebuffer - potentially move to Framebuffer class
+            //glBindFramebuffer(GL_FRAMEBUFFER, m_screenBuffer);
+            //glViewport(0, 0, m_screenSize.width(), m_screenSize.height());
+            //Need to test
+            GL->glActiveTexture(GL_TEXTURE0);
+
+            if (m_postEffectsEnabled)
+                glBindTexture(GL_TEXTURE_2D, m_postEffectsBuffer->texture());
             else
-            {
-                //// Display Framebuffer - potentially move to Framebuffer class
-                //glBindFramebuffer(GL_FRAMEBUFFER, m_screenBuffer);
-                //glViewport(0, 0, m_screenSize.width(), m_screenSize.height());
-                //Need to test
-                glActiveTexture(GL_TEXTURE0);
+                glBindTexture(GL_TEXTURE_2D, m_frameBuffer->texture());
 
-                if (m_postEffectsEnabled)
-                    glBindTexture(GL_TEXTURE_2D, m_postEffectsBuffer->texture());
-                else
-                    glBindTexture(GL_TEXTURE_2D, m_frameBuffer->texture());
-                
-                vao.bind();
 
-                m_framebufferShader->bind();
-                //glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+            m_screenQuad.vao.bind();
 
-                //QImage image1 = m_postEffectsBuffer->toImage();
+            m_framebufferShader->bind();
 
-                //image1.save(QString("fb1.png"));
+            m_iboBuffer->bind();
+            GL->glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, NULL);
+            m_iboBuffer->release();
 
-                //glBindVertexArray(m_screenQuad);
-                m_iboBuffer->bind();
-                glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, NULL);
-                m_iboBuffer->release();
-                //glBindVertexArray(0);
-                vao.release();
-                m_framebufferShader->release();
-            }
+            m_screenQuad.vao.release();
+            m_framebufferShader->release();
+            m_iboBuffer->release();
         }
 
         m_strTexture.clear();
@@ -417,7 +339,5 @@ namespace CGFF {
 	{
 		m_vboBuffer->unmap();
 		m_vboBuffer->release();
-        //m_frameBuffer->release();
-        //m_postEffectsBuffer->release();
 	}
 }

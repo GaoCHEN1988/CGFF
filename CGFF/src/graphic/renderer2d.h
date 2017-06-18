@@ -1,6 +1,7 @@
 #ifndef RENDERER_2D_H
 #define RENDERER_2D_H
 
+#include "../utils/qtopengl.h"
 #include "../maths/qtmaths.h"
 #include "mask.h"
 #include "postfx/postEffects.h"
@@ -25,7 +26,7 @@ namespace CGFF {
             , m_postEffectsEnabled(true)
             , m_target(RenderTarget::SCREEN)
             , m_postEffects(nullptr)
-		{
+		{       
 			m_transformationStack.push_back(QMatrix4x4());
 
 			m_tranformationBack = &m_transformationStack.back();
