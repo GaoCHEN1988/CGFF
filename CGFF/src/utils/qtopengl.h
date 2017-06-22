@@ -4,6 +4,7 @@
 #include <QOpenGLFunctions>
 #include <QOpenGLContext>
 #include <QSurfaceFormat>
+#include <QSharedPointer>
 
 namespace CGFF
 {

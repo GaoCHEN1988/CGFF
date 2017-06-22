@@ -7,7 +7,7 @@
 #include <QVector>
 
 namespace CGFF {
-    class PostEffects /*: protected QOpenGLFunctions_4_4_Core*/
+    class PostEffects
     {
     
     public:

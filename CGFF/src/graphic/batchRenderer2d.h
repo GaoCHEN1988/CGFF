@@ -21,7 +21,7 @@ namespace CGFF {
 		~BatchRenderer2D();
 
 		void begin() override;
-		void submit(QSharedPointer<Renderable2D> renderable) override;
+		void submit(QSharedPointer<Renderable2D>& renderable) override;
 	    void drawString(const std::string& text, const QVector3D& position, QVector4D& color) override;
 		void flush() override;
 		void end() override;

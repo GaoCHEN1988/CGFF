@@ -96,7 +96,8 @@ namespace CGFF {
         m_framebufferShader->setUniformValue("tex", 0);
         m_framebufferShader->release();
 
-        m_screenQuad.load(0, 0, (float)m_screenSize.width(), (float)m_screenSize.height());
+        //m_screenQuad.load(0, 0, (float)m_screenSize.width(), (float)m_screenSize.height());
+        m_screenQuad.load(m_framebufferShader, 0, 0, (float)m_screenSize.width(), (float)m_screenSize.height());
 
         m_postEffects = QSharedPointer<PostEffects>(new PostEffects());
         m_postEffectsBuffer = QSharedPointer<QOpenGLFramebufferObject>(new QOpenGLFramebufferObject(m_viewportSize, m_format));
@@ -161,7 +162,7 @@ namespace CGFF {
 		m_buffer = (VertexData*)m_vboBuffer->map(QOpenGLBuffer::WriteOnly);
 	}
 
-	void BatchRenderer2D::submit(QSharedPointer<Renderable2D> renderable)
+	void BatchRenderer2D::submit(QSharedPointer<Renderable2D>& renderable)
 	{
 		const QVector3D& position = renderable->getPosition();
 		const QVector2D& size = renderable->getSize();
@@ -318,13 +319,12 @@ namespace CGFF {
             else
                 glBindTexture(GL_TEXTURE_2D, m_frameBuffer->texture());
 
-
             m_screenQuad.vao.bind();
 
             m_framebufferShader->bind();
 
             m_iboBuffer->bind();
-            GL->glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, NULL);
+            GL->glDrawElements(GL_TRIANGLES, m_screenQuad.count, GL_UNSIGNED_INT, NULL);
             m_iboBuffer->release();
 
             m_screenQuad.vao.release();

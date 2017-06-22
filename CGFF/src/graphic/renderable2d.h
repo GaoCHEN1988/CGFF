@@ -10,8 +10,6 @@
 
 namespace CGFF {
 
-
-
 	class Renderable2D : public QEnableSharedFromThis<Renderable2D>
 	{
 	protected:

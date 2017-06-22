@@ -1,10 +1,10 @@
 #ifndef LAYER_H
 #define LAYER_H
 
-#include "../renderer2d.h"
-#include "../renderable2d.h"
-#include "../batchRenderer2d.h"
-#include "../maths/qtmaths.h"
+#include "graphic/renderer2d.h"
+#include "graphic/renderable2d.h"
+#include "graphic/batchRenderer2d.h"
+#include "maths/qtmaths.h"
 
 #include <QOpenGLShaderProgram>
 

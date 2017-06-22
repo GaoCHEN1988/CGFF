@@ -1,8 +1,8 @@
 #ifndef GROUP_H
 #define GROUP_H
 
-#include "../renderable2d.h"
-#include "../maths/qtmaths.h"
+#include "graphic/renderable2d.h"
+#include "maths/qtmaths.h"
 
 namespace CGFF {
 

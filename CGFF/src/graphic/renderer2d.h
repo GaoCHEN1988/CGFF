@@ -6,7 +6,6 @@
 #include "mask.h"
 #include "postfx/postEffects.h"
 
-#include <QSharedPointer>
 
 namespace CGFF {
 
@@ -32,7 +31,7 @@ namespace CGFF {
 			m_tranformationBack = &m_transformationStack.back();
 		}
 	public:
-		virtual void submit(QSharedPointer<Renderable2D> renderable) = 0;
+		virtual void submit(QSharedPointer<Renderable2D>& renderable) = 0;
 		virtual void drawString(const std::string& text, const QVector3D& position, QVector4D& color) {};
 		virtual void flush() = 0;
 		virtual void begin() {}
