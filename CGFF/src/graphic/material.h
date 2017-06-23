@@ -16,6 +16,8 @@ namespace CGFF {
         void unbind() const;
         void dumpUniformData() const;
 
+        QSharedPointer<QOpenGLShaderProgram> getShader() const;
+
     private:
         QSharedPointer<QOpenGLShaderProgram> m_shader;
     };

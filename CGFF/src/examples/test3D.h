@@ -4,6 +4,7 @@
 #include "utils/qtopengl.h"
 #include "graphic/meshFactory.h"
 #include "graphic/layer/layer3D.h"
+#include "graphic/model.h"
 #include <QTime>
 #include <QOpenGLWidget>
 
@@ -29,6 +30,8 @@ private:
     //QSharedPointer<CGFF::Mesh> m_cube;
     QSharedPointer<CGFF::Material> m_material;
     CGFF::MeshFactory::Cube m_cube;
+    QSharedPointer<CGFF::Model> m_model_cube;
+    QSharedPointer<CGFF::Model> m_model_sphere;
     QSharedPointer<CGFF::Layer3D> m_layer;
     QMatrix4x4 m_pr_matrix;
     QMatrix4x4 m_vw_matrix;

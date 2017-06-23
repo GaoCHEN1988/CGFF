@@ -47,11 +47,23 @@ void Test3D::initializeGL()
     m_shader->release();
 
     m_material = QSharedPointer<CGFF::Material>(new CGFF::Material(m_shader));
-    m_cube.load(m_shader, 5.0, QSharedPointer<CGFF::MaterialInstance>( new CGFF::MaterialInstance(m_material)));
+    //m_cube.load(m_shader, 5.0, QSharedPointer<CGFF::MaterialInstance>(new CGFF::MaterialInstance(m_material)));
+    //m_cube.load(m_shader, 5.0, QSharedPointer<CGFF::MaterialInstance>( new CGFF::MaterialInstance(m_material)));
+    
+    m_model_cube = QSharedPointer<CGFF::Model>(new CGFF::Model("Resources/Cube.obj", 
+        QSharedPointer<CGFF::MaterialInstance>(new CGFF::MaterialInstance(m_material))));
+
+    m_model_sphere = QSharedPointer<CGFF::Model>(new CGFF::Model("Resources/Sphere.obj",
+        QSharedPointer<CGFF::MaterialInstance>(new CGFF::MaterialInstance(m_material))));
+
     m_layer = QSharedPointer<CGFF::Layer3D>(new CGFF::Layer3D(
         QSharedPointer<CGFF::Scene>(new CGFF::Scene())));
 
-    m_layer->GetScene()->add(m_cube.mesh);
+    if (m_model_sphere->getMesh() != nullptr)
+        m_layer->GetScene()->add(m_model_sphere->getMesh());
+
+    //if(m_model_cube->getMesh() != nullptr)
+    //    m_layer->GetScene()->add(m_model_cube->getMesh());
 }
 
 void Test3D::paintGL() 

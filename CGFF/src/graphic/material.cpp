@@ -25,6 +25,12 @@ namespace CGFF {
     {
     }
 
+    QSharedPointer<QOpenGLShaderProgram>  Material::getShader() const
+    {
+        return m_shader;
+    }
+
+
     MaterialInstance::MaterialInstance(QSharedPointer<Material>& material)
         : m_material(material)
     {

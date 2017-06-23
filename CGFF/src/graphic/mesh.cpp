@@ -2,7 +2,7 @@
 
 namespace CGFF {
 
-    Mesh::Mesh(QOpenGLVertexArrayObject* vertexArray, QOpenGLBuffer* indexBuffer, QSharedPointer<MaterialInstance>& materialInstance)
+    Mesh::Mesh(QOpenGLVertexArrayObject* vertexArray, QOpenGLBuffer* indexBuffer, QSharedPointer<MaterialInstance> materialInstance)
         : m_vertexArray(vertexArray)
         , m_indexBuffer(indexBuffer)
         , m_materialInstance(materialInstance)
@@ -26,7 +26,7 @@ namespace CGFF {
         //m_vertexArray->Draw(m_IndexBuffer->GetCount());
         //Test QOpenGLBuffer size()
         // To do: set value of count some where!!!
-        GL->glDrawElements(GL_TRIANGLES, 36, GL_UNSIGNED_INT, NULL);
+        GL->glDrawElements(GL_TRIANGLES, m_indexBuffer->size() / sizeof(uint), GL_UNSIGNED_INT, NULL);
         m_indexBuffer->release();
         m_vertexArray->release();
 

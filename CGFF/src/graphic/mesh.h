@@ -3,6 +3,7 @@
 #include "utils/qtopengl.h"
 #include "maths/qtmaths.h"
 #include "material.h"
+#include "irenderable.h"
 #include <QOpenGLBuffer>
 #include <QOpenGLVertexArrayObject>
 
@@ -17,19 +18,20 @@ namespace CGFF {
         QVector2D uv;
     };
 
-    class Mesh
+    class Mesh : public IRenderable
     {
     private:
         QOpenGLVertexArrayObject* m_vertexArray;
         QOpenGLBuffer* m_indexBuffer;
         QSharedPointer<MaterialInstance> m_materialInstance;
     public:
-        Mesh(QOpenGLVertexArrayObject* vertexArray, QOpenGLBuffer* indexBuffer, QSharedPointer<MaterialInstance>& materialInstance);
+        Mesh(QOpenGLVertexArrayObject* vertexArray, QOpenGLBuffer* indexBuffer, QSharedPointer<MaterialInstance> materialInstance);
         ~Mesh();
 
+        inline void SetMaterial(QSharedPointer<MaterialInstance>& materialInstance) { m_materialInstance = materialInstance; }
         inline QSharedPointer<MaterialInstance>& getMaterialInstance() { return m_materialInstance; }
 
-        void render(Renderer3D& renderer);
+        void render(Renderer3D& renderer) override;
     };
 }
 
