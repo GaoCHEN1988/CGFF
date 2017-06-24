@@ -29,6 +29,8 @@ private:
     QSharedPointer<QOpenGLShaderProgram> m_shader;
     //QSharedPointer<CGFF::Mesh> m_cube;
     QSharedPointer<CGFF::Material> m_material;
+    QSharedPointer<CGFF::MaterialInstance> m_cubeMaterial;
+    QSharedPointer<CGFF::MaterialInstance> m_sphereMaterial;
     CGFF::MeshFactory::Cube m_cube;
     QSharedPointer<CGFF::Model> m_model_cube;
     QSharedPointer<CGFF::Model> m_model_sphere;

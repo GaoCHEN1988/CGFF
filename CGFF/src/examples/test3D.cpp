@@ -36,34 +36,29 @@ void Test3D::initializeGL()
 
     m_shader->link();
 
-    m_shader->bind();
     m_pr_matrix.perspective(45.0f, GLfloat(16) / GLfloat(9), 0.01f, 1000.0f);
-    m_vw_matrix.translate(QVector3D(0, 0, -10.0f));
+    m_vw_matrix.translate(QVector3D(0, 0, -8.0));
     m_ml_matrix.rotate(45.0, QVector3D(0, 1, 0));
-    m_shader->setUniformValue("pr_matrix", m_pr_matrix);
-    m_shader->setUniformValue("vw_matrix", m_vw_matrix);
-    m_shader->setUniformValue("ml_matrix", m_ml_matrix);
-
-    m_shader->release();
 
     m_material = QSharedPointer<CGFF::Material>(new CGFF::Material(m_shader));
-    //m_cube.load(m_shader, 5.0, QSharedPointer<CGFF::MaterialInstance>(new CGFF::MaterialInstance(m_material)));
-    //m_cube.load(m_shader, 5.0, QSharedPointer<CGFF::MaterialInstance>( new CGFF::MaterialInstance(m_material)));
-    
-    m_model_cube = QSharedPointer<CGFF::Model>(new CGFF::Model("Resources/Cube.obj", 
-        QSharedPointer<CGFF::MaterialInstance>(new CGFF::MaterialInstance(m_material))));
+    m_material->setUniform("pr_matrix", m_pr_matrix);
+    m_material->setUniform("vw_matrix", m_vw_matrix);
+    m_material->setUniform("ml_matrix", m_ml_matrix);
 
-    m_model_sphere = QSharedPointer<CGFF::Model>(new CGFF::Model("Resources/Sphere.obj",
-        QSharedPointer<CGFF::MaterialInstance>(new CGFF::MaterialInstance(m_material))));
+    m_cubeMaterial = QSharedPointer<CGFF::MaterialInstance>(new CGFF::MaterialInstance(m_material));
+    m_sphereMaterial = QSharedPointer<CGFF::MaterialInstance>(new CGFF::MaterialInstance(m_material));
 
+    m_model_cube = QSharedPointer<CGFF::Model>(new CGFF::Model("Resources/Cube.obj", m_cubeMaterial));
+    m_model_sphere = QSharedPointer<CGFF::Model>(new CGFF::Model("Resources/Sphere.obj",m_sphereMaterial));
+ 
     m_layer = QSharedPointer<CGFF::Layer3D>(new CGFF::Layer3D(
         QSharedPointer<CGFF::Scene>(new CGFF::Scene())));
 
     if (m_model_sphere->getMesh() != nullptr)
         m_layer->GetScene()->add(m_model_sphere->getMesh());
 
-    //if(m_model_cube->getMesh() != nullptr)
-    //    m_layer->GetScene()->add(m_model_cube->getMesh());
+    if(m_model_cube->getMesh() != nullptr)
+        m_layer->GetScene()->add(m_model_cube->getMesh());
 }
 
 void Test3D::paintGL() 
@@ -72,16 +67,19 @@ void Test3D::paintGL()
     CGFF::GL->glEnable(GL_BLEND);
     CGFF::GL->glEnable(GL_DEPTH_TEST);
     CGFF::GL->glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
-    //// Use our shader
-    m_shader->bind(); //Equal to glUseProgram
-    m_shader->setUniformValue("pr_matrix", m_pr_matrix);
-    m_shader->setUniformValue("vw_matrix", m_vw_matrix);
-
+    
     m_ml_matrix.rotate(m_Rotation, QVector3D(1, 1, 0));
-    m_shader->setUniformValue("ml_matrix", m_ml_matrix);
-    m_Rotation += 0.5f;
-    m_shader->release();
 
+    QMatrix4x4 m;
+    m.translate(QVector3D(-3, 0, 0));
+    m_cubeMaterial->setUniform("ml_matrix", m*m_ml_matrix);
+
+    QMatrix4x4 m2;
+    m2.translate(QVector3D(3, 0, 0));
+    m_sphereMaterial->setUniform("ml_matrix", m2*m_ml_matrix);
+
+    m_Rotation += 0.5f;
+    
     m_layer->render();
 
     GLenum error = CGFF::GL->glGetError();

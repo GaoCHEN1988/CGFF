@@ -19,7 +19,8 @@ namespace CGFF {
 
     void Mesh::render(Renderer3D& renderer)
     {
-        m_materialInstance->getMaterial()->bind();
+        //m_materialInstance->getMaterial()->bind();
+        m_materialInstance->bind();
 
         m_vertexArray->bind();
         m_indexBuffer->bind();
@@ -30,6 +31,6 @@ namespace CGFF {
         m_indexBuffer->release();
         m_vertexArray->release();
 
-        m_materialInstance->getMaterial()->unbind();
+        m_materialInstance->unbind();
     }
 }
