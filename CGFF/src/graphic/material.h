@@ -80,14 +80,21 @@ namespace CGFF {
         {
             qFatal("Unknown uniform type!");
         }
+
+        void unsetUniform(const QString& name, bool unset);
+
     private:
         QSharedPointer<Material> m_material;
         QHash<int, UniformData> m_uniformDatas;
+        QHash<int, bool> m_unsetUniformMap;
     };
 
     IMPLEMENT_SET_UNIFORM(GLfloat)
     IMPLEMENT_SET_UNIFORM(GLint)
     IMPLEMENT_SET_UNIFORM(GLuint)
+    IMPLEMENT_SET_UNIFORM(QVector2D)
+    IMPLEMENT_SET_UNIFORM(QVector3D)
+    IMPLEMENT_SET_UNIFORM(QVector4D)
     IMPLEMENT_SET_UNIFORM(QMatrix2x2)
     IMPLEMENT_SET_UNIFORM(QMatrix2x3)
     IMPLEMENT_SET_UNIFORM(QMatrix2x4)

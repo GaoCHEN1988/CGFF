@@ -59,6 +59,9 @@ void Test3D::initializeGL()
 
     if(m_model_cube->getMesh() != nullptr)
         m_layer->GetScene()->add(m_model_cube->getMesh());
+
+    m_UnSetUniforms[0] = true;
+    m_UnSetUniforms[1] = true;
 }
 
 void Test3D::paintGL() 
@@ -101,4 +104,22 @@ void Test3D::mousePressEvent(QMouseEvent *event)
 void Test3D::mouseMoveEvent(QMouseEvent *event) 
 {}
 void Test3D::keyPressEvent(QKeyEvent *event) 
-{}
+{
+    switch (event->key())
+    {
+    case (Qt::Key_1) :
+    {
+        m_cubeMaterial->unsetUniform("ml_matrix", m_UnSetUniforms[0]);
+        m_UnSetUniforms[0] = !m_UnSetUniforms[0];
+        break;
+    }
+
+    case (Qt::Key_2) :
+    {
+        m_sphereMaterial->unsetUniform("ml_matrix", m_UnSetUniforms[1]);
+        m_UnSetUniforms[1] = !m_UnSetUniforms[1];
+        break;
+    }
+    }
+    update();
+}

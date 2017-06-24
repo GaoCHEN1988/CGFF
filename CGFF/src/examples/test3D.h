@@ -39,6 +39,7 @@ private:
     QMatrix4x4 m_vw_matrix;
     QMatrix4x4 m_ml_matrix;
     float m_Rotation;
+    bool m_UnSetUniforms[2];
 
 };
 
