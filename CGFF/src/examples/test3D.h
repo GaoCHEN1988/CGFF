@@ -5,6 +5,7 @@
 #include "graphic/meshFactory.h"
 #include "graphic/layer/layer3D.h"
 #include "graphic/model.h"
+#include "entity/entity.h"
 #include <QTime>
 #include <QOpenGLWidget>
 
@@ -29,9 +30,13 @@ private:
     QSharedPointer<QOpenGLShaderProgram> m_shader;
     //QSharedPointer<CGFF::Mesh> m_cube;
     QSharedPointer<CGFF::Material> m_material;
-    QSharedPointer<CGFF::MaterialInstance> m_cubeMaterial;
-    QSharedPointer<CGFF::MaterialInstance> m_sphereMaterial;
-    CGFF::MeshFactory::Cube m_cube;
+    //QSharedPointer<CGFF::MaterialInstance> m_cubeMaterial;
+    //QSharedPointer<CGFF::MaterialInstance> m_sphereMaterial;
+
+    QSharedPointer<CGFF::Entity> m_cube;
+    QSharedPointer<CGFF::Entity> m_Sphere;
+
+    //CGFF::MeshFactory::Cube m_cube;
     QSharedPointer<CGFF::Model> m_model_cube;
     QSharedPointer<CGFF::Model> m_model_sphere;
     QSharedPointer<CGFF::Layer3D> m_layer;

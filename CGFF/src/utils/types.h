@@ -2,6 +2,8 @@
 #define TYPES_H
 #include "../maths/qtmaths.h"
 #include <QDebug>
+#include <QSharedPointer>
+#include <QOpenGLShaderProgram>
 
 namespace CGFF {
 #define RENDERER_MAX_SPRITES 60000
@@ -18,6 +20,10 @@ namespace CGFF {
 #define SHADER_MID_INDEX        4
 #define SHADER_COLOR_INDEX      5
 
+#define SHADER_UNIFORM_PROJECTION_MATRIX_NAME	"pr_matrix"
+#define SHADER_UNIFORM_VIEW_MATRIX_NAME			"vw_matrix"
+#define SHADER_UNIFORM_MODEL_MATRIX_NAME		"ml_matrix"
+
     struct VertexData
     {
         QVector3D vertex;
@@ -29,18 +35,6 @@ namespace CGFF {
     };
 
 #define RENDERER_VERTEX_SIZE	sizeof(VertexData)
-
-    //enum class UniformType
-    //{
-    //    NONE, FLOAT, INT, UINT,
-    //    VEC2, VEC3, VEC4, 
-    //    COLOR, POINT, POINTF,
-    //    SIZE, SIZEF,
-    //    MAT2x2, MAT2x3, MAT2x4, 
-    //    MAT3x2, MAT3x3, MAT3x4, 
-    //    MAT4x2, MAT4x3, MAT4x4,
-    //    TRANDORM
-    //};
 
     enum class UniformType
     {
@@ -66,13 +60,189 @@ namespace CGFF {
     {
         QSharedPointer<char> data_pointer;
         UniformType type;
+        const char* uniform;
         UniformData()
         {
             type = UniformType::NONE;
             data_pointer = nullptr;
+            uniform = "";
         };
     };
 
+    struct RendererUniform
+    {
+        const char* uniform;
+        void * data;
+        UniformType type;
+    };
+
+    static void ResolveAndSetUniform(int loation, const UniformData& uniform, const QSharedPointer<QOpenGLShaderProgram>& shader)
+    {
+        switch (uniform.type)
+        {
+        case UniformType::GLfloat:
+        {
+            shader->setUniformValue(loation, *(GLfloat *)&uniform.data_pointer.data()[0]);
+            break;
+        }
+        case UniformType::GLint:
+        {
+            shader->setUniformValue(loation, *(GLint *)&uniform.data_pointer.data()[0]);
+            break;
+        }
+        case UniformType::GLuint:
+        {
+            shader->setUniformValue(loation, *(GLuint *)&uniform.data_pointer.data()[0]);
+            break;
+        }
+        case UniformType::QVector2D:
+        {
+            shader->setUniformValue(loation, *(QVector2D *)&uniform.data_pointer.data()[0]);
+            break;
+        }
+        case UniformType::QVector3D:
+        {
+            shader->setUniformValue(loation, *(QVector3D *)&uniform.data_pointer.data()[0]);
+            break;
+        }
+        case UniformType::QVector4D:
+        {
+            shader->setUniformValue(loation, *(QVector4D *)&uniform.data_pointer.data()[0]);
+            break;
+        }
+        case UniformType::QMatrix2x2:
+        {
+            shader->setUniformValue(loation, *(QMatrix2x2 *)&uniform.data_pointer.data()[0]);
+            break;
+        }
+        case UniformType::QMatrix2x3:
+        {
+            shader->setUniformValue(loation, *(QMatrix2x3 *)&uniform.data_pointer.data()[0]);
+            break;
+        }
+        case UniformType::QMatrix2x4:
+        {
+            shader->setUniformValue(loation, *(QMatrix2x4 *)&uniform.data_pointer.data()[0]);
+            break;
+        }
+        case UniformType::QMatrix3x2:
+        {
+            shader->setUniformValue(loation, *(QMatrix3x2 *)&uniform.data_pointer.data()[0]);
+            break;
+        }
+        case UniformType::QMatrix3x3:
+        {
+            shader->setUniformValue(loation, *(QMatrix3x3 *)&uniform.data_pointer.data()[0]);
+            break;
+        }
+        case UniformType::QMatrix3x4:
+        {
+            shader->setUniformValue(loation, *(QMatrix3x4 *)&uniform.data_pointer.data()[0]);
+            break;
+        }
+        case UniformType::QMatrix4x2:
+        {
+            shader->setUniformValue(loation, *(QMatrix4x2 *)&uniform.data_pointer.data()[0]);
+            break;
+        }
+        case UniformType::QMatrix4x3:
+        {
+            shader->setUniformValue(loation, *(QMatrix4x3 *)&uniform.data_pointer.data()[0]);
+            break;
+        }
+        case UniformType::QMatrix4x4:
+        {
+            shader->setUniformValue(loation, *(QMatrix4x4 *)&uniform.data_pointer.data()[0]);
+            break;
+        }
+        default:
+            qDebug("Unknown uniform type!");
+        }
+    };
+
+    static void ResolveAndSetUniform(int loation, const RendererUniform& uniform, const QSharedPointer<QOpenGLShaderProgram>& shader)
+    {
+        switch (uniform.type)
+        {
+        case UniformType::GLfloat:
+        {
+            shader->setUniformValue(loation, *(GLfloat *)uniform.data);
+            break;
+        }
+        case UniformType::GLint:
+        {
+            shader->setUniformValue(loation, *(GLint *)uniform.data);
+            break;
+        }
+        case UniformType::GLuint:
+        {
+            shader->setUniformValue(loation, *(GLuint *)uniform.data);
+            break;
+        }
+        case UniformType::QVector2D:
+        {
+            shader->setUniformValue(loation, *(QVector2D *)uniform.data);
+            break;
+        }
+        case UniformType::QVector3D:
+        {
+            shader->setUniformValue(loation, *(QVector3D *)uniform.data);
+            break;
+        }
+        case UniformType::QVector4D:
+        {
+            shader->setUniformValue(loation, *(QVector4D *)uniform.data);
+            break;
+        }
+        case UniformType::QMatrix2x2:
+        {
+            shader->setUniformValue(loation, *(QMatrix2x2 *)uniform.data);
+            break;
+        }
+        case UniformType::QMatrix2x3:
+        {
+            shader->setUniformValue(loation, *(QMatrix2x3 *)uniform.data);
+            break;
+        }
+        case UniformType::QMatrix2x4:
+        {
+            shader->setUniformValue(loation, *(QMatrix2x4 *)uniform.data);
+            break;
+        }
+        case UniformType::QMatrix3x2:
+        {
+            shader->setUniformValue(loation, *(QMatrix3x2 *)uniform.data);
+            break;
+        }
+        case UniformType::QMatrix3x3:
+        {
+            shader->setUniformValue(loation, *(QMatrix3x3 *)uniform.data);
+            break;
+        }
+        case UniformType::QMatrix3x4:
+        {
+            shader->setUniformValue(loation, *(QMatrix3x4 *)uniform.data);
+            break;
+        }
+        case UniformType::QMatrix4x2:
+        {
+            shader->setUniformValue(loation, *(QMatrix4x2 *)uniform.data);
+            break;
+        }
+        case UniformType::QMatrix4x3:
+        {
+            shader->setUniformValue(loation, *(QMatrix4x3 *)uniform.data);
+            break;
+        }
+        case UniformType::QMatrix4x4:
+        {
+            shader->setUniformValue(loation, *(QMatrix4x4 *)uniform.data);
+            break;
+        }
+        default:
+            qDebug("Unknown uniform type!");
+        }
+    };
 }
 
 #endif

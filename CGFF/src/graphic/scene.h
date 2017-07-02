@@ -1,22 +1,25 @@
 #ifndef SCENE_H
 #define SCENE_H
 
-#include "mesh.h"
 #include "renderer3d.h"
+#include "entity/entity.h"
+#include "camera/camera.h"
 
 namespace CGFF {
 
     class Scene
     {
     private:
-        QVector<QSharedPointer<Mesh>> m_meshes; // TODO: Replace with component-based Entities!
+        QVector<QSharedPointer<Entity>> m_entities;
+        QSharedPointer<Camera> m_camera;
     public:
         Scene();
+        Scene(QSharedPointer<Camera>& camera);
         ~Scene();
-        void add(QSharedPointer<Mesh>& mesh);
+        void add(QSharedPointer<Entity>& entity);
         void render(QSharedPointer<Renderer3D>& renderer);
 
-        const QVector<QSharedPointer<Mesh>>& getMeshes() const { return m_meshes; }
+        const QVector<QSharedPointer<Entity>>& getEntities() const { return m_entities; }
     };
 }
 #endif

@@ -34,7 +34,11 @@ namespace CGFF {
         {
             QByteArray line = file.readLine();
             const char* cstr = line.constData();
-            if (strstr(cstr, "v"))
+            if (strstr(cstr, "#")) // Comment
+            {
+                continue;
+            }
+            else if (strstr(cstr, "v"))
             {
                 if (strstr(cstr, "vt"))
                 {

@@ -1,6 +1,7 @@
 #include "examples/test3D.h"
 #include <QKeyEvent>
 
+using namespace CGFF;
 
 Test3D::Test3D(QWidget *parent)
     : QOpenGLWidget(parent)
@@ -36,29 +37,27 @@ void Test3D::initializeGL()
 
     m_shader->link();
 
-    m_pr_matrix.perspective(45.0f, GLfloat(16) / GLfloat(9), 0.01f, 1000.0f);
-    m_vw_matrix.translate(QVector3D(0, 0, -8.0));
-    m_ml_matrix.rotate(45.0, QVector3D(0, 1, 0));
-
     m_material = QSharedPointer<CGFF::Material>(new CGFF::Material(m_shader));
-    m_material->setUniform("pr_matrix", m_pr_matrix);
-    m_material->setUniform("vw_matrix", m_vw_matrix);
-    m_material->setUniform("ml_matrix", m_ml_matrix);
 
-    m_cubeMaterial = QSharedPointer<CGFF::MaterialInstance>(new CGFF::MaterialInstance(m_material));
-    m_sphereMaterial = QSharedPointer<CGFF::MaterialInstance>(new CGFF::MaterialInstance(m_material));
+    m_model_cube = QSharedPointer<CGFF::Model>(new CGFF::Model("Resources/Cube.obj", QSharedPointer<CGFF::MaterialInstance>(new CGFF::MaterialInstance(m_material))));
+    m_model_sphere = QSharedPointer<CGFF::Model>(new CGFF::Model("Resources/Sphere.obj", QSharedPointer<CGFF::MaterialInstance>(new CGFF::MaterialInstance(m_material))));
 
-    m_model_cube = QSharedPointer<CGFF::Model>(new CGFF::Model("Resources/Cube.obj", m_cubeMaterial));
-    m_model_sphere = QSharedPointer<CGFF::Model>(new CGFF::Model("Resources/Sphere.obj",m_sphereMaterial));
+    m_cube = QSharedPointer<CGFF::Entity>(new CGFF::Entity());
+    m_cube->addComponent(QSharedPointer<CGFF::Component>(new CGFF::MeshComponent(m_model_cube->getMesh())));
+    m_cube->addComponent(QSharedPointer<CGFF::Component>(new CGFF::TransformComponent(QMatrix4x4())));
+
+    m_Sphere = QSharedPointer<CGFF::Entity>(new CGFF::Entity());
+    m_Sphere->addComponent(QSharedPointer<CGFF::Component>(new CGFF::MeshComponent(m_model_sphere->getMesh())));
+    m_Sphere->addComponent(QSharedPointer<CGFF::Component>(new CGFF::TransformComponent(QMatrix4x4())));
  
     m_layer = QSharedPointer<CGFF::Layer3D>(new CGFF::Layer3D(
         QSharedPointer<CGFF::Scene>(new CGFF::Scene())));
 
     if (m_model_sphere->getMesh() != nullptr)
-        m_layer->GetScene()->add(m_model_sphere->getMesh());
+        m_layer->GetScene()->add(m_cube);
 
     if(m_model_cube->getMesh() != nullptr)
-        m_layer->GetScene()->add(m_model_cube->getMesh());
+        m_layer->GetScene()->add(m_Sphere);
 
     m_UnSetUniforms[0] = true;
     m_UnSetUniforms[1] = true;
@@ -70,16 +69,19 @@ void Test3D::paintGL()
     CGFF::GL->glEnable(GL_BLEND);
     CGFF::GL->glEnable(GL_DEPTH_TEST);
     CGFF::GL->glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
-    
+
     m_ml_matrix.rotate(m_Rotation, QVector3D(1, 1, 0));
 
-    QMatrix4x4 m;
-    m.translate(QVector3D(-3, 0, 0));
-    m_cubeMaterial->setUniform("ml_matrix", m*m_ml_matrix);
+    CGFF::TransformComponent* cubeTransform = m_cube->getComponent<TransformComponent>();
+    CGFF::TransformComponent* sphereTransform = m_Sphere->getComponent<TransformComponent>();
 
+    QMatrix4x4 m;
+    m.translate(QVector3D(-4, 0, 0));
     QMatrix4x4 m2;
-    m2.translate(QVector3D(3, 0, 0));
-    m_sphereMaterial->setUniform("ml_matrix", m2*m_ml_matrix);
+    m2.translate(QVector3D(4, 0, 0));
+
+    cubeTransform->transform = m*m_ml_matrix;
+    sphereTransform->transform = m2*m_ml_matrix;
 
     m_Rotation += 0.5f;
     
@@ -89,13 +91,16 @@ void Test3D::paintGL()
     if (error != GL_NO_ERROR)
     {
         //To do: show error in logging system
-        int error = 1;
+        qFatal("Opengl error!");
     }
 }
 
 void Test3D::resizeGL(int width, int height) 
 {
-
+    CGFF::GL->glViewport(0, 0, (GLsizei)width, (GLsizei)height);
+    m_pr_matrix.setToIdentity();
+    m_pr_matrix.perspective(45.0f, GLfloat(width) / GLfloat(height), 0.01f, 1000.0f);
+    //m_material->setUniform("pr_matrix", m_pr_matrix);
 }
 void Test3D::mousePressEvent(QMouseEvent *event) 
 {
@@ -109,14 +114,14 @@ void Test3D::keyPressEvent(QKeyEvent *event)
     {
     case (Qt::Key_1) :
     {
-        m_cubeMaterial->unsetUniform("ml_matrix", m_UnSetUniforms[0]);
+        //m_cubeMaterial->unsetUniform("ml_matrix", m_UnSetUniforms[0]);
         m_UnSetUniforms[0] = !m_UnSetUniforms[0];
         break;
     }
 
     case (Qt::Key_2) :
     {
-        m_sphereMaterial->unsetUniform("ml_matrix", m_UnSetUniforms[1]);
+        ///m_sphereMaterial->unsetUniform("ml_matrix", m_UnSetUniforms[1]);
         m_UnSetUniforms[1] = !m_UnSetUniforms[1];
         break;
     }

@@ -3,6 +3,7 @@
 
 #include "utils/qtopengl.h"
 #include "utils/types.h"
+
 #include <QOpenGLShaderProgram>
 #include <QByteArray>
 #include <QDataStream>
@@ -80,13 +81,15 @@ namespace CGFF {
         {
             qFatal("Unknown uniform type!");
         }
-
+        void setRendererUniform(const RendererUniform& uniform);
         void unsetUniform(const QString& name, bool unset);
 
     private:
         QSharedPointer<Material> m_material;
         QHash<int, UniformData> m_uniformDatas;
+        QHash<int, RendererUniform> m_rUniformDatas;
         QHash<int, bool> m_unsetUniformMap;
+        bool m_isRendererData;
     };
 
     IMPLEMENT_SET_UNIFORM(GLfloat)
