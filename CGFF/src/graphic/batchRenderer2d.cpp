@@ -78,8 +78,8 @@ namespace CGFF {
 		m_vboBuffer->release();
 
         //set frame buffer
-        //m_format.setAttachment(QOpenGLFramebufferObject::CombinedDepthStencil);
-        //m_format.setSamples(4);
+        m_format.setAttachment(QOpenGLFramebufferObject::CombinedDepthStencil);
+        //m_format.setSamples(8);
         glGetIntegerv(GL_FRAMEBUFFER_BINDING, &m_screenBuffer);
         m_frameBuffer = QSharedPointer<QOpenGLFramebufferObject>(new QOpenGLFramebufferObject(m_viewportSize, m_format));
         //m_frameBuffer->addColorAttachment(m_viewportSize);
@@ -91,13 +91,13 @@ namespace CGFF {
         m_framebufferShader->link();
         m_framebufferShader->bind();
         QMatrix4x4 proj = QMatrix4x4();
-        proj.ortho(0, (float)m_screenSize.width(), (float)m_screenSize.height(), 0, -1.0f, 1.0f);
+        proj.ortho(0, (float)m_screenSize.width(), (float)m_screenSize.height(), 0, -1.0f, 100.0f);
         m_framebufferShader->setUniformValue("projMatrix", proj);
         m_framebufferShader->setUniformValue("tex", 0);
         m_framebufferShader->release();
 
         //m_screenQuad.load(0, 0, (float)m_screenSize.width(), (float)m_screenSize.height());
-        m_screenQuad.load(m_framebufferShader, 0, 0, (float)m_screenSize.width(), (float)m_screenSize.height());
+        m_screenQuad.create(m_framebufferShader, 0, 0, (float)m_screenSize.width(), (float)m_screenSize.height());
 
         m_postEffects = QSharedPointer<PostEffects>(new PostEffects());
         m_postEffectsBuffer = QSharedPointer<QOpenGLFramebufferObject>(new QOpenGLFramebufferObject(m_viewportSize, m_format));
@@ -149,8 +149,15 @@ namespace CGFF {
                 m_postEffectsBuffer = QSharedPointer<QOpenGLFramebufferObject>(new QOpenGLFramebufferObject(m_viewportSize));
             }
 
+            if (m_postEffectsEnabled)
+            {
+                m_postEffectsBuffer->bind();
+                GL->glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+            }
+
             m_frameBuffer->bind();
             GL->glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+            //GL->glBlendFunc(GL_ONE, GL_ZERO);
         }
         else
         {
@@ -298,7 +305,7 @@ namespace CGFF {
 		m_indexCount = 0;
 		m_textureSlots.clear();
 
-        m_frameBuffer->release();
+        //m_frameBuffer->release();
 
         if (m_renderTarget == RenderTarget::BUFFER)
         {
@@ -308,9 +315,13 @@ namespace CGFF {
                 m_postEffects->renderPostEffects(m_frameBuffer, m_postEffectsBuffer, m_screenQuad.vao, m_iboBuffer);
             }
 
-            //// Display Framebuffer - potentially move to Framebuffer class
-            //glBindFramebuffer(GL_FRAMEBUFFER, m_screenBuffer);
+            // Display Framebuffer - potentially move to Framebuffer class
+            GL->glBindFramebuffer(GL_FRAMEBUFFER, m_screenBuffer);
             //glViewport(0, 0, m_screenSize.width(), m_screenSize.height());
+            //GL->glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+
+            m_framebufferShader->bind();
+
             //Need to test
             GL->glActiveTexture(GL_TEXTURE0);
 
@@ -320,8 +331,6 @@ namespace CGFF {
                 glBindTexture(GL_TEXTURE_2D, m_frameBuffer->texture());
 
             m_screenQuad.vao.bind();
-
-            m_framebufferShader->bind();
 
             m_iboBuffer->bind();
             GL->glDrawElements(GL_TRIANGLES, m_screenQuad.count, GL_UNSIGNED_INT, NULL);

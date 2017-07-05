@@ -1,36 +1,27 @@
 #ifndef LAYER_H
 #define LAYER_H
 
-#include "graphic/renderer2d.h"
-#include "graphic/renderable2d.h"
-#include "graphic/batchRenderer2d.h"
 #include "maths/qtmaths.h"
 
-#include <QOpenGLShaderProgram>
-
-QT_FORWARD_DECLARE_CLASS(QOpenGLShaderProgram)
+#include <QMouseEvent>
+#include <QKeyEvent>
 
 namespace CGFF {
 	class Layer
 	{
 	public:
-        Layer(QSharedPointer<Renderer2D> renderer, QSharedPointer<QOpenGLShaderProgram> shader,/* QSharedPointer<Renderer2D> renderer, */QMatrix4x4 projectionMatrix);
+        Layer();
 		virtual ~Layer();
-		virtual void add(QSharedPointer<Renderable2D> renderable);
+        virtual void init();
 		virtual void render();
-        inline void setMask(QSharedPointer<CGFF::Mask> mask)
-        {
-            m_renderer->setMask(mask);
-        }
-        inline QSharedPointer<Renderer2D> getRenderer()
-        {
-            return m_renderer;
-        }
-	protected:
-		QSharedPointer<QOpenGLShaderProgram> m_shader;
-		QSharedPointer<Renderer2D> m_renderer;
-		QVector<QSharedPointer<Renderable2D>> m_renderables;
-		QMatrix4x4 m_projectionMatrix;
+        virtual void update();
+        virtual void tick();
+
+        virtual void resize(int width, int height) {};
+        virtual void mousePressEvent(QMouseEvent *event) {};
+        virtual void mouseMoveEvent(QMouseEvent *event) {};
+        virtual void mouseReleaseEvent(QMouseEvent *event) {};
+        virtual void keyPressEvent(QKeyEvent *event) {};
 	};
 }
 

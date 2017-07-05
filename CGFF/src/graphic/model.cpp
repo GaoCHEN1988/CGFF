@@ -8,8 +8,10 @@ namespace CGFF {
 
         m_shader = materialInstance->getMaterial()->getShader();
 
-        if(load(path))
+        if (load(path))
             m_mesh->SetMaterial(materialInstance);
+        else
+            qFatal("Can't load model from ", path);
     }
 
     Model::~Model()

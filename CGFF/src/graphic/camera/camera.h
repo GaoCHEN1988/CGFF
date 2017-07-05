@@ -2,6 +2,7 @@
 #define CAMERA_H
 
 #include "maths/qtmaths.h"
+#include <QMouseEvent>
 
 namespace CGFF {
 
@@ -12,6 +13,9 @@ namespace CGFF {
         ~Camera();
 
         virtual void update() { }
+        virtual void mousePressEvent(QMouseEvent * event) {}
+        virtual void mouseMoveEvent(QMouseEvent * event) {}
+        virtual void resize(int width, int height) {};
 
         inline const QVector3D& getPosition() const { return m_position; }
         inline void SetPosition(const QVector3D& position) { m_position = position; }

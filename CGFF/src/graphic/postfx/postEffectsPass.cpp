@@ -7,7 +7,7 @@ namespace CGFF {
     {
         m_shaderProgram->bind();
         QMatrix4x4 proj = QMatrix4x4();
-        proj.ortho(0, m_size.width(), m_size.height(), 0, -1.0f, 1.0f);
+        proj.ortho(0, m_size.width(), m_size.height(), 0, -1.0f, 100.0f);
         m_shaderProgram->setUniformValue("projMatrix", proj);
         m_shaderProgram->setUniformValue("tex", 0);
         m_shaderProgram->release();

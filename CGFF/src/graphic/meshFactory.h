@@ -23,7 +23,7 @@ namespace CGFF {
                 count = 6;
             }
 
-            void load(QSharedPointer<QOpenGLShaderProgram>& shader, float x, float y, float width, float height) {
+            void create(QSharedPointer<QOpenGLShaderProgram>& shader, float x, float y, float width, float height) {
                 data[0].vertex = QVector3D(x, y, 0);
                 data[0].uv = QVector2D(0, 1);
 
@@ -65,7 +65,7 @@ namespace CGFF {
                 shader->release();
             }
 
-            void load(float x, float y, float width, float height) {
+            void create(float x, float y, float width, float height) {
                 data[0].vertex = QVector3D(x, y, 0);
                 data[0].uv = QVector2D(0, 1);
 
@@ -116,7 +116,7 @@ namespace CGFF {
                 count = 36;
             }
 
-            void load(QSharedPointer<QOpenGLShaderProgram>& shader, float size, QSharedPointer<MaterialInstance>& material)
+            void create(QSharedPointer<QOpenGLShaderProgram>& shader, float size, QSharedPointer<MaterialInstance>& material)
             {
                 data[0].position = QVector3D(-size / 2.0f, -size / 2.0f, size / 2.0f);
                 data[1].position = QVector3D(size / 2.0f, -size / 2.0f, size / 2.0f);
@@ -182,6 +182,73 @@ namespace CGFF {
                 mesh = QSharedPointer<Mesh>(new Mesh(&vao, &indexBuf, material));
             }
             
+        };
+
+        struct Plane
+        {
+            QOpenGLBuffer vboBuf, indexBuf;
+            QOpenGLVertexArrayObject vao;
+            Vertex data[4];
+            QSharedPointer<Mesh> mesh;
+
+            void create(float width, float height, const QVector3D& normal, QSharedPointer<MaterialInstance>& material)
+            {
+                QVector3D vec = normal * 90.0f;
+               
+                QMatrix4x4 rotation;
+                rotation.rotate(vec.x(), QVector3D(0, 0, 1));
+                rotation.rotate(vec.y(), QVector3D(0, 1, 0));
+                rotation.rotate(vec.z(), QVector3D(1, 0, 0));
+
+                data[0].position = rotation * QVector3D(-width / 2.0f, 0.0f, -height / 2.0f);
+                data[0].normal = normal;
+
+                data[1].position = rotation * QVector3D(-width / 2.0f, 0.0f, height / 2.0f);
+                data[1].normal = normal;
+
+                data[2].position = rotation * QVector3D(width / 2.0f, 0.0f, height / 2.0f);
+                data[2].normal = normal;
+
+                data[3].position = rotation * QVector3D(width / 2.0f, 0.0f, -height / 2.0f);
+                data[3].normal = normal;
+
+                vao.create();
+                vao.bind();
+
+                vboBuf.create();
+                vboBuf.bind();
+                vboBuf.setUsagePattern(QOpenGLBuffer::DynamicDraw);
+                vboBuf.allocate(data, RENDERER_VERTEX_SIZE * 4);
+      
+                GL->glEnableVertexAttribArray(0);//position
+                GL->glEnableVertexAttribArray(1);//normal
+                GL->glEnableVertexAttribArray(2);//uv
+
+                //position
+                GL->glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, sizeof(Vertex), (const GLvoid*)0);
+                //normal
+                GL->glVertexAttribPointer(1, 3, GL_FLOAT, GL_FALSE, sizeof(Vertex), (const GLvoid*)(offsetof(Vertex, normal)));
+                //uv
+                GL->glVertexAttribPointer(2, 2, GL_FLOAT, GL_FALSE, sizeof(Vertex), (const GLvoid*)(offsetof(Vertex, uv)));
+            
+                uint indices[36] =
+                {
+                    0, 1, 2,
+                    2, 3, 0
+                };
+
+                indexBuf = QOpenGLBuffer(QOpenGLBuffer::IndexBuffer);
+                indexBuf.create();
+                indexBuf.setUsagePattern(QOpenGLBuffer::DynamicDraw);
+                indexBuf.bind();
+                indexBuf.allocate(indices, 6 * sizeof(uint));
+                indexBuf.release();
+
+                vao.release();
+                vboBuf.release();
+
+                mesh = QSharedPointer<Mesh>(new Mesh(&vao, &indexBuf, material));
+            }
         };
     }
 }

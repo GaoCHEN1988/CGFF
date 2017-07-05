@@ -10,6 +10,9 @@ namespace CGFF {
     public:
         MayaCamera(const QMatrix4x4& projectionMatrix);
         void update() override;
+        void mousePressEvent(QMouseEvent * event) override;
+        void mouseMoveEvent(QMouseEvent * event) override;
+        void resize(int width, int height) override;
 
     private:
         void mousePan(const QVector2D& delta);
@@ -33,6 +36,12 @@ namespace CGFF {
         float m_panSpeed, m_rotationSpeed, m_zoomSpeed;
 
         float m_pitch, m_yaw;
+
+        //Mouse event 
+        bool m_isLeftPressed;
+        bool m_isRightPressed;
+        bool m_isMiddlePressed;
+        QVector2D m_mouse_position;
     };
 
 }

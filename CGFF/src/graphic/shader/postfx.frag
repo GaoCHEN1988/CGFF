@@ -1,9 +1,7 @@
 #version 440
 
 in vec2 uv;
-
 out vec4 out_color;
-
 uniform sampler2D tex;
 
 float resolution = 1024.0;
@@ -38,7 +36,5 @@ void main()
 	sum += texture(tex, vec2(tc.x + 3.0*blur*hstep, tc.y + 3.0*blur*vstep)) * 0.0540540541;
 	sum += texture(tex, vec2(tc.x + 4.0*blur*hstep, tc.y + 4.0*blur*vstep)) * 0.0162162162;
 
-    //discard alpha for our simple demo, multiply by vertex color and return
-	out_color = vec4(sum.rgb, 1.0);
-    //out_color = vec4(1.0, 1.0, 1.0, 1.0);
+    out_color = sum;
 }

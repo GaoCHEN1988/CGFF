@@ -22,33 +22,79 @@ namespace CGFF {
 
     void MayaCamera::update()
     {
-        //Window* window = Window::GetWindowClass(nullptr);
+        QVector2D delta = m_mouse_position - m_initialMousePosition;
+        m_initialMousePosition = m_mouse_position;
 
-        //if (window->IsKeyPressed(VK_ALT))
-        //{
-        //    const vec2& mouse = window->GetMousePosition();
-        //    vec2 delta = mouse - m_InitialMousePosition;
-        //    m_InitialMousePosition = mouse;
-
-        //    if (window->IsMouseButtonPressed(SP_MOUSE_MIDDLE))
-        //        MousePan(delta);
-        //    else if (window->IsMouseButtonPressed(SP_MOUSE_LEFT))
-        //        MouseRotate(delta);
-        //    else if (window->IsMouseButtonPressed(SP_MOUSE_RIGHT))
-        //        MouseZoom(delta.y);
-
-        //}
+        if (m_isMiddlePressed)
+            mousePan(delta);
+        else if (m_isLeftPressed)
+            mouseRotate(delta);
+        else if (m_isRightPressed)
+            mouseZoom(delta.y());
 
         // MouseZoom(window->GetMouseScrollPosition().y);
 
         //Need to test
         QMatrix4x4 rotate_mat;
+        QQuaternion q = getOrientation();
+
+        m_rotation = getOrientation().toEulerAngles();
+        QQuaternion test = getOrientation().conjugate();
         rotate_mat.rotate(getOrientation().conjugate());
         m_viewMatrix = rotate_mat;
 
         QMatrix4x4 translate_mat;
         translate_mat.translate(-getPosition());
         m_viewMatrix *= translate_mat;
+    }
+
+    void MayaCamera::mousePressEvent(QMouseEvent * event)
+    {
+        if (event->buttons() == Qt::LeftButton)
+        {
+            m_initialMousePosition = m_mouse_position;
+            m_isLeftPressed = true;
+        }
+        else 
+        {
+            m_isLeftPressed = false;       
+        }       
+
+        if (event->buttons() == Qt::RightButton)
+        {
+            m_initialMousePosition = m_mouse_position;
+            m_isRightPressed = true;
+        }
+        else 
+        {
+            m_isRightPressed = false;
+        }
+            
+        if (event->buttons() == Qt::MidButton)
+        {
+            m_initialMousePosition = m_mouse_position;
+            m_isMiddlePressed = true;
+        }
+        else
+        {
+            m_isMiddlePressed = false;
+        }
+     
+    }
+
+    void MayaCamera::mouseMoveEvent(QMouseEvent * event)
+    {
+        if (m_isLeftPressed || m_isRightPressed || m_isMiddlePressed)
+        {
+            m_mouse_position.setX(event->pos().x());
+            m_mouse_position.setY(event->pos().y());
+        }
+    }
+
+    void MayaCamera::resize(int width, int height)
+    {
+        m_projectionMatrix.setToIdentity();
+        m_projectionMatrix.perspective(45.0f, float(width) / float(height), 0.01f, 1000.0f);
     }
 
     void MayaCamera::mousePan(const QVector2D& delta)
@@ -91,6 +137,8 @@ namespace CGFF {
 
     QQuaternion MayaCamera::getOrientation()
     {
-        return QQuaternion::fromEulerAngles(-m_pitch, -m_yaw, 0.0f);
+        //return QQuaternion::fromEulerAngles(-m_pitch, -m_yaw, 0.0f);
+        //return QQuaternion::fromAxisAndAngle(0.0, 1.0f, 0.0f, -m_yaw*0.5)*QQuaternion::fromAxisAndAngle(1.0, 0.0f, 0.0f, -m_pitch*0.5);
+        return QQuaternion(cos(-m_yaw*0.5), 0.0f, sin(-m_yaw*0.5), 0.0f)*QQuaternion(cos(-m_pitch*0.5), sin(-m_pitch*0.5), 0.0f, 0.0f);
     }
 }

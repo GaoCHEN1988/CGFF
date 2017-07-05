@@ -1,23 +1,24 @@
 #ifndef LAYER_3D_H
 #define LAYER_3D_H
 
+#include "layer.h"
+
 #include "graphic/scene.h"
 #include "graphic/renderer3d.h"
 #include "graphic/forwardRenderer.h"
 
 namespace CGFF {
 
-    class Layer3D
+    class Layer3D : public Layer
     {
     public:
         Layer3D(QSharedPointer<Scene> scene);
         ~Layer3D();
 
-        virtual void init();
+        virtual void init() override;
+        virtual void render() override;
 
-        inline QSharedPointer<Scene>& GetScene() { return m_scene; }
-
-        void render();
+        inline QSharedPointer<Scene>& getScene() { return m_scene; }
 
     protected:
         QSharedPointer<Scene> m_scene;

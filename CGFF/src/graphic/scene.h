@@ -18,8 +18,9 @@ namespace CGFF {
         ~Scene();
         void add(QSharedPointer<Entity>& entity);
         void render(QSharedPointer<Renderer3D>& renderer);
-
-        const QVector<QSharedPointer<Entity>>& getEntities() const { return m_entities; }
+   
+        inline const QSharedPointer<Camera>& getCamera() const { return m_camera; }
+        inline const QVector<QSharedPointer<Entity>>& getEntities() const { return m_entities; }
     };
 }
 #endif

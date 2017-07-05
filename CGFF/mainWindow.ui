@@ -25,7 +25,7 @@
   <widget class="QWidget" name="centralWidget">
    <layout class="QGridLayout" name="gridLayout">
     <item row="0" column="0">
-     <widget class="GLWidget" name="openGLWidget"/>
+     <widget class="ApplicationWidget" name="openGLWidget"/>
     </item>
    </layout>
   </widget>
@@ -58,9 +58,9 @@
  <layoutdefault spacing="6" margin="11"/>
  <customwidgets>
   <customwidget>
-   <class>GLWidget</class>
+   <class>ApplicationWidget</class>
    <extends>QOpenGLWidget</extends>
-   <header location="global">glwidget.h</header>
+   <header>application/applicationwidget.h</header>
   </customwidget>
  </customwidgets>
  <resources/>
