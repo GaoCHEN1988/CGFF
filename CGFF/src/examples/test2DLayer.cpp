@@ -3,14 +3,14 @@
 namespace CGFF {
 
     Test2DLayer::Test2DLayer(QSize size)
-        : Layer2D(QSharedPointer<CGFF::BatchRenderer2D>(new CGFF::BatchRenderer2D(size)),DefaultShader(), m_proj)
+        : Layer2D(QSharedPointer<CGFF::BatchRenderer2D>(new CGFF::BatchRenderer2D(size)), DefaultShader())
         , m_size(size)
     {
     }
 
     void Test2DLayer::init() 
     {
-        Layer2D::getRenderer()->setRenderTarget(CGFF::RenderTarget::BUFFER);
+        Layer2D::getRenderer()->setRenderTarget(CGFF::RenderTarget::SCREEN);
         
         QSharedPointer<QOpenGLShaderProgram> pfShader = QSharedPointer<QOpenGLShaderProgram>(new QOpenGLShaderProgram);
         bool success = pfShader->addShaderFromSourceFile(QOpenGLShader::Vertex, "src/graphic/shader/postfx.vert");
@@ -19,7 +19,7 @@ namespace CGFF {
         Layer2D::getRenderer()->addPostEffectsPass(QSharedPointer<CGFF::PostEffectsPass>(new CGFF::PostEffectsPass(pfShader, m_size)));
         Layer2D::getRenderer()->setPostEffects(false);
     
-        m_sprite = QSharedPointer<CGFF::Sprite>(new CGFF::Sprite(0.0f, 0.0f, 2, 2,
+        m_sprite = QSharedPointer<CGFF::Sprite>(new CGFF::Sprite(0.0f, 0.0f, 100, 100,
             QSharedPointer<QOpenGLTexture>(new QOpenGLTexture(QImage("Resources/tb.png").mirrored()))));
 
         Layer2D::add(m_sprite);
@@ -28,9 +28,9 @@ namespace CGFF {
         m_mask = QSharedPointer<CGFF::Mask>(new CGFF::Mask(tempTexture));
         //Layer2D::setMask(m_mask);
 
-        m_fpsLabel = QSharedPointer<CGFF::Label>(new CGFF::Label("fps", -4, 2, QVector4D(1, 1, 1, 1)));
+        m_fpsLabel = QSharedPointer<CGFF::Label>(new CGFF::Label("fps", 10, 10, QVector4D(1, 1, 1, 1)));
         Layer2D::add(m_fpsLabel);
-
+        
         m_time.start();
         last_count = 0;
         m_frameCount = 0;
@@ -50,21 +50,24 @@ namespace CGFF {
             m_time.restart();
         }
 
-        m_fpsLabel->setText(QString::number(last_count).toStdString());
+        m_fpsLabel->setText(QString::number(last_count));
     }
 
     void Test2DLayer::resize(int width, int height) 
     {
         CGFF::GL->glViewport(0, 0, (GLsizei)width, (GLsizei)height);
-        Layer2D::resize(width, height);
+        //Layer2D::resize(width, height);
+        m_projectionMatrix.setToIdentity();
+        m_projectionMatrix.ortho(0, GLfloat(width), 0, GLfloat(height), -1.0f, 100.0f);
         (qSharedPointerCast<CGFF::BatchRenderer2D>(Layer2D::getRenderer()))->setViewportSize(QSize((GLsizei)width, (GLsizei)height));
+
     }
     void Test2DLayer::mousePressEvent(QMouseEvent *event) {}
     void Test2DLayer::mouseMoveEvent(QMouseEvent *event) {}
     void Test2DLayer::mouseReleaseEvent(QMouseEvent *event) {}
     void Test2DLayer::keyPressEvent(QKeyEvent *event) 
     {
-        float speed = 0.5f;
+        float speed = 8.0f;
         switch (event->key())
         {
         case (Qt::Key_W) :

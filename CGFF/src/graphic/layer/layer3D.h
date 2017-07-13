@@ -13,7 +13,7 @@ namespace CGFF {
     {
     public:
         Layer3D(QSharedPointer<Scene> scene);
-        ~Layer3D();
+        virtual ~Layer3D();
 
         virtual void init() override;
         virtual void render() override;

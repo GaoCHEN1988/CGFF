@@ -48,7 +48,7 @@ namespace CGFF {
     {
     public:
         Material(QSharedPointer<QOpenGLShaderProgram>& shader);
-        ~Material();
+        virtual ~Material();
 
         void bind() const;
         void unbind() const;

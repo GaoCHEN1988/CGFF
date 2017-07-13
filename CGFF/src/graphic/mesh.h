@@ -26,7 +26,7 @@ namespace CGFF {
         QSharedPointer<MaterialInstance> m_materialInstance;
     public:
         Mesh(QOpenGLVertexArrayObject* vertexArray, QOpenGLBuffer* indexBuffer, QSharedPointer<MaterialInstance> materialInstance);
-        ~Mesh();
+        virtual ~Mesh();
 
         inline void SetMaterial(QSharedPointer<MaterialInstance>& materialInstance) { m_materialInstance = materialInstance; }
         inline QSharedPointer<MaterialInstance>& getMaterialInstance() { return m_materialInstance; }

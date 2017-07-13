@@ -12,7 +12,7 @@ namespace CGFF {
     
     public:
         PostEffects();
-        ~PostEffects();
+        virtual~PostEffects();
         void push(QSharedPointer<PostEffectsPass> pass);
         void pop();
 

@@ -3,6 +3,7 @@
 
 #include "utils/qtopengl.h"
 #include "graphic/layer/layer.h"
+#include "Debug/debugLayer.h"
 #include <QOpenGLWidget>
 #include <QTime>
 
@@ -27,6 +28,7 @@ protected:
 private:
     QVector<QSharedPointer<CGFF::Layer>> m_layerStack;
     QVector<QSharedPointer<CGFF::Layer>> m_overLayerStack;
+    QSharedPointer<CGFF::Layer> m_debugLayer;
 };
 
 #endif

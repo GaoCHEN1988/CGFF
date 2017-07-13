@@ -23,7 +23,12 @@ void ApplicationWidget::initializeGL()
     CGFF::GL->initializeOpenGLFunctions();
 
     m_layerStack.append(QSharedPointer<CGFF::Layer>(new CGFF::Test3DLayer()));
+
     m_overLayerStack.append(QSharedPointer<CGFF::Layer>(new CGFF::Test2DLayer(this->size())));
+
+    m_debugLayer = QSharedPointer<CGFF::Layer>(new CGFF::DebugLayer(this->size()));
+
+
     for (auto layer : m_layerStack)
     {
         layer->init();
@@ -33,14 +38,18 @@ void ApplicationWidget::initializeGL()
     {
         overLayer->init();
     }
+
+    m_debugLayer->init();
+
 }
 
 void ApplicationWidget::paintGL()
 {
     CGFF::GL->glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
     CGFF::GL->glEnable(GL_BLEND);
-    CGFF::GL->glEnable(GL_DEPTH_TEST);
+    //CGFF::GL->glEnable(GL_DEPTH_TEST);
     CGFF::GL->glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+
 
     for (auto layer: m_layerStack)
     {
@@ -51,6 +60,8 @@ void ApplicationWidget::paintGL()
     {
         overLayer->render();
     }
+
+    m_debugLayer->render();
 }
 
 void ApplicationWidget::resizeGL(int width, int height)
@@ -64,6 +75,8 @@ void ApplicationWidget::resizeGL(int width, int height)
     {
         overLayer->resize(width, height);
     }
+
+    m_debugLayer->resize(width, height);
 }
 
 void ApplicationWidget::mousePressEvent(QMouseEvent *event) 

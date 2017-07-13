@@ -11,7 +11,7 @@ namespace CGFF {
     {
     public:
         Test3DLayer();
-        ~Test3DLayer() {};
+        virtual~Test3DLayer() {};
 
         void init() override;
         void render() override;

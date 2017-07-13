@@ -96,12 +96,15 @@ namespace CGFF {
         m_framebufferShader->setUniformValue("tex", 0);
         m_framebufferShader->release();
 
-        //m_screenQuad.load(0, 0, (float)m_screenSize.width(), (float)m_screenSize.height());
         m_screenQuad.create(m_framebufferShader, 0, 0, (float)m_screenSize.width(), (float)m_screenSize.height());
 
         m_postEffects = QSharedPointer<PostEffects>(new PostEffects());
         m_postEffectsBuffer = QSharedPointer<QOpenGLFramebufferObject>(new QOpenGLFramebufferObject(m_viewportSize, m_format));
         //m_postEffectsBuffer->addColorAttachment(m_viewportSize);
+
+        //!!Important
+        m_frameBuffer->release();
+        m_postEffectsBuffer->release();
 	}
 
     float BatchRenderer2D::submitTexture(uint textureID)
@@ -238,26 +241,12 @@ namespace CGFF {
 		m_indexCount += 6;
 	}
 
-	void BatchRenderer2D::drawString(const std::string& text, const QVector3D& position, QVector4D& color)
+	void BatchRenderer2D::drawString(const QSharedPointer<QOpenGLTexture>& texture, const QVector3D& position, int width, int height, QVector4D& color)
 	{
-        int width = 2;
-        int height = 1;
-
-        // create the QImage and draw txt into it
-        QImage textimg(width * 50, height * 50, QImage::Format_ARGB32);
-        {
-            QPainter painter(&textimg);
-            textimg.fill(Qt::transparent);
-            painter.setBrush(Qt::yellow);
-            painter.setPen(Qt::yellow);
-            painter.setFont(QFont("Sans", 20));
-            painter.drawText(5, 30, QString::fromStdString(text));
-        }
-
-        m_strTexture = QSharedPointer<QOpenGLTexture>(new QOpenGLTexture(textimg.mirrored()));
-
+        GLuint testId = texture->textureId();
+        
         float ts = 0.0f;
-        ts = submitTexture(m_strTexture->textureId());
+        ts = submitTexture(testId);
 
         QVector3D vertex = *m_tranformationBack * position;
 
@@ -288,8 +277,12 @@ namespace CGFF {
         m_indexCount += 6;
 
 	}
-	void BatchRenderer2D::flush() 
+	
+    void BatchRenderer2D::flush() 
 	{
+        GL->glDepthFunc(GL_NEVER);
+        GL->glDisable(GL_DEPTH_TEST);
+
 		for (int i = 0; i < m_textureSlots.size(); i++)
 		{
             GL->glActiveTexture(GL_TEXTURE0 + i);
@@ -304,8 +297,6 @@ namespace CGFF {
 		m_vboBuffer->release();
 		m_indexCount = 0;
 		m_textureSlots.clear();
-
-        //m_frameBuffer->release();
 
         if (m_renderTarget == RenderTarget::BUFFER)
         {
@@ -342,6 +333,10 @@ namespace CGFF {
         }
 
         m_strTexture.clear();
+        GL->glBindFramebuffer(GL_FRAMEBUFFER, 0);
+
+        m_frameBuffer->release();
+        m_postEffectsBuffer->release();
 	}
 
 	void BatchRenderer2D::end()

@@ -14,7 +14,7 @@ namespace CGFF {
 
     public:
         PostEffectsPass(const QSharedPointer<QOpenGLShaderProgram>& shaderProgram, QSize& size);
-        ~PostEffectsPass();
+        virtual~PostEffectsPass();
 
         void RenderPass(const QSharedPointer<QOpenGLFramebufferObject>& target);
 

@@ -29,7 +29,7 @@ namespace CGFF {
     public:
         // This eventually needs to be replaced by a global Asset Server.
         Model(const QString& path, QSharedPointer<MaterialInstance> materialInstance);
-        ~Model();
+        virtual ~Model();
 
         void render(Renderer3D& renderer) override;
 

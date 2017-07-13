@@ -32,7 +32,8 @@ namespace CGFF {
 		}
 	public:
 		virtual void submit(QSharedPointer<Renderable2D>& renderable) = 0;
-		virtual void drawString(const std::string& text, const QVector3D& position, QVector4D& color) {};
+        virtual void drawString(const QString& text, const QVector3D& position, QVector4D& color) {};
+        virtual void drawString(const QSharedPointer<QOpenGLTexture>& texture, const QVector3D& position, int width, int height, QVector4D& color) {};
 		virtual void flush() = 0;
 		virtual void begin() {}
 		virtual void end() {}

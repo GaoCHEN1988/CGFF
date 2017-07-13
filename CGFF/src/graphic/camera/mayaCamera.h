@@ -9,6 +9,7 @@ namespace CGFF {
     {
     public:
         MayaCamera(const QMatrix4x4& projectionMatrix);
+        virtual~MayaCamera() {};
         void update() override;
         void mousePressEvent(QMouseEvent * event) override;
         void mouseMoveEvent(QMouseEvent * event) override;

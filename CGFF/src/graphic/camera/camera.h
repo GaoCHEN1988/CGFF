@@ -10,7 +10,7 @@ namespace CGFF {
     {
     public:
         Camera(const QMatrix4x4& projectionMatrix);
-        ~Camera();
+        virtual~Camera();
 
         virtual void update() { }
         virtual void mousePressEvent(QMouseEvent * event) {}

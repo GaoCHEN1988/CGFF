@@ -12,7 +12,7 @@ namespace CGFF {
     {
     public:
         Test2DLayer(QSize size);
-        ~Test2DLayer() {};
+        virtual ~Test2DLayer() {};
 
         void init() override;
         void render() override;
@@ -24,8 +24,6 @@ namespace CGFF {
         void keyPressEvent(QKeyEvent *event) override;
 
     private:
-        QMatrix4x4 m_proj;
-
         QSharedPointer<CGFF::BatchRenderer2D> m_batch;
         QVector<QSharedPointer<QOpenGLTexture> > m_vTextures;
         QSharedPointer<CGFF::Sprite> m_sprite;

@@ -10,7 +10,7 @@ namespace CGFF {
 	{
 	public: 
 		Group(const QMatrix4x4& matrix);
-		~Group();
+        virtual~Group();
 		void submit(QSharedPointer<Renderer2D> renderer) override;
 		void add(QSharedPointer<Renderable2D> renderable);
 

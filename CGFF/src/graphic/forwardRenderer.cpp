@@ -50,6 +50,9 @@ namespace CGFF {
     {
         // TODO: Shader binding, texture sorting, visibility testing, etc.
 
+        GL->glEnable(GL_DEPTH_TEST);
+        GL->glDepthFunc(GL_LEQUAL);
+
         for (uint i = 0; i < m_commandQueue.size(); i++)
         {
             const RenderCommand& command = m_commandQueue[i];
