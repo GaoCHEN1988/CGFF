@@ -22,6 +22,12 @@ namespace CGFF {
         virtual void mouseMoveEvent(QMouseEvent *event) {};
         virtual void mouseReleaseEvent(QMouseEvent *event) {};
         virtual void keyPressEvent(QKeyEvent *event) {};
+
+        inline bool isVisible() const { return m_isVisible; }
+        inline void setVisible(bool visible) { m_isVisible = visible; }
+
+    protected:
+        bool m_isVisible;
 	};
 }
 

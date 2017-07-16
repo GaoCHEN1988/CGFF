@@ -4,6 +4,7 @@
 #include "graphic/layer/layer2D.h"
 #include "graphic/sprite.h"
 #include "graphic/label.h"
+#include "debugMenu.h"
 
 namespace CGFF {
 
@@ -17,6 +18,7 @@ namespace CGFF {
         void render() override;
         void resize(int width, int height) override;
 
+        void keyPressEvent(QKeyEvent *event) override;
     };
 
 }

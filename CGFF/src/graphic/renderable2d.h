@@ -45,6 +45,19 @@ namespace CGFF {
         inline const GLuint getTextureID() const { return m_texture == nullptr ? 0 : m_texture->textureId(); }
         inline const QSharedPointer<QOpenGLTexture> getTexture() const { return m_texture; }
 
+        static QVector<QVector2D> getDefaultUVs()
+        {
+            static QVector<QVector2D> results;
+            if (!results.size())
+            {
+                results.push_back(QVector2D(0, 0));
+                results.push_back(QVector2D(0, 1));
+                results.push_back(QVector2D(1, 1));
+                results.push_back(QVector2D(1, 0));
+            }
+            return results;
+        }
+
 	private:
 		void setDefaultUV()
 		{

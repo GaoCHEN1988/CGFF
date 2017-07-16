@@ -32,11 +32,12 @@ namespace CGFF {
 		}
 	public:
 		virtual void submit(QSharedPointer<Renderable2D>& renderable) = 0;
-        virtual void drawString(const QString& text, const QVector3D& position, QVector4D& color) {};
+        virtual void drawString(QString text, const QVector3D& position, int width, int height, QVector4D& color) {};
         virtual void drawString(const QSharedPointer<QOpenGLTexture>& texture, const QVector3D& position, int width, int height, QVector4D& color) {};
 		virtual void flush() = 0;
 		virtual void begin() {}
 		virtual void end() {}
+        virtual void fillRect(float x, float y, float width, float height, QVector4D color = QVector4D(1, 1, 1, 1)) {};
 
 		void push(QMatrix4x4 matrix, bool override = false)
 		{

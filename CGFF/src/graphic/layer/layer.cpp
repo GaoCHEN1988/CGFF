@@ -2,6 +2,7 @@
 
 namespace CGFF {
     Layer::Layer()
+        :m_isVisible(true)
     {
     }
     Layer::~Layer()

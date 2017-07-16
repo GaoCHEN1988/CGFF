@@ -61,7 +61,8 @@ void ApplicationWidget::paintGL()
         overLayer->render();
     }
 
-    m_debugLayer->render();
+    if(m_debugLayer->isVisible())
+        m_debugLayer->render();
 }
 
 void ApplicationWidget::resizeGL(int width, int height)
@@ -132,5 +133,8 @@ void ApplicationWidget::keyPressEvent(QKeyEvent *event)
     {
         overLayer->keyPressEvent(event);
     }
+
+    m_debugLayer->keyPressEvent(event);
+
     update();
 }

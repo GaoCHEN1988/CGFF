@@ -9,7 +9,6 @@ namespace CGFF {
         , m_viewportSize(screenSize)
         , m_screenSize(screenSize)
         , m_screenBuffer(0)
-        , m_strTexture(nullptr)
 	{
 		init();
 	}
@@ -241,12 +240,25 @@ namespace CGFF {
 		m_indexCount += 6;
 	}
 
-	void BatchRenderer2D::drawString(const QSharedPointer<QOpenGLTexture>& texture, const QVector3D& position, int width, int height, QVector4D& color)
-	{
-        GLuint testId = texture->textureId();
+    void BatchRenderer2D::drawString(QString text, const QVector3D& position, int width, int height, QVector4D& color)
+    {
+        // create the QImage and draw txt into it
+        QImage textimg(width, height, QImage::Format_ARGB32);
+        {
+            QPainter painter(&textimg);
+            textimg.fill(Qt::transparent);
+            painter.setBrush(QColor(color.x() * 255, color.y() * 255, color.z() * 255, color.w() * 255));
+            painter.setPen(QColor(color.x() * 255, color.y() * 255, color.z() * 255, color.w() * 255));
+            painter.setFont(QFont("Sans", 16));
+            painter.drawText(0, height-10, text);
+        }
+
+        QSharedPointer<QOpenGLTexture> strTexture = QSharedPointer<QOpenGLTexture>(new QOpenGLTexture(textimg.mirrored()));
+
+        m_strTextures.append(strTexture);
         
         float ts = 0.0f;
-        ts = submitTexture(testId);
+        ts = submitTexture(strTexture->textureId());
 
         QVector3D vertex = *m_tranformationBack * position;
 
@@ -262,7 +274,7 @@ namespace CGFF {
         m_buffer->color = color;
         m_buffer++;
 
-        m_buffer->vertex = *m_tranformationBack * QVector3D(position.x()+ width, position.y() + height, position.z());
+        m_buffer->vertex = *m_tranformationBack * QVector3D(position.x() + width, position.y() + height, position.z());
         m_buffer->uv = QVector2D(1, 1);
         m_buffer->tid = ts;
         m_buffer->color = color;
@@ -276,7 +288,7 @@ namespace CGFF {
 
         m_indexCount += 6;
 
-	}
+    }
 	
     void BatchRenderer2D::flush() 
 	{
@@ -332,9 +344,8 @@ namespace CGFF {
             m_iboBuffer->release();
         }
 
-        m_strTexture.clear();
         GL->glBindFramebuffer(GL_FRAMEBUFFER, 0);
-
+        m_strTextures.clear();
         m_frameBuffer->release();
         m_postEffectsBuffer->release();
 	}
@@ -344,4 +355,65 @@ namespace CGFF {
 		m_vboBuffer->unmap();
 		m_vboBuffer->release();
 	}
+
+    void BatchRenderer2D::fillRect(float x, float y, float width, float height, QVector4D color)
+    {
+        QVector3D position(x, y, 0.0f);
+        QVector2D size(width, height);
+        const QVector<QVector2D>& uv = Renderable2D::getDefaultUVs();
+        float ts = 0.0f;
+
+        QMatrix4x4 maskTransform;
+        const GLuint mid = (m_mask == nullptr) ? 0 : m_mask->texture->textureId();
+        float ms = 0.0f;
+
+        if (m_mask != nullptr)
+        {
+            maskTransform = m_mask->transform.inverted();
+            ms = submitTexture(m_mask->texture);
+        }
+
+        QVector3D vertex = *m_tranformationBack * position;
+        QVector3D tmpVertex = maskTransform * vertex;
+
+        m_buffer->vertex = vertex;
+        m_buffer->uv = uv[0];
+        m_buffer->mask_uv = QVector2D(tmpVertex.x(), tmpVertex.y());
+        m_buffer->tid = ts;
+        m_buffer->mid = ms;
+        m_buffer->color = color;
+        m_buffer++;
+
+        vertex = *m_tranformationBack * QVector3D(position.x(), position.y() + size.y(), position.z());
+        tmpVertex = maskTransform * vertex;
+        m_buffer->vertex = vertex;
+        m_buffer->uv = uv[1];
+        m_buffer->mask_uv = QVector2D(tmpVertex.x(), tmpVertex.y());
+        m_buffer->tid = ts;
+        m_buffer->mid = ms;
+        m_buffer->color = color;
+        m_buffer++;
+
+        vertex = *m_tranformationBack * QVector3D(position.x() + size.x(), position.y() + size.y(), position.z());
+        tmpVertex = maskTransform * vertex;
+        m_buffer->vertex = vertex;
+        m_buffer->uv = uv[2];
+        m_buffer->mask_uv = QVector2D(tmpVertex.x(), tmpVertex.y());
+        m_buffer->tid = ts;
+        m_buffer->mid = ms;
+        m_buffer->color = color;
+        m_buffer++;
+
+        vertex = *m_tranformationBack * QVector3D(position.x() + size.x(), position.y(), position.z());
+        tmpVertex = maskTransform * vertex;
+        m_buffer->vertex = vertex;
+        m_buffer->uv = uv[3];
+        m_buffer->mask_uv = QVector2D(tmpVertex.x(), tmpVertex.y());
+        m_buffer->tid = ts;
+        m_buffer->mid = ms;
+        m_buffer->color = color;
+        m_buffer++;
+
+        m_indexCount += 6;
+    }
 }

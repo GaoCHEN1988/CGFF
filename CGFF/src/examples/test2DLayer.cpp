@@ -28,7 +28,7 @@ namespace CGFF {
         m_mask = QSharedPointer<CGFF::Mask>(new CGFF::Mask(tempTexture));
         //Layer2D::setMask(m_mask);
 
-        m_fpsLabel = QSharedPointer<CGFF::Label>(new CGFF::Label("fps", 10, 10, QVector4D(1, 1, 1, 1)));
+        m_fpsLabel = QSharedPointer<CGFF::Label>(new CGFF::Label("fps", 10, m_size.height() - 50, 150, 32, QVector4D(1, 1, 1, 1)));
         Layer2D::add(m_fpsLabel);
         
         m_time.start();
