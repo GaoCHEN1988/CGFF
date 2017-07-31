@@ -1,8 +1,8 @@
 #ifndef RENDERER_2D_H
 #define RENDERER_2D_H
 
-#include "../utils/qtopengl.h"
-#include "../maths/qtmaths.h"
+#include "utils/qtopengl.h"
+#include "maths/qtmaths.h"
 #include "mask.h"
 #include "postfx/postEffects.h"
 
@@ -32,12 +32,18 @@ namespace CGFF {
 		}
 	public:
 		virtual void submit(QSharedPointer<Renderable2D>& renderable) = 0;
-        virtual void drawString(QString text, const QVector3D& position, int width, int height, QVector4D& color) {};
-        virtual void drawString(const QSharedPointer<QOpenGLTexture>& texture, const QVector3D& position, int width, int height, QVector4D& color) {};
 		virtual void flush() = 0;
 		virtual void begin() {}
 		virtual void end() {}
-        virtual void fillRect(float x, float y, float width, float height, QVector4D color = QVector4D(1, 1, 1, 1)) {};
+        
+        virtual void drawString(QString text, const QVector3D& position, int width, int height, QVector4D& color, QFont font = QFont("Sans")) {};
+        virtual void drawLine(float x0, float y0, float x1, float y1, QVector4D color = QVector4D(1, 1, 1, 1), float thickness = 1.0f) {}
+        virtual void drawLine(const QVector2D& start, const QVector2D& end, QVector4D color = QVector4D(1, 1, 1, 1), float thickness = 1.0f) {}
+        virtual void drawRect(float x, float y, float width, float height, QVector4D color = QVector4D(1, 1, 1, 1), float thickness = 1.0f) {}
+        virtual void drawRect(const QRect& rectangle, QVector4D color = QVector4D(1, 1, 1, 1)) {}
+        virtual void fillRect(float x, float y, float width, float height, QVector4D color = QVector4D(1, 1, 1, 1)) {}
+        virtual void fillRect(const QRect& rectangle, QVector4D color = QVector4D(1, 1, 1, 1)) {}
+
 
 		void push(QMatrix4x4 matrix, bool override = false)
 		{

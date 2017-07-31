@@ -16,6 +16,16 @@ public:
     ApplicationWidget(QWidget *parent);
     ~ApplicationWidget() {};
 
+    inline static ApplicationWidget* getApplication() { return m_instance; }
+
+    void pushLayer(QSharedPointer<CGFF::Layer> layer);
+    QSharedPointer<CGFF::Layer> popLayer();
+    QSharedPointer<CGFF::Layer> popLayer(QSharedPointer<CGFF::Layer> layer);
+
+    void pushOverlay(QSharedPointer<CGFF::Layer> layer);
+    QSharedPointer<CGFF::Layer> popOverlay();
+    QSharedPointer<CGFF::Layer> popOverlay(QSharedPointer<CGFF::Layer> layer);
+
 protected:
     void initializeGL() Q_DECL_OVERRIDE;
     void paintGL() Q_DECL_OVERRIDE;
@@ -29,6 +39,8 @@ private:
     QVector<QSharedPointer<CGFF::Layer>> m_layerStack;
     QVector<QSharedPointer<CGFF::Layer>> m_overLayerStack;
     QSharedPointer<CGFF::Layer> m_debugLayer;
+
+    static ApplicationWidget * m_instance;
 };
 
 #endif

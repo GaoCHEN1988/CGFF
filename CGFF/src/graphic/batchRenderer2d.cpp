@@ -173,6 +173,9 @@ namespace CGFF {
 
 	void BatchRenderer2D::submit(QSharedPointer<Renderable2D>& renderable)
 	{
+        if (!renderable->isVisible())
+            return;
+
 		const QVector3D& position = renderable->getPosition();
 		const QVector2D& size = renderable->getSize();
 		const QVector4D& color = renderable->getColor();
@@ -240,8 +243,13 @@ namespace CGFF {
 		m_indexCount += 6;
 	}
 
-    void BatchRenderer2D::drawString(QString text, const QVector3D& position, int width, int height, QVector4D& color)
+    void BatchRenderer2D::drawString(QString text, const QVector3D& position, int width, int height, QVector4D& color, QFont font)
     {
+        //Test
+        int size = font.pixelSize();
+        int width_ = size * 5;
+        int height_ = size;
+
         // create the QImage and draw txt into it
         QImage textimg(width, height, QImage::Format_ARGB32);
         {
@@ -249,7 +257,8 @@ namespace CGFF {
             textimg.fill(Qt::transparent);
             painter.setBrush(QColor(color.x() * 255, color.y() * 255, color.z() * 255, color.w() * 255));
             painter.setPen(QColor(color.x() * 255, color.y() * 255, color.z() * 255, color.w() * 255));
-            painter.setFont(QFont("Sans", 16));
+            font.setPixelSize(height);
+            painter.setFont(font);
             painter.drawText(0, height-10, text);
         }
 
@@ -356,6 +365,84 @@ namespace CGFF {
 		m_vboBuffer->release();
 	}
 
+    void BatchRenderer2D::drawLine(float x0, float y0, float x1, float y1, QVector4D color, float thickness)
+    {
+        const QVector<QVector2D>& uv = Renderable2D::getDefaultUVs();
+        float ts = 0.0f;
+
+        QMatrix4x4 maskTransform;
+        const GLuint mid = (m_mask == nullptr) ? 0 : m_mask->texture->textureId();
+        float ms = 0.0f;
+
+        if (m_mask != nullptr)
+        {
+            maskTransform = m_mask->transform.inverted();
+            ms = submitTexture(m_mask->texture);
+        }
+
+        QVector2D normal = QVector2D(y1 - y0, -(x1 - x0)).normalized() * thickness;
+
+        QVector3D vertex = *m_tranformationBack * QVector3D(x0 + normal.x(), y0 + normal.y(), 0.0f);
+        QVector3D tmpVertex = maskTransform * vertex;
+        m_buffer->vertex = vertex;
+        m_buffer->uv = uv[0];
+        m_buffer->mask_uv = QVector2D(tmpVertex.x(), tmpVertex.y());
+        m_buffer->tid = ts;
+        m_buffer->mid = ms;
+        m_buffer->color = color;
+        m_buffer++;
+
+        vertex = *m_tranformationBack * QVector3D(x1 + normal.x(), y1 + normal.y(), 0.0f);
+        tmpVertex = maskTransform * vertex;
+        m_buffer->vertex = vertex;
+        m_buffer->uv = uv[1];
+        m_buffer->mask_uv = QVector2D(tmpVertex.x(), tmpVertex.y());
+        m_buffer->tid = ts;
+        m_buffer->mid = ms;
+        m_buffer->color = color;
+        m_buffer++;
+
+        vertex = *m_tranformationBack * QVector3D(x1 - normal.x(), y1 - normal.y(), 0.0f);
+        tmpVertex = maskTransform * vertex;
+        m_buffer->vertex = vertex;
+        m_buffer->uv = uv[2];
+        m_buffer->mask_uv = QVector2D(tmpVertex.x(), tmpVertex.y());
+        m_buffer->tid = ts;
+        m_buffer->mid = ms;
+        m_buffer->color = color;
+        m_buffer++;
+
+        vertex = *m_tranformationBack * QVector3D(x0 - normal.x(), y0 - normal.y(), 0.0f);
+        tmpVertex = maskTransform * vertex;
+        m_buffer->vertex = vertex;
+        m_buffer->uv = uv[3];
+        m_buffer->mask_uv = QVector2D(tmpVertex.x(), tmpVertex.y());
+        m_buffer->tid = ts;
+        m_buffer->mid = ms;
+        m_buffer->color = color;
+        m_buffer++;
+
+        m_indexCount += 6;
+    }
+
+    void BatchRenderer2D::drawLine(const QVector2D& start, const QVector2D& end, QVector4D color, float thickness)
+    {
+        drawLine(start.x(), start.y(), end.x(), end.y(), color, thickness);
+    }
+
+    void BatchRenderer2D::drawRect(float x, float y, float width, float height, QVector4D color, float thickness)
+    {
+        drawLine(x, y, x + width, y, color, thickness);
+        drawLine(x + width, y, x + width, y + height, color, thickness);
+        drawLine(x + width, y + height, x, y + height, color, thickness);
+        drawLine(x, y + height, x, y, color, thickness);
+    }
+
+    void BatchRenderer2D::drawRect(const QRect& rectangle, QVector4D color)
+    {
+        drawRect(rectangle.x(), rectangle.y(), rectangle.width(), rectangle.height(), color);
+    }
+
     void BatchRenderer2D::fillRect(float x, float y, float width, float height, QVector4D color)
     {
         QVector3D position(x, y, 0.0f);
@@ -415,5 +502,10 @@ namespace CGFF {
         m_buffer++;
 
         m_indexCount += 6;
+    }
+
+    void BatchRenderer2D::fillRect(const QRect& rectangle, QVector4D color)
+    {
+        fillRect(rectangle.x(), rectangle.y(), rectangle.width(), rectangle.height(), color);
     }
 }

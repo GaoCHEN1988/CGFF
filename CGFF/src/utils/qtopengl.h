@@ -5,10 +5,13 @@
 #include <QOpenGLContext>
 #include <QSurfaceFormat>
 #include <QSharedPointer>
+#include <QSize>
+#include <QFont>
 
 namespace CGFF
 {
     extern QOpenGLFunctions *GL;
+    extern QSize openglWidgetSize;
 }
 
 

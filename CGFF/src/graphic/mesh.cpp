@@ -25,8 +25,6 @@ namespace CGFF {
         m_vertexArray->bind();
         m_indexBuffer->bind();
         //m_vertexArray->Draw(m_IndexBuffer->GetCount());
-        //Test QOpenGLBuffer size()
-        // To do: set value of count some where!!!
         GL->glDrawElements(GL_TRIANGLES, m_indexBuffer->size() / sizeof(uint), GL_UNSIGNED_INT, NULL);
         m_indexBuffer->release();
         m_vertexArray->release();

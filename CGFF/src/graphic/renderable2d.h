@@ -44,6 +44,8 @@ namespace CGFF {
 		inline const QVector<QVector2D>& getUV() const { return m_UVs; }
         inline const GLuint getTextureID() const { return m_texture == nullptr ? 0 : m_texture->textureId(); }
         inline const QSharedPointer<QOpenGLTexture> getTexture() const { return m_texture; }
+        inline bool isVisible() const { return m_isVisible; }
+        inline void setVisible(bool visible) { m_isVisible = visible; }
 
         static QVector<QVector2D> getDefaultUVs()
         {
@@ -72,6 +74,7 @@ namespace CGFF {
 		QVector4D m_color;
 		QVector<QVector2D> m_UVs;
 		QSharedPointer<QOpenGLTexture> m_texture;
+        bool m_isVisible;
 	};
 }
 

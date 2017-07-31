@@ -15,8 +15,6 @@ namespace CGFF {
 
         DebugMenu::init();
         DebugMenu::setVisible(true);
-        DebugMenu::add("Example Item");
-        DebugMenu::add("This is another example");
     }
 
     void DebugLayer::render()
@@ -25,7 +23,7 @@ namespace CGFF {
 
         if (DebugMenu::isVisible())
         {
-            DebugMenu::render(m_renderer);
+            DebugMenu::get()->render(m_renderer);
         }
     }
 
@@ -36,11 +34,42 @@ namespace CGFF {
         m_projectionMatrix.ortho(0, GLfloat(width), 0, GLfloat(height), 0.0f, 100.0f);
     }
 
+    void DebugLayer::mousePressEvent(QMouseEvent *event)
+    {
+        if (DebugMenu::isVisible())
+        {
+            DebugMenu::get()->mousePressEvent(event);
+        }
+    }
+    void DebugLayer::mouseMoveEvent(QMouseEvent *event) 
+    {
+        if (DebugMenu::isVisible())
+        {
+            DebugMenu::get()->mouseMoveEvent(event);
+        }
+    }
+    void DebugLayer::mouseReleaseEvent(QMouseEvent *event)
+    {
+        if (DebugMenu::isVisible())
+        {
+            DebugMenu::get()->mouseReleaseEvent(event);
+        }
+    }
+
     void DebugLayer::keyPressEvent(QKeyEvent *event)
     {
         if (event->key() == Qt::Key_Control)
         {
             m_isVisible = !m_isVisible;
+            DebugMenu::setVisible(m_isVisible);
+        }
+    }
+
+    void DebugLayer::update()
+    {
+        if (DebugMenu::isVisible())
+        {
+            DebugMenu::get()->update();
         }
     }
 }

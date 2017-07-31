@@ -34,7 +34,8 @@ namespace CGFF {
 
         QMatrix4x4 m_vw_matrix;
         QMatrix4x4 m_ml_matrix;
-        float m_Rotation;
+        float m_rotation;
+        float m_transform;
     };
 }
 

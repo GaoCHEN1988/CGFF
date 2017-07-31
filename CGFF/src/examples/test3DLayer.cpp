@@ -1,4 +1,5 @@
 #include "test3DLayer.h"
+#include "Debug/debugMenu.h"
 
 namespace CGFF {
 
@@ -43,24 +44,28 @@ namespace CGFF {
         Layer3D::getScene()->add(m_cube);
         Layer3D::getScene()->add(m_sphere);
         Layer3D::getScene()->add(m_plane);
+
+        m_transform = -4.0f;
+
+        DebugMenu::add("Cube", &m_transform, -10.0f, 10.0f);
     }
 
     void Test3DLayer::render()
     {
-        m_ml_matrix.rotate(m_Rotation, QVector3D(1, 1, 0));
+        m_ml_matrix.rotate(m_rotation, QVector3D(1, 1, 0));
 
         CGFF::TransformComponent* cubeTransform = m_cube->getComponent<TransformComponent>();
         CGFF::TransformComponent* sphereTransform = m_sphere->getComponent<TransformComponent>();
 
         QMatrix4x4 m;
-        m.translate(QVector3D(-4, 0, 0));
+        m.translate(QVector3D(m_transform, 0, 0));
         QMatrix4x4 m2;
         m2.translate(QVector3D(4, 0, 0));
 
         cubeTransform->transform = m*m_ml_matrix;
         sphereTransform->transform = m2*m_ml_matrix;
 
-        m_Rotation += 0.5f;
+        m_rotation += 0.5f;
 
         Layer3D::render();
 

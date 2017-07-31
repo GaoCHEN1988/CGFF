@@ -22,11 +22,16 @@ namespace CGFF {
 
 		void begin() override;
 		void submit(QSharedPointer<Renderable2D>& renderable) override;
-        void drawString(QString text, const QVector3D& position, int width, int height, QVector4D& color) override;
+        void drawString(QString text, const QVector3D& position, int width, int height, QVector4D& color, QFont font = QFont("Sans")) override;
 		void flush() override;
 		void end() override;
-        void fillRect(float x, float y, float width, float height, QVector4D color = QVector4D(1,1,1,1)) override;
 
+        void drawLine(float x0, float y0, float x1, float y1, QVector4D color = QVector4D(1, 1, 1, 1), float thickness = 1.0f) override;
+        void drawLine(const QVector2D& start, const QVector2D& end, QVector4D color = QVector4D(1, 1, 1, 1), float thickness = 1.0f) override;
+        void drawRect(float x, float y, float width, float height, QVector4D color = QVector4D(1, 1, 1, 1), float thickness = 1.0f) override;
+        void drawRect(const QRect& rectangle, QVector4D color = QVector4D(1, 1, 1, 1)) override;
+        void fillRect(float x, float y, float width, float height, QVector4D color = QVector4D(1,1,1,1)) override;
+        void fillRect(const QRect& rectangle, QVector4D color = QVector4D(1, 1, 1, 1)) override;
 
         inline void setScreenSize(const QSize& size) { m_screenSize = size; }
         inline const QSize& getScreenSize() const { return m_screenSize; }
