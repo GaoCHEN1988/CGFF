@@ -47,7 +47,12 @@ namespace CGFF {
 
         m_transform = -4.0f;
 
+        QSharedPointer<LightSetup> lights = QSharedPointer<LightSetup>(new LightSetup());
+        lights->add(QSharedPointer<Light>(new Light{ QVector3D(0, 10, 0), 10.0f, QVector4D(1, 1, 1, 1) }));
+        m_scene->pushLightSetup(lights);
+
         DebugMenu::add("Cube", &m_transform, -10.0f, 10.0f);
+        DebugMenu::add("Light Atten.", &lights->getLights()[0]->attenuation, 0, 40);
     }
 
     void Test3DLayer::render()

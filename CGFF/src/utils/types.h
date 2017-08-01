@@ -23,6 +23,9 @@ namespace CGFF {
 #define SHADER_UNIFORM_PROJECTION_MATRIX_NAME	"pr_matrix"
 #define SHADER_UNIFORM_VIEW_MATRIX_NAME			"vw_matrix"
 #define SHADER_UNIFORM_MODEL_MATRIX_NAME		"ml_matrix"
+#define SHADER_UNIFORM_LIGHT_POSITION		    "u_LightPosition"
+#define SHADER_UNIFORM_LIGHT_ATTENUATION		"u_LightAttenuation"
+#define SHADER_UNIFORM_LIGHT_COLOR		        "u_LightColor"
 
     struct VertexData
     {

@@ -20,7 +20,7 @@ void main()
 {
 	gl_Position = pr_matrix * vw_matrix * ml_matrix * position;
 	vs_out.position = ml_matrix * position;
-	vs_out.normal = normal;
+	vs_out.normal = mat3(ml_matrix) * normal;
 	vs_out.uv = uv;
 	vs_out.color = vec3(normal * 0.5 + 0.5);
 };

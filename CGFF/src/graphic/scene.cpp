@@ -30,10 +30,25 @@ namespace CGFF {
         }
     }
 
+    void Scene::pushLightSetup(QSharedPointer<LightSetup>& lightSetup)
+    {
+        m_lightSetupStack.append(lightSetup);
+    }
+
+    QSharedPointer<LightSetup> Scene::popLightSetup()
+    {
+        QSharedPointer<LightSetup> lightSetup = m_lightSetupStack.back();
+        m_lightSetupStack.pop_back();
+        return lightSetup;
+    }
+
     void Scene::render(QSharedPointer<Renderer3D>& renderer)
     {
         m_camera->update();
         renderer->begin();
+
+        for (uint i = 0; i < m_lightSetupStack.size(); i++)
+            renderer->submitLightSetup(m_lightSetupStack[i]);
 
         for (QSharedPointer<Entity> entity : m_entities)
         {

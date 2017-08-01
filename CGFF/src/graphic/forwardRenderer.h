@@ -14,11 +14,13 @@ namespace CGFF {
         //void submit(QSharedPointer<Mesh>& mesh) override;
         void submit(const RenderCommand& command) override;
         void submitMesh(QSharedPointer<Camera> camera, QSharedPointer<Mesh> mesh, const QMatrix4x4& transform) override;
+        void submitLightSetup(const QSharedPointer<LightSetup>& lightSetup) override;
         void end() override;
         void flush() override;
 
     private:
         void setRequiredUniforms(QSharedPointer<QOpenGLShaderProgram> shader, const QVector<RendererUniform>& uniforms);
+        void setSystemUniforms(QSharedPointer<QOpenGLShaderProgram> shader);
     };
 }
 

@@ -9,6 +9,7 @@ namespace CGFF {
     void ForwardRenderer::begin() 
     {
         m_commandQueue.clear();
+        m_systemUniforms.clear();
     }
 
     void ForwardRenderer::submit(const RenderCommand& command)
@@ -39,7 +40,30 @@ namespace CGFF {
         command.uniforms.push_back(proj_matrix);
         command.uniforms.push_back(vw_matrix);
         command.uniforms.push_back(ml_matrix);
+
+        for (int i = 0; i < m_systemUniforms.size(); i++)
+            command.uniforms.push_back(m_systemUniforms[i]);
+
         m_commandQueue.push_back(command);
+    }
+
+    void ForwardRenderer::submitLightSetup(const QSharedPointer<LightSetup>& lightSetup)
+    {
+        auto lights = lightSetup->getLights();
+        Q_ASSERT(lights.size() <= 1);
+        for (int i = 0; i < lights.size(); i++)
+        {
+            QSharedPointer<Light> light = lights[i];
+
+            RendererUniform u_LightPosition;
+            u_LightPosition.type = UniformType::QVector3D;
+            u_LightPosition.data = (void*)&light->position;
+            u_LightPosition.uniform = SHADER_UNIFORM_LIGHT_POSITION;
+
+            m_systemUniforms.push_back({ SHADER_UNIFORM_LIGHT_POSITION,  (void*)&light->position, UniformType::QVector3D });
+            m_systemUniforms.push_back({ SHADER_UNIFORM_LIGHT_ATTENUATION,  (void*)&light->attenuation, UniformType::GLfloat });
+            //m_systemUniforms.push_back({ SHADER_UNIFORM_LIGHT_COLOR,  (void*)&light->color, UniformType::QVector4D });
+        }
     }
 
     void ForwardRenderer::end() 
@@ -70,5 +94,11 @@ namespace CGFF {
 
         for (uint i = 0; i < uniforms.size(); i++)
             SetRendererUniform(uniforms[i], shader);
+    }
+
+    void ForwardRenderer::setSystemUniforms(QSharedPointer<QOpenGLShaderProgram> shader)
+    {
+        for (uint i = 0; i < m_systemUniforms.size(); i++)
+            SetRendererUniform(m_systemUniforms[i], shader);
     }
 }
