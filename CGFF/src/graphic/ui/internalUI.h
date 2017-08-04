@@ -11,7 +11,7 @@
 #include "maths/qtmaths.h"
 #include "utils/qtopengl.h"
 #include "graphic/layer/layer2D.h"
-#include "graphic/shaderFactory/shaderFasctory.h"
+#include "graphic/shader/shaderFasctory.h"
 #include "common.h"
 
 #endif

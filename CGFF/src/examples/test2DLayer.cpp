@@ -1,5 +1,5 @@
 #include "test2DLayer.h"
-#include "graphic/shaderFactory/shaderFasctory.h"
+#include "graphic/shader/shaderFasctory.h"
 namespace CGFF {
 
     Test2DLayer::Test2DLayer(QSize size)
@@ -13,9 +13,9 @@ namespace CGFF {
         Layer2D::getRenderer()->setRenderTarget(CGFF::RenderTarget::SCREEN);
         
         QSharedPointer<QOpenGLShaderProgram> pfShader = QSharedPointer<QOpenGLShaderProgram>(new QOpenGLShaderProgram);
-        bool success = pfShader->addShaderFromSourceFile(QOpenGLShader::Vertex, "src/graphic/shader/postfx.vert");
+        bool success = pfShader->addShaderFromSourceFile(QOpenGLShader::Vertex, "src/graphic/shaders/postfx.vert");
         // load and compile fragment shader
-        success = pfShader->addShaderFromSourceFile(QOpenGLShader::Fragment, "src/graphic/shader/postfx.frag");
+        success = pfShader->addShaderFromSourceFile(QOpenGLShader::Fragment, "src/graphic/shaders/postfx.frag");
         Layer2D::getRenderer()->addPostEffectsPass(QSharedPointer<CGFF::PostEffectsPass>(new CGFF::PostEffectsPass(pfShader, m_size)));
         Layer2D::getRenderer()->setPostEffects(false);
     

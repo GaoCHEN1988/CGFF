@@ -16,9 +16,9 @@ namespace CGFF {
 
 #else
         // load and compile vertex shader
-        bool success = m_shader->addShaderFromSourceFile(QOpenGLShader::Vertex, "src/graphic/shader/sceneShader.vert");
+        bool success = m_shader->addShaderFromSourceFile(QOpenGLShader::Vertex, "src/graphic/shaders/sceneShader.vert");
         // load and compile fragment shader
-        success = m_shader->addShaderFromSourceFile(QOpenGLShader::Fragment, "src/graphic/shader/sceneShader.frag");
+        success = m_shader->addShaderFromSourceFile(QOpenGLShader::Fragment, "src/graphic/shaders/sceneShader.frag");
 #endif
 
         m_shader->link();

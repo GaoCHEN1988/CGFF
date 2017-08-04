@@ -84,9 +84,9 @@ namespace CGFF {
         //m_frameBuffer->addColorAttachment(m_viewportSize);
         m_framebufferShader = QSharedPointer<QOpenGLShaderProgram>(new QOpenGLShaderProgram);
         // load and compile vertex shader
-        bool success = m_framebufferShader->addShaderFromSourceFile(QOpenGLShader::Vertex, "src/graphic/shader/fbVertexShader.vert");
+        bool success = m_framebufferShader->addShaderFromSourceFile(QOpenGLShader::Vertex, "src/graphic/shaders/fbVertexShader.vert");
         // load and compile fragment shader
-        success = m_framebufferShader->addShaderFromSourceFile(QOpenGLShader::Fragment, "src/graphic/shader/fbfragmentShader.frag");
+        success = m_framebufferShader->addShaderFromSourceFile(QOpenGLShader::Fragment, "src/graphic/shaders/fbfragmentShader.frag");
         m_framebufferShader->link();
         m_framebufferShader->bind();
         QMatrix4x4 proj = QMatrix4x4();
