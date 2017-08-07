@@ -1,0 +1,494 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <Filter Include="Form Files">
+      <UniqueIdentifier>{99349809-55BA-4b9d-BF79-8FDBB0286EB3}</UniqueIdentifier>
+      <Extensions>ui</Extensions>
+    </Filter>
+    <Filter Include="Resource Files">
+      <UniqueIdentifier>{D9D6E242-F8AF-46E4-B9FD-80ECBC20BA3E}</UniqueIdentifier>
+      <Extensions>qrc;*</Extensions>
+      <ParseFiles>false</ParseFiles>
+    </Filter>
+    <Filter Include="Generated Files">
+      <UniqueIdentifier>{71ED8ED8-ACB9-4CE9-BBE1-E00B30144E11}</UniqueIdentifier>
+      <Extensions>moc;h;cpp</Extensions>
+      <SourceControlFiles>False</SourceControlFiles>
+    </Filter>
+    <Filter Include="Generated Files\Debug">
+      <UniqueIdentifier>{0b5da09a-a2d1-4bd4-81f7-236a1725e101}</UniqueIdentifier>
+      <Extensions>cpp;moc</Extensions>
+      <SourceControlFiles>False</SourceControlFiles>
+    </Filter>
+    <Filter Include="Generated Files\Release">
+      <UniqueIdentifier>{537b14cb-eb82-4659-9856-edf58a3f8958}</UniqueIdentifier>
+      <Extensions>cpp;moc</Extensions>
+      <SourceControlFiles>False</SourceControlFiles>
+    </Filter>
+    <Filter Include="Resource Files\shaders">
+      <UniqueIdentifier>{e999c89b-b049-4949-a999-ced401bb1540}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files">
+      <UniqueIdentifier>{aabb99d1-4305-4426-aa6b-357b6eef0bac}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files">
+      <UniqueIdentifier>{2c81e06d-f7b5-48a9-b5bc-72873eb6b434}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\graphic">
+      <UniqueIdentifier>{8953149b-a4eb-4347-b907-be5143c64642}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\graphic\shader">
+      <UniqueIdentifier>{48cca67e-5c61-4722-b4b7-570a2037179d}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\graphic\buffer">
+      <UniqueIdentifier>{46569206-60cd-4c3a-b530-fcbff3ac950f}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\graphic\layer">
+      <UniqueIdentifier>{aa0e5d2f-23b2-40db-816c-7b80e5df43d8}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\maths">
+      <UniqueIdentifier>{f577826c-61ca-4124-9e3a-b56e436ff38a}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\utils">
+      <UniqueIdentifier>{aeaf2985-1280-44cf-bfc4-b2d2c63b9b6f}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\application">
+      <UniqueIdentifier>{b5121a47-f888-48c6-9d32-58bc75b747c1}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\debug">
+      <UniqueIdentifier>{97286fd0-1e58-4df9-a577-ff54fd86335e}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\entity">
+      <UniqueIdentifier>{5eb45eb0-b798-4e0b-805a-b1019a41f29a}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\examples">
+      <UniqueIdentifier>{55be71cc-3ef0-47a3-81d4-fc3e948adfec}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\platform">
+      <UniqueIdentifier>{e29b7f50-6c19-497e-957b-75f8da100290}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\application">
+      <UniqueIdentifier>{528594d9-b75d-4045-99b1-e32278724ba8}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\entity">
+      <UniqueIdentifier>{822471a5-59b0-449c-8a24-c5e8d2a616ea}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\entity\component">
+      <UniqueIdentifier>{08ef1c46-b2f9-4295-84c0-86d6533bf5db}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\entity\component">
+      <UniqueIdentifier>{14eb4070-4a3a-4389-87c7-93507eeaad1c}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\examples">
+      <UniqueIdentifier>{81ec659d-079c-4a95-8055-cf4dab0e7b23}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\graphic">
+      <UniqueIdentifier>{bc746217-b1d5-4928-864c-6ea312216e31}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\maths">
+      <UniqueIdentifier>{bcec0a6e-76ca-4f7d-94f8-1e3e668cc09b}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\platform">
+      <UniqueIdentifier>{b7fc2ab4-562d-453b-8e59-6b18d86a924e}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\utils">
+      <UniqueIdentifier>{f5cdee66-4373-42a1-9c60-14d573251d9b}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\graphic\camera">
+      <UniqueIdentifier>{f2a23a79-432f-4479-bf8c-9821b7fe8760}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\graphic\layer">
+      <UniqueIdentifier>{4404b48d-07a0-4312-bde1-2703742f518d}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\graphic\postfx">
+      <UniqueIdentifier>{7aedac8a-ea16-4e99-b049-69c166d5c104}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\graphic\shader">
+      <UniqueIdentifier>{2b9f73c5-a188-4892-98a4-acb7ee7c8ee5}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\graphic\ui">
+      <UniqueIdentifier>{8a9bb9ae-a91c-474a-9f83-0d49cea81766}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\debug">
+      <UniqueIdentifier>{f0506709-7063-4ca8-98dc-55e446fe8d5e}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\graphic\camera">
+      <UniqueIdentifier>{6dae7f6a-81f7-4030-aeac-02d166ce7f69}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\graphic\ui">
+      <UniqueIdentifier>{ea41a60f-6b9a-48dc-9bbf-cdb678cc0fdd}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\graphic\postfx">
+      <UniqueIdentifier>{612dcc1f-f703-497d-a55a-a0e2fe176dca}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\system">
+      <UniqueIdentifier>{4e81eeb0-05c9-4ceb-ac83-30d6d89ab09c}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\system\memory">
+      <UniqueIdentifier>{0b3c9b36-0b71-454f-8e5e-9acad2a1c6d9}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\system">
+      <UniqueIdentifier>{7ecfdc3c-288d-4dbc-a64f-87432252233f}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\system\memory">
+      <UniqueIdentifier>{16a77e24-6cd2-4950-a744-c7ff195cb250}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\graphic\api">
+      <UniqueIdentifier>{41089b4a-4d61-4ad7-901d-4cf94901cea2}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\graphic\api">
+      <UniqueIdentifier>{6100f40e-4da5-4ef1-9ece-e72179ae2cb6}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <CustomBuild Include="src\mainWindow.h">
+      <Filter>Header Files</Filter>
+    </CustomBuild>
+    <CustomBuild Include="src\application\applicationWidget.h">
+      <Filter>Header Files\application</Filter>
+    </CustomBuild>
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="src\main.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="GeneratedFiles\Debug\moc_mainWindow.cpp">
+      <Filter>Generated Files\Debug</Filter>
+    </ClCompile>
+    <ClCompile Include="GeneratedFiles\Release\moc_mainWindow.cpp">
+      <Filter>Generated Files\Release</Filter>
+    </ClCompile>
+    <ClCompile Include="src\graphic\batchRenderer2d.cpp">
+      <Filter>Source Files\graphic</Filter>
+    </ClCompile>
+    <ClCompile Include="src\graphic\sprite.cpp">
+      <Filter>Source Files\graphic</Filter>
+    </ClCompile>
+    <ClCompile Include="src\graphic\layer\layer.cpp">
+      <Filter>Source Files\graphic\layer</Filter>
+    </ClCompile>
+    <ClCompile Include="src\graphic\layer\tileLayer.cpp">
+      <Filter>Source Files\graphic\layer</Filter>
+    </ClCompile>
+    <ClCompile Include="src\graphic\layer\group.cpp">
+      <Filter>Source Files\graphic\layer</Filter>
+    </ClCompile>
+    <ClCompile Include="src\graphic\label.cpp">
+      <Filter>Source Files\graphic</Filter>
+    </ClCompile>
+    <ClCompile Include="src\graphic\meshFactory.cpp">
+      <Filter>Source Files\graphic</Filter>
+    </ClCompile>
+    <ClCompile Include="GeneratedFiles\Debug\moc_applicationWidget.cpp">
+      <Filter>Generated Files\Debug</Filter>
+    </ClCompile>
+    <ClCompile Include="GeneratedFiles\Release\moc_applicationWidget.cpp">
+      <Filter>Generated Files\Release</Filter>
+    </ClCompile>
+    <ClCompile Include="src\application\applicationWidget.cpp">
+      <Filter>Source Files\application</Filter>
+    </ClCompile>
+    <ClCompile Include="src\debug\debugLayer.cpp">
+      <Filter>Source Files\debug</Filter>
+    </ClCompile>
+    <ClCompile Include="src\debug\debugMenu.cpp">
+      <Filter>Source Files\debug</Filter>
+    </ClCompile>
+    <ClCompile Include="src\debug\debugMenuItem.cpp">
+      <Filter>Source Files\debug</Filter>
+    </ClCompile>
+    <ClCompile Include="src\debug\debugMenuSlider.cpp">
+      <Filter>Source Files\debug</Filter>
+    </ClCompile>
+    <ClCompile Include="src\examples\test3DLayer.cpp">
+      <Filter>Source Files\examples</Filter>
+    </ClCompile>
+    <ClCompile Include="src\examples\test2DLayer.cpp">
+      <Filter>Source Files\examples</Filter>
+    </ClCompile>
+    <ClCompile Include="src\graphic\camera\camera.cpp">
+      <Filter>Source Files\graphic\camera</Filter>
+    </ClCompile>
+    <ClCompile Include="src\graphic\layer\layer3D.cpp">
+      <Filter>Source Files\graphic\layer</Filter>
+    </ClCompile>
+    <ClCompile Include="src\graphic\layer\layer2D.cpp">
+      <Filter>Source Files\graphic\layer</Filter>
+    </ClCompile>
+    <ClCompile Include="src\graphic\ui\button.cpp">
+      <Filter>Source Files\graphic\ui</Filter>
+    </ClCompile>
+    <ClCompile Include="src\graphic\ui\panel.cpp">
+      <Filter>Source Files\graphic\ui</Filter>
+    </ClCompile>
+    <ClCompile Include="src\graphic\ui\slider.cpp">
+      <Filter>Source Files\graphic\ui</Filter>
+    </ClCompile>
+    <ClCompile Include="src\graphic\ui\widget.cpp">
+      <Filter>Source Files\graphic\ui</Filter>
+    </ClCompile>
+    <ClCompile Include="src\graphic\shader\shaderProgram.cpp">
+      <Filter>Source Files\graphic\shader</Filter>
+    </ClCompile>
+    <ClCompile Include="src\graphic\shader\shaderManager.cpp">
+      <Filter>Source Files\graphic\shader</Filter>
+    </ClCompile>
+    <ClCompile Include="src\graphic\shader\shaderFactory.cpp">
+      <Filter>Source Files\graphic\shader</Filter>
+    </ClCompile>
+    <ClCompile Include="src\mainWindow.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="src\graphic\scene.cpp">
+      <Filter>Source Files\graphic</Filter>
+    </ClCompile>
+    <ClCompile Include="src\entity\component\meshComponent.cpp">
+      <Filter>Source Files\entity\component</Filter>
+    </ClCompile>
+    <ClCompile Include="src\entity\component\transformComponent.cpp">
+      <Filter>Source Files\entity\component</Filter>
+    </ClCompile>
+    <ClCompile Include="src\entity\component\component.cpp">
+      <Filter>Source Files\entity\component</Filter>
+    </ClCompile>
+    <ClCompile Include="src\entity\entity.cpp">
+      <Filter>Source Files\entity</Filter>
+    </ClCompile>
+    <ClCompile Include="src\graphic\pbrMaterial.cpp">
+      <Filter>Source Files\graphic</Filter>
+    </ClCompile>
+    <ClCompile Include="src\graphic\model.cpp">
+      <Filter>Source Files\graphic</Filter>
+    </ClCompile>
+    <ClCompile Include="src\graphic\mesh.cpp">
+      <Filter>Source Files\graphic</Filter>
+    </ClCompile>
+    <ClCompile Include="src\graphic\material.cpp">
+      <Filter>Source Files\graphic</Filter>
+    </ClCompile>
+    <ClCompile Include="src\graphic\light.cpp">
+      <Filter>Source Files\graphic</Filter>
+    </ClCompile>
+    <ClCompile Include="src\graphic\lightSetup.cpp">
+      <Filter>Source Files\graphic</Filter>
+    </ClCompile>
+    <ClCompile Include="src\graphic\camera\fpsCamea.cpp">
+      <Filter>Source Files\graphic\camera</Filter>
+    </ClCompile>
+    <ClCompile Include="src\graphic\camera\mayaCamera.cpp">
+      <Filter>Source Files\graphic\camera</Filter>
+    </ClCompile>
+    <ClCompile Include="src\utils\qtopengl.cpp">
+      <Filter>Source Files\utils</Filter>
+    </ClCompile>
+    <ClCompile Include="src\graphic\postfx\postEffectsPass.cpp">
+      <Filter>Source Files\graphic\postfx</Filter>
+    </ClCompile>
+    <ClCompile Include="src\graphic\postfx\postEffects.cpp">
+      <Filter>Source Files\graphic\postfx</Filter>
+    </ClCompile>
+    <ClCompile Include="src\graphic\forwardRenderer.cpp">
+      <Filter>Source Files\graphic</Filter>
+    </ClCompile>
+    <ClCompile Include="src\graphic\API\context.cpp">
+      <Filter>Source Files\graphic\api</Filter>
+    </ClCompile>
+    <ClCompile Include="src\graphic\API\texture2D.cpp">
+      <Filter>Source Files\graphic\api</Filter>
+    </ClCompile>
+    <ClCompile Include="src\platform\opengl\glTexture2D.cpp">
+      <Filter>Generated Files</Filter>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="ClassDiagram.cd" />
+    <None Include="src\graphic\shaders\sceneShader.vert">
+      <Filter>Resource Files\shaders</Filter>
+    </None>
+    <None Include="src\graphic\shaders\fbfragmentShader.frag">
+      <Filter>Resource Files\shaders</Filter>
+    </None>
+    <None Include="src\graphic\shaders\fbVertexShader.vert">
+      <Filter>Resource Files\shaders</Filter>
+    </None>
+    <None Include="src\graphic\shaders\sceneShader.frag">
+      <Filter>Resource Files\shaders</Filter>
+    </None>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="src\maths\qtmaths.h">
+      <Filter>Source Files\maths</Filter>
+    </ClInclude>
+    <ClInclude Include="src\graphic\mask.h">
+      <Filter>Source Files\graphic</Filter>
+    </ClInclude>
+    <ClInclude Include="src\cgff.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="src\common.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="src\examples\test3DLayer.h">
+      <Filter>Header Files\examples</Filter>
+    </ClInclude>
+    <ClInclude Include="src\examples\test2DLayer.h">
+      <Filter>Header Files\examples</Filter>
+    </ClInclude>
+    <ClInclude Include="src\graphic\irenderable.h">
+      <Filter>Header Files\graphic</Filter>
+    </ClInclude>
+    <ClInclude Include="src\graphic\ui\internalUI.h">
+      <Filter>Header Files\graphic</Filter>
+    </ClInclude>
+    <ClInclude Include="src\graphic\forwardRenderer.h">
+      <Filter>Header Files\graphic</Filter>
+    </ClInclude>
+    <ClInclude Include="src\debug\debugMenuSlider.h">
+      <Filter>Header Files\debug</Filter>
+    </ClInclude>
+    <ClInclude Include="src\debug\debugMenu.h">
+      <Filter>Header Files\debug</Filter>
+    </ClInclude>
+    <ClInclude Include="src\debug\debugMenuAction.h">
+      <Filter>Header Files\debug</Filter>
+    </ClInclude>
+    <ClInclude Include="src\debug\debugMenuItem.h">
+      <Filter>Header Files\debug</Filter>
+    </ClInclude>
+    <ClInclude Include="src\debug\debugLayer.h">
+      <Filter>Header Files\debug</Filter>
+    </ClInclude>
+    <ClInclude Include="src\graphic\camera\camera.h">
+      <Filter>Header Files\graphic\camera</Filter>
+    </ClInclude>
+    <ClInclude Include="src\graphic\layer\layer3D.h">
+      <Filter>Header Files\graphic\layer</Filter>
+    </ClInclude>
+    <ClInclude Include="src\graphic\layer\layer2D.h">
+      <Filter>Header Files\graphic\layer</Filter>
+    </ClInclude>
+    <ClInclude Include="src\graphic\layer\tileLayer.h">
+      <Filter>Header Files\graphic\layer</Filter>
+    </ClInclude>
+    <ClInclude Include="src\graphic\layer\layer.h">
+      <Filter>Header Files\graphic\layer</Filter>
+    </ClInclude>
+    <ClInclude Include="src\graphic\layer\group.h">
+      <Filter>Header Files\graphic\layer</Filter>
+    </ClInclude>
+    <ClInclude Include="src\graphic\ui\panel.h">
+      <Filter>Header Files\graphic\ui</Filter>
+    </ClInclude>
+    <ClInclude Include="src\graphic\ui\button.h">
+      <Filter>Header Files\graphic\ui</Filter>
+    </ClInclude>
+    <ClInclude Include="src\graphic\ui\slider.h">
+      <Filter>Header Files\graphic\ui</Filter>
+    </ClInclude>
+    <ClInclude Include="src\graphic\ui\widget.h">
+      <Filter>Header Files\graphic\ui</Filter>
+    </ClInclude>
+    <ClInclude Include="src\graphic\camera\fpsCamera.h">
+      <Filter>Header Files\graphic\camera</Filter>
+    </ClInclude>
+    <ClInclude Include="src\graphic\camera\mayaCamera.h">
+      <Filter>Header Files\graphic\camera</Filter>
+    </ClInclude>
+    <ClInclude Include="src\graphic\shader\shaderFasctory.h">
+      <Filter>Header Files\graphic\shader</Filter>
+    </ClInclude>
+    <ClInclude Include="src\graphic\shader\shaderManager.h">
+      <Filter>Header Files\graphic\shader</Filter>
+    </ClInclude>
+    <ClInclude Include="src\graphic\shader\shaderProgram.h">
+      <Filter>Header Files\graphic\shader</Filter>
+    </ClInclude>
+    <ClInclude Include="src\graphic\shader\shaderResource.h">
+      <Filter>Header Files\graphic\shader</Filter>
+    </ClInclude>
+    <ClInclude Include="src\graphic\label.h">
+      <Filter>Header Files\graphic</Filter>
+    </ClInclude>
+    <ClInclude Include="src\graphic\renderable2d.h">
+      <Filter>Header Files\graphic</Filter>
+    </ClInclude>
+    <ClInclude Include="src\graphic\renderer2d.h">
+      <Filter>Header Files\graphic</Filter>
+    </ClInclude>
+    <ClInclude Include="src\graphic\sprite.h">
+      <Filter>Header Files\graphic</Filter>
+    </ClInclude>
+    <ClInclude Include="src\graphic\meshFactory.h">
+      <Filter>Header Files\graphic</Filter>
+    </ClInclude>
+    <ClInclude Include="src\graphic\batchRenderer2d.h">
+      <Filter>Header Files\graphic</Filter>
+    </ClInclude>
+    <ClInclude Include="src\graphic\renderer3d.h">
+      <Filter>Header Files\graphic</Filter>
+    </ClInclude>
+    <ClInclude Include="src\graphic\renderCommand.h">
+      <Filter>Header Files\graphic</Filter>
+    </ClInclude>
+    <ClInclude Include="src\graphic\scene.h">
+      <Filter>Header Files\graphic</Filter>
+    </ClInclude>
+    <ClInclude Include="src\utils\qtopengl.h">
+      <Filter>Header Files\utils</Filter>
+    </ClInclude>
+    <ClInclude Include="src\utils\types.h">
+      <Filter>Header Files\utils</Filter>
+    </ClInclude>
+    <ClInclude Include="src\entity\component\component.h">
+      <Filter>Header Files\entity\component</Filter>
+    </ClInclude>
+    <ClInclude Include="src\entity\component\components.h">
+      <Filter>Header Files\entity\component</Filter>
+    </ClInclude>
+    <ClInclude Include="src\entity\component\meshComponent.h">
+      <Filter>Header Files\entity\component</Filter>
+    </ClInclude>
+    <ClInclude Include="src\entity\component\transformComponent.h">
+      <Filter>Header Files\entity\component</Filter>
+    </ClInclude>
+    <ClInclude Include="src\entity\entity.h">
+      <Filter>Header Files\entity</Filter>
+    </ClInclude>
+    <ClInclude Include="src\graphic\pbrMaterial.h">
+      <Filter>Header Files\graphic</Filter>
+    </ClInclude>
+    <ClInclude Include="src\graphic\model.h">
+      <Filter>Header Files\graphic</Filter>
+    </ClInclude>
+    <ClInclude Include="src\graphic\mesh.h">
+      <Filter>Header Files\graphic</Filter>
+    </ClInclude>
+    <ClInclude Include="src\graphic\material.h">
+      <Filter>Header Files\graphic</Filter>
+    </ClInclude>
+    <ClInclude Include="src\graphic\light.h">
+      <Filter>Header Files\graphic</Filter>
+    </ClInclude>
+    <ClInclude Include="src\graphic\lightSetup.h">
+      <Filter>Header Files\graphic</Filter>
+    </ClInclude>
+    <ClInclude Include="src\graphic\postfx\postEffectsPass.h">
+      <Filter>Header Files\graphic\postfx</Filter>
+    </ClInclude>
+    <ClInclude Include="src\graphic\postfx\postEffects.h">
+      <Filter>Header Files\graphic\postfx</Filter>
+    </ClInclude>
+    <ClInclude Include="src\graphic\API\texture2D.h">
+      <Filter>Header Files\graphic\api</Filter>
+    </ClInclude>
+    <ClInclude Include="src\graphic\API\context.h">
+      <Filter>Header Files\graphic\api</Filter>
+    </ClInclude>
+    <ClInclude Include="src\platform\opengl\glTexture2D.h">
+      <Filter>Generated Files</Filter>
+    </ClInclude>
+    <ClInclude Include="src\graphic\api\texture.h">
+      <Filter>Generated Files</Filter>
+    </ClInclude>
+  </ItemGroup>
+</Project>

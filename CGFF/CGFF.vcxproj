@@ -1,0 +1,243 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project DefaultTargets="Build" ToolsVersion="14.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup Label="ProjectConfigurations">
+    <ProjectConfiguration Include="Debug|x64">
+      <Configuration>Debug</Configuration>
+      <Platform>x64</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="Release|x64">
+      <Configuration>Release</Configuration>
+      <Platform>x64</Platform>
+    </ProjectConfiguration>
+  </ItemGroup>
+  <PropertyGroup Label="Globals">
+    <ProjectGuid>{B12702AD-ABFB-343A-A199-8E24837244A3}</ProjectGuid>
+    <Keyword>Qt4VSv1.0</Keyword>
+    <WindowsTargetPlatformVersion>8.1</WindowsTargetPlatformVersion>
+  </PropertyGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'" Label="Configuration">
+    <ConfigurationType>Application</ConfigurationType>
+    <PlatformToolset>v140</PlatformToolset>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'" Label="Configuration">
+    <ConfigurationType>Application</ConfigurationType>
+    <PlatformToolset>v140</PlatformToolset>
+  </PropertyGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.props" />
+  <ImportGroup Label="ExtensionSettings" />
+  <ImportGroup Label="Shared" />
+  <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
+    <Import Project="..\propertysheet\CGFF.props" />
+  </ImportGroup>
+  <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
+    <Import Project="..\propertysheet\CGFF.props" />
+  </ImportGroup>
+  <PropertyGroup Label="UserMacros" />
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
+    <OutDir>$(SolutionDir)bin\$(Configuration)\</OutDir>
+    <IntDir>$(OutDir)\$(Platform)\$(Configuration)\</IntDir>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
+    <OutDir>$(SolutionDir)bin\$(Configuration)\</OutDir>
+    <IntDir>$(OutDir)\$(Platform)\$(Configuration)\</IntDir>
+  </PropertyGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
+    <ClCompile>
+      <PreprocessorDefinitions>UNICODE;WIN32;WIN64;QT_CORE_LIB;QT_GUI_LIB;QT_OPENGL_LIB;QT_WIDGETS_LIB;FT2_BUILD_LIBRARY;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <AdditionalIncludeDirectories>.\GeneratedFiles;.;$(QTDIR)\include;.\GeneratedFiles\$(ConfigurationName);$(QTDIR)\include\QtCore;$(QTDIR)\include\QtGui;$(QTDIR)\include\QtOpenGL;$(QTDIR)\include\QtWidgets;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <Optimization>Disabled</Optimization>
+      <DebugInformationFormat>ProgramDatabase</DebugInformationFormat>
+      <RuntimeLibrary>MultiThreadedDebugDLL</RuntimeLibrary>
+      <TreatWChar_tAsBuiltInType>true</TreatWChar_tAsBuiltInType>
+      <InlineFunctionExpansion>Disabled</InlineFunctionExpansion>
+      <IntrinsicFunctions>true</IntrinsicFunctions>
+      <FavorSizeOrSpeed>Speed</FavorSizeOrSpeed>
+      <EnableEnhancedInstructionSet>StreamingSIMDExtensions2</EnableEnhancedInstructionSet>
+      <FloatingPointModel>Fast</FloatingPointModel>
+      <BasicRuntimeChecks>EnableFastChecks</BasicRuntimeChecks>
+      <ShowIncludes>false</ShowIncludes>
+    </ClCompile>
+    <Link>
+      <SubSystem>Windows</SubSystem>
+      <OutputFile>$(OutDir)\$(ProjectName).exe</OutputFile>
+      <AdditionalLibraryDirectories>$(QTDIR)\lib;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <GenerateDebugInformation>true</GenerateDebugInformation>
+      <AdditionalDependencies>qtmaind.lib;Qt5Cored.lib;Qt5Guid.lib;Qt5OpenGLd.lib;opengl32.lib;glu32.lib;Qt5Widgetsd.lib;%(AdditionalDependencies)</AdditionalDependencies>
+    </Link>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
+    <ClCompile>
+      <PreprocessorDefinitions>UNICODE;WIN32;WIN64;QT_NO_DEBUG;NDEBUG;QT_CORE_LIB;QT_GUI_LIB;QT_OPENGL_LIB;QT_WIDGETS_LIB;FT2_BUILD_LIBRARY;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <AdditionalIncludeDirectories>.\GeneratedFiles;.;$(QTDIR)\include;.\GeneratedFiles\$(ConfigurationName);$(QTDIR)\include\QtCore;$(QTDIR)\include\QtGui;$(QTDIR)\include\QtOpenGL;$(QTDIR)\include\QtWidgets;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <DebugInformationFormat />
+      <RuntimeLibrary>MultiThreadedDLL</RuntimeLibrary>
+      <TreatWChar_tAsBuiltInType>true</TreatWChar_tAsBuiltInType>
+      <ShowIncludes>false</ShowIncludes>
+    </ClCompile>
+    <Link>
+      <SubSystem>Windows</SubSystem>
+      <OutputFile>$(OutDir)\$(ProjectName).exe</OutputFile>
+      <AdditionalLibraryDirectories>$(QTDIR)\lib;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <GenerateDebugInformation>false</GenerateDebugInformation>
+      <AdditionalDependencies>qtmain.lib;Qt5Core.lib;Qt5Gui.lib;Qt5OpenGL.lib;opengl32.lib;glu32.lib;Qt5Widgets.lib;%(AdditionalDependencies)</AdditionalDependencies>
+    </Link>
+  </ItemDefinitionGroup>
+  <ItemGroup>
+    <ClCompile Include="GeneratedFiles\Debug\moc_applicationWidget.cpp">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|x64'">true</ExcludedFromBuild>
+    </ClCompile>
+    <ClCompile Include="GeneratedFiles\Debug\moc_mainWindow.cpp">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|x64'">true</ExcludedFromBuild>
+    </ClCompile>
+    <ClCompile Include="GeneratedFiles\Release\moc_applicationWidget.cpp">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</ExcludedFromBuild>
+    </ClCompile>
+    <ClCompile Include="GeneratedFiles\Release\moc_mainWindow.cpp">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</ExcludedFromBuild>
+    </ClCompile>
+    <ClCompile Include="src\application\applicationWidget.cpp" />
+    <ClCompile Include="src\debug\debugLayer.cpp" />
+    <ClCompile Include="src\debug\debugMenu.cpp" />
+    <ClCompile Include="src\debug\debugMenuItem.cpp" />
+    <ClCompile Include="src\debug\debugMenuSlider.cpp" />
+    <ClCompile Include="src\entity\component\component.cpp" />
+    <ClCompile Include="src\entity\component\meshComponent.cpp" />
+    <ClCompile Include="src\entity\component\transformComponent.cpp" />
+    <ClCompile Include="src\entity\entity.cpp" />
+    <ClCompile Include="src\examples\test2DLayer.cpp" />
+    <ClCompile Include="src\examples\test3DLayer.cpp" />
+    <ClCompile Include="src\graphic\API\context.cpp" />
+    <ClCompile Include="src\graphic\API\texture2D.cpp" />
+    <ClCompile Include="src\graphic\batchRenderer2d.cpp" />
+    <ClCompile Include="src\graphic\camera\camera.cpp" />
+    <ClCompile Include="src\graphic\camera\fpsCamea.cpp" />
+    <ClCompile Include="src\graphic\camera\mayaCamera.cpp" />
+    <ClCompile Include="src\graphic\forwardRenderer.cpp" />
+    <ClCompile Include="src\graphic\label.cpp" />
+    <ClCompile Include="src\graphic\layer\group.cpp" />
+    <ClCompile Include="src\graphic\layer\layer.cpp" />
+    <ClCompile Include="src\graphic\layer\layer2D.cpp" />
+    <ClCompile Include="src\graphic\layer\layer3D.cpp" />
+    <ClCompile Include="src\graphic\layer\tileLayer.cpp" />
+    <ClCompile Include="src\graphic\light.cpp" />
+    <ClCompile Include="src\graphic\lightSetup.cpp" />
+    <ClCompile Include="src\graphic\model.cpp" />
+    <ClCompile Include="src\graphic\pbrMaterial.cpp" />
+    <ClCompile Include="src\graphic\shader\shaderFactory.cpp" />
+    <ClCompile Include="src\graphic\shader\shaderManager.cpp" />
+    <ClCompile Include="src\graphic\shader\shaderProgram.cpp" />
+    <ClCompile Include="src\graphic\ui\button.cpp" />
+    <ClCompile Include="src\graphic\ui\panel.cpp" />
+    <ClCompile Include="src\graphic\ui\slider.cpp" />
+    <ClCompile Include="src\graphic\ui\widget.cpp" />
+    <ClCompile Include="src\mainWindow.cpp" />
+    <ClCompile Include="src\graphic\material.cpp" />
+    <ClCompile Include="src\graphic\mesh.cpp" />
+    <ClCompile Include="src\graphic\meshFactory.cpp" />
+    <ClCompile Include="src\graphic\postfx\postEffects.cpp" />
+    <ClCompile Include="src\graphic\postfx\postEffectsPass.cpp" />
+    <ClCompile Include="src\graphic\scene.cpp" />
+    <ClCompile Include="src\graphic\sprite.cpp" />
+    <ClCompile Include="src\main.cpp" />
+    <ClCompile Include="src\platform\opengl\glTexture2D.cpp" />
+    <ClCompile Include="src\utils\qtopengl.cpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <CustomBuild Include="src\mainWindow.h">
+      <AdditionalInputs Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">$(QTDIR)\bin\moc.exe;%(FullPath)</AdditionalInputs>
+      <Message Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Moc%27ing mainWindow.h...</Message>
+      <Outputs Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">.\GeneratedFiles\$(ConfigurationName)\moc_%(Filename).cpp</Outputs>
+      <Command Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">"$(QTDIR)\bin\moc.exe"  "%(FullPath)" -o ".\GeneratedFiles\$(ConfigurationName)\moc_%(Filename).cpp"  -DUNICODE -DWIN32 -DWIN64 -DQT_CORE_LIB -DQT_GUI_LIB -DQT_OPENGL_LIB -DQT_WIDGETS_LIB -DFT2_BUILD_LIBRARY  "-I.\GeneratedFiles" "-I." "-I$(QTDIR)\include" "-I.\GeneratedFiles\$(ConfigurationName)\." "-I$(QTDIR)\include\QtCore" "-I$(QTDIR)\include\QtGui" "-I$(QTDIR)\include\QtOpenGL" "-I$(QTDIR)\include\QtWidgets" "-I.\src"</Command>
+      <AdditionalInputs Condition="'$(Configuration)|$(Platform)'=='Release|x64'">$(QTDIR)\bin\moc.exe;%(FullPath)</AdditionalInputs>
+      <Message Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Moc%27ing mainWindow.h...</Message>
+      <Outputs Condition="'$(Configuration)|$(Platform)'=='Release|x64'">.\GeneratedFiles\$(ConfigurationName)\moc_%(Filename).cpp</Outputs>
+      <Command Condition="'$(Configuration)|$(Platform)'=='Release|x64'">"$(QTDIR)\bin\moc.exe"  "%(FullPath)" -o ".\GeneratedFiles\$(ConfigurationName)\moc_%(Filename).cpp"  -DUNICODE -DWIN32 -DWIN64 -DQT_NO_DEBUG -DNDEBUG -DQT_CORE_LIB -DQT_GUI_LIB -DQT_OPENGL_LIB -DQT_WIDGETS_LIB -DFT2_BUILD_LIBRARY  "-I.\GeneratedFiles" "-I." "-I$(QTDIR)\include" "-I.\GeneratedFiles\$(ConfigurationName)\." "-I$(QTDIR)\include\QtCore" "-I$(QTDIR)\include\QtGui" "-I$(QTDIR)\include\QtOpenGL" "-I$(QTDIR)\include\QtWidgets" "-I.\src"</Command>
+    </CustomBuild>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="ClassDiagram.cd" />
+    <None Include="src\graphic\shaders\fbfragmentShader.frag" />
+    <None Include="src\graphic\shaders\fbVertexShader.vert" />
+    <None Include="src\graphic\shaders\sceneShader.frag" />
+    <None Include="src\graphic\shaders\sceneShader.vert" />
+  </ItemGroup>
+  <ItemGroup>
+    <CustomBuild Include="src\application\applicationWidget.h">
+      <Message Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Moc%27ing applicationWidget.h...</Message>
+      <Outputs Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">.\GeneratedFiles\$(ConfigurationName)\moc_%(Filename).cpp</Outputs>
+      <Command Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">"$(QTDIR)\bin\moc.exe"  "%(FullPath)" -o ".\GeneratedFiles\$(ConfigurationName)\moc_%(Filename).cpp"  -DUNICODE -DWIN32 -DWIN64 -DQT_CORE_LIB -DQT_GUI_LIB -DQT_OPENGL_LIB -DQT_WIDGETS_LIB -DFT2_BUILD_LIBRARY "-I.\GeneratedFiles" "-I." "-I$(QTDIR)\include" "-I.\GeneratedFiles\$(ConfigurationName)\." "-I$(QTDIR)\include\QtCore" "-I$(QTDIR)\include\QtGui" "-I$(QTDIR)\include\QtOpenGL" "-I$(QTDIR)\include\QtWidgets" "-I.\src"</Command>
+      <Message Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Moc%27ing applicationWidget.h...</Message>
+      <Outputs Condition="'$(Configuration)|$(Platform)'=='Release|x64'">.\GeneratedFiles\$(ConfigurationName)\moc_%(Filename).cpp</Outputs>
+      <Command Condition="'$(Configuration)|$(Platform)'=='Release|x64'">"$(QTDIR)\bin\moc.exe"  "%(FullPath)" -o ".\GeneratedFiles\$(ConfigurationName)\moc_%(Filename).cpp"  -DUNICODE -DWIN32 -DWIN64 -DQT_NO_DEBUG -DNDEBUG -DQT_CORE_LIB -DQT_GUI_LIB -DQT_OPENGL_LIB -DQT_WIDGETS_LIB -DFT2_BUILD_LIBRARY "-I.\GeneratedFiles" "-I." "-I$(QTDIR)\include" "-I.\GeneratedFiles\$(ConfigurationName)\." "-I$(QTDIR)\include\QtCore" "-I$(QTDIR)\include\QtGui" "-I$(QTDIR)\include\QtOpenGL" "-I$(QTDIR)\include\QtWidgets" "-I.\src"</Command>
+      <AdditionalInputs Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">$(QTDIR)\bin\moc.exe;%(FullPath)</AdditionalInputs>
+      <AdditionalInputs Condition="'$(Configuration)|$(Platform)'=='Release|x64'">$(QTDIR)\bin\moc.exe;%(FullPath)</AdditionalInputs>
+    </CustomBuild>
+    <ClInclude Include="src\cgff.h" />
+    <ClInclude Include="src\common.h" />
+    <ClInclude Include="src\debug\debugLayer.h" />
+    <ClInclude Include="src\debug\debugMenu.h" />
+    <ClInclude Include="src\debug\debugMenuAction.h" />
+    <ClInclude Include="src\debug\debugMenuItem.h" />
+    <ClInclude Include="src\debug\debugMenuSlider.h" />
+    <ClInclude Include="src\entity\component\component.h" />
+    <ClInclude Include="src\entity\component\components.h" />
+    <ClInclude Include="src\entity\component\meshComponent.h" />
+    <ClInclude Include="src\entity\component\transformComponent.h" />
+    <ClInclude Include="src\entity\entity.h" />
+    <ClInclude Include="src\examples\test2DLayer.h" />
+    <ClInclude Include="src\examples\test3DLayer.h" />
+    <ClInclude Include="src\graphic\API\context.h" />
+    <ClInclude Include="src\graphic\api\texture.h" />
+    <ClInclude Include="src\graphic\API\texture2D.h" />
+    <ClInclude Include="src\graphic\batchRenderer2d.h" />
+    <ClInclude Include="src\graphic\camera\camera.h" />
+    <ClInclude Include="src\graphic\camera\fpsCamera.h" />
+    <ClInclude Include="src\graphic\camera\mayaCamera.h" />
+    <ClInclude Include="src\graphic\forwardRenderer.h" />
+    <ClInclude Include="src\graphic\irenderable.h" />
+    <ClInclude Include="src\graphic\label.h" />
+    <ClInclude Include="src\graphic\layer\group.h" />
+    <ClInclude Include="src\graphic\layer\layer.h" />
+    <ClInclude Include="src\graphic\layer\layer2D.h" />
+    <ClInclude Include="src\graphic\layer\layer3D.h" />
+    <ClInclude Include="src\graphic\layer\tileLayer.h" />
+    <ClInclude Include="src\graphic\light.h" />
+    <ClInclude Include="src\graphic\lightSetup.h" />
+    <ClInclude Include="src\graphic\mask.h" />
+    <ClInclude Include="src\graphic\material.h" />
+    <ClInclude Include="src\graphic\mesh.h" />
+    <ClInclude Include="src\graphic\meshFactory.h" />
+    <ClInclude Include="src\graphic\model.h" />
+    <ClInclude Include="src\graphic\pbrMaterial.h" />
+    <ClInclude Include="src\graphic\postfx\postEffects.h" />
+    <ClInclude Include="src\graphic\postfx\postEffectsPass.h" />
+    <ClInclude Include="src\graphic\renderable2d.h" />
+    <ClInclude Include="src\graphic\renderCommand.h" />
+    <ClInclude Include="src\graphic\renderer2d.h" />
+    <ClInclude Include="src\graphic\renderer3d.h" />
+    <ClInclude Include="src\graphic\scene.h" />
+    <ClInclude Include="src\graphic\shader\shaderFasctory.h" />
+    <ClInclude Include="src\graphic\shader\shaderManager.h" />
+    <ClInclude Include="src\graphic\shader\shaderProgram.h" />
+    <ClInclude Include="src\graphic\shader\shaderResource.h" />
+    <ClInclude Include="src\graphic\sprite.h" />
+    <ClInclude Include="src\graphic\ui\button.h" />
+    <ClInclude Include="src\graphic\ui\internalUI.h" />
+    <ClInclude Include="src\graphic\ui\panel.h" />
+    <ClInclude Include="src\graphic\ui\slider.h" />
+    <ClInclude Include="src\graphic\ui\widget.h" />
+    <ClInclude Include="src\maths\qtmaths.h" />
+    <ClInclude Include="src\platform\opengl\glTexture2D.h" />
+    <ClInclude Include="src\utils\qtopengl.h" />
+    <ClInclude Include="src\utils\types.h" />
+  </ItemGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
+  <ImportGroup Label="ExtensionTargets">
+  </ImportGroup>
+  <ProjectExtensions>
+    <VisualStudio>
+      <UserProperties MocDir=".\GeneratedFiles\$(ConfigurationName)" UicDir=".\GeneratedFiles" RccDir=".\GeneratedFiles" lupdateOptions="" lupdateOnBuild="0" lreleaseOptions="" Qt5Version_x0020_x64="qt5.8" MocOptions="" />
+    </VisualStudio>
+  </ProjectExtensions>
+</Project>
