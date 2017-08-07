@@ -139,6 +139,12 @@
     <Filter Include="Source Files\graphic\api">
       <UniqueIdentifier>{6100f40e-4da5-4ef1-9ece-e72179ae2cb6}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Source Files\platform\opengl">
+      <UniqueIdentifier>{68a98834-40f6-4120-9d55-baa4443f1ee9}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\platform\opengl">
+      <UniqueIdentifier>{01f42401-97e6-406c-8ee8-bb67acb6bad0}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <CustomBuild Include="src\mainWindow.h">
@@ -297,7 +303,7 @@
       <Filter>Source Files\graphic\api</Filter>
     </ClCompile>
     <ClCompile Include="src\platform\opengl\glTexture2D.cpp">
-      <Filter>Generated Files</Filter>
+      <Filter>Source Files\platform\opengl</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -484,11 +490,11 @@
     <ClInclude Include="src\graphic\API\context.h">
       <Filter>Header Files\graphic\api</Filter>
     </ClInclude>
-    <ClInclude Include="src\platform\opengl\glTexture2D.h">
-      <Filter>Generated Files</Filter>
-    </ClInclude>
     <ClInclude Include="src\graphic\api\texture.h">
-      <Filter>Generated Files</Filter>
+      <Filter>Header Files\graphic\api</Filter>
+    </ClInclude>
+    <ClInclude Include="src\platform\opengl\glTexture2D.h">
+      <Filter>Header Files\platform\opengl</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>
