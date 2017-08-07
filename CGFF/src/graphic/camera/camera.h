@@ -13,6 +13,7 @@ namespace CGFF {
         virtual~Camera();
 
         virtual void update() { }
+        virtual void focus() { }
         virtual void mousePressEvent(QMouseEvent * event) {}
         virtual void mouseMoveEvent(QMouseEvent * event) {}
         virtual void resize(int width, int height) {};

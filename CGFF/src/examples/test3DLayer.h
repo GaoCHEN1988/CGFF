@@ -23,14 +23,26 @@ namespace CGFF {
         void keyPressEvent(QKeyEvent *event) override;
 
     private:
+
+        QSharedPointer<CGFF::Camera> m_mayaCamera;
+        QSharedPointer<CGFF::Camera> m_FPSCamera;
+
         QSharedPointer<QOpenGLShaderProgram> m_shader;
         QSharedPointer<CGFF::Material> m_material;
         QSharedPointer<CGFF::Entity> m_cube;
-        QSharedPointer<CGFF::Entity> m_sphere;
+        //QSharedPointer<CGFF::Entity> m_sphere;
+        QVector<QSharedPointer<CGFF::Entity>> m_pheres;
+        QSharedPointer<CGFF::Entity> m_dagger;
+        QSharedPointer<CGFF::PBRMaterial> m_daggerMaterial;
+        QSharedPointer<CGFF::MaterialInstance> m_skyboxMaterial;
+        QSharedPointer<CGFF::Light> m_light;
+
         QSharedPointer<CGFF::Entity> m_plane;
         CGFF::MeshFactory::Plane m_plane_mesh;
         QSharedPointer<CGFF::Model> m_model_cube;
         QSharedPointer<CGFF::Model> m_model_sphere;
+
+        QVector<QSharedPointer<CGFF::PBRMaterial>> m_materials;
 
         QMatrix4x4 m_vw_matrix;
         QMatrix4x4 m_ml_matrix;

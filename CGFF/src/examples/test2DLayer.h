@@ -5,7 +5,6 @@
 #include "graphic/sprite.h"
 #include "graphic/label.h"
 #include <QTime>
-#include <QTime>
 
 namespace CGFF {
     class Test2DLayer : public Layer2D

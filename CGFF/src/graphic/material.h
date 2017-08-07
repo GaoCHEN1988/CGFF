@@ -3,10 +3,11 @@
 
 #include "utils/qtopengl.h"
 #include "utils/types.h"
+#include "shader/shaderProgram.h"
+#include "api/texture2D.h"
 
-#include <QOpenGLShaderProgram>
-#include <QByteArray>
-#include <QDataStream>
+//#include <QByteArray>
+//#include <QDataStream>
 
 
 namespace CGFF {
