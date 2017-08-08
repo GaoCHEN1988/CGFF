@@ -109,6 +109,8 @@
     <ClCompile Include="src\examples\test3DLayer.cpp" />
     <ClCompile Include="src\graphic\API\context.cpp" />
     <ClCompile Include="src\graphic\API\texture2D.cpp" />
+    <ClCompile Include="src\graphic\api\textureCube.cpp" />
+    <ClCompile Include="src\graphic\api\textureDepth.cpp" />
     <ClCompile Include="src\graphic\batchRenderer2d.cpp" />
     <ClCompile Include="src\graphic\camera\camera.cpp" />
     <ClCompile Include="src\graphic\camera\fpsCamea.cpp" />
@@ -141,6 +143,8 @@
     <ClCompile Include="src\graphic\sprite.cpp" />
     <ClCompile Include="src\main.cpp" />
     <ClCompile Include="src\platform\opengl\glTexture2D.cpp" />
+    <ClCompile Include="src\platform\opengl\glTextureCube.cpp" />
+    <ClCompile Include="src\platform\opengl\glTextureDepth.cpp" />
     <ClCompile Include="src\utils\qtopengl.cpp" />
   </ItemGroup>
   <ItemGroup>
@@ -190,6 +194,8 @@
     <ClInclude Include="src\graphic\API\context.h" />
     <ClInclude Include="src\graphic\api\texture.h" />
     <ClInclude Include="src\graphic\API\texture2D.h" />
+    <ClInclude Include="src\graphic\api\textureCube.h" />
+    <ClInclude Include="src\graphic\api\textureDepth.h" />
     <ClInclude Include="src\graphic\batchRenderer2d.h" />
     <ClInclude Include="src\graphic\camera\camera.h" />
     <ClInclude Include="src\graphic\camera\fpsCamera.h" />
@@ -229,6 +235,8 @@
     <ClInclude Include="src\graphic\ui\widget.h" />
     <ClInclude Include="src\maths\qtmaths.h" />
     <ClInclude Include="src\platform\opengl\glTexture2D.h" />
+    <ClInclude Include="src\platform\opengl\glTextureCube.h" />
+    <ClInclude Include="src\platform\opengl\glTextureDepth.h" />
     <ClInclude Include="src\utils\qtopengl.h" />
     <ClInclude Include="src\utils\types.h" />
   </ItemGroup>

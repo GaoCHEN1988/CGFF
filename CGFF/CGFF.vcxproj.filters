@@ -305,6 +305,18 @@
     <ClCompile Include="src\platform\opengl\glTexture2D.cpp">
       <Filter>Source Files\platform\opengl</Filter>
     </ClCompile>
+    <ClCompile Include="src\graphic\api\textureCube.cpp">
+      <Filter>Source Files\graphic\api</Filter>
+    </ClCompile>
+    <ClCompile Include="src\graphic\api\textureDepth.cpp">
+      <Filter>Generated Files</Filter>
+    </ClCompile>
+    <ClCompile Include="src\platform\opengl\glTextureCube.cpp">
+      <Filter>Generated Files</Filter>
+    </ClCompile>
+    <ClCompile Include="src\platform\opengl\glTextureDepth.cpp">
+      <Filter>Generated Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <None Include="ClassDiagram.cd" />
@@ -495,6 +507,18 @@
     </ClInclude>
     <ClInclude Include="src\platform\opengl\glTexture2D.h">
       <Filter>Header Files\platform\opengl</Filter>
+    </ClInclude>
+    <ClInclude Include="src\graphic\api\textureCube.h">
+      <Filter>Header Files\graphic\api</Filter>
+    </ClInclude>
+    <ClInclude Include="src\graphic\api\textureDepth.h">
+      <Filter>Generated Files</Filter>
+    </ClInclude>
+    <ClInclude Include="src\platform\opengl\glTextureCube.h">
+      <Filter>Generated Files</Filter>
+    </ClInclude>
+    <ClInclude Include="src\platform\opengl\glTextureDepth.h">
+      <Filter>Generated Files</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>
