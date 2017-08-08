@@ -8,51 +8,72 @@ namespace CGFF {
 
     struct TextureParameters
     {
-        QOpenGLTexture::PixelFormat format;
+		QOpenGLTexture::PixelFormat pixelFormat;
+		QOpenGLTexture::TextureFormat textureFormat;
+		QImage::Format imageFormat;
+		QOpenGLTexture::PixelType pixelType;
         QOpenGLTexture::Filter filter;
         QOpenGLTexture::WrapMode wrap;
 
         TextureParameters()
         {
-            format = QOpenGLTexture::PixelFormat::RGBA;
+			pixelFormat = QOpenGLTexture::PixelFormat::RGBA;
+			textureFormat = QOpenGLTexture::RGBA8_UNorm;
+			imageFormat = QImage::Format_RGBA8888;
+			pixelType = QOpenGLTexture::UInt8;
             filter = QOpenGLTexture::Filter::Linear;
             wrap = QOpenGLTexture::WrapMode::ClampToEdge;
         }
 
-        TextureParameters(QOpenGLTexture::PixelFormat format, QOpenGLTexture::Filter filter, QOpenGLTexture::WrapMode wrap)
-            : format(format)
+        TextureParameters(QOpenGLTexture::PixelFormat pixelFormat
+			, QOpenGLTexture::TextureFormat textureFormat
+			, QImage::Format imageFormat
+			, QOpenGLTexture::PixelType pixelType
+			, QOpenGLTexture::Filter filter
+			, QOpenGLTexture::WrapMode wrap)
+            : pixelFormat(pixelFormat)
+			, textureFormat(textureFormat)
+			, imageFormat(imageFormat)
+			, pixelType(pixelType)
             , filter(filter)
             , wrap(wrap)
         {
         }
 
         TextureParameters(QOpenGLTexture::Filter filter)
-            : format(QOpenGLTexture::PixelFormat::RGBA)
+            : pixelFormat(QOpenGLTexture::PixelFormat::RGBA)
+			, textureFormat(QOpenGLTexture::RGBA8_UNorm)
+			, imageFormat(QImage::Format_RGBA8888)
+			, pixelType(QOpenGLTexture::UInt8)
             , filter(filter)
             , wrap(QOpenGLTexture::WrapMode::ClampToEdge)
         {
         }
 
         TextureParameters(QOpenGLTexture::Filter filter, QOpenGLTexture::WrapMode wrap)
-            : format(QOpenGLTexture::PixelFormat::RGBA)
-            , filter(filter), wrap(wrap)
+            : pixelFormat(QOpenGLTexture::PixelFormat::RGBA)
+			, textureFormat(QOpenGLTexture::RGBA8_UNorm)
+			, imageFormat(QImage::Format_RGBA8888)
+			, pixelType(QOpenGLTexture::UInt8)
+            , filter(filter)
+			, wrap(wrap)
         {
         }
     };
 
     struct TextureLoadOptions
     {
-        bool flipX;
-        bool flipY;
+        bool horizontalFlip;
+        bool verticalFlip;
 
         TextureLoadOptions()
         {
-            flipX = false;
-            flipY = false;
+			horizontalFlip = false;
+			verticalFlip = true;
         }
 
-        TextureLoadOptions(bool flipX, bool flipY)
-            : flipX(flipX), flipY(flipY)
+        TextureLoadOptions(bool horizontal, bool vertical)
+            : horizontalFlip(horizontal), verticalFlip(vertical)
         {
         }
     };

@@ -2,6 +2,7 @@
 #define GL_TEXTURE_2D_H
 
 #include "graphic/api/texture2D.h"
+#include <QColor>
 
 namespace CGFF {
 
@@ -14,8 +15,11 @@ namespace CGFF {
 
 		virtual ~GLTexture2D() {};
 
+		inline QString getName() const { return m_name; }
+		inline QString getFilepath() const { return m_fileName; }
+
 	private: 
-		void load();
+		void load(QColor color = QColor(0,0,0));
 
 	private:
 		QString m_name;
