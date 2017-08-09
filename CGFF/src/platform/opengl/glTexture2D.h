@@ -15,11 +15,15 @@ namespace CGFF {
 
 		virtual ~GLTexture2D() {};
 
-		inline QString getName() const { return m_name; }
-		inline QString getFilepath() const { return m_fileName; }
+		void bind(uint slot = 0) override;
+		void unBind(uint slot = 0) override;
+
+		inline QString getName() const override { return m_name; }
+		inline QString getFilepath() const override { return m_fileName; }
 
 	private: 
-		void load(QColor color = QColor(0,0,0));
+		void load();
+		void load(QColor color);
 
 	private:
 		QString m_name;
@@ -28,6 +32,7 @@ namespace CGFF {
 		int m_height;
 		TextureParameters m_parameters;
 		TextureLoadOptions m_loadOptions;
+		QOpenGLTexture m_glTexture;
 	};
 }
 

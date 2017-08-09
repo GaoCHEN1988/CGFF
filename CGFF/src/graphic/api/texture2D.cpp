@@ -4,11 +4,6 @@
 
 namespace CGFF {
 
-	Texture2D::Texture2D(QOpenGLTexture::Target target)
-	: QOpenGLTexture(target)
-	{
-	}
-
 	QSharedPointer<Texture2D> Texture2D::Create(int width, int height, TextureParameters parameters = TextureParameters(), TextureLoadOptions loadOptions = TextureLoadOptions())
 	{
 		switch (Context::getRenderAPI())

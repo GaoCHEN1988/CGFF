@@ -4,12 +4,6 @@
 
 namespace CGFF {
 
-	TextureCube::TextureCube(QOpenGLTexture::Target target)
-		: QOpenGLTexture(target)
-	{
-
-	}
-
 	QSharedPointer<TextureCube> TextureCube::createFromFile(const QString& filepath)
 	{
 		switch (Context::getRenderAPI())

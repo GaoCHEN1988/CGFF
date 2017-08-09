@@ -13,8 +13,12 @@ namespace CGFF {
 		GLTextureCube(const QString& name, const QStringList& files, int mips, InputFormat format);
 		virtual ~GLTextureCube() {};
 
-		inline QString getName() const { return m_name; }
-		inline QStringList getFilepath() const { return m_fileNames; }
+		void bind(uint slot = 0) override;
+		void unBind(uint slot = 0) override;
+
+		inline QString getName() const override { return m_name; }
+		inline QString getFilepath() const override { return m_fileNames[0]; }
+		inline QStringList getFilepathList() const { return m_fileNames; }
 
 	private:
 		void loadFromFiles();
@@ -27,6 +31,7 @@ namespace CGFF {
 		InputFormat m_inputFormat;
 		TextureParameters m_parameters;
 		TextureLoadOptions m_loadOptions;
+		QOpenGLTexture m_glTexture;
 	};
 
 }

@@ -1,5 +1,5 @@
 #include "test2DLayer.h"
-#include "graphic/shader/shaderFasctory.h"
+#include "graphic/shader/shaderFactory.h"
 namespace CGFF {
 
     Test2DLayer::Test2DLayer(QSize size)

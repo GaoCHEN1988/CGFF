@@ -1,4 +1,4 @@
-#include "shaderFasctory.h"
+#include "shaderFactory.h"
 
 namespace CGFF {
     QSharedPointer<QOpenGLShaderProgram> DefaultShader()

@@ -8,55 +8,59 @@ namespace CGFF {
 
     struct TextureParameters
     {
-		QOpenGLTexture::PixelFormat pixelFormat;
-		QOpenGLTexture::TextureFormat textureFormat;
+		//Paramters for opengl
+		QOpenGLTexture::PixelFormat gl_pixelFormat;
+		QOpenGLTexture::TextureFormat gl_textureFormat;
 		QImage::Format imageFormat;
-		QOpenGLTexture::PixelType pixelType;
-        QOpenGLTexture::Filter filter;
-        QOpenGLTexture::WrapMode wrap;
+		QOpenGLTexture::PixelType gl_pixelType;
+        QOpenGLTexture::Filter gl_filter;
+        QOpenGLTexture::WrapMode gl_wrap;
+
+		//To implement: parameters for directX
+		//to do
 
         TextureParameters()
         {
-			pixelFormat = QOpenGLTexture::PixelFormat::RGBA;
-			textureFormat = QOpenGLTexture::RGBA8_UNorm;
+			gl_pixelFormat = QOpenGLTexture::PixelFormat::RGBA;
+			gl_textureFormat = QOpenGLTexture::RGBA8_UNorm;
 			imageFormat = QImage::Format_RGBA8888;
-			pixelType = QOpenGLTexture::UInt8;
-            filter = QOpenGLTexture::Filter::Linear;
-            wrap = QOpenGLTexture::WrapMode::ClampToEdge;
+			gl_pixelType = QOpenGLTexture::UInt8;
+            gl_filter = QOpenGLTexture::Filter::Linear;
+            gl_wrap = QOpenGLTexture::WrapMode::ClampToEdge;
         }
 
-        TextureParameters(QOpenGLTexture::PixelFormat pixelFormat
-			, QOpenGLTexture::TextureFormat textureFormat
+        TextureParameters(QOpenGLTexture::PixelFormat gl_pixelFormat
+			, QOpenGLTexture::TextureFormat gl_textureFormat
 			, QImage::Format imageFormat
-			, QOpenGLTexture::PixelType pixelType
-			, QOpenGLTexture::Filter filter
-			, QOpenGLTexture::WrapMode wrap)
-            : pixelFormat(pixelFormat)
-			, textureFormat(textureFormat)
+			, QOpenGLTexture::PixelType gl_pixelType
+			, QOpenGLTexture::Filter gl_filter
+			, QOpenGLTexture::WrapMode gl_wrap)
+            : gl_pixelFormat(gl_pixelFormat)
+			, gl_textureFormat(gl_textureFormat)
 			, imageFormat(imageFormat)
-			, pixelType(pixelType)
-            , filter(filter)
-            , wrap(wrap)
+			, gl_pixelType(gl_pixelType)
+            , gl_filter(gl_filter)
+            , gl_wrap(gl_wrap)
         {
         }
 
-        TextureParameters(QOpenGLTexture::Filter filter)
-            : pixelFormat(QOpenGLTexture::PixelFormat::RGBA)
-			, textureFormat(QOpenGLTexture::RGBA8_UNorm)
+        TextureParameters(QOpenGLTexture::Filter gl_filter)
+            : gl_pixelFormat(QOpenGLTexture::PixelFormat::RGBA)
+			, gl_textureFormat(QOpenGLTexture::RGBA8_UNorm)
 			, imageFormat(QImage::Format_RGBA8888)
-			, pixelType(QOpenGLTexture::UInt8)
-            , filter(filter)
-            , wrap(QOpenGLTexture::WrapMode::ClampToEdge)
+			, gl_pixelType(QOpenGLTexture::UInt8)
+            , gl_filter(gl_filter)
+            , gl_wrap(QOpenGLTexture::WrapMode::ClampToEdge)
         {
         }
 
-        TextureParameters(QOpenGLTexture::Filter filter, QOpenGLTexture::WrapMode wrap)
-            : pixelFormat(QOpenGLTexture::PixelFormat::RGBA)
-			, textureFormat(QOpenGLTexture::RGBA8_UNorm)
+        TextureParameters(QOpenGLTexture::Filter gl_filter, QOpenGLTexture::WrapMode gl_wrap)
+            : gl_pixelFormat(QOpenGLTexture::PixelFormat::RGBA)
+			, gl_textureFormat(QOpenGLTexture::RGBA8_UNorm)
 			, imageFormat(QImage::Format_RGBA8888)
-			, pixelType(QOpenGLTexture::UInt8)
-            , filter(filter)
-			, wrap(wrap)
+			, gl_pixelType(QOpenGLTexture::UInt8)
+            , gl_filter(gl_filter)
+			, gl_wrap(gl_wrap)
         {
         }
     };
@@ -77,6 +81,20 @@ namespace CGFF {
         {
         }
     };
+
+	class Texture
+	{
+	public:
+		virtual ~Texture() {}
+
+		virtual void bind(uint slot = 0) = 0;
+		virtual void unBind(uint slot = 0) = 0;
+
+		virtual QString getName() const = 0;
+		virtual QString getFilepath() const = 0;
+
+	};
+
 
 }
 

@@ -5,13 +5,10 @@
 
 namespace CGFF {
 
-	class TextureDepth : public QOpenGLTexture
+	class TextureDepth : public Texture
 	{
 	public:
-		TextureDepth(QOpenGLTexture::Target target = TargetCubeMap);
-
-	public:
-		static QSharedPointer<TextureDepth> create(uint width, uint height);
+		static QSharedPointer<TextureDepth> create(int width, int height);
 	};
 }
 

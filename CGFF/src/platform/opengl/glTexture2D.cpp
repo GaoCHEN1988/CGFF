@@ -9,6 +9,7 @@ namespace CGFF {
 		, m_height(height)
 		, m_parameters(parameters)
 		, m_loadOptions(loadOptions)
+		, m_glTexture(QOpenGLTexture::Target2D)
 	{
 		load();
 	}
@@ -20,6 +21,7 @@ namespace CGFF {
 		, m_height(height)
 		, m_parameters(parameters)
 		, m_loadOptions(loadOptions)
+		, m_glTexture(QOpenGLTexture::Target2D)
 	{
 		load(color);
 	}
@@ -31,42 +33,66 @@ namespace CGFF {
 		, m_height(1)
 		, m_parameters(parameters)
 		, m_loadOptions(loadOptions)
+		, m_glTexture(QOpenGLTexture::Target2D)
 	{
 		load();
 	}
 
-	void GLTexture2D::load(QColor color)
+	void GLTexture2D::bind(uint slot)
 	{
-		//Need to test
-		QOpenGLTexture::create();
-		QOpenGLTexture::allocateStorage();
+		m_glTexture.bind(slot);
+	}
 
-		QImage texImage;
+	void GLTexture2D::unBind(uint slot)
+	{
+		m_glTexture.release(slot);
+	}
 
+	void GLTexture2D::load()
+	{
 		if (!m_fileName.isEmpty())
 		{
+			QImage texImage;
+
 			if (texImage.load(m_fileName))
 			{
-				setFormat(m_parameters.textureFormat);
-				setData(texImage.mirrored(m_loadOptions.horizontalFlip, m_loadOptions.verticalFlip).convertToFormat(m_parameters.imageFormat));
+				//Need to test
+				m_glTexture.create();
+				m_glTexture.setSize(texImage.width(), texImage.height(), texImage.depth());
+				m_glTexture.allocateStorage();
+
+				m_glTexture.setFormat(m_parameters.gl_textureFormat);
+				m_glTexture.setData(texImage.mirrored(m_loadOptions.horizontalFlip, m_loadOptions.verticalFlip).convertToFormat(m_parameters.imageFormat));
 			}
 			else
 			{
-				qWarning("Can't load image from ", m_fileName);
+				qFatal("Can't load image from ", m_fileName);
 				return;
 			}
 		}
 		else
 		{
-			texImage = QImage(m_width, m_height, m_parameters.imageFormat);
-			texImage.fill(color);
-			setFormat(m_parameters.textureFormat);
-			setData(texImage.mirrored(m_loadOptions.horizontalFlip, m_loadOptions.verticalFlip));
+			qFatal("Can't load image from ", m_fileName);
+			return;
 		}
-		
+	}
+
+	void GLTexture2D::load(QColor color)
+	{
+		QImage texImage;
+		texImage = QImage(m_width, m_height, m_parameters.imageFormat);
+		texImage.fill(color);
+
+		//Need to test
+		m_glTexture.create();
+		m_glTexture.setSize(texImage.width(), texImage.height(), texImage.depth());
+		m_glTexture.allocateStorage();
+		m_glTexture.setFormat(m_parameters.gl_textureFormat);
+		m_glTexture.setData(texImage.mirrored(m_loadOptions.horizontalFlip, m_loadOptions.verticalFlip));
+
 		//TO do: Support more QOpenGL features
-		setWrapMode(m_parameters.wrap);
-		setMinMagFilters(m_parameters.filter, m_parameters.filter);
+		m_glTexture.setWrapMode(m_parameters.gl_wrap);
+		m_glTexture.setMinMagFilters(m_parameters.gl_filter, m_parameters.gl_filter);
 	}
 
 }

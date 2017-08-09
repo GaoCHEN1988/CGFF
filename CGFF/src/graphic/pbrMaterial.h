@@ -4,13 +4,14 @@
 #include"material.h"
 
 namespace CGFF {
+
     class PBRMaterial : public Material
     {
     public:
-        PBRMaterial(ShaderProgram* shader);
+        PBRMaterial(QSharedPointer<ShaderProgram> shader);
         ~PBRMaterial();
 
-        void setEnviromentMap(TextureCube* texture);
+        void setEnviromentMap(QSharedPointer<TextureCube> texture);
 
         // PBR Statics
         void setAlbedo(const QVector4D& color);
@@ -19,18 +20,18 @@ namespace CGFF {
         void usingNormalMap(bool value);
 
         // PBR Maps
-        void setAlbedoMap(API::Texture2D* texture);
-        void setSpecularMap(API::Texture2D* texture);
-        void setNormalMap(API::Texture2D* texture);
-        void setGlossMap(API::Texture2D* texture); // TODO: Grayscale texture
+        void setAlbedoMap(QSharedPointer<Texture2D> texture);
+        void setSpecularMap(QSharedPointer<Texture2D> texture);
+        void setNormalMap(QSharedPointer<Texture2D> texture);
+        void setGlossMap(QSharedPointer<Texture2D> texture); // TODO: Grayscale texture
 
-        API::Texture* GetAlbedoMap();
-        API::Texture* GetSpecularMap();
-        API::Texture* GetNormalMap();
-        API::Texture* GetGlossMap();
+        QSharedPointer<QOpenGLTexture> getAlbedoMap();
+        QSharedPointer<QOpenGLTexture> getSpecularMap();
+        QSharedPointer<QOpenGLTexture> getNormalMap();
+        QSharedPointer<QOpenGLTexture> getGlossMap();
 
     private:
-        static API::Texture2D* s_preintegratedFG;
+        static QSharedPointer<Texture2D> s_preintegratedFG;
     };
 
     class PBRMaterialInstance : public MaterialInstance
@@ -38,19 +39,19 @@ namespace CGFF {
     public:
         PBRMaterialInstance(PBRMaterial* material);
 
-        void SetEnviromentMap(API::TextureCube* texture);
+        void setEnviromentMap(QSharedPointer<TextureCube> texture);
 
         // PBR Statics
-        void SetAlbedo(const QVector4D& color);
-        void SetSpecular(const QVector3D& color);
-        void SetGloss(float value);
-        void UsingNormalMap(bool value);
+        void setAlbedo(const QVector4D& color);
+        void setSpecular(const QVector3D& color);
+        void setGloss(float value);
+        void usingNormalMap(bool value);
 
         // PBR Maps
-        void SetAlbedoMap(API::Texture2D* texture);
-        void SetSpecularMap(API::Texture2D* texture);
-        void SetNormalMap(API::Texture2D* texture);
-        void SetGlossMap(API::Texture2D* texture); // TODO: Grayscale texture
+        void setAlbedoMap(QSharedPointer<Texture2D> texture);
+        void setSpecularMap(QSharedPointer<Texture2D> texture);
+        void setNormalMap(QSharedPointer<Texture2D> texture);
+        void setGlossMap(QSharedPointer<Texture2D> texture); // TODO: Grayscale texture
     };
 }
 #endif

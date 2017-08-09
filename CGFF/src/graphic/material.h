@@ -5,6 +5,7 @@
 #include "utils/types.h"
 #include "shader/shaderProgram.h"
 #include "api/texture2D.h"
+#include "api/textureCube.h"
 
 //#include <QByteArray>
 //#include <QDataStream>
@@ -47,6 +48,14 @@ namespace CGFF {
 
     class Material
     {
+	public:
+		enum class RenderFlags
+		{
+			NONE = 0,
+			DISABLE_DEPTH_TEST = 1,
+			WIREFRAME = 2
+		};
+
     public:
         Material(QSharedPointer<QOpenGLShaderProgram>& shader);
         virtual ~Material();

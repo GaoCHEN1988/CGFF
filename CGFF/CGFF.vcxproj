@@ -108,6 +108,8 @@
     <ClCompile Include="src\examples\test2DLayer.cpp" />
     <ClCompile Include="src\examples\test3DLayer.cpp" />
     <ClCompile Include="src\graphic\API\context.cpp" />
+    <ClCompile Include="src\graphic\api\framebuffer2D.cpp" />
+    <ClCompile Include="src\graphic\api\framebufferDepth.cpp" />
     <ClCompile Include="src\graphic\API\texture2D.cpp" />
     <ClCompile Include="src\graphic\api\textureCube.cpp" />
     <ClCompile Include="src\graphic\api\textureDepth.cpp" />
@@ -129,6 +131,7 @@
     <ClCompile Include="src\graphic\shader\shaderFactory.cpp" />
     <ClCompile Include="src\graphic\shader\shaderManager.cpp" />
     <ClCompile Include="src\graphic\shader\shaderProgram.cpp" />
+    <ClCompile Include="src\graphic\shader\shaderUniform.cpp" />
     <ClCompile Include="src\graphic\ui\button.cpp" />
     <ClCompile Include="src\graphic\ui\panel.cpp" />
     <ClCompile Include="src\graphic\ui\slider.cpp" />
@@ -142,6 +145,8 @@
     <ClCompile Include="src\graphic\scene.cpp" />
     <ClCompile Include="src\graphic\sprite.cpp" />
     <ClCompile Include="src\main.cpp" />
+    <ClCompile Include="src\platform\opengl\glFramebuffer2D.cpp" />
+    <ClCompile Include="src\platform\opengl\glFramebufferDepth.cpp" />
     <ClCompile Include="src\platform\opengl\glTexture2D.cpp" />
     <ClCompile Include="src\platform\opengl\glTextureCube.cpp" />
     <ClCompile Include="src\platform\opengl\glTextureDepth.cpp" />
@@ -192,6 +197,8 @@
     <ClInclude Include="src\examples\test2DLayer.h" />
     <ClInclude Include="src\examples\test3DLayer.h" />
     <ClInclude Include="src\graphic\API\context.h" />
+    <ClInclude Include="src\graphic\api\framebuffer2D.h" />
+    <ClInclude Include="src\graphic\api\framebufferDepth.h" />
     <ClInclude Include="src\graphic\api\texture.h" />
     <ClInclude Include="src\graphic\API\texture2D.h" />
     <ClInclude Include="src\graphic\api\textureCube.h" />
@@ -223,10 +230,11 @@
     <ClInclude Include="src\graphic\renderer2d.h" />
     <ClInclude Include="src\graphic\renderer3d.h" />
     <ClInclude Include="src\graphic\scene.h" />
-    <ClInclude Include="src\graphic\shader\shaderFasctory.h" />
+    <ClInclude Include="src\graphic\shader\shaderFactory.h" />
     <ClInclude Include="src\graphic\shader\shaderManager.h" />
     <ClInclude Include="src\graphic\shader\shaderProgram.h" />
     <ClInclude Include="src\graphic\shader\shaderResource.h" />
+    <ClInclude Include="src\graphic\shader\shaderUniform.h" />
     <ClInclude Include="src\graphic\sprite.h" />
     <ClInclude Include="src\graphic\ui\button.h" />
     <ClInclude Include="src\graphic\ui\internalUI.h" />
@@ -234,6 +242,8 @@
     <ClInclude Include="src\graphic\ui\slider.h" />
     <ClInclude Include="src\graphic\ui\widget.h" />
     <ClInclude Include="src\maths\qtmaths.h" />
+    <ClInclude Include="src\platform\opengl\glFramebuffer2D.h" />
+    <ClInclude Include="src\platform\opengl\glFramebufferDepth.h" />
     <ClInclude Include="src\platform\opengl\glTexture2D.h" />
     <ClInclude Include="src\platform\opengl\glTextureCube.h" />
     <ClInclude Include="src\platform\opengl\glTextureDepth.h" />

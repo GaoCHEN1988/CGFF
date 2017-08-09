@@ -5,6 +5,7 @@ namespace CGFF {
 	GLTextureCube::GLTextureCube(const QString& name, const QString& filepath)
 		: m_name(name)
 		, m_inputFormat(InputFormat::VERTICAL_CROSS)
+		, m_glTexture(m_glTexture.TargetCubeMap)
 	{
 		m_fileNames.append(filepath);
 		loadFromFiles();
@@ -14,6 +15,7 @@ namespace CGFF {
 		: m_name(name)
 		, m_fileNames(files)
 		, m_inputFormat(InputFormat::VERTICAL_CROSS)
+		, m_glTexture(m_glTexture.TargetCubeMap)
 	{
 		loadFromFiles();
 	}
@@ -22,8 +24,19 @@ namespace CGFF {
 		: m_name(name)
 		, m_fileNames(files)
 		, m_inputFormat(format)
+		, m_glTexture(m_glTexture.TargetCubeMap)
 	{
 		loadFromFiles();
+	}
+
+	void GLTextureCube::bind(uint slot)
+	{
+		m_glTexture.bind(slot);
+	}
+
+	void GLTextureCube::unBind(uint slot)
+	{
+		m_glTexture.release(slot);
 	}
 
 	void GLTextureCube::loadFromFiles()
@@ -51,32 +64,33 @@ namespace CGFF {
 			}
 
 			//Need to test
-			QOpenGLTexture::create();
-			QOpenGLTexture::setFormat(m_parameters.textureFormat);
-			QOpenGLTexture::allocateStorage();
+			m_glTexture.create();
+			m_glTexture.setSize(posx.width(), posx.height(), posx.depth());
+			m_glTexture.setFormat(m_parameters.gl_textureFormat);
+			m_glTexture.allocateStorage();
 			
-			QOpenGLTexture::setData(0, 0, QOpenGLTexture::CubeMapPositiveX,
-				m_parameters.pixelFormat, m_parameters.pixelType,
+			m_glTexture.setData(0, 0, m_glTexture.CubeMapPositiveX,
+				m_parameters.gl_pixelFormat, m_parameters.gl_pixelType,
 				(const void*)posx.constBits(), 0);
-			QOpenGLTexture::setData(0, 0, QOpenGLTexture::CubeMapPositiveY,
-				m_parameters.pixelFormat, m_parameters.pixelType,
+			m_glTexture.setData(0, 0, m_glTexture.CubeMapPositiveY,
+				m_parameters.gl_pixelFormat, m_parameters.gl_pixelType,
 				(const void*)posy.constBits(), 0);
-			QOpenGLTexture::setData(0, 0, QOpenGLTexture::CubeMapPositiveZ,
-				m_parameters.pixelFormat, m_parameters.pixelType,
+			m_glTexture.setData(0, 0, m_glTexture.CubeMapPositiveZ,
+				m_parameters.gl_pixelFormat, m_parameters.gl_pixelType,
 				(const void*)posz.constBits(), 0);
-			QOpenGLTexture::setData(0, 0, QOpenGLTexture::CubeMapNegativeX,
-				m_parameters.pixelFormat, m_parameters.pixelType,
+			m_glTexture.setData(0, 0, m_glTexture.CubeMapNegativeX,
+				m_parameters.gl_pixelFormat, m_parameters.gl_pixelType,
 				(const void*)negx.constBits(), 0);
-			QOpenGLTexture::setData(0, 0, QOpenGLTexture::CubeMapNegativeY,
-				m_parameters.pixelFormat, m_parameters.pixelType,
+			m_glTexture.setData(0, 0, m_glTexture.CubeMapNegativeY,
+				m_parameters.gl_pixelFormat, m_parameters.gl_pixelType,
 				(const void*)negy.constBits(), 0);
-			QOpenGLTexture::setData(0, 0, QOpenGLTexture::CubeMapNegativeZ,
-				m_parameters.pixelFormat, m_parameters.pixelType,
+			m_glTexture.setData(0, 0, m_glTexture.CubeMapNegativeZ,
+				m_parameters.gl_pixelFormat, m_parameters.gl_pixelType,
 				(const void*)negz.constBits(), 0);
 
-			QOpenGLTexture::generateMipMaps();
-			QOpenGLTexture::setWrapMode(m_parameters.wrap);
-			QOpenGLTexture::setMinMagFilters(m_parameters.filter, m_parameters.filter);
+			m_glTexture.generateMipMaps();
+			m_glTexture.setWrapMode(m_parameters.gl_wrap);
+			m_glTexture.setMinMagFilters(m_parameters.gl_filter, m_parameters.gl_filter);
 
 		}
 		else

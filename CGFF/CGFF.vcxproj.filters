@@ -308,14 +308,29 @@
     <ClCompile Include="src\graphic\api\textureCube.cpp">
       <Filter>Source Files\graphic\api</Filter>
     </ClCompile>
-    <ClCompile Include="src\graphic\api\textureDepth.cpp">
-      <Filter>Generated Files</Filter>
+    <ClCompile Include="src\platform\opengl\glTextureDepth.cpp">
+      <Filter>Source Files\platform\opengl</Filter>
     </ClCompile>
     <ClCompile Include="src\platform\opengl\glTextureCube.cpp">
-      <Filter>Generated Files</Filter>
+      <Filter>Source Files\platform\opengl</Filter>
     </ClCompile>
-    <ClCompile Include="src\platform\opengl\glTextureDepth.cpp">
-      <Filter>Generated Files</Filter>
+    <ClCompile Include="src\graphic\api\textureDepth.cpp">
+      <Filter>Source Files\graphic\api</Filter>
+    </ClCompile>
+    <ClCompile Include="src\graphic\shader\shaderUniform.cpp">
+      <Filter>Source Files\graphic\shader</Filter>
+    </ClCompile>
+    <ClCompile Include="src\platform\opengl\glFramebufferDepth.cpp">
+      <Filter>Source Files\platform\opengl</Filter>
+    </ClCompile>
+    <ClCompile Include="src\platform\opengl\glFramebuffer2D.cpp">
+      <Filter>Source Files\platform\opengl</Filter>
+    </ClCompile>
+    <ClCompile Include="src\graphic\api\framebufferDepth.cpp">
+      <Filter>Source Files\graphic\api</Filter>
+    </ClCompile>
+    <ClCompile Include="src\graphic\api\framebuffer2D.cpp">
+      <Filter>Source Files\graphic\api</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -411,9 +426,6 @@
     </ClInclude>
     <ClInclude Include="src\graphic\camera\mayaCamera.h">
       <Filter>Header Files\graphic\camera</Filter>
-    </ClInclude>
-    <ClInclude Include="src\graphic\shader\shaderFasctory.h">
-      <Filter>Header Files\graphic\shader</Filter>
     </ClInclude>
     <ClInclude Include="src\graphic\shader\shaderManager.h">
       <Filter>Header Files\graphic\shader</Filter>
@@ -512,13 +524,31 @@
       <Filter>Header Files\graphic\api</Filter>
     </ClInclude>
     <ClInclude Include="src\graphic\api\textureDepth.h">
-      <Filter>Generated Files</Filter>
-    </ClInclude>
-    <ClInclude Include="src\platform\opengl\glTextureCube.h">
-      <Filter>Generated Files</Filter>
+      <Filter>Header Files\graphic\api</Filter>
     </ClInclude>
     <ClInclude Include="src\platform\opengl\glTextureDepth.h">
-      <Filter>Generated Files</Filter>
+      <Filter>Header Files\platform\opengl</Filter>
+    </ClInclude>
+    <ClInclude Include="src\platform\opengl\glTextureCube.h">
+      <Filter>Header Files\platform\opengl</Filter>
+    </ClInclude>
+    <ClInclude Include="src\graphic\shader\shaderFactory.h">
+      <Filter>Header Files\graphic\shader</Filter>
+    </ClInclude>
+    <ClInclude Include="src\graphic\shader\shaderUniform.h">
+      <Filter>Header Files\graphic\shader</Filter>
+    </ClInclude>
+    <ClInclude Include="src\platform\opengl\glFramebufferDepth.h">
+      <Filter>Header Files\platform\opengl</Filter>
+    </ClInclude>
+    <ClInclude Include="src\platform\opengl\glFramebuffer2D.h">
+      <Filter>Header Files\platform\opengl</Filter>
+    </ClInclude>
+    <ClInclude Include="src\graphic\api\framebufferDepth.h">
+      <Filter>Header Files\graphic\api</Filter>
+    </ClInclude>
+    <ClInclude Include="src\graphic\api\framebuffer2D.h">
+      <Filter>Header Files\graphic\api</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

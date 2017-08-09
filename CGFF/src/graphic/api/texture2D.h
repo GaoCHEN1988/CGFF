@@ -5,11 +5,8 @@
 
 namespace CGFF {
 
-    class Texture2D : public QOpenGLTexture
+    class Texture2D : public Texture
     {
-    public:
-		Texture2D(QOpenGLTexture::Target target = Target2D);
-
     public:
         static QSharedPointer<Texture2D> Create(int width, int height, TextureParameters parameters = TextureParameters(), TextureLoadOptions loadOptions = TextureLoadOptions());
         static QSharedPointer<Texture2D> CreateFromFile(const QString& filepath, TextureParameters parameters = TextureParameters(), TextureLoadOptions loadOptions = TextureLoadOptions());     

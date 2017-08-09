@@ -5,11 +5,8 @@
 
 namespace CGFF {
 
-	class TextureCube : public QOpenGLTexture
+	class TextureCube : public Texture
 	{
-	public:
-		TextureCube(QOpenGLTexture::Target target = TargetCubeMap);
-
 	protected:
 		enum class InputFormat
 		{
@@ -20,7 +17,7 @@ namespace CGFF {
 		static QSharedPointer<TextureCube> createFromFile(const QString& filepath);
 		static QSharedPointer<TextureCube> createFromFiles(const QStringList files);
 		static QSharedPointer<TextureCube> createFromVCross(const QStringList files, int mips);
-	}
+	};
 }
 
 #endif
