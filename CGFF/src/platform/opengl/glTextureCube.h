@@ -16,6 +16,7 @@ namespace CGFF {
 		void bind(uint slot = 0) override;
 		void unBind(uint slot = 0) override;
 
+		inline GLuint getID() const { return m_glTexture.textureId(); }
 		inline QString getName() const override { return m_name; }
 		inline QString getFilepath() const override { return m_fileNames[0]; }
 		inline QStringList getFilepathList() const { return m_fileNames; }

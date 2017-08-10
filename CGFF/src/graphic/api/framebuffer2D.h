@@ -1,15 +1,14 @@
 #ifndef FRAMEBUFFER_2D_H
 #define FRAMEBUFFER_2D_H
 
-#include "maths/qtmaths.h"
-#include <QOpenGLFramebufferObject>
+#include "framebuffer.h"
 
 namespace CGFF {
 
-	class Framebuffer2D
+	class Framebuffer2D : public Framebuffer
 	{
 	public:
-		virtual void setClearColor(const QMatrix4x4& color) = 0;
+		virtual void setClearColor(const QVector4D& color) = 0;
 	public:
 		static QSharedPointer<Framebuffer2D> create(int width, int height);
 	};

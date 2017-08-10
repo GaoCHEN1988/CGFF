@@ -38,6 +38,11 @@ namespace CGFF {
 		load();
 	}
 
+	void GLTexture2D::setTexture(GLuint id)
+	{
+		m_glTexture.bind(id);
+	}
+
 	void GLTexture2D::bind(uint slot)
 	{
 		m_glTexture.bind(slot);
@@ -54,6 +59,7 @@ namespace CGFF {
 		{
 			QImage texImage;
 
+			//To do: Test tga files
 			if (texImage.load(m_fileName))
 			{
 				//Need to test
@@ -69,11 +75,6 @@ namespace CGFF {
 				qFatal("Can't load image from ", m_fileName);
 				return;
 			}
-		}
-		else
-		{
-			qFatal("Can't load image from ", m_fileName);
-			return;
 		}
 	}
 

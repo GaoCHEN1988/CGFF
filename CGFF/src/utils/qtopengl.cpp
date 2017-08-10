@@ -2,6 +2,6 @@
 
 namespace CGFF 
 {
-    QOpenGLFunctions * GL = nullptr;
+	QOpenGLFunctions_4_4_Core * GL = nullptr;
     QSize openglWidgetSize = QSize();
 }

@@ -338,9 +338,9 @@ namespace CGFF {
             GL->glActiveTexture(GL_TEXTURE0);
 
             if (m_postEffectsEnabled)
-                glBindTexture(GL_TEXTURE_2D, m_postEffectsBuffer->texture());
+				GL->glBindTexture(GL_TEXTURE_2D, m_postEffectsBuffer->texture());
             else
-                glBindTexture(GL_TEXTURE_2D, m_frameBuffer->texture());
+				GL->glBindTexture(GL_TEXTURE_2D, m_frameBuffer->texture());
 
             m_screenQuad.vao.bind();
 

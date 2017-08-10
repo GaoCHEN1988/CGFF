@@ -2,6 +2,7 @@
 #define QTOPENGL_H
 
 #include <QOpenGLFunctions>
+#include <QOpenGLFunctions_4_4_Core>
 #include <QOpenGLContext>
 #include <QSurfaceFormat>
 #include <QSize>
@@ -9,7 +10,7 @@
 
 namespace CGFF
 {
-    extern QOpenGLFunctions *GL;
+    extern QOpenGLFunctions_4_4_Core *GL;
     extern QSize openglWidgetSize;
 }
 

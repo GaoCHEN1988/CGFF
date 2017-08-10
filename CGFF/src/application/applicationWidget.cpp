@@ -67,13 +67,13 @@ void ApplicationWidget::initializeGL()
     qFormat.setProfile(QSurfaceFormat::CoreProfile);
     qFormat.setVersion(4, 4);
     QOpenGLContext::currentContext()->setFormat(qFormat);
+
+	// initialize OpenGL
+	CGFF::GL = QOpenGLContext::currentContext()->versionFunctions<QOpenGLFunctions_4_4_Core>();
+	CGFF::GL->initializeOpenGLFunctions();
 #endif
 
     CGFF::openglWidgetSize = this->size();
-
-    // initialize OpenGL
-    CGFF::GL = QOpenGLContext::currentContext()->functions();
-    CGFF::GL->initializeOpenGLFunctions();
 
     m_debugLayer = QSharedPointer<CGFF::Layer>(new CGFF::DebugLayer(this->size()));
 

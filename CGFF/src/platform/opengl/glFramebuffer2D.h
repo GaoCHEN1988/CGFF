@@ -1,7 +1,9 @@
 #ifndef GL_FRAMEBUFFER_2D_H
 #define GL_FRAMEBUFFER_2D_H
 
+#include "utils/qtopengl.h"
 #include "graphic/api/framebuffer2D.h"
+#include "glTexture2D.h"
 
 namespace CGFF {
 
@@ -12,16 +14,28 @@ namespace CGFF {
 		GLFramebuffer2D(int width, int height);
 		~GLFramebuffer2D();
 
-	private:
-		void Init();
+		void bind() override;
+		void unBind() override;
+		void clear() override;
+
+		int getWidth() const override;
+		int getHeight() const override;
+
+		QSharedPointer<Texture> getTexture() const override;
+
+		void setClearColor(const QVector4D& color) override;
 
 	private:
-		int m_FramebufferHandle;
-		int m_DepthbufferHandle;
+		void init();
 
-		int m_Width, m_Height;
-		maths::vec4 m_ClearColor;
-		API::GLTexture2D* m_Texture;
+	private:
+		GLuint m_framebufferHandle;
+		GLuint m_depthbufferHandle;
+
+		QSharedPointer<GLTexture2D> m_glTexture;
+
+		int m_width, m_height;
+		QVector4D m_clearColor;
 	};
 }
 
