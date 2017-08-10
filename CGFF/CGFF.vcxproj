@@ -108,6 +108,7 @@
     <ClCompile Include="src\examples\test2DLayer.cpp" />
     <ClCompile Include="src\examples\test3DLayer.cpp" />
     <ClCompile Include="src\graphic\API\context.cpp" />
+    <ClCompile Include="src\graphic\api\framebuffer.cpp" />
     <ClCompile Include="src\graphic\api\framebuffer2D.cpp" />
     <ClCompile Include="src\graphic\api\framebufferDepth.cpp" />
     <ClCompile Include="src\graphic\API\texture2D.cpp" />
@@ -128,6 +129,7 @@
     <ClCompile Include="src\graphic\lightSetup.cpp" />
     <ClCompile Include="src\graphic\model.cpp" />
     <ClCompile Include="src\graphic\pbrMaterial.cpp" />
+    <ClCompile Include="src\graphic\renderer.cpp" />
     <ClCompile Include="src\graphic\shader\shaderFactory.cpp" />
     <ClCompile Include="src\graphic\shader\shaderManager.cpp" />
     <ClCompile Include="src\graphic\shader\shaderProgram.cpp" />
@@ -197,6 +199,7 @@
     <ClInclude Include="src\examples\test2DLayer.h" />
     <ClInclude Include="src\examples\test3DLayer.h" />
     <ClInclude Include="src\graphic\API\context.h" />
+    <ClInclude Include="src\graphic\api\framebuffer.h" />
     <ClInclude Include="src\graphic\api\framebuffer2D.h" />
     <ClInclude Include="src\graphic\api\framebufferDepth.h" />
     <ClInclude Include="src\graphic\api\texture.h" />
@@ -227,6 +230,7 @@
     <ClInclude Include="src\graphic\postfx\postEffectsPass.h" />
     <ClInclude Include="src\graphic\renderable2d.h" />
     <ClInclude Include="src\graphic\renderCommand.h" />
+    <ClInclude Include="src\graphic\renderer.h" />
     <ClInclude Include="src\graphic\renderer2d.h" />
     <ClInclude Include="src\graphic\renderer3d.h" />
     <ClInclude Include="src\graphic\scene.h" />

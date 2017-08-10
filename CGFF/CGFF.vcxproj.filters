@@ -332,6 +332,12 @@
     <ClCompile Include="src\graphic\api\framebuffer2D.cpp">
       <Filter>Source Files\graphic\api</Filter>
     </ClCompile>
+    <ClCompile Include="src\graphic\renderer.cpp">
+      <Filter>Source Files\graphic</Filter>
+    </ClCompile>
+    <ClCompile Include="src\graphic\api\framebuffer.cpp">
+      <Filter>Source Files\graphic\api</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <None Include="ClassDiagram.cd" />
@@ -548,6 +554,12 @@
       <Filter>Header Files\graphic\api</Filter>
     </ClInclude>
     <ClInclude Include="src\graphic\api\framebuffer2D.h">
+      <Filter>Header Files\graphic\api</Filter>
+    </ClInclude>
+    <ClInclude Include="src\graphic\renderer.h">
+      <Filter>Header Files\graphic</Filter>
+    </ClInclude>
+    <ClInclude Include="src\graphic\api\framebuffer.h">
       <Filter>Header Files\graphic\api</Filter>
     </ClInclude>
   </ItemGroup>
