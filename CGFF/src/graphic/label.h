@@ -1,5 +1,5 @@
-#ifndef LABEL_H
-#define LABEL_H
+#ifndef CGFF_LABEL_H
+#define CGFF_LABEL_H
 
 #include "renderable2d.h"
 

@@ -1,5 +1,5 @@
-#ifndef RENDER_COMMAND_H
-#define RENDER_COMMAND_H
+#ifndef CGFF_RENDER_COMMAND_H
+#define CGFF_RENDER_COMMAND_H
 
 #include "mesh.h"
 

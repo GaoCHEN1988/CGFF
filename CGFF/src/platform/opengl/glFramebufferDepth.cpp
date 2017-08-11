@@ -23,7 +23,7 @@ namespace CGFF {
 
 	void GLFramebufferDepth::unBind()
 	{
-		GL->glBindFramebuffer(GL_FRAMEBUFFER, 0));
+		GL->glBindFramebuffer(GL_FRAMEBUFFER, 0);
 	}
 
 	void GLFramebufferDepth::clear()

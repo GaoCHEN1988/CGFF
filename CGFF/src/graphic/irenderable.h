@@ -1,5 +1,5 @@
-#ifndef IRENDERABLE_H
-#define IRENDERABLE_H
+#ifndef CGFF_IRENDERABLE_H
+#define CGFF_IRENDERABLE_H
 
 namespace CGFF {
 

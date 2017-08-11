@@ -1,5 +1,5 @@
-#ifndef LIGHT_SETUP_H
-#define LIGHT_SETUP_H
+#ifndef CGFF_LIGHT_SETUP_H
+#define CGFF_LIGHT_SETUP_H
 
 #include "light.h"
 

@@ -1,5 +1,5 @@
-#ifndef BATCH_RENDERER_2D_H
-#define BATCH_RENDERER_2D_H
+#ifndef CGFF_BATCH_RENDERER_2D_H
+#define CGFF_BATCH_RENDERER_2D_H
 
 #include "../utils/types.h"
 #include "../maths/qtmaths.h"

@@ -1,11 +1,12 @@
-#ifndef TYPES_H
-#define TYPES_H
+#ifndef CGFF_TYPES_H
+#define CGFF_TYPES_H
 #include "../maths/qtmaths.h"
-#include <QDebug>
+//#include <QDebug>
 #include <QSharedPointer>
 #include <QOpenGLShaderProgram>
 
 namespace CGFF {
+
 #define RENDERER_MAX_SPRITES 6000
     //#define RENDERER_VERTEX_SIZE sizeof(VertexData)
 #define RENDERER_SPRITES_SIZE RENDERER_VERTEX_SIZE*4

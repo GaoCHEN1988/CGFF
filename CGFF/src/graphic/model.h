@@ -1,5 +1,5 @@
-#ifndef MODEL_H
-#define MODEL_H
+#ifndef CGFF_MODEL_H
+#define CGFF_MODEL_H
 
 #include "mesh.h"
 #include <QHash>

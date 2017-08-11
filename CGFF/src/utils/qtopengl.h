@@ -1,5 +1,5 @@
-#ifndef QTOPENGL_H
-#define QTOPENGL_H
+#ifndef CGFF_QTOPENGL_H
+#define CGFF_QTOPENGL_H
 
 #include <QOpenGLFunctions>
 #include <QOpenGLFunctions_4_4_Core>

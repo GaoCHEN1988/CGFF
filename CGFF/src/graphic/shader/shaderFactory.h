@@ -1,7 +1,8 @@
-#ifndef SHADER_FACTORY_H
-#define SHADER_FACTORY_H
+#ifndef CGFF_SHADER_FACTORY_H
+#define CGFF_SHADER_FACTORY_H
 
 #include "utils/qtopengl.h"
+#include "shader.h"
 #include <QOpenGLShaderProgram>
 
 namespace CGFF {

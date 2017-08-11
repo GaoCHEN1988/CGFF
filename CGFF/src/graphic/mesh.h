@@ -1,5 +1,5 @@
-#ifndef MESH_H
-#define MESH_H
+#ifndef CGFF_MESH_H
+#define CGFF_MESH_H
 #include "utils/qtopengl.h"
 #include "maths/qtmaths.h"
 #include "material.h"

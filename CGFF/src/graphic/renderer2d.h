@@ -1,5 +1,5 @@
-#ifndef RENDERER_2D_H
-#define RENDERER_2D_H
+#ifndef CGFF_RENDERER_2D_H
+#define CGFF_RENDERER_2D_H
 
 #include "utils/qtopengl.h"
 #include "maths/qtmaths.h"

@@ -1,5 +1,5 @@
-#ifndef MAYA_CAMERA_H
-#define MAYA_CAMERA_H
+#ifndef CGFF_MAYA_CAMERA_H
+#define CGFF_MAYA_CAMERA_H
 
 #include "camera.h"
 

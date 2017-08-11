@@ -1,5 +1,5 @@
-#ifndef FRAMEBUFFER_2D_H
-#define FRAMEBUFFER_2D_H
+#ifndef CGFF_FRAMEBUFFER_2D_H
+#define CGFF_FRAMEBUFFER_2D_H
 
 #include "framebuffer.h"
 

@@ -1,5 +1,5 @@
-#ifndef SPRITE_H
-#define SPRITE_H
+#ifndef CGFF_SPRITE_H
+#define CGFF_SPRITE_H
 
 #include "renderable2d.h"
 

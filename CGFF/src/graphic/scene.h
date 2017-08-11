@@ -1,5 +1,5 @@
-#ifndef SCENE_H
-#define SCENE_H
+#ifndef CGFF_SCENE_H
+#define CGFF_SCENE_H
 
 #include "renderer3d.h"
 #include "entity/entity.h"

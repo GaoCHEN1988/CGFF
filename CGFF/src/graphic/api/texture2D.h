@@ -1,5 +1,5 @@
-#ifndef TEXTURE_2D_H
-#define TEXTURE_2D_H
+#ifndef CGFF_TEXTURE_2D_H
+#define CGFF_TEXTURE_2D_H
 
 #include "texture.h"
 

@@ -1,5 +1,5 @@
-#ifndef FORWARD_RENDERER_H
-#define FORWARD_RENDERER_H
+#ifndef CGFF_FORWARD_RENDERER_H
+#define CGFF_FORWARD_RENDERER_H
 
 #include "renderer3d.h"
 

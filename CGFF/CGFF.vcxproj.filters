@@ -338,6 +338,36 @@
     <ClCompile Include="src\graphic\api\framebuffer.cpp">
       <Filter>Source Files\graphic\api</Filter>
     </ClCompile>
+    <ClCompile Include="src\graphic\shader\shader.cpp">
+      <Filter>Source Files\graphic\shader</Filter>
+    </ClCompile>
+    <ClCompile Include="src\graphic\api\vertexBuffer.cpp">
+      <Filter>Source Files\graphic\api</Filter>
+    </ClCompile>
+    <ClCompile Include="src\graphic\api\vertexArray.cpp">
+      <Filter>Source Files\graphic\api</Filter>
+    </ClCompile>
+    <ClCompile Include="src\graphic\api\layoutBuffer.cpp">
+      <Filter>Source Files\graphic\api</Filter>
+    </ClCompile>
+    <ClCompile Include="src\graphic\api\indexBuffer.cpp">
+      <Filter>Source Files\graphic\api</Filter>
+    </ClCompile>
+    <ClCompile Include="src\platform\opengl\glShader.cpp">
+      <Filter>Source Files\platform\opengl</Filter>
+    </ClCompile>
+    <ClCompile Include="src\platform\opengl\glVertexBuffer.cpp">
+      <Filter>Generated Files</Filter>
+    </ClCompile>
+    <ClCompile Include="src\platform\opengl\glVertexArray.cpp">
+      <Filter>Generated Files</Filter>
+    </ClCompile>
+    <ClCompile Include="src\platform\opengl\glRenderer.cpp">
+      <Filter>Generated Files</Filter>
+    </ClCompile>
+    <ClCompile Include="src\platform\opengl\glIndexBuffer.cpp">
+      <Filter>Generated Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <None Include="ClassDiagram.cd" />
@@ -355,9 +385,6 @@
     </None>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="src\maths\qtmaths.h">
-      <Filter>Source Files\maths</Filter>
-    </ClInclude>
     <ClInclude Include="src\graphic\mask.h">
       <Filter>Source Files\graphic</Filter>
     </ClInclude>
@@ -561,6 +588,39 @@
     </ClInclude>
     <ClInclude Include="src\graphic\api\framebuffer.h">
       <Filter>Header Files\graphic\api</Filter>
+    </ClInclude>
+    <ClInclude Include="src\graphic\api\indexBuffer.h">
+      <Filter>Header Files\graphic\api</Filter>
+    </ClInclude>
+    <ClInclude Include="src\graphic\api\layoutBuffer.h">
+      <Filter>Header Files\graphic\api</Filter>
+    </ClInclude>
+    <ClInclude Include="src\graphic\api\vertexArray.h">
+      <Filter>Header Files\graphic\api</Filter>
+    </ClInclude>
+    <ClInclude Include="src\graphic\api\vertexBuffer.h">
+      <Filter>Header Files\graphic\api</Filter>
+    </ClInclude>
+    <ClInclude Include="src\graphic\shader\shader.h">
+      <Filter>Header Files\graphic\shader</Filter>
+    </ClInclude>
+    <ClInclude Include="src\platform\opengl\glShader.h">
+      <Filter>Header Files\platform\opengl</Filter>
+    </ClInclude>
+    <ClInclude Include="src\maths\qtmaths.h">
+      <Filter>Header Files\maths</Filter>
+    </ClInclude>
+    <ClInclude Include="src\platform\opengl\glVertexBuffer.h">
+      <Filter>Generated Files</Filter>
+    </ClInclude>
+    <ClInclude Include="src\platform\opengl\glVertexArray.h">
+      <Filter>Generated Files</Filter>
+    </ClInclude>
+    <ClInclude Include="src\platform\opengl\glRenderer.h">
+      <Filter>Generated Files</Filter>
+    </ClInclude>
+    <ClInclude Include="src\platform\opengl\glIndexBuffer.h">
+      <Filter>Generated Files</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

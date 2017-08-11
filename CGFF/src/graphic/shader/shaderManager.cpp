@@ -2,16 +2,16 @@
 
 namespace CGFF {
 
-    QVector<QSharedPointer<ShaderProgram>> ShaderManager::s_shaders;
+    QVector<QSharedPointer<Shader>> ShaderManager::s_shaders;
 
-    void ShaderManager::add(QSharedPointer<ShaderProgram> shader)
+    void ShaderManager::add(QSharedPointer<Shader> shader)
     {
         s_shaders.append(shader);
     }
 
-    QSharedPointer<ShaderProgram> ShaderManager::get(const QString& name)
+    QSharedPointer<Shader> ShaderManager::get(const QString& name)
     {
-        for (QSharedPointer<ShaderProgram> shader : s_shaders)
+        for (QSharedPointer<Shader> shader : s_shaders)
         {
             if (shader->getName() == name)
                 return shader;
@@ -26,7 +26,7 @@ namespace CGFF {
 
     void ShaderManager::reload(const QString& name)
     {
-        for (QSharedPointer<ShaderProgram> shader : s_shaders)
+        for (QSharedPointer<Shader> shader : s_shaders)
         {
             if (shader->getName() == name)
                 shader->reload();

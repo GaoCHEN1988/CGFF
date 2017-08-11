@@ -1,5 +1,5 @@
-#ifndef SHADER_PROGRAM_H
-#define SHADER_PROGRAM_H
+#ifndef CGFF_SHADER_PROGRAM_H
+#define CGFF_SHADER_PROGRAM_H
 
 #include "utils/qtopengl.h"
 #include <QOpenGLShaderProgram>

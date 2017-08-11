@@ -1,5 +1,5 @@
-#ifndef GL_TEXTURE_DEPTH_H
-#define GL_TEXTURE_DEPTH_H
+#ifndef CGFF_GL_TEXTURE_DEPTH_H
+#define CGFF_GL_TEXTURE_DEPTH_H
 
 #include "graphic/api/textureDepth.h"
 

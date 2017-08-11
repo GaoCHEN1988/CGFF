@@ -1,5 +1,5 @@
-#ifndef RENDERER_3D_H
-#define RENDERER_3D_H
+#ifndef CGFF_RENDERER_3D_H
+#define CGFF_RENDERER_3D_H
 
 #include "mesh.h"
 #include "renderCommand.h"

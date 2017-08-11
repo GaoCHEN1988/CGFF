@@ -1,5 +1,5 @@
-#ifndef GL_FRAMEBUFFER_2D_H
-#define GL_FRAMEBUFFER_2D_H
+#ifndef CGFF_GL_FRAMEBUFFER_2D_H
+#define CGFF_GL_FRAMEBUFFER_2D_H
 
 #include "utils/qtopengl.h"
 #include "graphic/api/framebuffer2D.h"

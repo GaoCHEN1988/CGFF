@@ -1,5 +1,5 @@
-#ifndef GL_FRAMEBUFFER_DEPTH_H
-#define GL_FRAMEBUFFER_DEPTH_H
+#ifndef CGFF_GL_FRAMEBUFFER_DEPTH_H
+#define CGFF_GL_FRAMEBUFFER_DEPTH_H
 
 #include "utils/qtopengl.h"
 #include "graphic/api/framebufferDepth.h"

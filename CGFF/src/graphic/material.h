@@ -1,9 +1,9 @@
-#ifndef MATERIAL_H
-#define MATERIAL_H
+#ifndef CGFF_MATERIAL_H
+#define CGFF_MATERIAL_H
 
 #include "utils/qtopengl.h"
 #include "utils/types.h"
-#include "shader/shaderProgram.h"
+#include "shader/shader.h"
 #include "api/texture2D.h"
 #include "api/textureCube.h"
 

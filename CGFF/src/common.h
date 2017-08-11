@@ -1,5 +1,5 @@
-#ifndef COMMON_H
-#define COMMON_H
+#ifndef CGFF_COMMON_H
+#define CGFF_COMMON_H
 
 #include <functional>
 

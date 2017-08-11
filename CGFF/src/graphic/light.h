@@ -1,5 +1,5 @@
-#ifndef LIGHT_H
-#define LIGHT_H
+#ifndef CGFF_LIGHT_H
+#define CGFF_LIGHT_H
 
 #include "maths/qtmaths.h"
 

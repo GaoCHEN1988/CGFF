@@ -1,5 +1,5 @@
-#ifndef MAINWINDOW_H
-#define MAINWINDOW_H
+#ifndef CGFF_MAINWINDOW_H
+#define CGFF_MAINWINDOW_H
 
 #include <QtCore/QVariant>
 #include <QtWidgets/QAction>

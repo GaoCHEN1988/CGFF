@@ -1,5 +1,5 @@
-#ifndef FRAMEBUFFER_DEPTH_H
-#define FRAMEBUFFER_DEPTH_H
+#ifndef CGFF_FRAMEBUFFER_DEPTH_H
+#define CGFF_FRAMEBUFFER_DEPTH_H
 
 #include "framebuffer.h"
 

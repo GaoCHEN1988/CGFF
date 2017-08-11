@@ -111,9 +111,13 @@
     <ClCompile Include="src\graphic\api\framebuffer.cpp" />
     <ClCompile Include="src\graphic\api\framebuffer2D.cpp" />
     <ClCompile Include="src\graphic\api\framebufferDepth.cpp" />
+    <ClCompile Include="src\graphic\api\indexBuffer.cpp" />
+    <ClCompile Include="src\graphic\api\layoutBuffer.cpp" />
     <ClCompile Include="src\graphic\API\texture2D.cpp" />
     <ClCompile Include="src\graphic\api\textureCube.cpp" />
     <ClCompile Include="src\graphic\api\textureDepth.cpp" />
+    <ClCompile Include="src\graphic\api\vertexArray.cpp" />
+    <ClCompile Include="src\graphic\api\vertexBuffer.cpp" />
     <ClCompile Include="src\graphic\batchRenderer2d.cpp" />
     <ClCompile Include="src\graphic\camera\camera.cpp" />
     <ClCompile Include="src\graphic\camera\fpsCamea.cpp" />
@@ -130,6 +134,7 @@
     <ClCompile Include="src\graphic\model.cpp" />
     <ClCompile Include="src\graphic\pbrMaterial.cpp" />
     <ClCompile Include="src\graphic\renderer.cpp" />
+    <ClCompile Include="src\graphic\shader\shader.cpp" />
     <ClCompile Include="src\graphic\shader\shaderFactory.cpp" />
     <ClCompile Include="src\graphic\shader\shaderManager.cpp" />
     <ClCompile Include="src\graphic\shader\shaderProgram.cpp" />
@@ -149,9 +154,14 @@
     <ClCompile Include="src\main.cpp" />
     <ClCompile Include="src\platform\opengl\glFramebuffer2D.cpp" />
     <ClCompile Include="src\platform\opengl\glFramebufferDepth.cpp" />
+    <ClCompile Include="src\platform\opengl\glIndexBuffer.cpp" />
+    <ClCompile Include="src\platform\opengl\glRenderer.cpp" />
+    <ClCompile Include="src\platform\opengl\glShader.cpp" />
     <ClCompile Include="src\platform\opengl\glTexture2D.cpp" />
     <ClCompile Include="src\platform\opengl\glTextureCube.cpp" />
     <ClCompile Include="src\platform\opengl\glTextureDepth.cpp" />
+    <ClCompile Include="src\platform\opengl\glVertexArray.cpp" />
+    <ClCompile Include="src\platform\opengl\glVertexBuffer.cpp" />
     <ClCompile Include="src\utils\qtopengl.cpp" />
   </ItemGroup>
   <ItemGroup>
@@ -202,10 +212,14 @@
     <ClInclude Include="src\graphic\api\framebuffer.h" />
     <ClInclude Include="src\graphic\api\framebuffer2D.h" />
     <ClInclude Include="src\graphic\api\framebufferDepth.h" />
+    <ClInclude Include="src\graphic\api\indexBuffer.h" />
+    <ClInclude Include="src\graphic\api\layoutBuffer.h" />
     <ClInclude Include="src\graphic\api\texture.h" />
     <ClInclude Include="src\graphic\API\texture2D.h" />
     <ClInclude Include="src\graphic\api\textureCube.h" />
     <ClInclude Include="src\graphic\api\textureDepth.h" />
+    <ClInclude Include="src\graphic\api\vertexArray.h" />
+    <ClInclude Include="src\graphic\api\vertexBuffer.h" />
     <ClInclude Include="src\graphic\batchRenderer2d.h" />
     <ClInclude Include="src\graphic\camera\camera.h" />
     <ClInclude Include="src\graphic\camera\fpsCamera.h" />
@@ -234,6 +248,7 @@
     <ClInclude Include="src\graphic\renderer2d.h" />
     <ClInclude Include="src\graphic\renderer3d.h" />
     <ClInclude Include="src\graphic\scene.h" />
+    <ClInclude Include="src\graphic\shader\shader.h" />
     <ClInclude Include="src\graphic\shader\shaderFactory.h" />
     <ClInclude Include="src\graphic\shader\shaderManager.h" />
     <ClInclude Include="src\graphic\shader\shaderProgram.h" />
@@ -248,9 +263,14 @@
     <ClInclude Include="src\maths\qtmaths.h" />
     <ClInclude Include="src\platform\opengl\glFramebuffer2D.h" />
     <ClInclude Include="src\platform\opengl\glFramebufferDepth.h" />
+    <ClInclude Include="src\platform\opengl\glIndexBuffer.h" />
+    <ClInclude Include="src\platform\opengl\glRenderer.h" />
+    <ClInclude Include="src\platform\opengl\glShader.h" />
     <ClInclude Include="src\platform\opengl\glTexture2D.h" />
     <ClInclude Include="src\platform\opengl\glTextureCube.h" />
     <ClInclude Include="src\platform\opengl\glTextureDepth.h" />
+    <ClInclude Include="src\platform\opengl\glVertexArray.h" />
+    <ClInclude Include="src\platform\opengl\glVertexBuffer.h" />
     <ClInclude Include="src\utils\qtopengl.h" />
     <ClInclude Include="src\utils\types.h" />
   </ItemGroup>

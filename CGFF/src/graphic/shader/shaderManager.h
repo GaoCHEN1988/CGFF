@@ -1,8 +1,8 @@
-#ifndef SHADER_MANAGER_H
-#define SHADER_MANAGER_H
+#ifndef CGFF_SHADER_MANAGER_H
+#define CGFF_SHADER_MANAGER_H
 
 #include "utils/qtopengl.h"
-#include "shaderProgram.h"
+#include "shader.h"
 
 namespace CGFF {
 
@@ -11,13 +11,13 @@ namespace CGFF {
     private:
         ShaderManager() {}
     public:
-        static void add(QSharedPointer<ShaderProgram> shader);
-        static QSharedPointer<ShaderProgram> get(const QString& name);
+        static void add(QSharedPointer<Shader> shader);
+        static QSharedPointer<Shader> get(const QString& name);
         static void clean();
         static void reload(const QString& name);
 
     private:
-        static QVector<QSharedPointer<ShaderProgram>> s_shaders;
+        static QVector<QSharedPointer<Shader>> s_shaders;
     };
 }
 

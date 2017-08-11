@@ -1,5 +1,5 @@
-#ifndef PBR_MATERIAL_H
-#define PBR_MATERIAL_H
+#ifndef CGFF_PBR_MATERIAL_H
+#define CGFF_PBR_MATERIAL_H
 
 #include"material.h"
 

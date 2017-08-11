@@ -1,5 +1,5 @@
-#ifndef SHADER_UNIFORM_H
-#define SHADER_UNIFORM_H
+#ifndef CGFF_SHADER_UNIFORM_H
+#define CGFF_SHADER_UNIFORM_H
 
 #include "shaderProgram.h"
 

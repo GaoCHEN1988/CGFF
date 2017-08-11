@@ -1,5 +1,5 @@
-#ifndef CAMERA_H
-#define CAMERA_H
+#ifndef CGFF_CAMERA_H
+#define CGFF_CAMERA_H
 
 #include "maths/qtmaths.h"
 #include <QMouseEvent>

@@ -1,5 +1,5 @@
-#ifndef SHADER_RESOURCE_H
-#define SHADER_RESOURCE_H
+#ifndef CGFF_SHADER_RESOURCE_H
+#define CGFF_SHADER_RESOURCE_H
 
 #include "utils/qtopengl.h"
 

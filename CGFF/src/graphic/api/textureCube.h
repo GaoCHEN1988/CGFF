@@ -1,5 +1,5 @@
-#ifndef TEXTURE_CUBE_H
-#define TEXTURE_CUBE_H
+#ifndef CGFF_TEXTURE_CUBE_H
+#define CGFF_TEXTURE_CUBE_H
 
 #include "texture.h"
 

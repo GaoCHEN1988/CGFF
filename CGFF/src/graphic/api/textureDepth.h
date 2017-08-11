@@ -1,5 +1,5 @@
-#ifndef TEXTURE_DEPTH_H
-#define TEXTURE_DEPTH_H
+#ifndef CGFF_TEXTURE_DEPTH_H
+#define CGFF_TEXTURE_DEPTH_H
 
 #include "texture.h"
 

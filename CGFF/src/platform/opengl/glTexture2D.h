@@ -1,5 +1,5 @@
-#ifndef GL_TEXTURE_2D_H
-#define GL_TEXTURE_2D_H
+#ifndef CGFF_GL_TEXTURE_2D_H
+#define CGFF_GL_TEXTURE_2D_H
 
 #include "graphic/api/texture2D.h"
 #include <QColor>

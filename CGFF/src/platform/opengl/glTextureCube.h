@@ -1,5 +1,5 @@
-#ifndef GL_TEXTURE_CUBE_H
-#define GL_TEXTURE_CUBE_H
+#ifndef CGFF_GL_TEXTURE_CUBE_H
+#define CGFF_GL_TEXTURE_CUBE_H
 
 #include "graphic/api/textureCube.h"
 

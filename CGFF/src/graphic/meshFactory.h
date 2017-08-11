@@ -1,5 +1,5 @@
-#ifndef MESH_FACTORY_H
-#define MESH_FACTORY_H
+#ifndef CGFF_MESH_FACTORY_H
+#define CGFF_MESH_FACTORY_H
 
 #include "maths/qtmaths.h"
 #include "utils/qtopengl.h"

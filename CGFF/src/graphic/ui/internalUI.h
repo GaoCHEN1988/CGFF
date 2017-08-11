@@ -1,5 +1,5 @@
-#ifndef INTERNAL_UI_H
-#define INTERNAL_UI_H
+#ifndef CGFF_INTERNAL_UI_H
+#define CGFF_INTERNAL_UI_H
 
 #include <QString>
 #include <QRect>
