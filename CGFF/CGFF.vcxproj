@@ -152,6 +152,7 @@
     <ClCompile Include="src\graphic\scene.cpp" />
     <ClCompile Include="src\graphic\sprite.cpp" />
     <ClCompile Include="src\main.cpp" />
+    <ClCompile Include="src\platform\opengl\glContext.cpp" />
     <ClCompile Include="src\platform\opengl\glFramebuffer2D.cpp" />
     <ClCompile Include="src\platform\opengl\glFramebufferDepth.cpp" />
     <ClCompile Include="src\platform\opengl\glIndexBuffer.cpp" />
@@ -261,6 +262,7 @@
     <ClInclude Include="src\graphic\ui\slider.h" />
     <ClInclude Include="src\graphic\ui\widget.h" />
     <ClInclude Include="src\maths\qtmaths.h" />
+    <ClInclude Include="src\platform\opengl\glContext.h" />
     <ClInclude Include="src\platform\opengl\glFramebuffer2D.h" />
     <ClInclude Include="src\platform\opengl\glFramebufferDepth.h" />
     <ClInclude Include="src\platform\opengl\glIndexBuffer.h" />

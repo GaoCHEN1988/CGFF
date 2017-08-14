@@ -357,16 +357,19 @@
       <Filter>Source Files\platform\opengl</Filter>
     </ClCompile>
     <ClCompile Include="src\platform\opengl\glVertexBuffer.cpp">
-      <Filter>Generated Files</Filter>
+      <Filter>Source Files\platform\opengl</Filter>
     </ClCompile>
-    <ClCompile Include="src\platform\opengl\glVertexArray.cpp">
-      <Filter>Generated Files</Filter>
-    </ClCompile>
-    <ClCompile Include="src\platform\opengl\glRenderer.cpp">
-      <Filter>Generated Files</Filter>
+    <ClCompile Include="src\platform\opengl\glContext.cpp">
+      <Filter>Source Files\platform\opengl</Filter>
     </ClCompile>
     <ClCompile Include="src\platform\opengl\glIndexBuffer.cpp">
-      <Filter>Generated Files</Filter>
+      <Filter>Source Files\platform\opengl</Filter>
+    </ClCompile>
+    <ClCompile Include="src\platform\opengl\glRenderer.cpp">
+      <Filter>Source Files\platform\opengl</Filter>
+    </ClCompile>
+    <ClCompile Include="src\platform\opengl\glVertexArray.cpp">
+      <Filter>Source Files\platform\opengl</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -611,16 +614,19 @@
       <Filter>Header Files\maths</Filter>
     </ClInclude>
     <ClInclude Include="src\platform\opengl\glVertexBuffer.h">
-      <Filter>Generated Files</Filter>
+      <Filter>Header Files\platform\opengl</Filter>
     </ClInclude>
     <ClInclude Include="src\platform\opengl\glVertexArray.h">
-      <Filter>Generated Files</Filter>
+      <Filter>Header Files\platform\opengl</Filter>
     </ClInclude>
     <ClInclude Include="src\platform\opengl\glRenderer.h">
-      <Filter>Generated Files</Filter>
+      <Filter>Header Files\platform\opengl</Filter>
     </ClInclude>
     <ClInclude Include="src\platform\opengl\glIndexBuffer.h">
-      <Filter>Generated Files</Filter>
+      <Filter>Header Files\platform\opengl</Filter>
+    </ClInclude>
+    <ClInclude Include="src\platform\opengl\glContext.h">
+      <Filter>Header Files\platform\opengl</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>
