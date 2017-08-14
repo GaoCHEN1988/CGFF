@@ -2,15 +2,16 @@
 #define CGFF_RENDERER_H
 
 #include "utils/qtopengl.h"
+#include "common.h"
 
 namespace CGFF {
 
     enum RendererBufferType
     {
-        RENDERER_BUFFER_NONE = 0,
-        RENDERER_BUFFER_COLOR = 1,
-        RENDERER_BUFFER_DEPTH = 2,
-        RENDERER_BUFFER_STENCIL = 3
+        RENDERER_BUFFER_NONE = BIT(0),
+        RENDERER_BUFFER_COLOR = BIT(1),
+        RENDERER_BUFFER_DEPTH = BIT(2),
+        RENDERER_BUFFER_STENCIL = BIT(3)
     };
 
     enum class RendererBlendFunction

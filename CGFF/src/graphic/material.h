@@ -6,6 +6,7 @@
 #include "shader/shader.h"
 #include "api/texture2D.h"
 #include "api/textureCube.h"
+#include "common.h"
 
 //#include <QByteArray>
 //#include <QDataStream>
@@ -52,8 +53,8 @@ namespace CGFF {
 		enum class RenderFlags
 		{
 			NONE = 0,
-			DISABLE_DEPTH_TEST = 1,
-			WIREFRAME = 2
+			DISABLE_DEPTH_TEST = BIT(0),
+			WIREFRAME = BIT(1)
 		};
 
     public:
@@ -70,6 +71,9 @@ namespace CGFF {
         {
             qFatal("Unknown uniform type!");
         }
+
+	private:
+		friend class MaterialInstance;
 
     private:
         QSharedPointer<QOpenGLShaderProgram> m_shader;

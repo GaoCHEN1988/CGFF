@@ -1,4 +1,5 @@
 #include "vertexArray.h"
+#include "platform/opengl/glVertexArray.h"
 
 namespace CGFF {
 
@@ -7,7 +8,7 @@ namespace CGFF {
         switch (Context::getRenderAPI())
         {
         case RenderAPI::OPENGL:
-            return nullptr;
+            return QSharedPointer<GLVertexArray>(new GLVertexArray);
         case RenderAPI::DIRECT3D:
             return nullptr;
         }

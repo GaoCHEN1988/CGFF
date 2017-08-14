@@ -4,6 +4,8 @@
 
 namespace CGFF {
 
+	const Shader* Shader::s_currentlyBound = nullptr;
+
 	QSharedPointer<Shader> Shader::createFromFile(const QString& name, const QString& vertexFile, const QString& fragmentFile)
 	{
 		switch (Context::getRenderAPI())

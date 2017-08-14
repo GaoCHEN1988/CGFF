@@ -11,7 +11,7 @@ namespace CGFF {
         switch (Context::getRenderAPI())
         {
         case RenderAPI::
-            OPENGL:	s_instance = nullptr; 
+            OPENGL:	s_instance = QSharedPointer<GLRenderer>(new GLRenderer);
             break;
         case RenderAPI::DIRECT3D:	
             s_instance = nullptr; 

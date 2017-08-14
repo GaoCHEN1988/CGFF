@@ -42,11 +42,13 @@ namespace CGFF {
 	void GLShader::bind()
 	{
 		m_glShaderProgram.bind();
+		s_currentlyBound = this;
 	}
 
 	void GLShader::unBind()
 	{
 		m_glShaderProgram.release();
+		s_currentlyBound = nullptr;
 	}
 
 	void GLShader::load(bool isFromFile)
