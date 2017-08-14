@@ -10,7 +10,9 @@ namespace CGFF {
 
 	void LayoutBuffer::pushLayout(const QString& name, uint type, uint size, uint count, bool normalized)
 	{
+        m_layout.append({ name, type, size, count, m_size, normalized });
 
+        m_size += size * count;
 	}
 
 }

@@ -11,7 +11,7 @@ namespace CGFF {
     class Context
     {
     public:
-        static void Create(void* deviceContext) {};
+        static void create(void* deviceContext) {};
 
         static RenderAPI getRenderAPI() { return s_renderAPI; }
         static void setRenderAPI(RenderAPI api) { s_renderAPI = api; }
