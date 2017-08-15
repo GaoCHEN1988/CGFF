@@ -1,0 +1,42 @@
+#ifndef CGFF_GL_SHADER_RESOURCE_H
+#define CGFF_GL_SHADER_RESOURCE_H
+
+#include "graphic/shader/shaderResource.h"
+
+namespace CGFF {
+
+	class GLShaderResourceDeclaration : public ShaderResourceDeclaration
+	{
+	public:
+		enum class Type
+		{
+			NONE, 
+			TEXTURE2D, 
+			TEXTURECUBE, 
+			TEXTURESHADOW
+		};
+
+	public:
+		GLShaderResourceDeclaration(Type type, const QString& name, uint count);
+
+		inline QString getName() const override { return m_name; }
+		inline uint getRegister() const override { return m_register; }
+		inline uint getCount() const override { return m_count; }
+
+		inline Type getType() const { return m_type; }
+	//public:
+	//	static Type StringToType(const QString& type);
+	//	static QString TypeToString(Type type);
+
+	private:
+		friend class GLShader;
+	private:
+		QString m_name;
+		uint m_register;
+		uint m_count;
+		Type m_type;
+	};
+
+}
+
+#endif

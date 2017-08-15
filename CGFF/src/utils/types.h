@@ -1,9 +1,11 @@
 #ifndef CGFF_TYPES_H
 #define CGFF_TYPES_H
 #include "../maths/qtmaths.h"
+#include "graphic/renderCommand.h"
+
 //#include <QDebug>
 #include <QSharedPointer>
-#include <QOpenGLShaderProgram>
+//#include <QOpenGLShaderProgram>
 
 namespace CGFF {
 
@@ -13,20 +15,6 @@ namespace CGFF {
 #define RENDERER_BUFFER_SIZE RENDERER_SPRITES_SIZE*RENDERER_MAX_SPRITES
 #define RENDERER_INDICES_SIZE RENDERER_MAX_SPRITES*6
 #define RENDERER_MAX_TEXTURES 32
-
-#define SHADER_VERTEX_INDEX     0
-#define SHADER_UV_INDEX         1
-#define SHADER_MASK_UV_INDEX	2
-#define SHADER_TID_INDEX        3
-#define SHADER_MID_INDEX        4
-#define SHADER_COLOR_INDEX      5
-
-#define SHADER_UNIFORM_PROJECTION_MATRIX_NAME	"pr_matrix"
-#define SHADER_UNIFORM_VIEW_MATRIX_NAME			"vw_matrix"
-#define SHADER_UNIFORM_MODEL_MATRIX_NAME		"ml_matrix"
-#define SHADER_UNIFORM_LIGHT_POSITION		    "u_LightPosition"
-#define SHADER_UNIFORM_LIGHT_ATTENUATION		"u_LightAttenuation"
-#define SHADER_UNIFORM_LIGHT_COLOR		        "u_LightColor"
 
     struct VertexData
     {
@@ -71,13 +59,6 @@ namespace CGFF {
             data_pointer = nullptr;
             uniform = "";
         };
-    };
-
-    struct RendererUniform
-    {
-        const char* uniform;
-        void * data;
-        UniformType type;
     };
 
     static void ResolveAndSetUniform(int loation, const UniformData& uniform, const QSharedPointer<QOpenGLShaderProgram>& shader)

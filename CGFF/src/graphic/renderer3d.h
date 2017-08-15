@@ -20,19 +20,25 @@ namespace CGFF {
     class Renderer3D
     {
     public:
+		virtual ~Renderer3D() {}
         virtual void init() = 0;
         virtual void begin() = 0;
-        //virtual void submit(QSharedPointer<Mesh>&) = 0;
+		virtual void beginScene(QSharedPointer<Camera> camera) = 0;
         // TODO: Submit needs to be replaced by some sort of macro
         virtual void submit(const RenderCommand& command) = 0;
-        virtual void submitMesh(QSharedPointer<Camera> camera, QSharedPointer<Mesh> mesh, const QMatrix4x4& transform) = 0;
+        virtual void submitMesh(QSharedPointer<Mesh> mesh, const QMatrix4x4& transform) = 0;
         virtual void submitLightSetup(const QSharedPointer<LightSetup>& lightSetup) = 0;
+		virtual void endScene() = 0;
         virtual void end() = 0;
         virtual void flush() = 0;
+
+		virtual void setScreenBufferSize(int width, int height) { m_screenBufferWidth = width; m_screenBufferHeight = height; }
 
     protected:
         CommandQueue m_commandQueue;
         SystemUniformList m_systemUniforms;
+		int m_screenBufferWidth; 
+		int m_screenBufferHeight;
     };
 }
 

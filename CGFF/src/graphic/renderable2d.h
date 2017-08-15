@@ -5,8 +5,9 @@
 #include "../utils/qtopengl.h"
 #include "../maths/qtmaths.h"
 
-#include <QOpenGLShaderProgram>
-#include <QOpenGLTexture>
+//#include <QOpenGLShaderProgram>
+//#include <QOpenGLTexture>
+#include "api/texture.h"
 
 namespace CGFF {
 
@@ -42,8 +43,7 @@ namespace CGFF {
 		inline const QVector2D& getSize() const { return m_size; }
 		inline const QVector4D& getColor() const { return m_color; }
 		inline const QVector<QVector2D>& getUV() const { return m_UVs; }
-        inline const GLuint getTextureID() const { return m_texture == nullptr ? 0 : m_texture->textureId(); }
-        inline const QSharedPointer<QOpenGLTexture> getTexture() const { return m_texture; }
+        inline const QSharedPointer<Texture> getTexture() const { return m_texture; }
         inline bool isVisible() const { return m_isVisible; }
         inline void setVisible(bool visible) { m_isVisible = visible; }
 
@@ -52,10 +52,11 @@ namespace CGFF {
             static QVector<QVector2D> results;
             if (!results.size())
             {
-                results.push_back(QVector2D(0, 0));
+				//test
                 results.push_back(QVector2D(0, 1));
                 results.push_back(QVector2D(1, 1));
                 results.push_back(QVector2D(1, 0));
+				results.push_back(QVector2D(0, 0));
             }
             return results;
         }
@@ -63,17 +64,17 @@ namespace CGFF {
 	private:
 		void setDefaultUV()
 		{
-			m_UVs.push_back(QVector2D(0, 0));
 			m_UVs.push_back(QVector2D(0, 1));
 			m_UVs.push_back(QVector2D(1, 1));
 			m_UVs.push_back(QVector2D(1, 0));
+			m_UVs.push_back(QVector2D(0, 0));
 		}
 	protected:
 		QVector3D m_position;
 		QVector2D m_size;
 		QVector4D m_color;
 		QVector<QVector2D> m_UVs;
-		QSharedPointer<QOpenGLTexture> m_texture;
+		QSharedPointer<Texture> m_texture;
         bool m_isVisible;
 	};
 }

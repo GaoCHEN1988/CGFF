@@ -8,7 +8,7 @@ namespace CGFF {
     class ShaderResourceDeclaration
     {
     public:
-        virtual const QString& getName() const = 0;
+        virtual QString getName() const = 0;
         virtual uint getRegister() const = 0;
         virtual uint getCount() const = 0;
     };

@@ -5,9 +5,18 @@
 
 namespace CGFF {
 
+	struct RendererUniform
+	{
+		const char* uniform;
+		void * data;
+		UniformType type;
+	};
+
     struct RenderCommand
     {
         QSharedPointer<Mesh> mesh;
+		QMatrix4x4 transform;
+		QSharedPointer<Shader> shader;
         QVector<RendererUniform> uniforms;
     };
 
@@ -88,7 +97,6 @@ namespace CGFF {
         }
         case UniformType::QMatrix4x4:
         {
-            QMatrix4x4 test = *(QMatrix4x4 *)uniform.data;
             shader->setUniformValue(uniform.uniform, *(QMatrix4x4 *)uniform.data);
             break;
         }

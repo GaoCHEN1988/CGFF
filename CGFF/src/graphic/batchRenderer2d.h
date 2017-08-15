@@ -5,12 +5,15 @@
 #include "../maths/qtmaths.h"
 #include "renderer2d.h"
 #include "renderable2d.h"
-#include "meshFactory.h"
-#include <QOpenGLBuffer>
-#include <QOpenGLVertexArrayObject>
-#include <QOpenGLFramebufferObject>
-#include <QPainter>
+//#include "meshFactory.h"
 #include <cstddef>
+#include <QPainter>
+
+//#include <QOpenGLBuffer>
+//#include <QOpenGLVertexArrayObject>
+//#include <QOpenGLFramebufferObject>
+
+#include "api/framebuffer2D.h"
 
 namespace CGFF {
 	

@@ -5,7 +5,8 @@
 #include "maths/qtmaths.h"
 #include "mask.h"
 #include "postfx/postEffects.h"
-
+#include "api/texture.h"
+#include "camera/camera.h"
 
 namespace CGFF {
 
@@ -35,6 +36,7 @@ namespace CGFF {
 		virtual void flush() = 0;
 		virtual void begin() {}
 		virtual void end() {}
+		virtual void setCamera(QSharedPointer<Camera> camera) {}
         
         virtual void drawString(QString text, const QVector3D& position, int width, int height, QVector4D& color, QFont font = QFont("Sans")) {};
         virtual void drawLine(float x0, float y0, float x1, float y1, QVector4D color = QVector4D(1, 1, 1, 1), float thickness = 1.0f) {}

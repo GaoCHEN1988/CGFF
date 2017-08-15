@@ -2,7 +2,17 @@
 
 namespace CGFF {
     ForwardRenderer::ForwardRenderer()
-    {}
+    {
+		setScreenBufferSize(openglWidgetSize.width(), openglWidgetSize.height());
+		init();
+	}
+
+	ForwardRenderer::ForwardRenderer(int width, int height)
+	{
+		setScreenBufferSize(width, height);
+		init();
+	}
+
     void ForwardRenderer::init()
     {
     }
@@ -12,31 +22,38 @@ namespace CGFF {
         m_systemUniforms.clear();
     }
 
+	void ForwardRenderer::beginScene(QSharedPointer<Camera> camera)
+	{
+
+	}
+
     void ForwardRenderer::submit(const RenderCommand& command)
     {
         m_commandQueue.push_back(command);
     }
 
-    void ForwardRenderer::submitMesh(QSharedPointer<Camera> camera, QSharedPointer<Mesh> mesh, const QMatrix4x4& transform)
+    void ForwardRenderer::submitMesh(QSharedPointer<Mesh> mesh, const QMatrix4x4& transform)
     {
-        //QMatrix4x4 proj_matrix = camera->getProjectionMatrix();
-        RendererUniform proj_matrix;
-        proj_matrix.type = UniformType::QMatrix4x4;
-        proj_matrix.data = (void*)&camera->getProjectionMatrix();
-        proj_matrix.uniform = SHADER_UNIFORM_PROJECTION_MATRIX_NAME;
+        ////QMatrix4x4 proj_matrix = camera->getProjectionMatrix();
+        //RendererUniform proj_matrix;
+        //proj_matrix.type = UniformType::QMatrix4x4;
+        //proj_matrix.data = (void*)&camera->getProjectionMatrix();
+        //proj_matrix.uniform = SHADER_UNIFORM_PROJECTION_MATRIX_NAME;
        
-        RendererUniform vw_matrix;
-        vw_matrix.type = UniformType::QMatrix4x4;
-        vw_matrix.data = (void*)&camera->getViewMatrix();
-        vw_matrix.uniform = SHADER_UNIFORM_VIEW_MATRIX_NAME;
+        //RendererUniform vw_matrix;
+        //vw_matrix.type = UniformType::QMatrix4x4;
+        //vw_matrix.data = (void*)&camera->getViewMatrix();
+        //vw_matrix.uniform = SHADER_UNIFORM_VIEW_MATRIX_NAME;
 
-        RendererUniform ml_matrix;
-        ml_matrix.type = UniformType::QMatrix4x4;
-        ml_matrix.data = (void*)&transform;
-        ml_matrix.uniform = SHADER_UNIFORM_MODEL_MATRIX_NAME;
+        //RendererUniform ml_matrix;
+        //ml_matrix.type = UniformType::QMatrix4x4;
+        //ml_matrix.data = (void*)&transform;
+        //ml_matrix.uniform = SHADER_UNIFORM_MODEL_MATRIX_NAME;
 
         RenderCommand command;
         command.mesh = mesh;
+		command.transform = transform;
+		command.shader = mesh->getMaterialInstance()->getMaterial()->getShader();
         command.uniforms.push_back(proj_matrix);
         command.uniforms.push_back(vw_matrix);
         command.uniforms.push_back(ml_matrix);
@@ -65,6 +82,11 @@ namespace CGFF {
             //m_systemUniforms.push_back({ SHADER_UNIFORM_LIGHT_COLOR,  (void*)&light->color, UniformType::QVector4D });
         }
     }
+
+	void ForwardRenderer::endScene()
+	{
+
+	}
 
     void ForwardRenderer::end() 
     {

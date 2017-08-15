@@ -158,6 +158,8 @@
     <ClCompile Include="src\platform\opengl\glIndexBuffer.cpp" />
     <ClCompile Include="src\platform\opengl\glRenderer.cpp" />
     <ClCompile Include="src\platform\opengl\glShader.cpp" />
+    <ClCompile Include="src\platform\opengl\glShaderResource.cpp" />
+    <ClCompile Include="src\platform\opengl\glShaderUniform.cpp" />
     <ClCompile Include="src\platform\opengl\glTexture2D.cpp" />
     <ClCompile Include="src\platform\opengl\glTextureCube.cpp" />
     <ClCompile Include="src\platform\opengl\glTextureDepth.cpp" />
@@ -268,6 +270,8 @@
     <ClInclude Include="src\platform\opengl\glIndexBuffer.h" />
     <ClInclude Include="src\platform\opengl\glRenderer.h" />
     <ClInclude Include="src\platform\opengl\glShader.h" />
+    <ClInclude Include="src\platform\opengl\glShaderResource.h" />
+    <ClInclude Include="src\platform\opengl\glShaderUniform.h" />
     <ClInclude Include="src\platform\opengl\glTexture2D.h" />
     <ClInclude Include="src\platform\opengl\glTextureCube.h" />
     <ClInclude Include="src\platform\opengl\glTextureDepth.h" />

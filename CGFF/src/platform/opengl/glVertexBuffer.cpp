@@ -65,7 +65,7 @@ namespace CGFF {
     void GLVertexBuffer::bind()
     {
         m_glVertexBuffer.bind();
-        //test
+        //test, need to be considered
         //setLayout(m_layout);
     }
 

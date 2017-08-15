@@ -371,6 +371,12 @@
     <ClCompile Include="src\platform\opengl\glVertexArray.cpp">
       <Filter>Source Files\platform\opengl</Filter>
     </ClCompile>
+    <ClCompile Include="src\platform\opengl\glShaderResource.cpp">
+      <Filter>Generated Files</Filter>
+    </ClCompile>
+    <ClCompile Include="src\platform\opengl\glShaderUniform.cpp">
+      <Filter>Generated Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <None Include="ClassDiagram.cd" />
@@ -627,6 +633,12 @@
     </ClInclude>
     <ClInclude Include="src\platform\opengl\glContext.h">
       <Filter>Header Files\platform\opengl</Filter>
+    </ClInclude>
+    <ClInclude Include="src\platform\opengl\glShaderResource.h">
+      <Filter>Generated Files</Filter>
+    </ClInclude>
+    <ClInclude Include="src\platform\opengl\glShaderUniform.h">
+      <Filter>Generated Files</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

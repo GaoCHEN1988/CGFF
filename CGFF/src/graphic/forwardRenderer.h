@@ -9,13 +9,17 @@ namespace CGFF {
     {
     public:
         ForwardRenderer();
+		ForwardRenderer(int width, int height);
+		virtual ~ForwardRenderer() {}
+
         void init() override;
         void begin() override;
-        //void submit(QSharedPointer<Mesh>& mesh) override;
+		void beginScene(QSharedPointer<Camera> camera) override;
         void submit(const RenderCommand& command) override;
-        void submitMesh(QSharedPointer<Camera> camera, QSharedPointer<Mesh> mesh, const QMatrix4x4& transform) override;
+        void submitMesh(QSharedPointer<Mesh> mesh, const QMatrix4x4& transform) override;
         void submitLightSetup(const QSharedPointer<LightSetup>& lightSetup) override;
-        void end() override;
+		void endScene() override;
+		void end() override;
         void flush() override;
 
     private:
