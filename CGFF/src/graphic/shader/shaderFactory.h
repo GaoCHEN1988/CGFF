@@ -10,6 +10,7 @@ namespace CGFF {
     QSharedPointer<QOpenGLShaderProgram> DefaultShader();
     QSharedPointer<QOpenGLShaderProgram> SimpleShader();
     QSharedPointer<QOpenGLShaderProgram> BasicLightShader();
+	QSharedPointer<Shader> BatchRendererShader();
 }
 
 #endif

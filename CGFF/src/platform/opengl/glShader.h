@@ -22,7 +22,7 @@ namespace CGFF {
 		void close() override;
 		void bind() override;
 		void unBind() override;
-
+		void reload() override;
 
 		void setVSSystemUniformBuffer(uchar* data, uint size, uint slot = 0) override;
 		void setPSSystemUniformBuffer(uchar* data, uint size, uint slot = 0) override;

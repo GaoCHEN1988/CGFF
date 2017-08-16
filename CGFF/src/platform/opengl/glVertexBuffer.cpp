@@ -51,10 +51,10 @@ namespace CGFF {
 
     void GLVertexBuffer::setData(uint size, const void* data)
     {
-        m_size = size;
+		m_size = size;
         m_glVertexBuffer.bind();
         m_glVertexBuffer.setUsagePattern(toGlUsagePattern(m_usage));
-        m_glVertexBuffer.allocate(data, m_size);
+        m_glVertexBuffer.allocate(data, size);
     }
 
     void GLVertexBuffer::releasePointer()

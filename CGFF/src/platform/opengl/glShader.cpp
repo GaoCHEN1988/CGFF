@@ -61,6 +61,12 @@ namespace CGFF {
 		s_currentlyBound = nullptr;
 	}
 
+	void GLShader::reload()
+	{
+		m_glShaderProgram.removeAllShaders();
+		load(true);
+	}
+
 	void GLShader::setVSSystemUniformBuffer(uchar* data, uint size, uint slot)
 	{
         bind();

@@ -58,7 +58,7 @@ namespace CGFF {
                 TransformComponent* tc = entity->getComponent<TransformComponent>();
                 if(!tc)
                     qFatal("Mesh does not have transform!"); // Meshes MUST have transforms
-                renderer->submitMesh(m_camera, mesh->mesh, tc->transform);
+                renderer->submitMesh(mesh->mesh, tc->transform);
             }
         }
 

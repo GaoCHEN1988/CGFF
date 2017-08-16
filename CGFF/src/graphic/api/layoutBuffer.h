@@ -28,6 +28,20 @@ namespace CGFF {
 		}
 
 		template<>
+		void push<float>(const QString& name, uint count, bool normalized)
+		{
+			switch (Context::getRenderAPI())
+			{
+			case RenderAPI::OPENGL:
+				pushLayout(name, GL_FLOAT, sizeof(float), count, normalized);
+				break;
+			case RenderAPI::DIRECT3D:
+				qFatal("DiectX not supported!");
+				break;
+			}
+		}
+
+		template<>
 		void push<uint>(const QString& name, uint count, bool normalized)
 		{
 			switch (Context::getRenderAPI())
@@ -42,12 +56,12 @@ namespace CGFF {
 		}
 
 		template<>
-		void push<byte>(const QString& name, uint count, bool normalized)
+		void push<uchar>(const QString& name, uint count, bool normalized)
 		{
 			switch (Context::getRenderAPI())
 			{
 			case RenderAPI::OPENGL:
-				pushLayout(name, GL_UNSIGNED_BYTE, sizeof(byte), count, normalized);
+				pushLayout(name, GL_UNSIGNED_BYTE, sizeof(uchar), count, normalized);
 				break;
 			case RenderAPI::DIRECT3D:
 				qFatal("DiectX not supported!");

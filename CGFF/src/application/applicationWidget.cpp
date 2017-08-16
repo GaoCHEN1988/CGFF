@@ -1,6 +1,6 @@
 #include "application/applicationWidget.h"
 #include "examples/test2DLayer.h"
-#include "examples/test3DLayer.h"
+//#include "examples/test3DLayer.h"
 
 ApplicationWidget * ApplicationWidget::m_instance = nullptr;
 
@@ -79,7 +79,7 @@ void ApplicationWidget::initializeGL()
 
     m_debugLayer->init();
 
-    pushLayer(QSharedPointer<CGFF::Layer>(new CGFF::Test3DLayer()));
+    //pushLayer(QSharedPointer<CGFF::Layer>(new CGFF::Test3DLayer()));
 
     pushOverlay(QSharedPointer<CGFF::Layer>(new CGFF::Test2DLayer(this->size())));
 }

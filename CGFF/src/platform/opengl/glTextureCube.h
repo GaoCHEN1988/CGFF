@@ -20,6 +20,8 @@ namespace CGFF {
 		inline QString getName() const override { return m_name; }
 		inline QString getFilepath() const override { return m_fileNames[0]; }
 		inline QStringList getFilepathList() const { return m_fileNames; }
+		inline int getWidth() const override { return m_glTexture.width(); }
+		inline int getHeight() const override { return m_glTexture.height(); }
 
 	private:
 		void loadFromFiles();

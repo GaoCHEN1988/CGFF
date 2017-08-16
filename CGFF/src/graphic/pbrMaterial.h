@@ -8,7 +8,7 @@ namespace CGFF {
     class PBRMaterial : public Material
     {
     public:
-        PBRMaterial(QSharedPointer<ShaderProgram> shader);
+        PBRMaterial(QSharedPointer<Shader> shader);
         ~PBRMaterial();
 
         void setEnviromentMap(QSharedPointer<TextureCube> texture);
@@ -25,10 +25,10 @@ namespace CGFF {
         void setNormalMap(QSharedPointer<Texture2D> texture);
         void setGlossMap(QSharedPointer<Texture2D> texture); // TODO: Grayscale texture
 
-        QSharedPointer<QOpenGLTexture> getAlbedoMap();
-        QSharedPointer<QOpenGLTexture> getSpecularMap();
-        QSharedPointer<QOpenGLTexture> getNormalMap();
-        QSharedPointer<QOpenGLTexture> getGlossMap();
+        QSharedPointer<Texture> getAlbedoMap();
+        QSharedPointer<Texture> getSpecularMap();
+        QSharedPointer<Texture> getNormalMap();
+        QSharedPointer<Texture> getGlossMap();
 
     private:
         static QSharedPointer<Texture2D> s_preintegratedFG;

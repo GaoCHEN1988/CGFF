@@ -31,7 +31,7 @@ namespace CGFF {
     protected:
         virtual void* getPointerInternal() = 0;
     public:
-        static QSharedPointer<VertexBuffer> create(BufferUsage usage = BufferUsage::STATIC);
+        static QSharedPointer<VertexBuffer> create(BufferUsage usage = BufferUsage::DYNAMIC);
     };
 }
 

@@ -106,7 +106,6 @@
     <ClCompile Include="src\entity\component\transformComponent.cpp" />
     <ClCompile Include="src\entity\entity.cpp" />
     <ClCompile Include="src\examples\test2DLayer.cpp" />
-    <ClCompile Include="src\examples\test3DLayer.cpp" />
     <ClCompile Include="src\graphic\API\context.cpp" />
     <ClCompile Include="src\graphic\api\framebuffer.cpp" />
     <ClCompile Include="src\graphic\api\framebuffer2D.cpp" />
@@ -158,6 +157,7 @@
     <ClCompile Include="src\platform\opengl\glIndexBuffer.cpp" />
     <ClCompile Include="src\platform\opengl\glRenderer.cpp" />
     <ClCompile Include="src\platform\opengl\glShader.cpp" />
+    <ClCompile Include="src\platform\opengl\glShaderPareser.cpp" />
     <ClCompile Include="src\platform\opengl\glShaderResource.cpp" />
     <ClCompile Include="src\platform\opengl\glShaderUniform.cpp" />
     <ClCompile Include="src\platform\opengl\glTexture2D.cpp" />
@@ -210,7 +210,6 @@
     <ClInclude Include="src\entity\component\transformComponent.h" />
     <ClInclude Include="src\entity\entity.h" />
     <ClInclude Include="src\examples\test2DLayer.h" />
-    <ClInclude Include="src\examples\test3DLayer.h" />
     <ClInclude Include="src\graphic\API\context.h" />
     <ClInclude Include="src\graphic\api\framebuffer.h" />
     <ClInclude Include="src\graphic\api\framebuffer2D.h" />
@@ -270,6 +269,7 @@
     <ClInclude Include="src\platform\opengl\glIndexBuffer.h" />
     <ClInclude Include="src\platform\opengl\glRenderer.h" />
     <ClInclude Include="src\platform\opengl\glShader.h" />
+    <ClInclude Include="src\platform\opengl\glShaderPareser.h" />
     <ClInclude Include="src\platform\opengl\glShaderResource.h" />
     <ClInclude Include="src\platform\opengl\glShaderUniform.h" />
     <ClInclude Include="src\platform\opengl\glTexture2D.h" />

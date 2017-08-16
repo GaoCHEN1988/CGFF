@@ -4,7 +4,7 @@
 
 namespace CGFF {
 
-	QSharedPointer<Texture2D> Texture2D::Create(int width, int height, TextureParameters parameters = TextureParameters(), TextureLoadOptions loadOptions = TextureLoadOptions())
+	QSharedPointer<Texture2D> Texture2D::create(int width, int height, TextureParameters parameters, TextureLoadOptions loadOptions)
 	{
 		switch (Context::getRenderAPI())
 		{
@@ -15,7 +15,7 @@ namespace CGFF {
 		}
 	}
 
-	QSharedPointer<Texture2D> Texture2D::CreateFromFile(const QString& filepath, TextureParameters parameters = TextureParameters(), TextureLoadOptions loadOptions = TextureLoadOptions())
+	QSharedPointer<Texture2D> Texture2D::createFromFile(const QString& filepath, TextureParameters parameters, TextureLoadOptions loadOptions)
 	{
 		switch (Context::getRenderAPI())
 		{
@@ -36,5 +36,16 @@ namespace CGFF {
             return nullptr;
         }
     }
+
+	QSharedPointer<Texture2D> Texture2D::createFromImage(const QImage& image, TextureParameters parameters, TextureLoadOptions loadOptions)
+	{
+		switch (Context::getRenderAPI())
+		{
+		case RenderAPI::OPENGL:
+			return QSharedPointer<Texture2D>(new GLTexture2D("", image, parameters, loadOptions));
+		case RenderAPI::DIRECT3D:
+			return nullptr;
+		}
+	}
 
 }

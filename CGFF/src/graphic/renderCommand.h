@@ -1,16 +1,12 @@
 #ifndef CGFF_RENDER_COMMAND_H
 #define CGFF_RENDER_COMMAND_H
 
-#include "mesh.h"
+#include "utils/types.h"
+//#include "mesh.h"
 
 namespace CGFF {
 
-	struct RendererUniform
-	{
-		const char* uniform;
-		void * data;
-		UniformType type;
-	};
+	class Mesh;
 
     struct RenderCommand
     {

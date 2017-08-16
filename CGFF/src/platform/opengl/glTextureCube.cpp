@@ -41,11 +41,11 @@ namespace CGFF {
 
 	void GLTextureCube::loadFromFiles()
 	{
-		if (m_fileNames.size == 1)
+		if (m_fileNames.size() == 1)
 		{
 			//To do
 		}
-        else if (m_fileNames.size == 6)
+        else if (m_fileNames.size() == 6)
 		{
 
 			QImage posx = QImage(m_fileNames[0]).mirrored(m_loadOptions.horizontalFlip, m_loadOptions.verticalFlip).convertToFormat(m_parameters.imageFormat);

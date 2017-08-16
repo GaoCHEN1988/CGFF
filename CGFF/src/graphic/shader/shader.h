@@ -27,6 +27,7 @@ namespace CGFF {
 		virtual void bind() = 0;
 		virtual void unBind() = 0;
 		virtual void close() = 0;
+		virtual void reload() = 0;
 
 		virtual void setVSSystemUniformBuffer(uchar* data, uint size, uint slot = 0) = 0;
 		virtual void setPSSystemUniformBuffer(uchar* data, uint size, uint slot = 0) = 0;
@@ -44,7 +45,7 @@ namespace CGFF {
 		virtual QString getName() const = 0;
 		//virtual QString getFilePath() const = 0;
 
-		// virtual void SetData(byte* data, uint size) = 0;
+		// virtual void SetData(uchar* data, uint size) = 0;
 
 		// bool HasUniform(const String& name) const = 0;
 	public:

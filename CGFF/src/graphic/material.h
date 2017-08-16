@@ -58,26 +58,72 @@ namespace CGFF {
 		};
 
     public:
-        Material(QSharedPointer<QOpenGLShaderProgram>& shader);
+        Material(QSharedPointer<Shader>& shader);
         virtual ~Material();
 
         void bind() const;
         void unbind() const;
 
-        QSharedPointer<QOpenGLShaderProgram> getShader();
+        QSharedPointer<Shader> getShader();
 
-        template<typename T>
-        void setUniform(const char *name, const T& value)
-        {
-            qFatal("Unknown uniform type!");
-        }
+		void setUniformData(const QString& uniform, uchar* data);
+		void setTexture(const QString& name, QSharedPointer<Texture> texture);
+
+		inline int getRenderFlags() const { return m_renderFlags; }
+		void setRenderFlags(int flags) { m_renderFlags = flags; }
+		void setRenderFlag(Material::RenderFlags flag) { m_renderFlags |= (int)flag; }
+
+        //template<typename T>
+        //void setUniform(const char *name, const T& value)
+        //{
+        //    qFatal("Unknown uniform type!");
+        //}
+
+		//template<typename T>
+		//void SetUniform(const String& name, const T& data)
+		//{
+		//	uchar* buffer;
+		//	API::ShaderUniformDeclaration* declaration = FindUniformDeclaration(name, &buffer);
+		//	if (!declaration)
+		//	{
+		//		SP_ERROR("Could not find uniform with name '", name, "'!");
+		//		return;
+		//	}
+		//	memcpy(buffer + declaration->GetOffset(), &data, declaration->GetSize());
+		//}
+
+		//template<typename T>
+		//const T* getUniform(const String& name) const
+		//{
+		//	return getUniform<T>(getUniformDeclaration(name));
+		//}
+
+		//template<typename T>
+		//const T* getUniform(const API::ShaderUniformDeclaration* uniform) const
+		//{
+		//	return (T*)&m_UniformData[uniform->GetOffset()];
+		//}
+
+	protected:
+		void allocateStorage();
+		QSharedPointer<ShaderUniformDeclaration> findUniformDeclaration(const QString& name, QSharedPointer<uchar>& outBuffer);
+		QSharedPointer<ShaderResourceDeclaration> findResourceDeclaration(const QString& name);
 
 	private:
 		friend class MaterialInstance;
 
-    private:
-        QSharedPointer<QOpenGLShaderProgram> m_shader;
-        QHash<int, UniformData> m_uniformDatas;
+	protected:
+		QSharedPointer<Shader> m_shader;
+		QSharedPointer<uchar> m_VSUserUniformBuffer;
+		uint m_VSUserUniformBufferSize;
+		QSharedPointer<uchar> m_PSUserUniformBuffer;
+		uint m_PSUserUniformBufferSize;
+		QVector<QSharedPointer<Texture>> m_textures;
+		const ShaderUniformList* m_VSUserUniforms;
+		const ShaderUniformList* m_PSUserUniforms;
+		const ShaderResourceList* m_resources;
+
+		int m_renderFlags;
     };
 
     class MaterialInstance
@@ -85,42 +131,80 @@ namespace CGFF {
     public:
 
         MaterialInstance(QSharedPointer<Material>& material);
-        void bind() const;
-        void unbind() const;
+        void bind();
+        void unbind();
 
         inline QSharedPointer<Material>& getMaterial() { return m_material; }
 
-        template<typename T>
-        void setUniform(const char * name, const T& value)
-        {
-            qFatal("Unknown uniform type!");
-        }
-        void setRendererUniform(const RendererUniform& uniform);
-        void unsetUniform(const QString& name, bool unset);
+		void setUniformData(const QString& uniform, uchar* data);
+		void setTexture(const QString& name, QSharedPointer<Texture> texture);
 
+		inline int getRenderFlags() const { return m_renderFlags; }
+		void setRenderFlags(int flags) { m_renderFlags = flags; }
+		void setRenderFlag(Material::RenderFlags flag) { m_renderFlags |= (int)flag; }
+
+		//template<typename T>
+		//void setUniform(const String& name, const T& data)
+		//{
+		//	uchar* buffer;
+		//	ShaderUniformDeclaration* declaration = findUniformDeclaration(name, &buffer);
+		//	Q_ASSERT(declaration);
+		//	memcpy(buffer + declaration->getOffset(), &data, declaration->getSize());
+		//}
+
+		//template<typename T>
+		//const T* getUniform(const String& name) const
+		//{
+		//	return getUniform<T>(getUniformDeclaration(name));
+		//}
+
+        //template<typename T>
+        //void setUniform(const char * name, const T& value)
+        //{
+        //    qFatal("Unknown uniform type!");
+        //}
+        //void setRendererUniform(const RendererUniform& uniform);
+        //void unsetUniform(const QString& name, bool unset);
+
+	private:
+		void allocateStorage();
+		QSharedPointer<ShaderUniformDeclaration> findUniformDeclaration(const QString& name, QSharedPointer<uchar>& outBuffer);
+		QSharedPointer<ShaderResourceDeclaration> findResourceDeclaration(const QString& name);
     private:
         QSharedPointer<Material> m_material;
         QHash<int, UniformData> m_uniformDatas;
         QHash<int, RendererUniform> m_rUniformDatas;
         QHash<int, bool> m_unsetUniformMap;
         bool m_isRendererData;
+
+		QSharedPointer<uchar> m_VSUserUniformBuffer;
+		uint m_VSUserUniformBufferSize;
+		QSharedPointer<uchar> m_PSUserUniformBuffer;
+		uint m_PSUserUniformBufferSize;
+		QVector<QSharedPointer<Texture>> m_textures;
+
+		const ShaderUniformList* m_VSUserUniforms;
+		const ShaderUniformList* m_PSUserUniforms;
+		const ShaderResourceList* m_resources;
+
+		int m_renderFlags;
     };
 
-    IMPLEMENT_SET_UNIFORM(GLfloat)
-    IMPLEMENT_SET_UNIFORM(GLint)
-    IMPLEMENT_SET_UNIFORM(GLuint)
-    IMPLEMENT_SET_UNIFORM(QVector2D)
-    IMPLEMENT_SET_UNIFORM(QVector3D)
-    IMPLEMENT_SET_UNIFORM(QVector4D)
-    IMPLEMENT_SET_UNIFORM(QMatrix2x2)
-    IMPLEMENT_SET_UNIFORM(QMatrix2x3)
-    IMPLEMENT_SET_UNIFORM(QMatrix2x4)
-    IMPLEMENT_SET_UNIFORM(QMatrix3x2)
-    IMPLEMENT_SET_UNIFORM(QMatrix3x3)
-    IMPLEMENT_SET_UNIFORM(QMatrix3x4)
-    IMPLEMENT_SET_UNIFORM(QMatrix4x2)
-    IMPLEMENT_SET_UNIFORM(QMatrix4x3)
-    IMPLEMENT_SET_UNIFORM(QMatrix4x4)
+    //IMPLEMENT_SET_UNIFORM(GLfloat)
+    //IMPLEMENT_SET_UNIFORM(GLint)
+    //IMPLEMENT_SET_UNIFORM(GLuint)
+    //IMPLEMENT_SET_UNIFORM(QVector2D)
+    //IMPLEMENT_SET_UNIFORM(QVector3D)
+    //IMPLEMENT_SET_UNIFORM(QVector4D)
+    //IMPLEMENT_SET_UNIFORM(QMatrix2x2)
+    //IMPLEMENT_SET_UNIFORM(QMatrix2x3)
+    //IMPLEMENT_SET_UNIFORM(QMatrix2x4)
+    //IMPLEMENT_SET_UNIFORM(QMatrix3x2)
+    //IMPLEMENT_SET_UNIFORM(QMatrix3x3)
+    //IMPLEMENT_SET_UNIFORM(QMatrix3x4)
+    //IMPLEMENT_SET_UNIFORM(QMatrix4x2)
+    //IMPLEMENT_SET_UNIFORM(QMatrix4x3)
+    //IMPLEMENT_SET_UNIFORM(QMatrix4x4)
 }
 
 #endif

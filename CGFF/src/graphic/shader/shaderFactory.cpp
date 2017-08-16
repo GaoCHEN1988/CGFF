@@ -1,4 +1,5 @@
 #include "shaderFactory.h"
+#include "graphic/api/context.h"
 
 namespace CGFF {
     QSharedPointer<QOpenGLShaderProgram> DefaultShader()
@@ -30,4 +31,18 @@ namespace CGFF {
     {
         return nullptr;
     }
+
+	QSharedPointer<Shader> BatchRendererShader()
+	{
+		switch (Context::getRenderAPI())
+		{
+		case RenderAPI::OPENGL:
+			return Shader::createFromFile("BatchRenderer", 
+				"src/graphic/shaders/SimpleVertexShader.vert", 
+				"src/graphic/shaders/SimpleVertexShader.frag");
+		case RenderAPI::DIRECT3D:
+			return nullptr;
+		}
+		return nullptr;
+	}
 }

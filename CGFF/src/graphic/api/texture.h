@@ -92,6 +92,8 @@ namespace CGFF {
 
 		virtual QString getName() const = 0;
 		virtual QString getFilepath() const = 0;
+		virtual int getWidth() const = 0;
+		virtual int getHeight() const = 0;
 
 	};
 

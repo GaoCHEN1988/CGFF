@@ -38,6 +38,18 @@ namespace CGFF {
 		load();
 	}
 
+	GLTexture2D::GLTexture2D(const QString& name, const QImage& image, TextureParameters parameters, TextureLoadOptions loadOptions)
+		: m_name(name)
+		, m_fileName("")
+		, m_width(image.width())
+		, m_height(image.height())
+		, m_parameters(parameters)
+		, m_loadOptions(loadOptions)
+		, m_glTexture(QOpenGLTexture::Target2D)
+	{
+		load(image);
+	}
+
 	void GLTexture2D::setTexture(GLuint id)
 	{
 		m_glTexture.bind(id);
@@ -96,4 +108,17 @@ namespace CGFF {
 		m_glTexture.setMinMagFilters(m_parameters.gl_filter, m_parameters.gl_filter);
 	}
 
+	void GLTexture2D::load(QImage image)
+	{
+		//Need to test
+		m_glTexture.create();
+		m_glTexture.setSize(image.width(), image.height(), image.depth());
+		m_glTexture.allocateStorage();
+		m_glTexture.setFormat(m_parameters.gl_textureFormat);
+		m_glTexture.setData(image.mirrored(m_loadOptions.horizontalFlip, m_loadOptions.verticalFlip));
+
+		//TO do: Support more QOpenGL features
+		m_glTexture.setWrapMode(m_parameters.gl_wrap);
+		m_glTexture.setMinMagFilters(m_parameters.gl_filter, m_parameters.gl_filter);
+	}
 }

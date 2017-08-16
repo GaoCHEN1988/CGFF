@@ -2,9 +2,11 @@
 
 namespace CGFF {
 
-    Material::Material(QSharedPointer<QOpenGLShaderProgram>& shader)
+    Material::Material(QSharedPointer<Shader>& shader)
         : m_shader(shader)
     {
+		allocateStorage();
+		m_resources = &shader->getResources();
     }
 
     Material::~Material()
@@ -13,31 +15,148 @@ namespace CGFF {
 
     void Material::bind() const
     {
-        m_shader->bind();
+        //m_shader->bind();
 
-        foreach(int key, m_uniformDatas.keys())
-        {
-            ResolveAndSetUniform(key, m_uniformDatas[key], m_shader);
-        }
+        //foreach(int key, m_uniformDatas.keys())
+        //{
+        //    ResolveAndSetUniform(key, m_uniformDatas[key], m_shader);
+        //}
+
+		m_shader->bind();
+		// TODO: Don't do this if a MaterialInstance is being used
+		if (!m_VSUserUniformBuffer.isNull())
+			m_shader->setVSUserUniformBuffer(m_VSUserUniformBuffer.data(), m_VSUserUniformBufferSize);
+		if (!m_PSUserUniformBuffer.isNull())
+			m_shader->setPSUserUniformBuffer(m_PSUserUniformBuffer.data(), m_PSUserUniformBufferSize);
+
+		for (uint i = 0; i < m_textures.size(); i++)
+		{
+			QSharedPointer<Texture> texture = m_textures[i];
+			if (!texture.isNull())
+				texture->bind(i);
+		}
+
     }
     void Material::unbind() const
     {
-        m_shader->release();
+        m_shader->unBind();
+
+		for (uint i = 0; i < m_textures.size(); i++)
+		{
+			QSharedPointer<Texture> texture = m_textures[i];
+			if (!texture.isNull())
+				texture->unBind(i);
+		}
     }
 
-    QSharedPointer<QOpenGLShaderProgram>  Material::getShader()
+    QSharedPointer<Shader> Material::getShader()
     {
         return m_shader;
     }
 
+	void Material::setUniformData(const QString& uniform, uchar* data)
+	{
+		QSharedPointer<uchar> buffer;
+		QSharedPointer<ShaderUniformDeclaration> declaration = findUniformDeclaration(uniform, buffer);
+		memcpy(buffer.data() + declaration->getOffset(), data, declaration->getSize());
+	}
+
+	void Material::setTexture(const QString& name, QSharedPointer<Texture> texture)
+	{
+		QSharedPointer<ShaderResourceDeclaration> declaration = findResourceDeclaration(name);
+		Q_ASSERT(!declaration.isNull());
+		uint slot = declaration->getRegister();
+
+		if (m_textures.size() <= slot)
+			m_textures.resize(slot + 1);
+
+		m_textures[slot] = texture;
+	}
+
+	void Material::allocateStorage()
+	{
+		m_VSUserUniformBuffer = nullptr;
+		m_VSUserUniformBufferSize = 0;
+
+		m_PSUserUniformBuffer = nullptr;
+		m_PSUserUniformBufferSize = 0;
+
+		m_VSUserUniforms = nullptr;
+		m_PSUserUniforms = nullptr;
+
+		const QSharedPointer<ShaderUniformBufferDeclaration> vsBuffer = m_shader->getVSUserUniformBuffer();
+		if (vsBuffer)
+		{
+			m_VSUserUniformBufferSize = vsBuffer->getSize();
+			m_VSUserUniformBuffer = QSharedPointer<uchar>(new uchar[m_VSUserUniformBufferSize]);
+			memset(m_VSUserUniformBuffer.data(), 0, m_VSUserUniformBufferSize);
+			m_VSUserUniforms = &vsBuffer->getUniformDeclarations();
+		}
+
+		const  QSharedPointer<ShaderUniformBufferDeclaration> psBuffer = m_shader->getPSUserUniformBuffer();
+		if (psBuffer)
+		{
+			m_PSUserUniformBufferSize = psBuffer->getSize();
+			m_PSUserUniformBuffer = QSharedPointer<uchar>(new uchar[m_PSUserUniformBufferSize]);
+			memset(m_PSUserUniformBuffer.data(), 0, m_PSUserUniformBufferSize);
+			m_PSUserUniforms = &psBuffer->getUniformDeclarations();
+		}
+	}
+
+	QSharedPointer<ShaderUniformDeclaration> Material::findUniformDeclaration(const QString& name, QSharedPointer<uchar>& outBuffer)
+	{
+		if (m_VSUserUniforms)
+		{
+			for (QSharedPointer<ShaderUniformDeclaration> uniform : *m_VSUserUniforms)
+			{
+				if (uniform->getName() == name)
+				{
+					outBuffer = m_VSUserUniformBuffer;
+					return uniform;
+				}
+			}
+		}
+		if (m_PSUserUniforms)
+		{
+			for (QSharedPointer<ShaderUniformDeclaration> uniform : *m_PSUserUniforms)
+			{
+				if (uniform->getName() == name)
+				{
+					outBuffer = m_PSUserUniformBuffer;
+					return uniform;
+				}
+			}
+		}
+		return nullptr;
+	}
+
+	QSharedPointer<ShaderResourceDeclaration> Material::findResourceDeclaration(const QString& name)
+	{
+		for (QSharedPointer<ShaderResourceDeclaration> resource : *m_resources)
+		{
+			if (resource->getName() == name)
+				return resource;
+		}
+		return nullptr;
+	}
+
+
+	//-------------------------------------------------------------------------------------
 
     MaterialInstance::MaterialInstance(QSharedPointer<Material>& material)
         : m_material(material)
         , m_isRendererData(true)
     {
+		allocateStorage();
+
+		memcpy(m_VSUserUniformBuffer.data(), m_material->m_VSUserUniformBuffer.data(), m_VSUserUniformBufferSize);
+		memcpy(m_PSUserUniformBuffer.data(), m_material->m_PSUserUniformBuffer.data(), m_PSUserUniformBufferSize);
+
+		m_resources = &m_material->getShader()->getResources();
+		m_renderFlags = material->m_renderFlags;
     }
 
-    void MaterialInstance::bind() const
+    void MaterialInstance::bind()
     {
         m_material->bind();
         if (m_isRendererData)
@@ -58,29 +177,105 @@ namespace CGFF {
             }
         }
     }
-    void MaterialInstance::unbind() const
+
+    void MaterialInstance::unbind()
     {
         m_material->unbind();
     }
 
 
-    void MaterialInstance::unsetUniform(const QString& name, bool unset)
-    {
-        int key = m_material->getShader()->uniformLocation(name);
-        m_unsetUniformMap[key] = unset;
-        m_isRendererData = false;
-    }
+	void MaterialInstance::setUniformData(const QString& uniform, uchar* data)
+	{
+		QSharedPointer<uchar> buffer;
+		QSharedPointer<ShaderUniformDeclaration> declaration = findUniformDeclaration(uniform, buffer);
+		Q_ASSERT(!buffer.isNull());
+		memcpy(buffer.data() + declaration->getOffset(), data, declaration->getSize());
+	}
+
+	void MaterialInstance::setTexture(const QString& name, QSharedPointer<Texture> texture)
+	{
+		QSharedPointer<ShaderResourceDeclaration> declaration = findResourceDeclaration(name);
+		uint slot = declaration->getRegister();
+
+		if (m_textures.size() <= slot)
+			m_textures.resize(slot + 1);
+
+		m_textures[slot] = texture;
+	}
+
+	void MaterialInstance::allocateStorage()
+	{
+		const QSharedPointer<ShaderUniformBufferDeclaration> vsBuffer = m_material->m_shader->getVSUserUniformBuffer();
+		if (vsBuffer)
+		{
+			m_VSUserUniformBufferSize = vsBuffer->getSize();
+			m_VSUserUniformBuffer = QSharedPointer<uchar>(new uchar[m_VSUserUniformBufferSize]);
+			m_VSUserUniforms = &vsBuffer->getUniformDeclarations();
+		}
+
+		const QSharedPointer<ShaderUniformBufferDeclaration> psBuffer = m_material->m_shader->getPSUserUniformBuffer();
+		if (psBuffer)
+		{
+			m_PSUserUniformBufferSize = psBuffer->getSize();
+			m_PSUserUniformBuffer = QSharedPointer<uchar>(new uchar[m_PSUserUniformBufferSize]);
+			m_PSUserUniforms = &psBuffer->getUniformDeclarations();
+		}
+	}
+
+	QSharedPointer<ShaderUniformDeclaration> MaterialInstance::findUniformDeclaration(const QString& name, QSharedPointer<uchar>& outBuffer)
+	{
+		if (m_VSUserUniforms)
+		{
+			for (QSharedPointer<ShaderUniformDeclaration> uniform : *m_VSUserUniforms)
+			{
+				if (uniform->getName() == name)
+				{
+					outBuffer = m_VSUserUniformBuffer;
+					return uniform;
+				}
+			}
+		}
+		if (m_PSUserUniforms)
+		{
+			for (QSharedPointer<ShaderUniformDeclaration> uniform : *m_PSUserUniforms)
+			{
+				if (uniform->getName() == name)
+				{
+					outBuffer = m_PSUserUniformBuffer;
+					return uniform;
+				}
+			}
+		}
+		return nullptr;
+	}
+
+	QSharedPointer<ShaderResourceDeclaration> MaterialInstance::findResourceDeclaration(const QString& name)
+	{
+		for (QSharedPointer<ShaderResourceDeclaration> resource : *m_resources)
+		{
+			if (resource->getName() == name)
+				return resource;
+		}
+		return nullptr;
+	}
+
+    //void MaterialInstance::unsetUniform(const QString& name, bool unset)
+    //{
+    //    int key = m_material->getShader()->uniformLocation(name);
+    //    m_unsetUniformMap[key] = unset;
+    //    m_isRendererData = false;
+    //}
    
-    void MaterialInstance::setRendererUniform(const RendererUniform& uniform)
-    {
-        int index = m_material->getShader()->uniformLocation(uniform.uniform);
-        if (-1 == index)
-        {
-            qFatal("Could not find uniform %s", uniform.uniform);
-        }
+    //void MaterialInstance::setRendererUniform(const RendererUniform& uniform)
+    //{
+    //    int index = m_material->getShader()->uniformLocation(uniform.uniform);
+    //    if (-1 == index)
+    //    {
+    //        qFatal("Could not find uniform %s", uniform.uniform);
+    //    }
 
-        m_rUniformDatas[index] = uniform;
+    //    m_rUniformDatas[index] = uniform;
 
-        m_isRendererData = true;
-    }
+    //    m_isRendererData = true;
+    //}
 }

@@ -23,8 +23,18 @@ namespace CGFF {
         void flush() override;
 
     private:
-        void setRequiredUniforms(QSharedPointer<QOpenGLShaderProgram> shader, const QVector<RendererUniform>& uniforms);
-        void setSystemUniforms(QSharedPointer<QOpenGLShaderProgram> shader);
+        //void setRequiredUniforms(QSharedPointer<QOpenGLShaderProgram> shader, const QVector<RendererUniform>& uniforms);
+        //void setSystemUniforms(QSharedPointer<QOpenGLShaderProgram> shader);
+		void setSystemUniforms(QSharedPointer<Shader> shader);
+	
+	private:
+		QSharedPointer<uchar> m_VSSystemUniformBuffer;
+		uint m_VSSystemUniformBufferSize;
+		QSharedPointer<uchar> m_PSSystemUniformBuffer;
+		uint m_PSSystemUniformBufferSize;
+
+		QVector<uint> m_VSSystemUniformBufferOffsets;
+		QVector<uint> m_PSSystemUniformBufferOffsets;
     };
 }
 

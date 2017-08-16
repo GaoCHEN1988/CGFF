@@ -1,7 +1,6 @@
 #ifndef CGFF_TYPES_H
 #define CGFF_TYPES_H
 #include "../maths/qtmaths.h"
-#include "graphic/renderCommand.h"
 
 //#include <QDebug>
 #include <QSharedPointer>
@@ -60,6 +59,13 @@ namespace CGFF {
             uniform = "";
         };
     };
+
+	struct RendererUniform
+	{
+		const char* uniform;
+		void * data;
+		UniformType type;
+	};
 
     static void ResolveAndSetUniform(int loation, const UniformData& uniform, const QSharedPointer<QOpenGLShaderProgram>& shader)
     {
