@@ -31,7 +31,7 @@ namespace CGFF {
 		void setPSUserUniformBuffer(uchar* data, uint size) override;
 
 		void setUniform(const QString& name, uchar* data);
-		void resolveAndSetUniformField(const QSharedPointer<ShaderUniformDeclaration>& field, uchar* data, int offset);
+		void resolveAndSetUniformField(const QSharedPointer<GLShaderUniformDeclaration>& field, uchar* data, int offset);
 
 		inline QString getName() const override { return m_name; };
 		inline const ShaderUniformBufferList& getVSSystemUniforms() const override
@@ -62,8 +62,8 @@ namespace CGFF {
 		void load(bool isFromFile);
 		QSharedPointer<ShaderUniformBufferDeclaration> findUniformDeclaration(const QString& name, QSharedPointer<ShaderUniformBufferDeclaration> buffer);
 		QSharedPointer<ShaderUniformBufferDeclaration> findUniformDeclaration(const QString& name);
-		void resolveAndSetUniforms(QSharedPointer<ShaderUniformBufferDeclaration> buffer, uchar* data, uint size);
-		void resolveAndSetUniform(QSharedPointer<GLShaderUniformDeclaration> uniform, uchar* data, uint size);
+		void resolveAndSetUniforms(QSharedPointer<ShaderUniformBufferDeclaration> buffer, uchar* data);
+		void resolveAndSetUniform(QSharedPointer<GLShaderUniformDeclaration> uniform, uchar* data);
 		void setUniformStruct(QSharedPointer<GLShaderUniformDeclaration> uniform, uchar* data, int offset);
 
 		QSharedPointer<ShaderStruct> findStruct(const QString& name);

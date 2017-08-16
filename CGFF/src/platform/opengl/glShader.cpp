@@ -63,26 +63,123 @@ namespace CGFF {
 
 	void GLShader::setVSSystemUniformBuffer(uchar* data, uint size, uint slot)
 	{
+        bind();
+        Q_ASSERT(m_VSUniformBuffers.size() > slot);
+        QSharedPointer<ShaderUniformBufferDeclaration> declaration = m_VSUniformBuffers[slot];
+        resolveAndSetUniforms(declaration, data);
 	}
 
 	void GLShader::setPSSystemUniformBuffer(uchar* data, uint size, uint slot)
 	{
+        bind();
+        Q_ASSERT(m_PSUniformBuffers.size() > slot);
+        QSharedPointer<ShaderUniformBufferDeclaration> declaration = m_PSUniformBuffers[slot];
+        resolveAndSetUniforms(declaration, data);
 	}
 
 	void GLShader::setVSUserUniformBuffer(uchar* data, uint size)
 	{
+        resolveAndSetUniforms(m_VSUserUniformBuffer, data);
 	}
 
 	void GLShader::setPSUserUniformBuffer(uchar* data, uint size)
 	{
+        resolveAndSetUniforms(m_PSUserUniformBuffer, data);
 	}
 
 	void GLShader::setUniform(const QString& name, uchar* data)
 	{
+        QSharedPointer<ShaderUniformBufferDeclaration> uniform = findUniformDeclaration(name);
+        if (!uniform)
+        {
+            qFatal("Cannot find uniform in ", m_name, " shader with name '", name, "'");
+            return;
+        }
+        resolveAndSetUniform(uniform, data);
 	}
 
-	void GLShader::resolveAndSetUniformField(const QSharedPointer<ShaderUniformDeclaration>& field, uchar* data, int offset)
+	void GLShader::resolveAndSetUniformField(const QSharedPointer<GLShaderUniformDeclaration>& field, uchar* data, int offset)
 	{
+        switch (field->getType())
+        {
+        case GLShaderUniformDeclaration::Type::GLfloat:
+        {
+            m_glShaderProgram.setUniformValue(field->getLocation(), *(GLfloat *)&data[offset]);
+            break;
+        }
+        case GLShaderUniformDeclaration::Type::GLint:
+        {
+            m_glShaderProgram.setUniformValue(field->getLocation(), *(GLint *)&data[offset]);
+            break;
+        }
+        case GLShaderUniformDeclaration::Type::GLuint:
+        {
+            m_glShaderProgram.setUniformValue(field->getLocation(), *(GLuint *)&data[offset]);
+            break;
+        }
+        case GLShaderUniformDeclaration::Type::QVector2D:
+        {
+            m_glShaderProgram.setUniformValue(field->getLocation(), *(QVector2D *)&data[offset]);
+            break;
+        }
+        case GLShaderUniformDeclaration::Type::QVector3D:
+        {
+            m_glShaderProgram.setUniformValue(field->getLocation(), *(QVector3D *)&data[offset]);
+            break;
+        }
+        case GLShaderUniformDeclaration::Type::QVector4D:
+        {
+            m_glShaderProgram.setUniformValue(field->getLocation(), *(QVector4D *)&data[offset]);
+            break;
+        }
+        case GLShaderUniformDeclaration::Type::QMatrix2x2:
+        {
+            m_glShaderProgram.setUniformValue(field->getLocation(), *(QMatrix2x2 *)&data[offset]);
+            break;
+        }
+        case GLShaderUniformDeclaration::Type::QMatrix2x3:
+        {
+            m_glShaderProgram.setUniformValue(field->getLocation(), *(QMatrix2x3 *)&data[offset]);
+            break;
+        }
+        case GLShaderUniformDeclaration::Type::QMatrix2x4:
+        {
+            m_glShaderProgram.setUniformValue(field->getLocation(), *(QMatrix2x4 *)&data[offset]);
+            break;
+        }
+        case GLShaderUniformDeclaration::Type::QMatrix3x2:
+        {
+            m_glShaderProgram.setUniformValue(field->getLocation(), *(QMatrix3x2 *)&data[offset]);
+            break;
+        }
+        case GLShaderUniformDeclaration::Type::QMatrix3x3:
+        {
+            m_glShaderProgram.setUniformValue(field->getLocation(), *(QMatrix3x3 *)&data[offset]);
+            break;
+        }
+        case GLShaderUniformDeclaration::Type::QMatrix3x4:
+        {
+            m_glShaderProgram.setUniformValue(field->getLocation(), *(QMatrix3x4 *)&data[offset]);
+            break;
+        }
+        case GLShaderUniformDeclaration::Type::QMatrix4x2:
+        {
+            m_glShaderProgram.setUniformValue(field->getLocation(), *(QMatrix4x2 *)&data[offset]);
+            break;
+        }
+        case GLShaderUniformDeclaration::Type::QMatrix4x3:
+        {
+            m_glShaderProgram.setUniformValue(field->getLocation(), *(QMatrix4x3 *)&data[offset]);
+            break;
+        }
+        case GLShaderUniformDeclaration::Type::QMatrix4x4:
+        {
+            m_glShaderProgram.setUniformValue(field->getLocation(), *(QMatrix4x4 *)&data[offset]);
+            break;
+        }
+        default:
+            qFatal("Unknown type!");
+        }
 	}
 
 	void GLShader::load(bool isFromFile)
@@ -146,17 +243,17 @@ namespace CGFF {
 		return result;
 	}
 
-	void GLShader::resolveAndSetUniforms(QSharedPointer<ShaderUniformBufferDeclaration> buffer, uchar* data, uint size)
+	void GLShader::resolveAndSetUniforms(QSharedPointer<ShaderUniformBufferDeclaration> buffer, uchar* data)
 	{
 		const ShaderUniformList& uniforms = buffer->getUniformDeclarations();
 		for (uint i = 0; i < uniforms.size(); i++)
 		{
-			QSharedPointer<GLShaderUniformDeclaration> uniform = uniforms[i];
-			resolveAndSetUniform(uniform, data, size);
+			QSharedPointer<GLShaderUniformDeclaration> uniform = qSharedPointerCast<GLShaderUniformDeclaration>(uniforms[i]);
+			resolveAndSetUniform(uniform, data);
 		}
 	}
 
-	void GLShader::resolveAndSetUniform(QSharedPointer<GLShaderUniformDeclaration> uniform, uchar* data, uint size) 
+	void GLShader::resolveAndSetUniform(QSharedPointer<GLShaderUniformDeclaration> uniform, uchar* data) 
 	{
 		if (uniform->getLocation() == -1)
 			return;
@@ -242,8 +339,10 @@ namespace CGFF {
 			break;
 		}
 		case GLShaderUniformDeclaration::Type::STRUCT:
+        {
 			setUniformStruct(uniform, data, offset);
 			break;
+        }
 		default:
 			qFatal("Unknown uniform type!");
 		}
@@ -255,7 +354,7 @@ namespace CGFF {
 		const auto& fields = s.getFields();
 		for (uint k = 0; k < fields.size(); k++)
 		{
-			QSharedPointer<ShaderUniformDeclaration> field = fields[k];
+			QSharedPointer<GLShaderUniformDeclaration> field = qSharedPointerCast<GLShaderUniformDeclaration>(fields[k]);
 			resolveAndSetUniformField(field, data, offset);
 			offset += field->getSize();
 		}
@@ -273,6 +372,6 @@ namespace CGFF {
 
 	void GLShader::resolveUniforms()
 	{
-
+        //to do
 	}
 }

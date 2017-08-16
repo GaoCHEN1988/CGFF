@@ -5,7 +5,7 @@
 
 //#include <QDebug>
 #include <QSharedPointer>
-//#include <QOpenGLShaderProgram>
+#include <QOpenGLShaderProgram>
 
 namespace CGFF {
 
