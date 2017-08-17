@@ -110,7 +110,7 @@ namespace CGFF {
 		//QSharedPointer<VertexArray> m_ScreenQuad;
 		QSharedPointer<Camera> m_camera;
 
-        MeshFactory::Quad m_screenQuad;
+        //MeshFactory::Quad m_screenQuad;
 		GLuint* m_indices;
 	};
 }

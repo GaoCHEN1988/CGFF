@@ -2,7 +2,7 @@
 
 namespace CGFF {
 
-    Material::Material(QSharedPointer<Shader>& shader)
+    Material::Material(QSharedPointer<Shader> shader)
         : m_shader(shader)
     {
 		allocateStorage();
@@ -143,7 +143,7 @@ namespace CGFF {
 
 	//-------------------------------------------------------------------------------------
 
-    MaterialInstance::MaterialInstance(QSharedPointer<Material>& material)
+    MaterialInstance::MaterialInstance(QSharedPointer<Material> material)
         : m_material(material)
         , m_isRendererData(true)
     {

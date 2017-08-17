@@ -11,6 +11,7 @@ namespace CGFF {
         MayaCamera(const QMatrix4x4& projectionMatrix);
         virtual~MayaCamera() {};
         void update() override;
+		void focus() override;
         void mousePressEvent(QMouseEvent * event) override;
         void mouseMoveEvent(QMouseEvent * event) override;
         void resize(int width, int height) override;
@@ -25,7 +26,8 @@ namespace CGFF {
         QVector3D getRightDirection();
         QVector3D getForwardDirection();
 
-        QVector3D getPosition();
+        //QVector3D getPosition();
+		QVector3D calculatePosition();
         QQuaternion getOrientation();
 
     private:

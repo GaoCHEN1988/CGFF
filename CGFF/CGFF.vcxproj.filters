@@ -29,7 +29,9 @@
       <UniqueIdentifier>{e999c89b-b049-4949-a999-ced401bb1540}</UniqueIdentifier>
     </Filter>
     <Filter Include="Header Files">
-      <UniqueIdentifier>{aabb99d1-4305-4426-aa6b-357b6eef0bac}</UniqueIdentifier>
+      <UniqueIdentifier>{93995380-89BD-4b04-88EB-625FBE52EBFB}</UniqueIdentifier>
+      <Extensions>h;hh;hpp;hxx;hm;inl;inc;xsd</Extensions>
+      <ParseFiles>true</ParseFiles>
     </Filter>
     <Filter Include="Source Files">
       <UniqueIdentifier>{2c81e06d-f7b5-48a9-b5bc-72873eb6b434}</UniqueIdentifier>
@@ -153,6 +155,9 @@
     <CustomBuild Include="src\application\applicationWidget.h">
       <Filter>Header Files\application</Filter>
     </CustomBuild>
+    <CustomBuild Include="src\application\applicationWindow.h">
+      <Filter>Header Files\application</Filter>
+    </CustomBuild>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\main.cpp">
@@ -171,9 +176,6 @@
       <Filter>Source Files\graphic</Filter>
     </ClCompile>
     <ClCompile Include="src\graphic\layer\layer.cpp">
-      <Filter>Source Files\graphic\layer</Filter>
-    </ClCompile>
-    <ClCompile Include="src\graphic\layer\tileLayer.cpp">
       <Filter>Source Files\graphic\layer</Filter>
     </ClCompile>
     <ClCompile Include="src\graphic\layer\group.cpp">
@@ -377,6 +379,15 @@
     <ClCompile Include="src\platform\opengl\glShaderPareser.cpp">
       <Filter>Source Files\platform\opengl</Filter>
     </ClCompile>
+    <ClCompile Include="GeneratedFiles\Debug\moc_applicationWindow.cpp">
+      <Filter>Generated Files\Debug</Filter>
+    </ClCompile>
+    <ClCompile Include="GeneratedFiles\Release\moc_applicationWindow.cpp">
+      <Filter>Generated Files\Release</Filter>
+    </ClCompile>
+    <ClCompile Include="src\application\applicationwindow.cpp">
+      <Filter>Source Files\application</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <None Include="ClassDiagram.cd" />
@@ -437,9 +448,6 @@
       <Filter>Header Files\graphic\layer</Filter>
     </ClInclude>
     <ClInclude Include="src\graphic\layer\layer2D.h">
-      <Filter>Header Files\graphic\layer</Filter>
-    </ClInclude>
-    <ClInclude Include="src\graphic\layer\tileLayer.h">
       <Filter>Header Files\graphic\layer</Filter>
     </ClInclude>
     <ClInclude Include="src\graphic\layer\layer.h">

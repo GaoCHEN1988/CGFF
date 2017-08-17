@@ -1,26 +1,31 @@
 #include "postEffectsPass.h"
 namespace CGFF {
 
-    PostEffectsPass::PostEffectsPass(const QSharedPointer<QOpenGLShaderProgram>& shaderProgram, QSize& size)
-        : m_shaderProgram(shaderProgram)
+	struct PostEffectsPassShader
+	{
+		QMatrix4x4 pr_matrix;
+		QSharedPointer<Texture> texture;
+	};
+
+    PostEffectsPass::PostEffectsPass(const QSharedPointer<Shader>& shader, QSize& size)
+        : m_material(QSharedPointer<Material>(new Material(shader)))
         , m_size(size)
     {
-        m_shaderProgram->bind();
-        QMatrix4x4 proj = QMatrix4x4();
-        proj.ortho(0, m_size.width(), m_size.height(), 0, -1.0f, 100.0f);
-        m_shaderProgram->setUniformValue("projMatrix", proj);
-        m_shaderProgram->setUniformValue("tex", 0);
-        m_shaderProgram->release();
 
     }
     PostEffectsPass::~PostEffectsPass()
     {
     }
 
-    void PostEffectsPass::RenderPass(const QSharedPointer<QOpenGLFramebufferObject>& target)
+    void PostEffectsPass::renderPass(const QSharedPointer<Framebuffer>& target)
     {
-        m_shaderProgram->bind();
-        GL->glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, NULL);
-        m_shaderProgram->release();
+		QMatrix4x4 proj;
+		proj.ortho(0, (float)target->getWidth(), (float)target->getHeight(), 0, -1.0f, 100.0f);
+		m_material->setUniform("pr_matrix", proj);
+		m_material->bind();
+
+		//Test
+		GL->glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, NULL);
+		m_material->unbind();
     }
 }

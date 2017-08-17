@@ -31,7 +31,7 @@ namespace CGFF {
 	bool Button::onMouseMoved(QMouseEvent* e)
 	{
 		// TODO: remove these hard coded mouse maths throughout the engine
-        QPoint mouse(e->x(), (openglWidgetSize.height()- e->y()));
+        QPoint mouse(e->x(), (g_openglWidgetSize.height()- e->y()));
 		if (m_state == ButtonState::PRESSED && !m_bounds.contains(mouse))
   			m_state = ButtonState::UNPRESSED;
 

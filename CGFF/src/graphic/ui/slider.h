@@ -35,6 +35,7 @@ namespace CGFF {
 		void render(QSharedPointer<Renderer2D>& renderer) override;
 
 		inline void setCallback(const ValueChangedCallback& callback) { m_callback = callback; }
+		inline const ValueChangedCallback& getCallback() const { return m_callback; }
 
 		inline float getValue() const { return m_value; }
 		void setValue(float value);

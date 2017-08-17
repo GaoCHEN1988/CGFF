@@ -3,19 +3,49 @@
 
 namespace CGFF {
 
+	DebugLayer* DebugLayer::s_instance = nullptr;
+
     DebugLayer::DebugLayer(QSize screenSize)
-        : Layer2D(QSharedPointer<CGFF::BatchRenderer2D>(new CGFF::BatchRenderer2D(screenSize)), DefaultShader())
+        : Layer2D(QSharedPointer<CGFF::BatchRenderer2D>(new CGFF::BatchRenderer2D(screenSize)))
     {
         m_isVisible = false;
+		s_instance = this;
     }
 
     void DebugLayer::init()
     {
         Layer2D::getRenderer()->setRenderTarget(CGFF::RenderTarget::SCREEN);
 
+		//Test
+		m_FPSLabel = QSharedPointer<Label>(new Label("fps", 10, g_openglWidgetSize.height() - 50, 100, 32, QVector4D(1, 1, 1, 1)));
+		m_memoryUsageLabel = QSharedPointer<Label>(new Label("memory", 110, g_openglWidgetSize.height() - 50, 100, 32, QVector4D(1, 1, 1, 1)));
+		m_frametimeLabel = QSharedPointer<Label>(new Label("frametime", 210, g_openglWidgetSize.height() - 50, 100, 32, QVector4D(1, 1, 1, 1)));
+
+		add(m_FPSLabel);
+		add(m_memoryUsageLabel);
+		add(m_frametimeLabel);
+
         DebugMenu::init();
         DebugMenu::setVisible(true);
     }
+
+	void DebugLayer::init(Renderer2D& renderer, Material& material)
+	{
+		renderer.setRenderTarget(CGFF::RenderTarget::SCREEN);
+
+		//Test
+		m_FPSLabel = QSharedPointer<Label>(new Label("fps", 10, g_openglWidgetSize.height() - 50, 100, 32, QVector4D(1, 1, 1, 1)));
+		m_memoryUsageLabel = QSharedPointer<Label>(new Label("memory", 110, g_openglWidgetSize.height() - 50, 100, 32, QVector4D(1, 1, 1, 1)));
+		m_frametimeLabel = QSharedPointer<Label>(new Label("frametime", 210, g_openglWidgetSize.height() - 50, 100, 32, QVector4D(1, 1, 1, 1)));
+
+		add(m_FPSLabel);
+		add(m_memoryUsageLabel);
+		add(m_frametimeLabel);
+
+		//Test
+		DebugMenu::init();
+		DebugMenu::setVisible(true);
+	}
 
     void DebugLayer::render()
     {
@@ -25,6 +55,8 @@ namespace CGFF {
         {
             DebugMenu::get()->render(m_renderer);
         }
+
+		m_tempSprites.clear();
     }
 
     void DebugLayer::resize(int width, int height)
@@ -72,4 +104,15 @@ namespace CGFF {
             DebugMenu::get()->update();
         }
     }
+
+	void DebugLayer::drawSprite(QSharedPointer<Sprite> sprite)
+	{
+		s_instance->submit(sprite);
+	}
+	void DebugLayer::drawTexture(QSharedPointer<Texture> texture, const QVector2D& position, const QVector2D& size)
+	{
+		QSharedPointer<Sprite> sprite = QSharedPointer<Sprite>(new Sprite(position.x(), position.y(), size.x(), size.y(), texture));
+		s_instance->m_tempSprites.push_back(sprite);
+		s_instance->submit(sprite);
+	}
 }

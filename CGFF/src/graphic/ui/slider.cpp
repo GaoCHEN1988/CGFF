@@ -31,7 +31,7 @@ namespace CGFF {
 	bool Slider::onMousePressed(QMouseEvent* e)
 	{
 		// TODO: remove these hard coded mouse maths throughout the engine
-        QPoint mouse(e->x(), (openglWidgetSize.height() - e->y()));
+        QPoint mouse(e->x(), (g_openglWidgetSize.height() - e->y()));
 		if (m_headBounds.contains(mouse))
 		{
 			m_state = SliderState::PRESSEDHEAD;
@@ -53,7 +53,7 @@ namespace CGFF {
 	bool Slider::onMouseMoved(QMouseEvent* e)
 	{
 		// TODO: remove these hard coded mouse maths throughout the engine
-        QPoint mouse(e->x(), (openglWidgetSize.height() - e->y()));
+        QPoint mouse(e->x(), (g_openglWidgetSize.height() - e->y()));
 		if (m_state == SliderState::PRESSEDHEAD)
 		{
 			if (m_vertical)

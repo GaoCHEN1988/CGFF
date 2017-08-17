@@ -1,11 +1,13 @@
 #ifndef DEBUG_MENU_ITEM_H
 #define DEBUG_MENU_ITEM_H
 
-#include "debugMenuAction.h"
+//#include "debugMenuAction.h"
 #include "graphic/ui/button.h"
 
 namespace CGFF {
-    class UI::Button;
+
+	struct IAction;
+
     class DebugMenuItem : public UI::Button
     {
     public:

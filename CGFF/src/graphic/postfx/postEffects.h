@@ -1,10 +1,10 @@
 #ifndef POST_EFFECTS_H
 #define POST_EFFECTS_H
 
+#include "graphic/api/framebuffer.h"
+#include "graphic/api/vertexArray.h"
+#include "graphic/api/indexBuffer.h"
 #include "postEffectsPass.h"
-#include <QOpenGLBuffer>
-#include <QOpenGLVertexArrayObject>
-#include <QVector>
 
 namespace CGFF {
     class PostEffects
@@ -16,7 +16,7 @@ namespace CGFF {
         void push(QSharedPointer<PostEffectsPass> pass);
         void pop();
 
-        void renderPostEffects(const QSharedPointer<QOpenGLFramebufferObject>& source, const QSharedPointer<QOpenGLFramebufferObject>& target, QOpenGLVertexArrayObject& quad, QOpenGLBuffer* indices);
+        void renderPostEffects(const QSharedPointer<Framebuffer>& source, const QSharedPointer<Framebuffer>& target, VertexArray* quad, IndexBuffer* indices);
 
     private:
         QVector<QSharedPointer<PostEffectsPass>> m_Passes;

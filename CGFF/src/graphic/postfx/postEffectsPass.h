@@ -2,24 +2,21 @@
 #define POST_EFFECTS_PASS_H
 
 #include "utils/qtopengl.h"
-#include "graphic/meshFactory.h"
-#include <QOpenGLFramebufferObject>
-#include <QOpenGLShaderProgram>
-#include <QSharedPointer>
-#include <QSize>
+#include "graphic/api/framebuffer.h"
+#include "graphic/material.h"
 
 namespace CGFF {
     class PostEffectsPass
     {
 
     public:
-        PostEffectsPass(const QSharedPointer<QOpenGLShaderProgram>& shaderProgram, QSize& size);
-        virtual~PostEffectsPass();
+        PostEffectsPass(const QSharedPointer<Shader>& shader, QSize& size);
+        virtual ~PostEffectsPass();
 
-        void RenderPass(const QSharedPointer<QOpenGLFramebufferObject>& target);
+        void renderPass(const QSharedPointer<Framebuffer>& target);
 
     private:
-        QSharedPointer<QOpenGLShaderProgram> m_shaderProgram;
+        QSharedPointer<Material> m_material;
         QSize m_size;
     };
 }

@@ -11,7 +11,7 @@
 namespace CGFF
 {
     extern QOpenGLFunctions_4_4_Core *GL;
-    extern QSize openglWidgetSize;
+    extern QSize g_openglWidgetSize;
 }
 
 

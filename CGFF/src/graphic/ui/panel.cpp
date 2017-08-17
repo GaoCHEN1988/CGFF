@@ -5,7 +5,7 @@ namespace CGFF {
     namespace UI {
 
 	Panel::Panel()
-		: Layer2D(QSharedPointer<CGFF::BatchRenderer2D>(new CGFF::BatchRenderer2D(ApplicationWidget::getApplication()->size())), DefaultShader())
+		: Layer2D(QSharedPointer<CGFF::BatchRenderer2D>(new CGFF::BatchRenderer2D(ApplicationWidget::getApplication()->size())))
 	{
         //ApplicationWidget::getApplication()->pushOverlay(QSharedPointer<Panel>(this));
 	}
@@ -41,7 +41,7 @@ namespace CGFF {
 
 	void Panel::mousePressEvent(QMouseEvent* e)
 	{
-        QPoint mouse(e->x(), (openglWidgetSize.height() - e->y()));
+        QPoint mouse(e->x(), (g_openglWidgetSize.height() - e->y()));
 		for (uint i = 0; i < m_widgets.size(); i++)
 		{
 			QSharedPointer<Widget> widget = m_widgets[i];
@@ -55,7 +55,7 @@ namespace CGFF {
 
 	void Panel::mouseReleaseEvent(QMouseEvent* e)
 	{
-        QPoint mouse(e->x(), (openglWidgetSize.height() - e->y()));
+        QPoint mouse(e->x(), (g_openglWidgetSize.height() - e->y()));
 		for (uint i = 0; i < m_widgets.size(); i++)
 		{
 			QSharedPointer<Widget> widget = m_widgets[i];

@@ -21,19 +21,17 @@ namespace CGFF {
         m_Passes.pop_back();
     }
 
-    void PostEffects::renderPostEffects(const QSharedPointer<QOpenGLFramebufferObject>& source, const QSharedPointer<QOpenGLFramebufferObject>& target, QOpenGLVertexArrayObject& quad, QOpenGLBuffer* indices)
+    void PostEffects::renderPostEffects(const QSharedPointer<Framebuffer>& source, const QSharedPointer<Framebuffer>& target, VertexArray* quad, IndexBuffer* indices)
     {
         target->bind();
-        GL->glActiveTexture(GL_TEXTURE0);
-        GL->glBindTexture(GL_TEXTURE_2D, source->texture());
-        quad.bind();
+        quad->bind();
         indices->bind();
 
         for (QSharedPointer<PostEffectsPass> pass : m_Passes)
-            pass->RenderPass(target);
+            pass->renderPass(target);
 
-        indices->release();
-        quad.release();
-        target->release();
+        indices->unBind();
+        quad->unBind();
+        target->unBind();
     }
 }

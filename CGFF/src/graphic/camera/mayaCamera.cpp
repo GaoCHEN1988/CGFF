@@ -33,20 +33,30 @@ namespace CGFF {
             mouseZoom(delta.y());
 
         // MouseZoom(window->GetMouseScrollPosition().y);
+		m_position = calculatePosition();
 
-        //Need to test
-        QMatrix4x4 rotate_mat;
-        QQuaternion q = getOrientation();
+        //Need to test  
+        QQuaternion orientation = getOrientation();
 
-        m_rotation = getOrientation().toEulerAngles();
-        QQuaternion test = getOrientation().conjugate();
-        rotate_mat.rotate(getOrientation().conjugate());
-        m_viewMatrix = rotate_mat;
+		//test!!!
+        m_rotation = orientation.toEulerAngles()* (180.0f / M_PI);
 
         QMatrix4x4 translate_mat;
-        translate_mat.translate(-getPosition());
-        m_viewMatrix *= translate_mat;
+        translate_mat.translate(QVector3D(0, 0, 1));
+
+		QMatrix4x4 translate_mat2;
+		translate_mat2.translate(-m_position);
+
+		QMatrix4x4 rotate_mat;
+		rotate_mat.rotate(orientation.conjugate());
+
+		m_viewMatrix = translate_mat * rotate_mat * translate_mat2;
     }
+
+	void MayaCamera::focus()
+	{
+		//Input::GetInputManager()->SetMouseCursor(1);
+	}
 
     void MayaCamera::mousePressEvent(QMouseEvent * event)
     {
@@ -113,6 +123,13 @@ namespace CGFF {
     void MayaCamera::mouseZoom(float delta)
     {
         m_distance -= delta * m_zoomSpeed;
+
+		if (m_distance < 1.0f)
+		{
+			m_focalPoint += getForwardDirection();
+			m_distance = 1.0f;
+		}
+
     }
 
     QVector3D MayaCamera::getUpDirection()
@@ -130,7 +147,7 @@ namespace CGFF {
         return getOrientation().rotatedVector(-QVector3D(0.0f, 0.0f, 1.0f)); //Z axis
     }
 
-    QVector3D MayaCamera::getPosition()
+    QVector3D MayaCamera::calculatePosition()
     {
         return m_focalPoint - m_distance * getForwardDirection();
     }

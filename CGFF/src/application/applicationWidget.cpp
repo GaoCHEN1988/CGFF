@@ -73,7 +73,7 @@ void ApplicationWidget::initializeGL()
 	CGFF::GL->initializeOpenGLFunctions();
 #endif
 
-    CGFF::openglWidgetSize = this->size();
+    CGFF::g_openglWidgetSize = this->size();
 
     m_debugLayer = QSharedPointer<CGFF::Layer>(new CGFF::DebugLayer(this->size()));
 
@@ -112,7 +112,7 @@ void ApplicationWidget::paintGL()
 
 void ApplicationWidget::resizeGL(int width, int height)
 {
-    CGFF::openglWidgetSize = this->size();
+    CGFF::g_openglWidgetSize = this->size();
 
     for (auto layer : m_layerStack)
     {

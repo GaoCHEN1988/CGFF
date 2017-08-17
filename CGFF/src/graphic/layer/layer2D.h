@@ -4,22 +4,26 @@
 #include "layer.h"
 #include "graphic/renderer2d.h"
 #include "graphic/renderable2d.h"
-#include "graphic/batchRenderer2d.h"
-
-#include <QOpenGLShaderProgram>
-
-QT_FORWARD_DECLARE_CLASS(QOpenGLShaderProgram)
+#include "../mask.h"
+#include "../batchRenderer2d.h"
 
 namespace CGFF {
     class Layer2D : public Layer
     {
     public:
-        Layer2D(QSharedPointer<Renderer2D> renderer, QSharedPointer<QOpenGLShaderProgram> shader, QMatrix4x4 projectionMatrix = QMatrix4x4());
+        Layer2D(QSharedPointer<Renderer2D> renderer, QMatrix4x4 projectionMatrix = QMatrix4x4());
         virtual ~Layer2D();
+
+		virtual void init();
+		virtual void init(Renderer2D& renderer, Material& material);
+
         virtual void render() override;
         virtual void render(QSharedPointer<Renderer2D>& renderer) {};
         virtual void resize(int width, int height) override;
+
         virtual void add(QSharedPointer<Renderable2D> renderable);
+		inline const QVector<QSharedPointer<Renderable2D>>& getRenderables() const { return m_renderables; }
+
         virtual QSharedPointer<Renderable2D> submit(QSharedPointer<Renderable2D> renderable);
         inline void setMask(QSharedPointer<CGFF::Mask> mask)
         {
@@ -30,7 +34,7 @@ namespace CGFF {
             return m_renderer;
         }
     protected:
-        QSharedPointer<QOpenGLShaderProgram> m_shader;
+        QSharedPointer<Material> m_material;
         QSharedPointer<Renderer2D> m_renderer;
         QVector<QSharedPointer<Renderable2D>> m_renderables;
         QVector<QSharedPointer<Renderable2D>> m_submittedRenderables;

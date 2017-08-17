@@ -7,9 +7,9 @@ layout (location = 3) in float tid;
 layout (location = 4) in float mid;
 layout (location = 5) in vec4 color;
 
-uniform mat4 sys_ProjectionMatrix;
-uniform mat4 sys_ViewMatrix;
-uniform mat4 sys_ModelMatrix;
+uniform mat4 sys_ProjectionMatrix = mat4(1.0);
+uniform mat4 sys_ViewMatrix = mat4(1.0);
+uniform mat4 sys_ModelMatrix = mat4(1.0);
 
 uniform mat4 sys_MaskMatrix;
 

@@ -2,32 +2,26 @@
 #include "graphic/api/context.h"
 
 namespace CGFF {
-    QSharedPointer<QOpenGLShaderProgram> DefaultShader()
+    QSharedPointer<Shader> DefaultShader()
     {
-        QSharedPointer<QOpenGLShaderProgram> shader = QSharedPointer<QOpenGLShaderProgram>(new QOpenGLShaderProgram);
-
-#ifdef OPENGL_ES
-        // load and compile vertex shader
-        bool success = shader->addShaderFromSourceFile(QOpenGLShader::Vertex, "src/graphic/shaders_es/SimpleVertexShader.vert");
-        // load and compile fragment shader
-        success = shader->addShaderFromSourceFile(QOpenGLShader::Fragment, "src/graphic/shaders_es/SimpleFragmentShader.frag");
-#else
-        // load and compile vertex shader
-        bool success = shader->addShaderFromSourceFile(QOpenGLShader::Vertex, "src/graphic/shaders/SimpleVertexShader.vert");
-        // load and compile fragment shader
-        success = shader->addShaderFromSourceFile(QOpenGLShader::Fragment, "src/graphic/shaders/SimpleFragmentShader.frag");
-#endif
-        shader->link();
-
-        return shader;
+		switch (Context::getRenderAPI())
+		{
+		case RenderAPI::OPENGL:
+			return Shader::createFromFile("DefaultShader",
+				"src/graphic/shaders/SimpleVertexShader.vert",
+				"src/graphic/shaders/SimpleFragmentShader.frag");
+		case RenderAPI::DIRECT3D:
+			return nullptr;
+		}
+		return nullptr;
     }
 
-    QSharedPointer<QOpenGLShaderProgram> SimpleShader()
+    QSharedPointer<Shader> SimpleShader()
     {
         return nullptr;
     }
 
-    QSharedPointer<QOpenGLShaderProgram> BasicLightShader()
+    QSharedPointer<Shader> BasicLightShader()
     {
         return nullptr;
     }
@@ -38,8 +32,8 @@ namespace CGFF {
 		{
 		case RenderAPI::OPENGL:
 			return Shader::createFromFile("BatchRenderer", 
-				"src/graphic/shaders/SimpleVertexShader.vert", 
-				"src/graphic/shaders/SimpleVertexShader.frag");
+				"src/graphic/shaders/BatchRenderer.vert", 
+				"src/graphic/shaders/BatchRenderer.frag");
 		case RenderAPI::DIRECT3D:
 			return nullptr;
 		}

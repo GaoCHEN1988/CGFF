@@ -37,7 +37,7 @@ namespace CGFF {
     class PBRMaterialInstance : public MaterialInstance
     {
     public:
-        PBRMaterialInstance(PBRMaterial* material);
+        PBRMaterialInstance(QSharedPointer<PBRMaterial> material);
 
         void setEnviromentMap(QSharedPointer<TextureCube> texture);
 

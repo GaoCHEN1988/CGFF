@@ -1,63 +1,98 @@
 #include "debugMenu.h"
+#include "debugMenuAction.h"
+
 #include <QPainter>
 
 namespace CGFF {
 
-    DebugMenu * DebugMenu::m_instance = nullptr;
+    DebugMenu * DebugMenu::s_instance = nullptr;
 
     DebugMenu::DebugMenu()
         : m_visible(false)
         , m_padding(45.0f)
         , m_fontSize(24.0f)
     {
-        m_instance = this;
+        s_instance = this;
         m_settings.padding = 50.0f;
         m_settings.fontPixelSize = 20.0f;
 
         add("Padding", &m_settings.padding, 20.0f, 80.0f);
         add("Font Size", &m_settings.fontPixelSize, 8.0f, 50.0f);
 
-        m_slider = nullptr;
+        m_sliders.resize(4);
         m_panel = QSharedPointer<UI::Panel>(new UI::Panel());
     }
 
     void DebugMenu::add(QString name)
     {
-        m_instance->m_actionList.append(QSharedPointer<EmptyAction>(new EmptyAction(name)));
+        s_instance->m_actionList.append(QSharedPointer<EmptyAction>(new EmptyAction(name)));
     }
+
+	void DebugMenu::add(const QString& name, bool* value)
+	{
+		s_instance->m_actionList.append(QSharedPointer<BooleanAction>(new BooleanAction(name, [value]() { return *value; }, [value](bool v) { *value = v; })));
+	}
 
     void DebugMenu::add(const QString& name, float* value)
     {
         add(name, value, 0.0f, 100.0f);
     }
 
-    void DebugMenu::add(const QString& name, float* value, float mininmum, float maximum)
+    void DebugMenu::add(const QString& name, float* value, float minimum, float maximum)
     {
-        m_instance->m_actionList.append(QSharedPointer<FloatAction>(new FloatAction(name, [value]() { return *value; }, [value](float v) { *value = v; }, mininmum, maximum)));
+        s_instance->m_actionList.append(QSharedPointer<FloatAction>(
+			new FloatAction(name, [value]() { return *value; }, [value](float v) { *value = v; }, minimum, maximum)));
     }
+
+	void DebugMenu::add(const QString& name, QVector2D* value, float minimum, float maximum)
+	{
+		s_instance->m_actionList.append(QSharedPointer<Vec2Action>(
+			new Vec2Action(name, [value]() { return *value; }, 
+				[value](QVector2D v) { *value = v; }, 
+				QVector2D(minimum, minimum), 
+				QVector2D(maximum, maximum))));
+	}
+
+	void DebugMenu::add(const QString& name, QVector3D* value, float minimum, float maximum)
+	{
+		s_instance->m_actionList.push_back(QSharedPointer<Vec3Action>(
+			new Vec3Action(name, [value]() { return *value; }, 
+				[value](QVector3D v) { *value = v; }, 
+				QVector3D(minimum, minimum, minimum), 
+				QVector3D(maximum, maximum, maximum))));
+	}
+
+	void DebugMenu::add(const QString& name, QVector4D* value, float minimum, float maximum)
+	{
+		s_instance->m_actionList.push_back(QSharedPointer<Vec4Action>(
+			new Vec4Action(name, [value]() { return *value; }, 
+				[value](QVector4D v) { *value = v; }, 
+				QVector4D(minimum, minimum, minimum, minimum),
+				QVector4D(maximum, maximum, maximum, maximum))));
+	}
 
     DebugMenu* DebugMenu::get()
     {
-        return m_instance;
+        return s_instance;
     }
 
     DebugMenuSettings& DebugMenu::getSettings()
     {
-        return m_instance->m_settings;
+        return s_instance->m_settings;
     }
 
     bool DebugMenu::isVisible()
     {
-        return m_instance->m_visible;
+        return s_instance->m_visible;
     }
 
     void DebugMenu::setVisible(bool visible)
     {
-        m_instance->m_visible = visible;
+        s_instance->m_visible = visible;
         if (visible)
-            m_instance->onActivate();
+            s_instance->onActivate();
         else
-            m_instance->onDeactivate();
+            s_instance->onDeactivate();
     }
 
     void DebugMenu::render(QSharedPointer<Renderer2D>& renderer)
@@ -65,11 +100,23 @@ namespace CGFF {
         m_panel->render(renderer);
     }
 
-    void DebugMenu::editValue(float value, const UI::Slider::ValueChangedCallback& callback)
+    void DebugMenu::editValues(const QString& name, float* values, uint count, const UI::Slider::ValueChangedCallback* callbacks)
     {
-        m_slider->setCallback(callback);
-        m_slider->setActive(true);
-        m_slider->setValue(value);
+        //m_slider->setCallback(callback);
+        //m_slider->setActive(true);
+        //m_slider->setValue(value);
+
+		for (uint i = 0; i < 4; i++)
+		{
+			m_sliders[i]->setActive(false);
+			if (i < count)
+			{
+				m_sliders[i]->setCallback(callbacks[i]);
+				m_sliders[i]->setActive(m_lastEditedName != name);
+				m_sliders[i]->setValue(values[i]);
+			}
+		}
+		m_lastEditedName = m_lastEditedName != name ? name : "";
     }
 
     void DebugMenu::onActivate()
@@ -84,8 +131,14 @@ namespace CGFF {
             yOffset += height;
         }
 
-        m_slider = QSharedPointer<UI::Slider>(new UI::Slider(QRect(width, 10, 40, 600), true));
-        m_panel->add(m_slider)->setActive(false);
+		for (uint i = 0; i < 4; i++)
+		{
+			m_sliders[i] = QSharedPointer<UI::Slider>(new UI::Slider({ width + i * 40, 10, 40, 600 }, true));
+			m_panel->add(m_sliders[i])->setActive(false);
+		}
+
+        //m_slider = QSharedPointer<UI::Slider>(new UI::Slider(QRect(width, 10, 40, 600), true));
+        //m_panel->add(m_slider)->setActive(false);
     }
 
     void DebugMenu::onDeactivate()

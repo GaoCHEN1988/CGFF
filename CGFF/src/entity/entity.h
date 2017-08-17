@@ -10,6 +10,7 @@ namespace CGFF {
     {
     public:
         Entity();
+		Entity(QSharedPointer<Mesh> mesh, QMatrix4x4 transform = QMatrix4x4());
 
         void addComponent(QSharedPointer<Component> component);
 

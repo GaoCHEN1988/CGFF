@@ -20,7 +20,7 @@ namespace CGFF {
 
     ForwardRenderer::ForwardRenderer()
     {
-		setScreenBufferSize(openglWidgetSize.width(), openglWidgetSize.height());
+		setScreenBufferSize(g_openglWidgetSize.width(), g_openglWidgetSize.height());
 		init();
 	}
 
@@ -65,6 +65,8 @@ namespace CGFF {
 	}
     void ForwardRenderer::begin() 
     {
+		Renderer::setViewport(0, 0, m_screenBufferWidth, m_screenBufferHeight);
+
         m_commandQueue.clear();
         m_systemUniforms.clear();
     }
@@ -116,7 +118,7 @@ namespace CGFF {
     void ForwardRenderer::submitLightSetup(const QSharedPointer<LightSetup>& lightSetup)
     {
         auto lights = lightSetup->getLights();
-        Q_ASSERT(lights.size() <= 1, "Only one light is supported at the moment!");
+        Q_ASSERT(lights.size() <= 1);
         for (int i = 0; i < lights.size(); i++)
         {
             //QSharedPointer<Light> light = lights[i];

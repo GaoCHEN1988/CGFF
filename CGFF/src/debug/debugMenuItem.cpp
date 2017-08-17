@@ -1,5 +1,6 @@
 #include "debugMenuItem.h"
 #include "debugMenu.h"
+#include "debugMenuAction.h"
 
 namespace CGFF {
 
@@ -11,7 +12,7 @@ namespace CGFF {
     void DebugMenuItem::update()
     {
         m_label = m_action->toString();       
-        m_font.setPixelSize(DebugMenu::get()->getSettings().fontPixelSize);
+        m_font.setPixelSize((int)DebugMenu::get()->getSettings().fontPixelSize);
     }
 
 }

@@ -3,13 +3,12 @@
 
 #include "utils/qtopengl.h"
 #include "shader.h"
-#include <QOpenGLShaderProgram>
 
 namespace CGFF {
 
-    QSharedPointer<QOpenGLShaderProgram> DefaultShader();
-    QSharedPointer<QOpenGLShaderProgram> SimpleShader();
-    QSharedPointer<QOpenGLShaderProgram> BasicLightShader();
+    QSharedPointer<Shader> DefaultShader();
+    QSharedPointer<Shader> SimpleShader();
+    QSharedPointer<Shader> BasicLightShader();
 	QSharedPointer<Shader> BatchRendererShader();
 }
 

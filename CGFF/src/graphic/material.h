@@ -58,7 +58,7 @@ namespace CGFF {
 		};
 
     public:
-        Material(QSharedPointer<Shader>& shader);
+        Material(QSharedPointer<Shader> shader);
         virtual ~Material();
 
         void bind() const;
@@ -79,18 +79,18 @@ namespace CGFF {
         //    qFatal("Unknown uniform type!");
         //}
 
-		//template<typename T>
-		//void SetUniform(const String& name, const T& data)
-		//{
-		//	uchar* buffer;
-		//	API::ShaderUniformDeclaration* declaration = FindUniformDeclaration(name, &buffer);
-		//	if (!declaration)
-		//	{
-		//		SP_ERROR("Could not find uniform with name '", name, "'!");
-		//		return;
-		//	}
-		//	memcpy(buffer + declaration->GetOffset(), &data, declaration->GetSize());
-		//}
+		template<typename T>
+		void setUniform(const QString& name, const T& data)
+		{
+			QSharedPointer<uchar> buffer;
+			QSharedPointer<ShaderUniformDeclaration> declaration = findUniformDeclaration(name, buffer);
+			if (declaration.isNull())
+			{
+				qFatal("Could not find uniform with name '", name, "'!");
+				return;
+			}
+			memcpy(buffer.data() + declaration->GetOffset(), &data, declaration->getSize());
+		}
 
 		//template<typename T>
 		//const T* getUniform(const String& name) const
@@ -130,7 +130,7 @@ namespace CGFF {
     {
     public:
 
-        MaterialInstance(QSharedPointer<Material>& material);
+        MaterialInstance(QSharedPointer<Material> material);
         void bind();
         void unbind();
 
@@ -143,14 +143,14 @@ namespace CGFF {
 		void setRenderFlags(int flags) { m_renderFlags = flags; }
 		void setRenderFlag(Material::RenderFlags flag) { m_renderFlags |= (int)flag; }
 
-		//template<typename T>
-		//void setUniform(const String& name, const T& data)
-		//{
-		//	uchar* buffer;
-		//	ShaderUniformDeclaration* declaration = findUniformDeclaration(name, &buffer);
-		//	Q_ASSERT(declaration);
-		//	memcpy(buffer + declaration->getOffset(), &data, declaration->getSize());
-		//}
+		template<typename T>
+		void setUniform(const QString& name, const T& data)
+		{
+			QSharedPointer<uchar> buffer;
+			QSharedPointer<ShaderUniformDeclaration> declaration = findUniformDeclaration(name, buffer);
+			Q_ASSERT(!declaration.isNull());
+			memcpy(buffer.data() + declaration->getOffset(), &data, declaration->getSize());
+		}
 
 		//template<typename T>
 		//const T* getUniform(const String& name) const
