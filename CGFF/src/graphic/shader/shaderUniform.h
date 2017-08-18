@@ -5,6 +5,13 @@
 
 namespace CGFF {
 
+	enum class ShaderType
+	{
+		UNKNOWN,
+		VERTEX,
+		FRAGMENT
+	};
+
 	class ShaderUniformDeclaration
 	{
 
@@ -29,7 +36,7 @@ namespace CGFF {
 	public:
 		virtual QString getName() const = 0;
 		virtual uint getRegister() const = 0;
-		virtual uint getShaderType() const = 0;
+		virtual ShaderType getShaderType() const = 0;
 		virtual uint getSize() const = 0;
 		virtual const ShaderUniformList& getUniformDeclarations() const = 0;
 

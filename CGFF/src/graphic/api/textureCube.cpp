@@ -13,6 +13,7 @@ namespace CGFF {
 		case RenderAPI::DIRECT3D:
 			return nullptr;
 		}
+		return nullptr;
 	}
 
 	QSharedPointer<TextureCube> TextureCube::createFromFiles(const QStringList files)
@@ -24,6 +25,7 @@ namespace CGFF {
 		case RenderAPI::DIRECT3D:
 			return nullptr;
 		}
+		return nullptr;
 	}
 
 	QSharedPointer<TextureCube> TextureCube::createFromVCross(const QStringList files, int mips)
@@ -35,5 +37,6 @@ namespace CGFF {
 		case RenderAPI::DIRECT3D:
 			return nullptr;
 		}
+		return nullptr;
 	}
 }

@@ -10,4 +10,24 @@ namespace CGFF {
 		, m_register(0)
 	{
 	}
+
+	GLShaderResourceDeclaration::Type GLShaderResourceDeclaration::stringToType(const QString& type)
+	{
+		if (type == "sampler2D")		return GLShaderResourceDeclaration::Type::TEXTURE2D;
+		if (type == "samplerCube")		return GLShaderResourceDeclaration::Type::TEXTURECUBE;
+		if (type == "samplerShadow")	return GLShaderResourceDeclaration::Type::TEXTURESHADOW;
+
+		return GLShaderResourceDeclaration::Type::NONE;
+	}
+
+	QString GLShaderResourceDeclaration::typeToString(GLShaderResourceDeclaration::Type type)
+	{
+		switch (type)
+		{
+		case GLShaderResourceDeclaration::Type::TEXTURE2D:		return "sampler2D";
+		case GLShaderResourceDeclaration::Type::TEXTURECUBE:	return "samplerCube";
+		case GLShaderResourceDeclaration::Type::TEXTURESHADOW:	return "samplerShadow";
+		}
+		return "Invalid Type";
+	}
 }

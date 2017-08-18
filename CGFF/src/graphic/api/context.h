@@ -21,6 +21,8 @@ namespace CGFF {
         static RenderAPI getRenderAPI() { return s_renderAPI; }
         static void setRenderAPI(RenderAPI api) { s_renderAPI = api; }
 
+		static bool isInitialized() { return !s_context.isNull(); }
+
     protected:
         static QSharedPointer<Context> s_context;
         static RenderAPI s_renderAPI;

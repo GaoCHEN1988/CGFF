@@ -13,6 +13,7 @@ namespace CGFF {
 		case RenderAPI::DIRECT3D:
 			return nullptr;
 		}
+		return nullptr;
 	}
 
 	QSharedPointer<Texture2D> Texture2D::createFromFile(const QString& filepath, TextureParameters parameters, TextureLoadOptions loadOptions)
@@ -24,6 +25,7 @@ namespace CGFF {
 		case RenderAPI::DIRECT3D:
 			return nullptr;
 		}
+		return nullptr;
 	}
 
     QSharedPointer<Texture2D> Texture2D::createFromFile(const QString& name, const QString& filepath, TextureParameters parameters, TextureLoadOptions loadOptions)
@@ -35,6 +37,7 @@ namespace CGFF {
         case RenderAPI::DIRECT3D:	
             return nullptr;
         }
+		return nullptr;
     }
 
 	QSharedPointer<Texture2D> Texture2D::createFromImage(const QImage& image, TextureParameters parameters, TextureLoadOptions loadOptions)
@@ -46,6 +49,7 @@ namespace CGFF {
 		case RenderAPI::DIRECT3D:
 			return nullptr;
 		}
+		return nullptr;
 	}
 
 }

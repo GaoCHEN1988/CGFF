@@ -24,9 +24,9 @@ namespace CGFF {
 		inline uint getCount() const override { return m_count; }
 
 		inline Type getType() const { return m_type; }
-	//public:
-	//	static Type StringToType(const QString& type);
-	//	static QString TypeToString(Type type);
+	public:
+		static GLShaderResourceDeclaration::Type stringToType(const QString& type);
+		static QString typeToString(GLShaderResourceDeclaration::Type type);
 
 	private:
 		friend class GLShader;

@@ -12,6 +12,7 @@ namespace CGFF {
         case RenderAPI::DIRECT3D:
             return nullptr;
         }
+		return nullptr;
     }
 
 }

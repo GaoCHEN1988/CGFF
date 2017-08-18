@@ -18,19 +18,13 @@ namespace CGFF {
 			QVector3D,
 			QVector4D,
 			QMatrix2x2,
-			QMatrix2x3,
-			QMatrix2x4,
-			QMatrix3x2,
 			QMatrix3x3,
-			QMatrix3x4,
-			QMatrix4x2,
-			QMatrix4x3,
 			QMatrix4x4,
 			STRUCT
 		};
 
 	public:
-		GLShaderUniformDeclaration(Type type, const QString& name, uint count = 1);
+		GLShaderUniformDeclaration(GLShaderUniformDeclaration::Type type, const QString& name, uint count = 1);
 		GLShaderUniformDeclaration(QSharedPointer<ShaderStruct> uniformStruct, const QString& name, uint count = 1);
 
 		inline QString getName() const override { return m_name; }
@@ -40,16 +34,16 @@ namespace CGFF {
 		inline uint getAbsoluteOffset() const { return m_struct ? m_struct->getOffset() + m_offset : m_offset; }
 
 		int getLocation() const { return m_location; }
-		inline Type getType() const { return m_type; }
+		inline GLShaderUniformDeclaration::Type getType() const { return m_type; }
 		inline const ShaderStruct& getShaderUniformStruct() const { Q_ASSERT(m_struct); return *m_struct; }
 
 	protected:
 		void setOffset(uint offset) override;
 
 	public:
-		static uint sizeOfUniformType(Type type);
-		//static Type stringToType(const QString& type);
-		//static QString typeToString(Type type);
+		static uint sizeOfUniformType(GLShaderUniformDeclaration::Type type);
+		static GLShaderUniformDeclaration::Type stringToType(const QString& type);
+		static QString typeToString(GLShaderUniformDeclaration::Type type);
 
 	private:
 		friend class GLShader;
@@ -60,7 +54,7 @@ namespace CGFF {
 		uint m_size;
 		uint m_count;
 		uint m_offset;
-		Type m_type;
+		GLShaderUniformDeclaration::Type m_type;
 		QSharedPointer<ShaderStruct> m_struct;
 		mutable int m_location;
 	};
@@ -78,13 +72,13 @@ namespace CGFF {
 	class GLShaderUniformBufferDeclaration : public ShaderUniformBufferDeclaration
 	{
 	public:
-		GLShaderUniformBufferDeclaration(const QString& name, uint shaderType);
+		GLShaderUniformBufferDeclaration(const QString& name, ShaderType shaderType);
 
 		void pushUniform(QSharedPointer<GLShaderUniformDeclaration> uniform);
 
 		inline QString getName() const override { return m_name; }
 		inline uint getRegister() const override { return m_register; }
-		inline uint getShaderType() const override { return m_shaderType; }
+		inline ShaderType getShaderType() const override { return m_shaderType; }
 		inline uint getSize() const override { return m_size; }
 		inline const ShaderUniformList& getUniformDeclarations() const override { return m_uniforms; }
 
@@ -97,7 +91,7 @@ namespace CGFF {
 		ShaderUniformList m_uniforms;
 		uint m_register;
 		uint m_size;
-		uint m_shaderType; // 0 = VS, 1 = PS
+		ShaderType m_shaderType; // 0 = VS, 1 = PS
 	};
 }
 
