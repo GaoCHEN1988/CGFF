@@ -23,8 +23,6 @@ namespace CGFF {
         void keyPressEvent(QKeyEvent *event) override;
 
     private:
-        QSharedPointer<CGFF::BatchRenderer2D> m_batch;
-        QVector<QSharedPointer<QOpenGLTexture> > m_vTextures;
         QSharedPointer<CGFF::Sprite> m_sprite;
         QSharedPointer<CGFF::Mask> m_mask;
         QTime m_time;

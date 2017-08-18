@@ -27,10 +27,10 @@ namespace CGFF {
 
 	void Layer2D::init()
 	{
-		init(*m_renderer, *m_material);
+		init(m_renderer, m_material);
 	}
 
-	void Layer2D::init(Renderer2D& renderer, Material& material)
+	void Layer2D::init(QSharedPointer<Renderer2D> renderer, QSharedPointer<Material> material)
 	{
 	}
 

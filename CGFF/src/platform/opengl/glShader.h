@@ -60,8 +60,8 @@ namespace CGFF {
 		friend class ShaderManager;
 
 		void load(bool isFromFile);
-		QSharedPointer<ShaderUniformBufferDeclaration> findUniformDeclaration(const QString& name, QSharedPointer<ShaderUniformBufferDeclaration> buffer);
-		QSharedPointer<ShaderUniformBufferDeclaration> findUniformDeclaration(const QString& name);
+		QSharedPointer<ShaderUniformDeclaration> findUniformDeclaration(const QString& name, QSharedPointer<ShaderUniformBufferDeclaration> buffer);
+		QSharedPointer<ShaderUniformDeclaration> findUniformDeclaration(const QString& name);
 		void resolveAndSetUniforms(QSharedPointer<ShaderUniformBufferDeclaration> buffer, uchar* data);
 		void resolveAndSetUniform(QSharedPointer<GLShaderUniformDeclaration> uniform, uchar* data);
 		void setUniformStruct(QSharedPointer<GLShaderUniformDeclaration> uniform, uchar* data, int offset);

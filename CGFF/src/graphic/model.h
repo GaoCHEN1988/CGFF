@@ -28,7 +28,7 @@ namespace CGFF {
     {
     public:
         // This eventually needs to be replaced by a global Asset Server.
-        Model(const QString& path, QSharedPointer<MaterialInstance> materialInstance);
+        Model(const QString& path, QSharedPointer<MaterialInstance> materialInstance = nullptr);
         virtual ~Model();
 
         void render(Renderer3D& renderer) override;
@@ -44,13 +44,10 @@ namespace CGFF {
         //friend struct std::hash<IndexSet>;
 
         bool load(const QString& path);
-        void insertVertex(QVector<Vertex>& vertices, QVector<uint>& indices, QHash<IndexSet, int>& mapping, VertexSet& inputVertices, IndexSet& indexSet);
+        //void insertVertex(QVector<Vertex>& vertices, QVector<uint>& indices, QHash<IndexSet, int>& mapping, VertexSet& inputVertices, IndexSet& indexSet);
 
     private:
         QSharedPointer<Mesh> m_mesh;
-        QOpenGLBuffer vboBuf, indexBuf;
-        QOpenGLVertexArrayObject vao;
-        QSharedPointer<QOpenGLShaderProgram> m_shader;
     };
 
 }

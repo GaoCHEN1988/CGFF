@@ -3,7 +3,7 @@
 namespace CGFF {
 
     Test2DLayer::Test2DLayer(QSize size)
-        : Layer2D(QSharedPointer<CGFF::BatchRenderer2D>(new CGFF::BatchRenderer2D(size)), DefaultShader())
+        : Layer2D(QSharedPointer<CGFF::BatchRenderer2D>(new CGFF::BatchRenderer2D(size)))
         , m_size(size)
     {
     }
@@ -12,20 +12,17 @@ namespace CGFF {
     {
         Layer2D::getRenderer()->setRenderTarget(CGFF::RenderTarget::SCREEN);
         
-        QSharedPointer<QOpenGLShaderProgram> pfShader = QSharedPointer<QOpenGLShaderProgram>(new QOpenGLShaderProgram);
-        bool success = pfShader->addShaderFromSourceFile(QOpenGLShader::Vertex, "src/graphic/shaders/postfx.vert");
-        // load and compile fragment shader
-        success = pfShader->addShaderFromSourceFile(QOpenGLShader::Fragment, "src/graphic/shaders/postfx.frag");
-        Layer2D::getRenderer()->addPostEffectsPass(QSharedPointer<CGFF::PostEffectsPass>(new CGFF::PostEffectsPass(pfShader, m_size)));
-        Layer2D::getRenderer()->setPostEffects(false);
+        //QSharedPointer<QOpenGLShaderProgram> pfShader = QSharedPointer<QOpenGLShaderProgram>(new QOpenGLShaderProgram);
+        //bool success = pfShader->addShaderFromSourceFile(QOpenGLShader::Vertex, "src/graphic/shaders/postfx.vert");
+        //// load and compile fragment shader
+        //success = pfShader->addShaderFromSourceFile(QOpenGLShader::Fragment, "src/graphic/shaders/postfx.frag");
+        //Layer2D::getRenderer()->addPostEffectsPass(QSharedPointer<CGFF::PostEffectsPass>(new CGFF::PostEffectsPass(pfShader, m_size)));
+        //Layer2D::getRenderer()->setPostEffects(false);
     
-        m_sprite = QSharedPointer<CGFF::Sprite>(new CGFF::Sprite(0.0f, 0.0f, 100, 100,
-            QSharedPointer<QOpenGLTexture>(new QOpenGLTexture(QImage("Resources/tb.png").mirrored()))));
+        m_sprite = QSharedPointer<CGFF::Sprite>(new CGFF::Sprite(0.0f, 0.0f, 100, 100, Texture2D::createFromFile("Resources/tb.png")));
 
         Layer2D::add(m_sprite);
-        QSharedPointer<QOpenGLTexture> tempTexture = QSharedPointer<QOpenGLTexture>(new QOpenGLTexture(QImage("Resources/mask.png")));
-        tempTexture->setWrapMode(QOpenGLTexture::ClampToBorder);
-        m_mask = QSharedPointer<CGFF::Mask>(new CGFF::Mask(tempTexture));
+        m_mask = QSharedPointer<CGFF::Mask>(new CGFF::Mask(Texture2D::createFromFile("Resources/mask.png")));
         //Layer2D::setMask(m_mask);
 
         m_fpsLabel = QSharedPointer<CGFF::Label>(new CGFF::Label("fps", 10, m_size.height() - 50, 150, 32, QVector4D(1, 1, 1, 1)));
@@ -55,12 +52,7 @@ namespace CGFF {
 
     void Test2DLayer::resize(int width, int height) 
     {
-        CGFF::GL->glViewport(0, 0, (GLsizei)width, (GLsizei)height);
-        //Layer2D::resize(width, height);
-        m_projectionMatrix.setToIdentity();
-        m_projectionMatrix.ortho(0, GLfloat(width), 0, GLfloat(height), -1.0f, 100.0f);
-        (qSharedPointerCast<CGFF::BatchRenderer2D>(Layer2D::getRenderer()))->setViewportSize(QSize((GLsizei)width, (GLsizei)height));
-
+        Layer2D::resize(width, height);
     }
     void Test2DLayer::mousePressEvent(QMouseEvent *event) {}
     void Test2DLayer::mouseMoveEvent(QMouseEvent *event) {}

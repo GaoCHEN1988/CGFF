@@ -159,28 +159,29 @@ namespace CGFF {
     void MaterialInstance::bind()
     {
         m_material->bind();
-        if (m_isRendererData)
-        {
-            foreach(int key, m_rUniformDatas.keys())
-            {
-                ResolveAndSetUniform(key, m_rUniformDatas[key], m_material->getShader());
-            }
-        }
-        else
-        {
-            foreach(int key, m_uniformDatas.keys())
-            {
-                if (m_unsetUniformMap[key])
-                    continue;
+        if (m_VSUserUniformBuffer)
+            m_material->m_shader->setVSUserUniformBuffer(m_VSUserUniformBuffer.data(), m_VSUserUniformBufferSize);
+        if (m_PSUserUniformBuffer)
+            m_material->m_shader->setPSUserUniformBuffer(m_PSUserUniformBuffer.data(), m_PSUserUniformBufferSize);
 
-                ResolveAndSetUniform(key, m_uniformDatas[key], m_material->getShader());
-            }
+        for (uint i = 0; i < m_textures.size(); i++)
+        {
+            QSharedPointer<Texture> texture = m_textures[i];
+            if (!texture.isNull())
+                texture->bind(i);
         }
     }
 
     void MaterialInstance::unbind()
     {
         m_material->unbind();
+
+        for (uint i = 0; i < m_textures.size(); i++)
+        {
+            QSharedPointer<Texture> texture = m_textures[i];
+            if (!texture.isNull())
+                texture->unBind(i);
+        }
     }
 
 

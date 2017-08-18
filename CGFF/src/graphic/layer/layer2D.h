@@ -15,7 +15,7 @@ namespace CGFF {
         virtual ~Layer2D();
 
 		virtual void init();
-		virtual void init(Renderer2D& renderer, Material& material);
+		virtual void init(QSharedPointer<Renderer2D> renderer, QSharedPointer<Material> material);
 
         virtual void render() override;
         virtual void render(QSharedPointer<Renderer2D>& renderer) {};

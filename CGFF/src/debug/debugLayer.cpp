@@ -29,9 +29,9 @@ namespace CGFF {
         DebugMenu::setVisible(true);
     }
 
-	void DebugLayer::init(Renderer2D& renderer, Material& material)
+	void DebugLayer::init(QSharedPointer<Renderer2D> renderer, QSharedPointer<Material> material)
 	{
-		renderer.setRenderTarget(CGFF::RenderTarget::SCREEN);
+		renderer->setRenderTarget(CGFF::RenderTarget::SCREEN);
 
 		//Test
 		m_FPSLabel = QSharedPointer<Label>(new Label("fps", 10, g_openglWidgetSize.height() - 50, 100, 32, QVector4D(1, 1, 1, 1)));
@@ -109,7 +109,7 @@ namespace CGFF {
 	{
 		s_instance->submit(sprite);
 	}
-	void DebugLayer::drawTexture(QSharedPointer<Texture> texture, const QVector2D& position, const QVector2D& size)
+	void DebugLayer::drawTexture(QSharedPointer<Texture2D> texture, const QVector2D& position, const QVector2D& size)
 	{
 		QSharedPointer<Sprite> sprite = QSharedPointer<Sprite>(new Sprite(position.x(), position.y(), size.x(), size.y(), texture));
 		s_instance->m_tempSprites.push_back(sprite);

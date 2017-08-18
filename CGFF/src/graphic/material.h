@@ -89,7 +89,7 @@ namespace CGFF {
 				qFatal("Could not find uniform with name '", name, "'!");
 				return;
 			}
-			memcpy(buffer.data() + declaration->GetOffset(), &data, declaration->getSize());
+			memcpy(buffer.data() + declaration->getOffset(), &data, declaration->getSize());
 		}
 
 		//template<typename T>

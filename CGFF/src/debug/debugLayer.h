@@ -15,7 +15,7 @@ namespace CGFF {
         virtual ~DebugLayer() {};
 
         void init() override;
-		void init(Renderer2D& renderer, Material& material) override;
+		void init(QSharedPointer<Renderer2D> renderer, QSharedPointer<Material> material) override;
         void render() override;
         void resize(int width, int height) override;
 
@@ -29,7 +29,7 @@ namespace CGFF {
 		inline static DebugLayer* GetInstance() { return s_instance; }
 
 		static void drawSprite(QSharedPointer<Sprite> sprite);
-		static void drawTexture(QSharedPointer<Texture> texture, const QVector2D& position = QVector2D(), const QVector2D& size = QVector2D(80.0f, 80.0f));
+		static void drawTexture(QSharedPointer<Texture2D> texture, const QVector2D& position = QVector2D(), const QVector2D& size = QVector2D(80.0f, 80.0f));
 
 	private:
 		static DebugLayer* s_instance;

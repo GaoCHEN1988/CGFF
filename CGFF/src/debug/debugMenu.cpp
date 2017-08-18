@@ -133,7 +133,7 @@ namespace CGFF {
 
 		for (uint i = 0; i < 4; i++)
 		{
-			m_sliders[i] = QSharedPointer<UI::Slider>(new UI::Slider({ width + i * 40, 10, 40, 600 }, true));
+			m_sliders[i] = QSharedPointer<UI::Slider>(new UI::Slider(QRect((int)width + i * 40, 10, 40, 600), true));
 			m_panel->add(m_sliders[i])->setActive(false);
 		}
 

@@ -95,13 +95,13 @@ namespace CGFF {
 
 	void GLShader::setUniform(const QString& name, uchar* data)
 	{
-        QSharedPointer<ShaderUniformBufferDeclaration> uniform = findUniformDeclaration(name);
-        if (!uniform)
+        QSharedPointer<ShaderUniformDeclaration> uniform = findUniformDeclaration(name);
+        if (uniform.isNull())
         {
             qFatal("Cannot find uniform in ", m_name, " shader with name '", name, "'");
             return;
         }
-        resolveAndSetUniform(uniform, data);
+        resolveAndSetUniform(qSharedPointerCast<GLShaderUniformDeclaration>(uniform), data);
 	}
 
 	void GLShader::resolveAndSetUniformField(const QSharedPointer<GLShaderUniformDeclaration>& field, uchar* data, int offset)
@@ -210,7 +210,7 @@ namespace CGFF {
 		}
 	}
 
-	QSharedPointer<ShaderUniformBufferDeclaration> GLShader::findUniformDeclaration(const QString& name, QSharedPointer<ShaderUniformBufferDeclaration> buffer)
+	QSharedPointer<ShaderUniformDeclaration> GLShader::findUniformDeclaration(const QString& name, QSharedPointer<ShaderUniformBufferDeclaration> buffer)
 	{
 		const ShaderUniformList& uniforms = buffer->getUniformDeclarations();
 		for (uint i = 0; i < uniforms.size(); i++)
@@ -221,9 +221,9 @@ namespace CGFF {
 		return nullptr;
 	}
 
-	QSharedPointer<ShaderUniformBufferDeclaration> GLShader::findUniformDeclaration(const QString& name)
+	QSharedPointer<ShaderUniformDeclaration> GLShader::findUniformDeclaration(const QString& name)
 	{
-		QSharedPointer<ShaderUniformBufferDeclaration> result = nullptr;
+		QSharedPointer<ShaderUniformDeclaration> result = nullptr;
 		for (uint i = 0; i < m_VSUniformBuffers.size(); i++)
 		{
 			result = findUniformDeclaration(name, m_VSUniformBuffers[i]);

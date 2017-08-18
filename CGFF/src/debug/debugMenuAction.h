@@ -66,7 +66,7 @@ namespace CGFF {
         void onAction() override
         {
             //DebugMenu::get()->editValue((m_getter() - m_min) / (m_max - m_min), CGFF_METHOD(&ValueAction::onValueChanged));
-			Q_ASSERT(false, "Not implemented!");
+			Q_ASSERT(false);
         }
 
         QString toString() override

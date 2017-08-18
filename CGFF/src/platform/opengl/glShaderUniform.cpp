@@ -67,7 +67,7 @@ namespace CGFF {
 		uint offset = 0;
 		if (m_uniforms.size())
 		{
-			QSharedPointer<GLShaderUniformDeclaration> previous = m_uniforms.back();
+			QSharedPointer<GLShaderUniformDeclaration> previous = qSharedPointerCast<GLShaderUniformDeclaration>(m_uniforms.back());
 			offset = previous->m_offset + previous->m_size;
 		}
 		uniform->setOffset(offset);
@@ -77,7 +77,7 @@ namespace CGFF {
 
 	QSharedPointer<ShaderUniformDeclaration> GLShaderUniformBufferDeclaration::findUniform(const QString& name)
 	{
-		for (QSharedPointer<GLShaderUniformDeclaration> uniform : m_uniforms)
+		for (QSharedPointer<ShaderUniformDeclaration> uniform : m_uniforms)
 		{
 			if (uniform->getName() == name)
 				return uniform;

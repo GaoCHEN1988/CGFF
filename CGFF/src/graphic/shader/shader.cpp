@@ -12,7 +12,7 @@ namespace CGFF {
 		{
 		case RenderAPI::OPENGL:
 		{
-			QSharedPointer<GLShader> tmpShader = QSharedPointer<Shader>(new GLShader(name));
+			QSharedPointer<GLShader> tmpShader = QSharedPointer<GLShader>(new GLShader(name));
 			tmpShader->createFromFile(vertexFile, fragmentFile);
 			return tmpShader;
 		}
@@ -28,7 +28,7 @@ namespace CGFF {
 		{
 		case RenderAPI::OPENGL:
 		{
-			QSharedPointer<GLShader> tmpShader = QSharedPointer<Shader>(new GLShader(name));
+			QSharedPointer<GLShader> tmpShader = QSharedPointer<GLShader>(new GLShader(name));
 			tmpShader->createFromSource(vertexSource, fragmentSource);
 			return tmpShader;
 		}
