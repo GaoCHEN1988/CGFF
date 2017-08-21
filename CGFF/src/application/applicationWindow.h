@@ -18,6 +18,7 @@ public:
 
 	void initialize();
 	void render();
+	void tick();
 	void renderLater();
 	void renderNow();
 
@@ -39,7 +40,7 @@ private:
 	void mouseMoveEvent(QMouseEvent *event) Q_DECL_OVERRIDE;
 	void mouseReleaseEvent(QMouseEvent *event) Q_DECL_OVERRIDE;
 	void keyPressEvent(QKeyEvent *event) Q_DECL_OVERRIDE;
-
+	bool event(QEvent *event) Q_DECL_OVERRIDE;
 private:
 	QVector<QSharedPointer<CGFF::Layer>> m_layerStack;
 	QVector<QSharedPointer<CGFF::Layer>> m_overLayerStack;
@@ -50,6 +51,6 @@ private:
 
 	QTime m_time;
 	int m_framePerSecond;
-	int last_count;
+	int fps_count;
 	int timer_id_;
 };

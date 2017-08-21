@@ -14,7 +14,8 @@ namespace CGFF {
         static void add(QSharedPointer<Shader> shader);
         static QSharedPointer<Shader> get(const QString& name);
         static void clean();
-        static void reload(const QString& name);
+		static void reload(const QString& name);
+		static void reload(const QSharedPointer<Shader>& shader);
 
     private:
         static QVector<QSharedPointer<Shader>> s_shaders;

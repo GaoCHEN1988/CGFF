@@ -33,4 +33,12 @@ namespace CGFF {
         }
     }
 
+	void ShaderManager::reload(const QSharedPointer<Shader>& shader)
+	{
+		for (QSharedPointer<Shader> s : s_shaders)
+		{
+			if (s == shader)
+				s->reload();
+		}
+	}
 }

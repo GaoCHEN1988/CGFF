@@ -19,7 +19,8 @@ namespace CGFF {
 
         virtual void render() override;
         virtual void render(QSharedPointer<Renderer2D>& renderer) {};
-        virtual void resize(int width, int height) override;
+		virtual void resize(int width, int height) override;
+		virtual void closeEvent(QEvent *event) override;
 
         virtual void add(QSharedPointer<Renderable2D> renderable);
 		inline const QVector<QSharedPointer<Renderable2D>>& getRenderables() const { return m_renderables; }

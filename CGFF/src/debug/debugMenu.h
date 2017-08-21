@@ -52,7 +52,8 @@ namespace CGFF {
         void onDeactivate();
         void mousePressEvent(QMouseEvent *event);
         void mouseMoveEvent(QMouseEvent *event);
-        void mouseReleaseEvent(QMouseEvent *event);
+		void mouseReleaseEvent(QMouseEvent *event);
+		void closeEvent(QEvent *event);
         void update();
     
 

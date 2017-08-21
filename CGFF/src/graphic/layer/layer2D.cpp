@@ -85,4 +85,11 @@ namespace CGFF {
         //m_projectionMatrix.perspective(45.0f, GLfloat(width) / height, 0.0f, 100.0f);
 		qSharedPointerCast<CGFF::BatchRenderer2D>(m_renderer)->setScreenSize(QSize(width, height));
     }
+
+	void Layer2D::closeEvent(QEvent *event)
+	{
+		m_renderables.clear();
+		m_submittedRenderables.clear();
+		qSharedPointerCast<CGFF::BatchRenderer2D>(m_renderer)->close();
+	}
 }

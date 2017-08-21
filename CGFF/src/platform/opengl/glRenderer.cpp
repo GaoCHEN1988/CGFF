@@ -30,6 +30,7 @@ namespace CGFF {
 
 	void GLRenderer::presentInternal() 
 	{
+		m_glContext->makeCurrent();
 		m_glContext->present();
 	}
 

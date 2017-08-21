@@ -2,12 +2,11 @@
 #define LAYER_H
 
 #include "maths/qtmaths.h"
-
 #include <QMouseEvent>
 #include <QKeyEvent>
 
 namespace CGFF {
-	class Layer
+	class Layer : public QObject
 	{
 	public:
         Layer();
@@ -21,7 +20,9 @@ namespace CGFF {
         virtual void mousePressEvent(QMouseEvent *event) {};
         virtual void mouseMoveEvent(QMouseEvent *event) {};
         virtual void mouseReleaseEvent(QMouseEvent *event) {};
-        virtual void keyPressEvent(QKeyEvent *event) {};
+		virtual void keyPressEvent(QKeyEvent *event) {};
+		virtual void closeEvent(QEvent *event) {};
+		virtual bool event(QEvent *event) override { return false; };
 
         inline bool isVisible() const { return m_isVisible; }
         inline void setVisible(bool visible) { m_isVisible = visible; }

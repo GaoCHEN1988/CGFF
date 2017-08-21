@@ -15,7 +15,7 @@ namespace CGFF
             : texture(texture2D)
             , transform(transform)
         {
-            this->transform.scale(QVector3D((float)texture->getWidth() / (float)texture->getHeight(), 1.0f, 1.0f));
+            //this->transform.scale(QVector3D((float)texture->getWidth() / (float)texture->getHeight(), 1.0f, 1.0f));
         }
 
     public:

@@ -2,32 +2,33 @@
 
 namespace CGFF {
 
-    Mesh::Mesh(QOpenGLVertexArrayObject* vertexArray, QOpenGLBuffer* indexBuffer, QSharedPointer<MaterialInstance> materialInstance)
+    Mesh::Mesh(QSharedPointer<VertexArray> vertexArray, QSharedPointer<IndexBuffer> indexBuffer, QSharedPointer<MaterialInstance> materialInstance)
         : m_vertexArray(vertexArray)
         , m_indexBuffer(indexBuffer)
         , m_materialInstance(materialInstance)
     {
     }
 
+	Mesh::Mesh(QSharedPointer<Mesh> mesh)
+		: m_vertexArray(mesh->m_vertexArray)
+		, m_indexBuffer(mesh->m_indexBuffer)
+		, m_materialInstance(mesh->m_materialInstance)
+	{
+	}
+
     Mesh::~Mesh()
     {
-        ////To be considered
-        //delete m_vertexArray;
-        //delete m_indexBuffer;
-        //delete m_materialInstance;
     }
 
     void Mesh::render(Renderer3D& renderer)
     {
-        //m_materialInstance->getMaterial()->bind();
         m_materialInstance->bind();
 
         m_vertexArray->bind();
         m_indexBuffer->bind();
-        //m_vertexArray->Draw(m_IndexBuffer->GetCount());
-        GL->glDrawElements(GL_TRIANGLES, m_indexBuffer->size() / sizeof(uint), GL_UNSIGNED_INT, NULL);
-        m_indexBuffer->release();
-        m_vertexArray->release();
+        m_vertexArray->draw(m_indexBuffer->getCount());
+        m_indexBuffer->unBind();
+        m_vertexArray->unBind();
 
         m_materialInstance->unbind();
     }

@@ -4,6 +4,10 @@
 #include "mesh.h"
 #include <QHash>
 
+#include <assimp/Importer.hpp>
+#include <assimp/scene.h>
+#include <assimp/postprocess.h>
+
 namespace CGFF {
 
     // TODO: Replace with uvec3, whenever that begins to exist
@@ -43,11 +47,15 @@ namespace CGFF {
     
         //friend struct std::hash<IndexSet>;
 
-        bool load(const QString& path);
         //void insertVertex(QVector<Vertex>& vertices, QVector<uint>& indices, QHash<IndexSet, int>& mapping, VertexSet& inputVertices, IndexSet& indexSet);
+		void processNode(aiNode *node, const aiScene *scene);
+		QSharedPointer<Mesh> processMesh(aiMesh *mesh, const aiScene *scene);
+
+		bool load(const QString& path);
 
     private:
-        QSharedPointer<Mesh> m_mesh;
+		QSharedPointer<Mesh> m_mesh;
+		QVector<QSharedPointer<Mesh>> m_meshes;
     };
 
 }

@@ -56,6 +56,7 @@ namespace CGFF {
 		{
 			QString sCount = match.captured(1);
 			outCount = sCount.toInt();
+			outName.remove(QRegularExpression("\\[(\\d+)\\]"));
 		}
 	}
 
@@ -77,11 +78,19 @@ namespace CGFF {
 		QRegularExpression reg("\\{((.|\n)+?)\\}");
 
 		match = reg.match(statement);
-
+		//Test
 		if (match.hasMatch())
 		{
 			QString tmp = match.captured(0);
-			result.append(tmp);
+			QString t = "(.+?;)";
+			QRegularExpressionMatchIterator i = reg.globalMatch(tmp);
+			while (i.hasNext()) 
+			{
+				QRegularExpressionMatch match = i.next();
+				if (match.hasMatch()) {
+					result.append(match.captured(0));
+				}
+			}
 		}
 
 		return result;

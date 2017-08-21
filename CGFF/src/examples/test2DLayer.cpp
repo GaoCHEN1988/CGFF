@@ -11,19 +11,8 @@ namespace CGFF {
     void Test2DLayer::init() 
     {
         Layer2D::getRenderer()->setRenderTarget(CGFF::RenderTarget::SCREEN);
-        
-        //QSharedPointer<QOpenGLShaderProgram> pfShader = QSharedPointer<QOpenGLShaderProgram>(new QOpenGLShaderProgram);
-        //bool success = pfShader->addShaderFromSourceFile(QOpenGLShader::Vertex, "src/graphic/shaders/postfx.vert");
-        //// load and compile fragment shader
-        //success = pfShader->addShaderFromSourceFile(QOpenGLShader::Fragment, "src/graphic/shaders/postfx.frag");
-        //Layer2D::getRenderer()->addPostEffectsPass(QSharedPointer<CGFF::PostEffectsPass>(new CGFF::PostEffectsPass(pfShader, m_size)));
-        //Layer2D::getRenderer()->setPostEffects(false);
-    
-        GLenum error = glGetError();
-        if (error != GL_NO_ERROR)
-            qFatal("opengl error!");
-
-        m_sprite = QSharedPointer<CGFF::Sprite>(new CGFF::Sprite(0.0f, 0.0f, 400, 400, Texture2D::createFromFile("Resources/tb.png")));
+  
+        m_sprite = QSharedPointer<CGFF::Sprite>(new CGFF::Sprite(0.0f, 0.0f, 100, 100, Texture2D::createFromFile("Resources/tb.png")));
         m_sprite2 = QSharedPointer<CGFF::Sprite>(new CGFF::Sprite(500.0f, 500.0f, 100.0, 100.0, Texture2D::createFromFile("Resources/particle.png")));
 
         Layer2D::add(m_sprite);
@@ -31,38 +20,6 @@ namespace CGFF {
 
         m_mask = QSharedPointer<CGFF::Mask>(new CGFF::Mask(Texture2D::createFromFile("Resources/mask.png")));
         Layer2D::setMask(m_mask);
-
-        error = glGetError();
-        if (error != GL_NO_ERROR)
-            qFatal("opengl error!");
-
-        //m_fpsLabel = QSharedPointer<CGFF::Label>(new CGFF::Label("fps", 10, m_size.height() - 50, 150, 32, QVector4D(1, 1, 1, 1)));
-        //Layer2D::add(m_fpsLabel);
-
-        error = glGetError();
-        if (error != GL_NO_ERROR)
-            qFatal("opengl error!");
-
-        m_time.start();
-        last_count = 0;
-        m_frameCount = 0;
-    }
-
-    void Test2DLayer::render() 
-    {
-        Layer2D::render();
-
-        // FPS count
-        ++m_frameCount;
-        int elapsed = m_time.elapsed();
-        if (elapsed >= 1000)
-        {
-            last_count = m_frameCount;
-            m_frameCount = 0;
-            m_time.restart();
-        }
-
-        //m_fpsLabel->setText(QString::number(last_count));
     }
 
     void Test2DLayer::resize(int width, int height) 
@@ -124,4 +81,12 @@ namespace CGFF {
         }
         }
     }
+
+	void Test2DLayer::closeEvent(QEvent *event)
+	{
+		Layer2D::closeEvent(event);
+		m_sprite.clear();
+		m_sprite2.clear();
+		m_mask.clear();
+	}
 }

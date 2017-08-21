@@ -19,7 +19,7 @@ namespace CGFF {
         inline static QSharedPointer<GLContext> get() { return qSharedPointerCast<GLContext>(s_context); }
 
 	private:
-		QOpenGLContext m_glContext;
+		QOpenGLContext* m_glContext;
 		QWindow * m_parent;
     };
 

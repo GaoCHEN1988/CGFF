@@ -165,4 +165,9 @@ namespace CGFF {
     {
         m_panel->update();
     }
+
+	void DebugMenu::closeEvent(QEvent *event)
+	{
+		m_panel->closeEvent(event);
+	}
 }

@@ -59,6 +59,7 @@ namespace CGFF {
         void drawString(QString text, const QVector3D& position, int width, int height, QVector4D& color, QFont font = QFont("Sans")) override;
 		void flush() override;
 		void end() override;
+		void close() override;
 
 		void setCamera(QSharedPointer<Camera> camera) override;
 
@@ -111,7 +112,7 @@ namespace CGFF {
 		QSharedPointer<Camera> m_camera;
 
         //MeshFactory::Quad m_screenQuad;
-		GLuint* m_indices;
+		uint* m_indices;
 	};
 }
 #endif

@@ -1,5 +1,6 @@
 #include "debugLayer.h"
 #include "graphic/shader/shaderFactory.h"
+#include "applicationWindow.h"
 
 namespace CGFF {
 
@@ -17,9 +18,9 @@ namespace CGFF {
         Layer2D::getRenderer()->setRenderTarget(CGFF::RenderTarget::SCREEN);
 
 		//Test
-		m_FPSLabel = QSharedPointer<Label>(new Label("fps", 10, g_openglWidgetSize.height() - 50, 100, 32, QVector4D(1, 1, 1, 1)));
-		m_memoryUsageLabel = QSharedPointer<Label>(new Label("memory", 110, g_openglWidgetSize.height() - 50, 100, 32, QVector4D(1, 1, 1, 1)));
-		m_frametimeLabel = QSharedPointer<Label>(new Label("frametime", 210, g_openglWidgetSize.height() - 50, 100, 32, QVector4D(1, 1, 1, 1)));
+		m_FPSLabel = QSharedPointer<Label>(new Label("fps", 10, g_openglWidgetSize.height() - 50, 150, 32, QVector4D(1, 1, 1, 1)));
+		m_memoryUsageLabel = QSharedPointer<Label>(new Label("memory", 200, g_openglWidgetSize.height() - 50, 150, 32, QVector4D(1, 1, 1, 1)));
+		m_frametimeLabel = QSharedPointer<Label>(new Label("frametime", 390, g_openglWidgetSize.height() - 50, 150, 32, QVector4D(1, 1, 1, 1)));
 
 		add(m_FPSLabel);
 		add(m_memoryUsageLabel);
@@ -34,9 +35,9 @@ namespace CGFF {
 		renderer->setRenderTarget(CGFF::RenderTarget::SCREEN);
 
 		//Test
-		m_FPSLabel = QSharedPointer<Label>(new Label("fps", 10, g_openglWidgetSize.height() - 50, 100, 32, QVector4D(1, 1, 1, 1)));
-		m_memoryUsageLabel = QSharedPointer<Label>(new Label("memory", 110, g_openglWidgetSize.height() - 50, 100, 32, QVector4D(1, 1, 1, 1)));
-		m_frametimeLabel = QSharedPointer<Label>(new Label("frametime", 210, g_openglWidgetSize.height() - 50, 100, 32, QVector4D(1, 1, 1, 1)));
+		m_FPSLabel = QSharedPointer<Label>(new Label("fps", 10, g_openglWidgetSize.height() - 50, 150, 50, QVector4D(1, 1, 1, 1)));
+		m_memoryUsageLabel = QSharedPointer<Label>(new Label("memory", 110, g_openglWidgetSize.height() - 50, 150, 50, QVector4D(1, 1, 1, 1)));
+		m_frametimeLabel = QSharedPointer<Label>(new Label("frametime", 210, g_openglWidgetSize.height() - 50, 150, 50, QVector4D(1, 1, 1, 1)));
 
 		add(m_FPSLabel);
 		add(m_memoryUsageLabel);
@@ -58,6 +59,11 @@ namespace CGFF {
 
 		m_tempSprites.clear();
     }
+
+	void DebugLayer::tick()
+	{
+		m_FPSLabel->setText("FPS: "+QString::number(ApplicationWindow::getApplication()->getFPS()));
+	}
 
     void DebugLayer::resize(int width, int height)
     {
@@ -114,5 +120,12 @@ namespace CGFF {
 		QSharedPointer<Sprite> sprite = QSharedPointer<Sprite>(new Sprite(position.x(), position.y(), size.x(), size.y(), texture));
 		s_instance->m_tempSprites.push_back(sprite);
 		s_instance->submit(sprite);
+	}
+
+	void DebugLayer::closeEvent(QEvent *event)
+	{
+		Layer2D::closeEvent(event);
+		DebugMenu::get()->closeEvent(event);
+		m_tempSprites.clear();
 	}
 }

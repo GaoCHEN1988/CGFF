@@ -36,6 +36,7 @@ namespace CGFF {
 		virtual void flush() = 0;
 		virtual void begin() {}
 		virtual void end() {}
+		virtual void close() {}
 		virtual void setCamera(QSharedPointer<Camera> camera) {}
         
         virtual void drawString(QString text, const QVector3D& position, int width, int height, QVector4D& color, QFont font = QFont("Sans")) {};

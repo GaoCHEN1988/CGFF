@@ -9,22 +9,28 @@ ApplicationWindow * ApplicationWindow::m_instance = nullptr;
 ApplicationWindow::ApplicationWindow(QWindow * parent, CGFF::RenderAPI api)
 	: QWindow(parent) 
 	, m_framePerSecond(0)
-	, last_count(0)
+	, fps_count(0)
     , m_context(nullptr)
 {
     resize(800, 800);
     setMinimumSize(QSize(400, 400));
 	m_instance = this;
     CGFF::Context::setRenderAPI(api);
-	//Test
-	setSurfaceType(QWindow::OpenGLSurface);
 
-	timer_id_ = startTimer(0);
+	switch (api)
+	{
+	case CGFF::RenderAPI::OPENGL:
+		setSurfaceType(QWindow::OpenGLSurface);
+		break;
+	case CGFF::RenderAPI::DIRECT3D:
+		break;
+	}
+
+	timer_id_ = startTimer(1);
 }
 
 ApplicationWindow::~ApplicationWindow() 
 {
-    int test = 0;
 }
 
 void ApplicationWindow::initialize()
@@ -39,7 +45,7 @@ void ApplicationWindow::initialize()
 
 	m_time.start();
 	m_framePerSecond = 0;
-	last_count = 0;
+	fps_count = 0;
 }
 
 void ApplicationWindow::render()
@@ -61,6 +67,24 @@ void ApplicationWindow::render()
 	}
 }
 
+void ApplicationWindow::tick()
+{
+	for (auto layer : m_layerStack)
+	{
+		layer->tick();
+	}
+
+	for (auto overLayer : m_overLayerStack)
+	{
+		overLayer->tick();
+	}
+
+	if (m_debugLayer->isVisible())
+	{
+		m_debugLayer->tick();
+	}
+}
+
 void ApplicationWindow::renderLater()
 {
 }
@@ -70,39 +94,37 @@ void ApplicationWindow::renderNow()
 	if (!isExposed())
 		return;
 
-	//if (!CGFF::Context::isInitialized()) 
- //   {
-	//	CGFF::Context::create(this);
-	//	initialize();
-	//}
+	if (!CGFF::Context::isInitialized()) 
+    {
+		CGFF::g_openglWidgetSize = this->size();
 
-    if (!m_context) {
-        m_context = new QOpenGLContext(this);
-        QSurfaceFormat qFormat = this->requestedFormat();
-        qFormat.setProfile(QSurfaceFormat::CoreProfile);
-        qFormat.setVersion(4, 4);
-        m_context->setFormat(qFormat);
-        m_context->create();
-        m_context->makeCurrent(this);
-        CGFF::GL = m_context->versionFunctions<QOpenGLFunctions_4_4_Core>();
-        CGFF::GL->initializeOpenGLFunctions();
+		CGFF::Context::create(this);
+		initialize();
+	}
 
-        initialize();
+    //if (!m_context) {
+    //    m_context = new QOpenGLContext(this);
+    //    QSurfaceFormat qFormat = this->requestedFormat();
+    //    qFormat.setProfile(QSurfaceFormat::CoreProfile);
+    //    qFormat.setVersion(4, 4);
+    //    m_context->setFormat(qFormat);
+    //    m_context->create();
+    //    m_context->makeCurrent(this);
+    //    CGFF::GL = m_context->versionFunctions<QOpenGLFunctions_4_4_Core>();
+    //    CGFF::GL->initializeOpenGLFunctions();
 
-    }
+    //    initialize();
+
+    //}
 
     CGFF::Renderer::clear(CGFF::RendererBufferType::RENDERER_BUFFER_COLOR | CGFF::RendererBufferType::RENDERER_BUFFER_DEPTH);
 
-    m_context->makeCurrent(this);
+    //m_context->makeCurrent(this);
 
 	render();
 
-    m_context->swapBuffers(this);
-	//CGFF::Renderer::present();
-
-    GLenum error = glGetError();
-    if (error != GL_NO_ERROR)
-        qFatal("opengl error!");
+    //m_context->swapBuffers(this);
+	CGFF::Renderer::present();
 }
 
 void ApplicationWindow::pushLayer(QSharedPointer<CGFF::Layer> layer)
@@ -158,13 +180,14 @@ void ApplicationWindow::timerEvent(QTimerEvent *event)
 	renderNow();
 
 	// FPS count
-	++m_framePerSecond;
+	++fps_count;
 	int elapsed = m_time.elapsed();
 	if (elapsed >= 1000)
 	{
-		last_count = m_framePerSecond;
-		m_framePerSecond = 0;
-		m_time.restart();
+		m_framePerSecond = fps_count;
+		fps_count = 0;
+		m_time.restart();	
+		tick();
 	}
 }
 
@@ -178,8 +201,11 @@ void ApplicationWindow::exposeEvent(QExposeEvent *event)
 
 void ApplicationWindow::resizeEvent(QResizeEvent* event)
 {
-    if (!m_context)
-        return;
+    //if (!m_context)
+    //    return;
+
+	if (!CGFF::Context::isInitialized())
+		return;
 
 	CGFF::g_openglWidgetSize = event->size();
 	int width = CGFF::g_openglWidgetSize.width();
@@ -259,4 +285,24 @@ void ApplicationWindow::keyPressEvent(QKeyEvent *event)
 	}
 
 	m_debugLayer->keyPressEvent(event);
+}
+
+bool ApplicationWindow::event(QEvent *event)
+{
+	if (event->type() == QEvent::Close)
+	{
+		for (auto layer : m_layerStack)
+		{
+			layer->closeEvent(event);
+		}
+
+		for (auto overLayer : m_overLayerStack)
+		{
+			overLayer->closeEvent(event);
+		}
+
+		m_debugLayer->closeEvent(event);		
+	}
+
+	return QWindow::event(event);
 }

@@ -85,8 +85,6 @@ namespace CGFF {
 	class Texture
 	{
 	public:
-		virtual ~Texture() {}
-
 		virtual void bind(uint slot = 0) = 0;
 		virtual void unBind(uint slot = 0) = 0;
 

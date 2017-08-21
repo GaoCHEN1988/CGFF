@@ -2,10 +2,10 @@
 #define CGFF_MESH_H
 #include "utils/qtopengl.h"
 #include "maths/qtmaths.h"
+#include "api/vertexArray.h"
+#include "api/indexBuffer.h"
 #include "material.h"
 #include "irenderable.h"
-#include <QOpenGLBuffer>
-#include <QOpenGLVertexArrayObject>
 
 namespace CGFF {
 
@@ -16,16 +16,19 @@ namespace CGFF {
         QVector3D position;
         QVector3D normal;
         QVector2D uv;
+		QVector3D binormal;
+		QVector3D tangent;
     };
 
     class Mesh : public IRenderable
     {
     private:
-        QOpenGLVertexArrayObject* m_vertexArray;
-        QOpenGLBuffer* m_indexBuffer;
+		QSharedPointer<VertexArray> m_vertexArray;
+		QSharedPointer<IndexBuffer> m_indexBuffer;
         QSharedPointer<MaterialInstance> m_materialInstance;
     public:
-        Mesh(QOpenGLVertexArrayObject* vertexArray, QOpenGLBuffer* indexBuffer, QSharedPointer<MaterialInstance> materialInstance);
+		Mesh(QSharedPointer<VertexArray> vertexArray, QSharedPointer<IndexBuffer> indexBuffer, QSharedPointer<MaterialInstance> materialInstance);
+		Mesh(QSharedPointer<Mesh> mesh);
         virtual ~Mesh();
 
         inline void SetMaterial(QSharedPointer<MaterialInstance>& materialInstance) { m_materialInstance = materialInstance; }
