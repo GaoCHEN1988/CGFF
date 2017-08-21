@@ -1,11 +1,12 @@
 #include "panel.h"
 #include "application/applicationWidget.h"
+#include "application/applicationWindow.h"
 
 namespace CGFF {
     namespace UI {
 
 	Panel::Panel()
-		: Layer2D(QSharedPointer<CGFF::BatchRenderer2D>(new CGFF::BatchRenderer2D(ApplicationWidget::getApplication()->size())))
+		: Layer2D(QSharedPointer<CGFF::BatchRenderer2D>(new CGFF::BatchRenderer2D(ApplicationWindow::getApplication()->size())))
 	{
         //ApplicationWidget::getApplication()->pushOverlay(QSharedPointer<Panel>(this));
 	}

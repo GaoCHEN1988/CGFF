@@ -19,15 +19,30 @@ namespace CGFF {
         //Layer2D::getRenderer()->addPostEffectsPass(QSharedPointer<CGFF::PostEffectsPass>(new CGFF::PostEffectsPass(pfShader, m_size)));
         //Layer2D::getRenderer()->setPostEffects(false);
     
-        m_sprite = QSharedPointer<CGFF::Sprite>(new CGFF::Sprite(0.0f, 0.0f, 100, 100, Texture2D::createFromFile("Resources/tb.png")));
+        GLenum error = glGetError();
+        if (error != GL_NO_ERROR)
+            qFatal("opengl error!");
+
+        m_sprite = QSharedPointer<CGFF::Sprite>(new CGFF::Sprite(0.0f, 0.0f, 400, 400, Texture2D::createFromFile("Resources/tb.png")));
+        m_sprite2 = QSharedPointer<CGFF::Sprite>(new CGFF::Sprite(500.0f, 500.0f, 100.0, 100.0, Texture2D::createFromFile("Resources/particle.png")));
 
         Layer2D::add(m_sprite);
+        Layer2D::add(m_sprite2);
+
         m_mask = QSharedPointer<CGFF::Mask>(new CGFF::Mask(Texture2D::createFromFile("Resources/mask.png")));
         Layer2D::setMask(m_mask);
 
-        m_fpsLabel = QSharedPointer<CGFF::Label>(new CGFF::Label("fps", 10, m_size.height() - 50, 150, 32, QVector4D(1, 1, 1, 1)));
-        Layer2D::add(m_fpsLabel);
-        
+        error = glGetError();
+        if (error != GL_NO_ERROR)
+            qFatal("opengl error!");
+
+        //m_fpsLabel = QSharedPointer<CGFF::Label>(new CGFF::Label("fps", 10, m_size.height() - 50, 150, 32, QVector4D(1, 1, 1, 1)));
+        //Layer2D::add(m_fpsLabel);
+
+        error = glGetError();
+        if (error != GL_NO_ERROR)
+            qFatal("opengl error!");
+
         m_time.start();
         last_count = 0;
         m_frameCount = 0;
@@ -47,7 +62,7 @@ namespace CGFF {
             m_time.restart();
         }
 
-        m_fpsLabel->setText(QString::number(last_count));
+        //m_fpsLabel->setText(QString::number(last_count));
     }
 
     void Test2DLayer::resize(int width, int height) 
@@ -59,7 +74,7 @@ namespace CGFF {
     void Test2DLayer::mouseReleaseEvent(QMouseEvent *event) {}
     void Test2DLayer::keyPressEvent(QKeyEvent *event) 
     {
-        float speed = 8.0f;
+        float speed = 10.0f;
         switch (event->key())
         {
         case (Qt::Key_W) :

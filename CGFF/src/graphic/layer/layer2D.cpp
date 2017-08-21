@@ -18,7 +18,9 @@ namespace CGFF {
         //m_shader->setUniformValueArray("textures", texIDs, 32);
         //m_shader->release();
 
-		m_renderer->setCamera(QSharedPointer<Camera>(new Camera(projectionMatrix)));
+  //      m_projectionMatrix.ortho(0, (float)CGFF::g_openglWidgetSize.width(), 0, (float)CGFF::g_openglWidgetSize.height(), -1.0f, 1.0f);
+
+		//m_renderer->setCamera(QSharedPointer<Camera>(new Camera(m_projectionMatrix)));
     }
 
     Layer2D::~Layer2D()

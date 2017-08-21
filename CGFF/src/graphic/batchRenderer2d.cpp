@@ -130,6 +130,10 @@ namespace CGFF {
 			UniformBuffer buffer(QSharedPointer<uchar>(new uchar[ub->getSize()]), ub->getSize());
 
 			m_systemUniformBuffers.push_back(buffer);
+
+            //Test
+            const ShaderUniformList& t = ub->getUniformDeclarations();
+
 			for (QSharedPointer<ShaderUniformDeclaration> decl : ub->getUniformDeclarations())
 			{
 				for (uint j = 0; j < g_RequiredSystemUniformsCount; j++)
@@ -141,8 +145,7 @@ namespace CGFF {
 		}
 
 		QMatrix4x4 proj = QMatrix4x4();
-		proj.ortho(0, (float)m_screenSize.width(), (float)m_screenSize.height(), 0, -1.0f, 100.0f);
-
+		proj.ortho(0, (float)m_screenSize.width(), 0, (float)m_screenSize.height(), -1.0f, 100.0f);
 		setCamera(QSharedPointer<Camera>(new Camera(proj)));
 
 		m_shader->bind();
@@ -283,11 +286,20 @@ namespace CGFF {
 			m_textures.push_back(texture);
 			result = static_cast<float>(m_textures.size());
 		}
+
+        GLenum error = glGetError();
+        if (error != GL_NO_ERROR)
+            qFatal("opengl error!");
+
 		return result;
 	}
 
 	void BatchRenderer2D::begin()
 	{
+        GLenum error = glGetError();
+        if (error != GL_NO_ERROR)
+            qFatal("opengl error!");
+
         if (m_renderTarget == RenderTarget::BUFFER)
         {
 #ifdef FRAMEBUDDER_TEST
@@ -339,7 +351,7 @@ namespace CGFF {
 
 		float ts = 0.0;
 
-		if (texture)
+		if (!texture.isNull())
 		{
             ts = submitTexture(renderable->getTexture());
 		}
@@ -469,8 +481,9 @@ namespace CGFF {
 		//}
 
 		m_shader->bind();
-		for (uint i = 0; i < m_systemUniformBuffers.size(); i++)
-			m_shader->setPSSystemUniformBuffer(m_systemUniformBuffers[i].buffer_pointer.data(), m_systemUniformBuffers[i].size, i);
+
+        for (uint i = 0; i < m_systemUniformBuffers.size(); i++)
+			m_shader->setVSSystemUniformBuffer(m_systemUniformBuffers[i].buffer_pointer.data(), m_systemUniformBuffers[i].size, i);
 
 		for (uint i = 0; i < m_textures.size(); i++)
 			m_textures[i]->bind(i);
@@ -536,7 +549,6 @@ namespace CGFF {
 #endif
 
 		m_strTextures.clear();
-
 	}
 
 	void BatchRenderer2D::end()

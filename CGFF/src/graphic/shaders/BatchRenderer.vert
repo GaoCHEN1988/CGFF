@@ -11,7 +11,7 @@ uniform mat4 sys_ProjectionMatrix = mat4(1.0);
 uniform mat4 sys_ViewMatrix = mat4(1.0);
 uniform mat4 sys_ModelMatrix = mat4(1.0);
 
-uniform mat4 sys_MaskMatrix;
+uniform mat4 sys_MaskMatrix = mat4(1.0);
 
 out DATA
 {

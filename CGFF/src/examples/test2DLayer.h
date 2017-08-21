@@ -24,6 +24,7 @@ namespace CGFF {
 
     private:
         QSharedPointer<CGFF::Sprite> m_sprite;
+        QSharedPointer<CGFF::Sprite> m_sprite2;
         QSharedPointer<CGFF::Mask> m_mask;
         QTime m_time;
         int m_frameCount;

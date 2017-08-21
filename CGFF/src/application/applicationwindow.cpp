@@ -10,17 +10,21 @@ ApplicationWindow::ApplicationWindow(QWindow * parent, CGFF::RenderAPI api)
 	: QWindow(parent) 
 	, m_framePerSecond(0)
 	, last_count(0)
+    , m_context(nullptr)
 {
+    resize(800, 800);
+    setMinimumSize(QSize(400, 400));
 	m_instance = this;
-
+    CGFF::Context::setRenderAPI(api);
 	//Test
-	//setSurfaceType(QWindow::OpenGLSurface);
+	setSurfaceType(QWindow::OpenGLSurface);
 
 	timer_id_ = startTimer(0);
 }
 
-ApplicationWindow::~ApplicationWindow() {
-	
+ApplicationWindow::~ApplicationWindow() 
+{
+    int test = 0;
 }
 
 void ApplicationWindow::initialize()
@@ -66,14 +70,39 @@ void ApplicationWindow::renderNow()
 	if (!isExposed())
 		return;
 
-	if (!CGFF::Context::isInitialized()) {
-		CGFF::Context::create(this);
-		initialize();
-	}
+	//if (!CGFF::Context::isInitialized()) 
+ //   {
+	//	CGFF::Context::create(this);
+	//	initialize();
+	//}
+
+    if (!m_context) {
+        m_context = new QOpenGLContext(this);
+        QSurfaceFormat qFormat = this->requestedFormat();
+        qFormat.setProfile(QSurfaceFormat::CoreProfile);
+        qFormat.setVersion(4, 4);
+        m_context->setFormat(qFormat);
+        m_context->create();
+        m_context->makeCurrent(this);
+        CGFF::GL = m_context->versionFunctions<QOpenGLFunctions_4_4_Core>();
+        CGFF::GL->initializeOpenGLFunctions();
+
+        initialize();
+
+    }
+
+    CGFF::Renderer::clear(CGFF::RendererBufferType::RENDERER_BUFFER_COLOR | CGFF::RendererBufferType::RENDERER_BUFFER_DEPTH);
+
+    m_context->makeCurrent(this);
 
 	render();
 
-	CGFF::Renderer::present();
+    m_context->swapBuffers(this);
+	//CGFF::Renderer::present();
+
+    GLenum error = glGetError();
+    if (error != GL_NO_ERROR)
+        qFatal("opengl error!");
 }
 
 void ApplicationWindow::pushLayer(QSharedPointer<CGFF::Layer> layer)
@@ -149,6 +178,9 @@ void ApplicationWindow::exposeEvent(QExposeEvent *event)
 
 void ApplicationWindow::resizeEvent(QResizeEvent* event)
 {
+    if (!m_context)
+        return;
+
 	CGFF::g_openglWidgetSize = event->size();
 	int width = CGFF::g_openglWidgetSize.width();
 	int height = CGFF::g_openglWidgetSize.height();

@@ -54,7 +54,7 @@ namespace CGFF {
 
 		if (match.hasMatch())
 		{
-			QString sCount = match.captured(0);
+			QString sCount = match.captured(1);
 			outCount = sCount.toInt();
 		}
 	}

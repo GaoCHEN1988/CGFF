@@ -11,8 +11,10 @@ namespace CGFF {
     {
     public:
         GLContext(QWindow *parent = Q_NULLPTR);
+        virtual ~GLContext();
 
         void present();
+        void makeCurrent();
 
         inline static QSharedPointer<GLContext> get() { return qSharedPointerCast<GLContext>(s_context); }
 

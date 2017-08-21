@@ -32,8 +32,6 @@ namespace CGFF {
 		m_glTexture.setDepthStencilMode(QOpenGLTexture::DepthMode);
 		m_glTexture.allocateStorage();
 
-		
-
 		m_glTexture.setData(0, 0, QOpenGLTexture::Depth, QOpenGLTexture::UInt16, (const void*)white.constBits());
 		m_glTexture.generateMipMaps();
 		m_glTexture.setWrapMode(m_parameters.gl_wrap);

@@ -1,5 +1,7 @@
 #include "glTexture2D.h"
 
+#include "glContext.h"
+
 namespace CGFF {
 
 	GLTexture2D::GLTexture2D(int width, int height, TextureParameters parameters, TextureLoadOptions loadOptions)
@@ -50,6 +52,10 @@ namespace CGFF {
 		load(image);
 	}
 
+    GLTexture2D::~GLTexture2D()
+    {
+    }
+
 	void GLTexture2D::setTexture(GLuint id)
 	{
 		m_glTexture.bind(id);
@@ -76,11 +82,13 @@ namespace CGFF {
 			{
 				//Need to test
 				m_glTexture.create();
-				m_glTexture.setSize(texImage.width(), texImage.height(), texImage.depth());
+                //m_glTexture.setSize(texImage.width(), texImage.height(), texImage.depth());
+                m_glTexture.setSize(texImage.width(), texImage.height(), texImage.depth());
+                m_glTexture.setFormat(m_parameters.gl_textureFormat);
 				m_glTexture.allocateStorage();
-
-				m_glTexture.setFormat(m_parameters.gl_textureFormat);
-				m_glTexture.setData(texImage.mirrored(m_loadOptions.horizontalFlip, m_loadOptions.verticalFlip).convertToFormat(m_parameters.imageFormat));
+            
+                QImage tmp = texImage.convertToFormat(m_parameters.imageFormat);
+                m_glTexture.setData(0, 0, m_parameters.gl_pixelFormat, m_parameters.gl_pixelType, (const void*)tmp.constBits(), 0);
 			}
 			else
 			{
@@ -99,8 +107,9 @@ namespace CGFF {
 		//Need to test
 		m_glTexture.create();
 		m_glTexture.setSize(texImage.width(), texImage.height(), texImage.depth());
+        m_glTexture.setFormat(m_parameters.gl_textureFormat);
 		m_glTexture.allocateStorage();
-		m_glTexture.setFormat(m_parameters.gl_textureFormat);
+
 		m_glTexture.setData(texImage.mirrored(m_loadOptions.horizontalFlip, m_loadOptions.verticalFlip));
 
 		//TO do: Support more QOpenGL features
@@ -113,9 +122,11 @@ namespace CGFF {
 		//Need to test
 		m_glTexture.create();
 		m_glTexture.setSize(image.width(), image.height(), image.depth());
+        m_glTexture.setFormat(m_parameters.gl_textureFormat);
 		m_glTexture.allocateStorage();
-		m_glTexture.setFormat(m_parameters.gl_textureFormat);
-		m_glTexture.setData(image.mirrored(m_loadOptions.horizontalFlip, m_loadOptions.verticalFlip));
+
+        QImage tmp = image.convertToFormat(m_parameters.imageFormat);
+        m_glTexture.setData(0, 0, m_parameters.gl_pixelFormat, m_parameters.gl_pixelType, (const void*)tmp.constBits(), 0);
 
 		//TO do: Support more QOpenGL features
 		m_glTexture.setWrapMode(m_parameters.gl_wrap);

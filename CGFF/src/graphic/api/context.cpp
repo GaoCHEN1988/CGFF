@@ -6,6 +6,10 @@ namespace CGFF {
 	QSharedPointer<Context> Context::s_context = nullptr;
     RenderAPI Context::s_renderAPI = RenderAPI::NONE;
 
+    Context::~Context()
+    {
+    }
+
 	void Context::create(QWindow *parent)
 	{
 		switch (getRenderAPI())

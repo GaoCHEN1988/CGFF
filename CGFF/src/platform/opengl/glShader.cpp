@@ -397,7 +397,7 @@ namespace CGFF {
 				declaration = QSharedPointer<GLShaderUniformDeclaration>(new GLShaderUniformDeclaration(t, name, count));
 			}
 
-			if (name.indexOf("Sys_") == 0)
+			if (name.indexOf("sys_") == 0)
 			{
 				if (shaderType == ShaderType::VERTEX)
 					(qSharedPointerCast<GLShaderUniformBufferDeclaration>(m_VSUniformBuffers.front()))->pushUniform(declaration);

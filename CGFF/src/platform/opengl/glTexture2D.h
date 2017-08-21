@@ -14,7 +14,7 @@ namespace CGFF {
 		GLTexture2D(const QString& name, const QString& filename, TextureParameters parameters = TextureParameters(), TextureLoadOptions loadOptions = TextureLoadOptions());
 		GLTexture2D(const QString& name, const QImage& image, TextureParameters parameters = TextureParameters(), TextureLoadOptions loadOptions = TextureLoadOptions());
 
-		virtual ~GLTexture2D() {};
+		virtual ~GLTexture2D();
 
 		void setTexture(GLuint id);
 

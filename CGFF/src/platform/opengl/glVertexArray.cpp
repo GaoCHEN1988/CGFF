@@ -21,13 +21,15 @@ namespace CGFF {
     void GLVertexArray::bind()
     {
         m_glVertexArray.bind();
-		m_buffers.front()->bind();
+        if(!m_buffers.isEmpty())
+		    m_buffers.front()->bind();
     }
 
     void GLVertexArray::unBind()
     {
         m_glVertexArray.release();
-		m_buffers.front()->unBind();
+        if (!m_buffers.isEmpty())
+		    m_buffers.front()->unBind();
     }
 
     void GLVertexArray::draw(uint count) const 

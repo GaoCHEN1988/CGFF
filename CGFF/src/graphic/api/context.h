@@ -16,6 +16,8 @@ namespace CGFF {
     class Context
     {
     public:
+        Context() {};
+        virtual ~Context();
         static void create(QWindow *parent = Q_NULLPTR);
 
         static RenderAPI getRenderAPI() { return s_renderAPI; }
