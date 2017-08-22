@@ -25,7 +25,10 @@ namespace CGFF {
 		
 		setUniform("u_UsingNormalMap", 0.0f);
 	}
-	PBRMaterial::~PBRMaterial(){}
+
+	PBRMaterial::~PBRMaterial()
+	{
+	}
 
 	void PBRMaterial::setEnviromentMap(QSharedPointer<TextureCube> texture)
 	{

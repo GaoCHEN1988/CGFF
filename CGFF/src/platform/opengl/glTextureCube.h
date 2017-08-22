@@ -25,7 +25,7 @@ namespace CGFF {
 
 	private:
 		void loadFromFiles();
-
+		void loadFromVCross(int mips);
 	private:
 		QString m_name;
 		QStringList m_fileNames;

@@ -1,12 +1,18 @@
 #include "model.h"
+#include "graphic/shader/shaderManager.h"
 #include <QFile>
+
 namespace CGFF {
 
     Model::Model(const QString& path, QSharedPointer<MaterialInstance> materialInstance)
-        : m_mesh(nullptr)
     {
-        if (load(path))
-            m_mesh->SetMaterial(materialInstance);
+		if (load(path))
+		{
+			for (QSharedPointer<Mesh>& m : m_meshes)
+			{
+				m->setMaterial(materialInstance);
+			}
+		}
         else
             qFatal("Can't load model from ", path);
     }
@@ -36,58 +42,65 @@ namespace CGFF {
 
 	QSharedPointer<Mesh> Model::processMesh(aiMesh *mesh, const aiScene *scene)
 	{
-		//// data to fill
-		//vector<Vertex> vertices;
-		//vector<unsigned int> indices;
-		//vector<Texture> textures;
+		if (!(mesh->mNumVertices > 0))
+			qFatal("No meshes loaded");
 
-		//// Walk through each of the mesh's vertices
-		//for (unsigned int i = 0; i < mesh->mNumVertices; i++)
-		//{
-		//	Vertex vertex;
-		//	glm::vec3 vector; // we declare a placeholder vector since assimp uses its own vector class that doesn't directly convert to glm's vec3 class so we transfer the data to this placeholder glm::vec3 first.
-		//					  // positions
-		//	vector.x = mesh->mVertices[i].x;
-		//	vector.y = mesh->mVertices[i].y;
-		//	vector.z = mesh->mVertices[i].z;
-		//	vertex.Position = vector;
-		//	// normals
-		//	vector.x = mesh->mNormals[i].x;
-		//	vector.y = mesh->mNormals[i].y;
-		//	vector.z = mesh->mNormals[i].z;
-		//	vertex.Normal = vector;
-		//	// texture coordinates
-		//	if (mesh->mTextureCoords[0]) // does the mesh contain texture coordinates?
-		//	{
-		//		glm::vec2 vec;
-		//		// a vertex can contain up to 8 different texture coordinates. We thus make the assumption that we won't 
-		//		// use models where a vertex can have multiple texture coordinates so we always take the first set (0).
-		//		vec.x = mesh->mTextureCoords[0][i].x;
-		//		vec.y = mesh->mTextureCoords[0][i].y;
-		//		vertex.TexCoords = vec;
-		//	}
-		//	else
-		//		vertex.TexCoords = glm::vec2(0.0f, 0.0f);
-		//	// tangent
-		//	vector.x = mesh->mTangents[i].x;
-		//	vector.y = mesh->mTangents[i].y;
-		//	vector.z = mesh->mTangents[i].z;
-		//	vertex.Tangent = vector;
-		//	// bitangent
-		//	vector.x = mesh->mBitangents[i].x;
-		//	vector.y = mesh->mBitangents[i].y;
-		//	vector.z = mesh->mBitangents[i].z;
-		//	vertex.Bitangent = vector;
-		//	vertices.push_back(vertex);
-		//}
-		//// now wak through each of the mesh's faces (a face is a mesh its triangle) and retrieve the corresponding vertex indices.
-		//for (unsigned int i = 0; i < mesh->mNumFaces; i++)
-		//{
-		//	aiFace face = mesh->mFaces[i];
-		//	// retrieve all indices of the face and store them in the indices vector
-		//	for (unsigned int j = 0; j < face.mNumIndices; j++)
-		//		indices.push_back(face.mIndices[j]);
-		//}
+		QVector<Vertex> vertices;
+		QVector<uint> indices;
+
+		// Walk through each of the mesh's vertices
+		for (unsigned int i = 0; i < mesh->mNumVertices; i++)
+		{
+			Vertex vertex;
+			//position
+			vertex.position = QVector3D(mesh->mVertices[i].x, mesh->mVertices[i].y, mesh->mVertices[i].z);
+			// normals
+			vertex.normal = QVector3D(mesh->mNormals[i].x, mesh->mNormals[i].y, mesh->mNormals[i].z);
+			// texture coordinates
+			if (mesh->mTextureCoords[0]) // does the mesh contain texture coordinates?
+			{
+
+				// a vertex can contain up to 8 different texture coordinates. We thus make the assumption that we won't 
+				// use models where a vertex can have multiple texture coordinates so we always take the first set (0).
+				vertex.uv = QVector2D(mesh->mTextureCoords[0][i].x, mesh->mTextureCoords[0][i].y);
+			}
+			else
+				vertex.uv = QVector2D(0.0f, 0.0f);
+
+			// tangent
+			vertex.tangent = QVector3D(mesh->mTangents[i].x, mesh->mTangents[i].y, mesh->mTangents[i].z);
+			// bitangent
+			vertex.binormal = QVector3D(mesh->mBitangents[i].x, mesh->mBitangents[i].y, mesh->mBitangents[i].z);
+			vertices.push_back(vertex);
+		}
+
+		// now wak through each of the mesh's faces (a face is a mesh its triangle) and retrieve the corresponding vertex indices.
+		for (unsigned int i = 0; i < mesh->mNumFaces; i++)
+		{
+			aiFace face = mesh->mFaces[i];
+			// retrieve all indices of the face and store them in the indices vector
+			for (unsigned int j = 0; j < face.mNumIndices; j++)
+				indices.push_back(face.mIndices[j]);
+		}
+
+		ShaderManager::get("AdvancedLighting")->bind();
+
+		QSharedPointer<VertexBuffer> buffer = VertexBuffer::create(BufferUsage::STATIC);
+		buffer->setData(vertices.size(), (void*)vertices.data());
+
+		LayoutBuffer layout;
+		layout.push<QVector3D>("POSITION");
+		layout.push<QVector3D>("NORMAL");
+		layout.push<QVector2D>("TEXCOORD");
+		layout.push<QVector3D>("BINORMAL");
+		layout.push<QVector3D>("TANGENT");
+		buffer->setLayout(layout);
+
+		QSharedPointer<VertexArray> va =VertexArray::create();
+		va->pushBuffer(buffer);
+
+		QSharedPointer<IndexBuffer> ib = IndexBuffer::create((uint*)indices.data(), indices.size());
+
 		//// process materials
 		//aiMaterial* material = scene->mMaterials[mesh->mMaterialIndex];
 		//// we assume a convention for sampler names in the shaders. Each diffuse texture should be named
@@ -96,7 +109,6 @@ namespace CGFF {
 		//// diffuse: texture_diffuseN
 		//// specular: texture_specularN
 		//// normal: texture_normalN
-
 		//// 1. diffuse maps
 		//vector<Texture> diffuseMaps = loadMaterialTextures(material, aiTextureType_DIFFUSE, "texture_diffuse");
 		//textures.insert(textures.end(), diffuseMaps.begin(), diffuseMaps.end());
@@ -110,9 +122,7 @@ namespace CGFF {
 		//std::vector<Texture> heightMaps = loadMaterialTextures(material, aiTextureType_AMBIENT, "texture_height");
 		//textures.insert(textures.end(), heightMaps.begin(), heightMaps.end());
 
-		// return a mesh object created from the extracted mesh data
-		//return Mesh(vertices, indices, textures);
-		return nullptr;
+		return QSharedPointer<Mesh>(new Mesh(va, ib, nullptr));
 	}
 
     bool Model::load(const QString& path)
@@ -127,9 +137,6 @@ namespace CGFF {
 			return false;
 		}
 
-		// retrieve the directory path of the filepath
-		//directory = path.substr(0, path.find_last_of('/'));
-
 		// process ASSIMP's root node recursively
 		processNode(scene->mRootNode, scene);
         
@@ -138,6 +145,9 @@ namespace CGFF {
 
     void Model::render(Renderer3D& renderer)
     {
-        m_mesh->render(renderer);
+		for (QSharedPointer<Mesh>& m : m_meshes)
+		{
+			m->render(renderer);
+		}
     }
 }

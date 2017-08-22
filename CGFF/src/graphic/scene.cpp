@@ -1,5 +1,4 @@
 #include "scene.h"
-#include "camera/mayaCamera.h"
 
 namespace CGFF {
 
@@ -65,4 +64,9 @@ namespace CGFF {
         renderer->end();
     }
 
+	void Scene::setCamera(QSharedPointer<Camera> camera)
+	{
+		m_camera = camera;
+		m_camera->focus();
+	}
 }

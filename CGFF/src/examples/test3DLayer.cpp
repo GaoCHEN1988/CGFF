@@ -6,81 +6,108 @@ namespace CGFF {
     Test3DLayer::Test3DLayer()
         : Layer3D(QSharedPointer<CGFF::Scene>(new CGFF::Scene()))
     {
+		m_mayaCamera = m_scene->getCamera();
+
+		QMatrix4x4 m;
+		m.perspective(65.0f, 16.0f / 9.0f, 0.1f, 100.0f);
+		m_FPSCamera = QSharedPointer<FPSCamera>(new FPSCamera(m));
+
+		m_rotation = 0.0f;
     }
+
+	QVector3D g_CubeTransform(-10, 10, 0);
+	QVector3D g_DaggerTransform(0, 20, 0);
+	QVector4D g_SphereColor(0.0f, 0.0f, 0.0f, 1.0f);
+	QVector3D g_SphereSpecularColor(1.0f, 1.0f, 0.6f);
+
+	float g_DaggerGloss = 0.5f;
+
+	QSharedPointer<Shader> shadowPassShader;
+	QSharedPointer<FramebufferDepth> g_DepthBuffer;
+	QSharedPointer<TextureDepth> g_ShadowMap;
+
+	QString materialInputs[5] =
+	{
+		"CastIron",
+		"WornWood",
+		"GunMetal",
+		"ABSRed",
+		"Custom"
+	};
+
+	enum Materials : uint
+	{
+		CAST_IRON = 0,
+		WORN_WOOD,
+		GUN_METAL,
+		ABS_RED,
+		CUSTOM
+	};
 
     void Test3DLayer::init()
     {
-        m_shader = QSharedPointer<QOpenGLShaderProgram>(new QOpenGLShaderProgram);
+		QString files[6] =
+		{
+			"Resources/skybox/sky_xp.png",
+			"Resources/skybox/sky_xn.png",
+			"Resources/skybox/sky_yp.png",
+			"Resources/skybox/sky_yn.png",
+			"Resources/skybox/sky_zp.png",
+			"Resources/skybox/sky_zn.png"
+		};
 
-#ifdef OPENGL_ES
+		QStringList environmentFiles =
+		{
+			"Resources/pbr/cubemap/CubeMap0.tga",
+			"Resources/pbr/cubemap/CubeMap1.tga",
+			"Resources/pbr/cubemap/CubeMap2.tga",
+			"Resources/pbr/cubemap/CubeMap3.tga",
+			"Resources/pbr/cubemap/CubeMap4.tga",
+			"Resources/pbr/cubemap/CubeMap5.tga",
+			"Resources/pbr/cubemap/CubeMap6.tga",
+			"Resources/pbr/cubemap/CubeMap7.tga",
+			"Resources/pbr/cubemap/CubeMap8.tga",
+			"Resources/pbr/cubemap/CubeMap9.tga",
+			"Resources/pbr/cubemap/CubeMap10.tga"
+		};
+		QSharedPointer<TextureCube> environment = TextureCube::createFromVCross(environmentFiles, 11);
 
-#else
-        // load and compile vertex shader
-        bool success = m_shader->addShaderFromSourceFile(QOpenGLShader::Vertex, "src/graphic/shaders/sceneShader.vert");
-        // load and compile fragment shader
-        success = m_shader->addShaderFromSourceFile(QOpenGLShader::Fragment, "src/graphic/shaders/sceneShader.frag");
-#endif
+		QSharedPointer<Shader> pbrShader = Shader::createFromFile("AdvancedLighting", "src/graphic/shaders/AdvancedLighting.vert", "src/graphic/shaders/AdvancedLighting.frag");
+		ShaderManager::add(pbrShader);
+		QSharedPointer<PBRMaterial> material = QSharedPointer<PBRMaterial>(new PBRMaterial(pbrShader));
 
-        m_shader->link();
+		m_daggerMaterial = QSharedPointer<PBRMaterial>(new PBRMaterial(pbrShader));
+		m_daggerMaterial->setEnviromentMap(environment);
+		{
+			TextureLoadOptions options(false, true);
+			m_daggerMaterial->setAlbedoMap(Texture2D::createFromFile("res/Dagger/Textures/Dagger_Albedo.tga", TextureParameters(), options));
+			m_daggerMaterial->setSpecularMap(Texture2D::createFromFile("res/Dagger/Textures/Dagger_Specular.tga", TextureParameters(), options));
+			m_daggerMaterial->setGlossMap(Texture2D::createFromFile("res/Dagger/Textures/Dagger_Gloss.tga", TextureParameters(), options));
+			m_daggerMaterial->setNormalMap(Texture2D::createFromFile("res/Dagger/Textures/Dagger_Normals.tga", TextureParameters(), options));
+		}
 
-        m_material = QSharedPointer<CGFF::Material>(new CGFF::Material(m_shader));
-
-        m_model_cube = QSharedPointer<CGFF::Model>(new CGFF::Model("Resources/Cube.obj", QSharedPointer<CGFF::MaterialInstance>(new CGFF::MaterialInstance(m_material))));
-        m_model_sphere = QSharedPointer<CGFF::Model>(new CGFF::Model("Resources/Sphere.obj", QSharedPointer<CGFF::MaterialInstance>(new CGFF::MaterialInstance(m_material))));
-
-        m_cube = QSharedPointer<CGFF::Entity>(new CGFF::Entity());
-        m_cube->addComponent(QSharedPointer<CGFF::Component>(new CGFF::MeshComponent(m_model_cube->getMesh())));
-        m_cube->addComponent(QSharedPointer<CGFF::Component>(new CGFF::TransformComponent(QMatrix4x4())));
-
-        m_sphere = QSharedPointer<CGFF::Entity>(new CGFF::Entity());
-        m_sphere->addComponent(QSharedPointer<CGFF::Component>(new CGFF::MeshComponent(m_model_sphere->getMesh())));
-        m_sphere->addComponent(QSharedPointer<CGFF::Component>(new CGFF::TransformComponent(QMatrix4x4())));
-
-        m_plane_mesh.create(32, 32, QVector3D(0, 1, 0), QSharedPointer<CGFF::MaterialInstance>(new CGFF::MaterialInstance(m_material)));
-        m_plane = QSharedPointer<CGFF::Entity>(new CGFF::Entity());
-        m_plane->addComponent(QSharedPointer<CGFF::Component>(new CGFF::MeshComponent(m_plane_mesh.mesh)));
-        m_plane->addComponent(QSharedPointer<CGFF::Component>(new CGFF::TransformComponent(QMatrix4x4())));
-
-        Layer3D::getScene()->add(m_cube);
-        Layer3D::getScene()->add(m_sphere);
-        Layer3D::getScene()->add(m_plane);
-
-        m_transform = -4.0f;
-
-        QSharedPointer<LightSetup> lights = QSharedPointer<LightSetup>(new LightSetup());
-        lights->add(QSharedPointer<Light>(new Light{ QVector3D(0, 10, 0), 10.0f, QVector4D(1, 1, 1, 1) }));
-        m_scene->pushLightSetup(lights);
-
-        DebugMenu::add("Cube", &m_transform, -10.0f, 10.0f);
-        DebugMenu::add("Light Atten.", &lights->getLights()[0]->attenuation, 0, 40);
+		QSharedPointer<Model> daggerModel = QSharedPointer<Model>(new Model("res/models/Dagger.spm", QSharedPointer<MaterialInstance>(new MaterialInstance(m_daggerMaterial))));
+		QMatrix4x4 trans_dagger;
+		trans_dagger.translate(g_DaggerTransform);
+		//Test
+		m_dagger = QSharedPointer<Entity>(new Entity(daggerModel->getMeshes().front(), trans_dagger));
+		m_scene->add(m_dagger);
     }
 
-    void Test3DLayer::render()
-    {
-        m_ml_matrix.rotate(m_rotation, QVector3D(1, 1, 0));
+ //   void Test3DLayer::render()
+ //   {
+ //      
+ //   }
 
-        CGFF::TransformComponent* cubeTransform = m_cube->getComponent<TransformComponent>();
-        CGFF::TransformComponent* sphereTransform = m_sphere->getComponent<TransformComponent>();
+	//void Test3DLayer::update()
+	//{
 
-        QMatrix4x4 m;
-        m.translate(QVector3D(m_transform, 0, 0));
-        QMatrix4x4 m2;
-        m2.translate(QVector3D(4, 0, 0));
+	//}
 
-        cubeTransform->transform = m*m_ml_matrix;
-        sphereTransform->transform = m2*m_ml_matrix;
+	//void Test3DLayer::tick()
+	//{
 
-        m_rotation += 0.5f;
-
-        Layer3D::render();
-
-        GLenum error = CGFF::GL->glGetError();
-        if (error != GL_NO_ERROR)
-        {
-            //To do: show error in logging system
-            qFatal("Opengl error!");
-        }
-    }
+	//}
 
     void Test3DLayer::resize(int width, int height) 
     {
@@ -104,6 +131,18 @@ namespace CGFF {
 
     void Test3DLayer::keyPressEvent(QKeyEvent *event) 
     {
-        
+		switch (event->key())
+		{
+		case (Qt::Key_R):
+		{
+			ShaderManager::reload("AdvancedLighting");
+			break;
+		}
+		case (Qt::Key_C):
+		{
+			m_scene->setCamera(m_scene->getCamera() == m_mayaCamera ? m_FPSCamera : m_mayaCamera);
+			break;
+		}
+		}
     }
 }

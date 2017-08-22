@@ -37,7 +37,8 @@ namespace CGFF {
 
         void render(Renderer3D& renderer) override;
 
-        inline QSharedPointer<Mesh> getMesh() const { return m_mesh; }
+		//inline QSharedPointer<Mesh> getMesh() const { return m_mesh; }
+		inline const QVector<QSharedPointer<Mesh>>& getMeshes() const { return m_meshes; }
     private:
         struct VertexSet
         {
@@ -54,7 +55,6 @@ namespace CGFF {
 		bool load(const QString& path);
 
     private:
-		QSharedPointer<Mesh> m_mesh;
 		QVector<QSharedPointer<Mesh>> m_meshes;
     };
 

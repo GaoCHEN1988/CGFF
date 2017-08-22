@@ -48,7 +48,7 @@ namespace CGFF {
 			return CreateQuad(position.x(), position.y(), size.x(), size.y(), material);
 		}
 
-		QSharedPointer<Mesh> CreateCube(QSharedPointer<QOpenGLShaderProgram>& shader, float size, QSharedPointer<MaterialInstance> material)
+		QSharedPointer<Mesh> CreateCube(float size, QSharedPointer<MaterialInstance> material)
 		{
 			Vertex data[8];
 

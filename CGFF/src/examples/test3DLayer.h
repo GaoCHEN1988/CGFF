@@ -1,10 +1,14 @@
 #ifndef TEST_3D_LAYER_H
 #define TEST_3D_LAYER_H
 
+#include "graphic/api/framebufferDepth.h"
+#include "graphic/api/textureDepth.h"
 #include "graphic/layer/layer3D.h"
 #include "graphic/meshFactory.h"
 #include "graphic/model.h"
 #include "entity/entity.h"
+#include "graphic/pbrMaterial.h"
+#include "graphic/shader/shaderManager.h"
 
 namespace CGFF {
     class Test3DLayer : public Layer3D
@@ -14,7 +18,9 @@ namespace CGFF {
         virtual~Test3DLayer() {};
 
         void init() override;
-        void render() override;
+  //      void render() override;
+		//void update() override;
+		//void tick() override;
 
         void resize(int width, int height) override;
         void mousePressEvent(QMouseEvent *event) override;
@@ -27,27 +33,16 @@ namespace CGFF {
         QSharedPointer<CGFF::Camera> m_mayaCamera;
         QSharedPointer<CGFF::Camera> m_FPSCamera;
 
-        QSharedPointer<QOpenGLShaderProgram> m_shader;
-        QSharedPointer<CGFF::Material> m_material;
-        QSharedPointer<CGFF::Entity> m_cube;
-        //QSharedPointer<CGFF::Entity> m_sphere;
-        QVector<QSharedPointer<CGFF::Entity>> m_pheres;
-        QSharedPointer<CGFF::Entity> m_dagger;
-        QSharedPointer<CGFF::PBRMaterial> m_daggerMaterial;
-        QSharedPointer<CGFF::MaterialInstance> m_skyboxMaterial;
-        QSharedPointer<CGFF::Light> m_light;
+		QVector<QSharedPointer<CGFF::Entity>> m_Spheres;
+		QSharedPointer<CGFF::Entity> m_plane;
+		QSharedPointer<CGFF::Entity> m_dagger;
+		QSharedPointer<CGFF::PBRMaterial> m_daggerMaterial;
+		QSharedPointer<CGFF::MaterialInstance> m_skyboxMaterial;
+		QSharedPointer<CGFF::Light> m_light;
 
-        QSharedPointer<CGFF::Entity> m_plane;
-        CGFF::MeshFactory::Plane m_plane_mesh;
-        QSharedPointer<CGFF::Model> m_model_cube;
-        QSharedPointer<CGFF::Model> m_model_sphere;
+		float m_rotation;
 
-        QVector<QSharedPointer<CGFF::PBRMaterial>> m_materials;
-
-        QMatrix4x4 m_vw_matrix;
-        QMatrix4x4 m_ml_matrix;
-        float m_rotation;
-        float m_transform;
+		QVector<QSharedPointer<CGFF::MaterialInstance>> m_materials;
     };
 }
 

@@ -61,9 +61,9 @@
     <Link>
       <SubSystem>Windows</SubSystem>
       <OutputFile>$(OutDir)\$(ProjectName).exe</OutputFile>
-      <AdditionalLibraryDirectories>$(QTDIR)\lib;$(SolutionDir)Dependencies/Assimp/lib/x64;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <AdditionalLibraryDirectories>$(QTDIR)\lib;$(SolutionDir)Dependencies/Assimp/lib/x64/debug;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
       <GenerateDebugInformation>true</GenerateDebugInformation>
-      <AdditionalDependencies>qtmaind.lib;Qt5Cored.lib;Qt5Guid.lib;Qt5OpenGLd.lib;opengl32.lib;glu32.lib;Qt5Widgetsd.lib;assimp.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>qtmaind.lib;Qt5Cored.lib;Qt5Guid.lib;Qt5OpenGLd.lib;opengl32.lib;glu32.lib;Qt5Widgetsd.lib;assimp-vc140-mt.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
@@ -78,9 +78,9 @@
     <Link>
       <SubSystem>Windows</SubSystem>
       <OutputFile>$(OutDir)\$(ProjectName).exe</OutputFile>
-      <AdditionalLibraryDirectories>$(QTDIR)\lib;$(SolutionDir)Dependencies/Assimp/lib/x64;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <AdditionalLibraryDirectories>$(QTDIR)\lib;$(SolutionDir)Dependencies/Assimp/lib/x64/release;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
       <GenerateDebugInformation>false</GenerateDebugInformation>
-      <AdditionalDependencies>qtmain.lib;Qt5Core.lib;Qt5Gui.lib;Qt5OpenGL.lib;opengl32.lib;glu32.lib;Qt5Widgets.lib;assimp.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>qtmain.lib;Qt5Core.lib;Qt5Gui.lib;Qt5OpenGL.lib;opengl32.lib;glu32.lib;Qt5Widgets.lib;assimp-vc140-mt.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
@@ -113,6 +113,7 @@
     <ClCompile Include="src\entity\component\transformComponent.cpp" />
     <ClCompile Include="src\entity\entity.cpp" />
     <ClCompile Include="src\examples\test2DLayer.cpp" />
+    <ClCompile Include="src\examples\test3DLayer.cpp" />
     <ClCompile Include="src\graphic\API\context.cpp" />
     <ClCompile Include="src\graphic\api\framebuffer.cpp" />
     <ClCompile Include="src\graphic\api\framebuffer2D.cpp" />
@@ -226,6 +227,7 @@
     <ClInclude Include="src\entity\component\transformComponent.h" />
     <ClInclude Include="src\entity\entity.h" />
     <ClInclude Include="src\examples\test2DLayer.h" />
+    <ClInclude Include="src\examples\test3DLayer.h" />
     <ClInclude Include="src\graphic\API\context.h" />
     <ClInclude Include="src\graphic\api\framebuffer.h" />
     <ClInclude Include="src\graphic\api\framebuffer2D.h" />

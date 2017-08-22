@@ -388,6 +388,9 @@
     <ClCompile Include="src\application\applicationwindow.cpp">
       <Filter>Source Files\application</Filter>
     </ClCompile>
+    <ClCompile Include="src\examples\test3DLayer.cpp">
+      <Filter>Generated Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <None Include="ClassDiagram.cd" />
@@ -647,6 +650,9 @@
     </ClInclude>
     <ClInclude Include="src\platform\opengl\glShaderPareser.h">
       <Filter>Header Files\platform\opengl</Filter>
+    </ClInclude>
+    <ClInclude Include="src\examples\test3DLayer.h">
+      <Filter>Generated Files</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

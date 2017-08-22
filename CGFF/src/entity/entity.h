@@ -39,7 +39,7 @@ namespace CGFF {
         }
 
     protected:
-        QVector<QSharedPointer<Component> > m_components;
+        QVector<QSharedPointer<Component>> m_components;
     };
 
 

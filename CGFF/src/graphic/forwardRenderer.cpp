@@ -105,7 +105,7 @@ namespace CGFF {
         command.mesh = mesh;
 		command.transform = transform;
 		command.shader = mesh->getMaterialInstance()->getMaterial()->getShader();
- /*       command.uniforms.push_back(proj_matrix);
+ /*     command.uniforms.push_back(proj_matrix);
         command.uniforms.push_back(vw_matrix);
         command.uniforms.push_back(ml_matrix);
 

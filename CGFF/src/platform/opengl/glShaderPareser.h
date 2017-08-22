@@ -13,7 +13,9 @@ namespace CGFF {
 
 		void setSource(const QString& shaderSource);
 
-		static QStringList findToken(const QString& source, QString token);
+		//static QStringList findToken(const QString& source, QString token);
+		static QStringList findUniforms(const QString& source);
+		static QStringList findStructs(const QString& source);
 		static void seperateTokenStatement(const QString& statement, QString& outType, QString& outName, int& outCount);
 		static QStringList seperateStructStatement(const QString& statement, QString& outName);
 

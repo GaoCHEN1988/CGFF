@@ -31,7 +31,7 @@ namespace CGFF {
 		Mesh(QSharedPointer<Mesh> mesh);
         virtual ~Mesh();
 
-        inline void SetMaterial(QSharedPointer<MaterialInstance>& materialInstance) { m_materialInstance = materialInstance; }
+        inline void setMaterial(QSharedPointer<MaterialInstance>& materialInstance) { m_materialInstance = materialInstance; }
         inline QSharedPointer<MaterialInstance>& getMaterialInstance() { return m_materialInstance; }
 
         void render(Renderer3D& renderer) override;

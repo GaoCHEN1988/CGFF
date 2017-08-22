@@ -88,6 +88,7 @@ namespace CGFF {
 				m_glTexture.allocateStorage();
             
                 QImage tmp = texImage.convertToFormat(m_parameters.imageFormat);
+				tmp = tmp.mirrored(m_loadOptions.horizontalFlip, m_loadOptions.verticalFlip);
                 m_glTexture.setData(0, 0, m_parameters.gl_pixelFormat, m_parameters.gl_pixelType, (const void*)tmp.constBits(), 0);
 			}
 			else
@@ -126,6 +127,7 @@ namespace CGFF {
 		m_glTexture.allocateStorage();
 
         QImage tmp = image.convertToFormat(m_parameters.imageFormat);
+		tmp = tmp.mirrored(m_loadOptions.horizontalFlip, m_loadOptions.verticalFlip);
         m_glTexture.setData(0, 0, m_parameters.gl_pixelFormat, m_parameters.gl_pixelType, (const void*)tmp.constBits(), 0);
 
 		//TO do: Support more QOpenGL features

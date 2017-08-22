@@ -340,26 +340,26 @@ namespace CGFF {
 		QStringList tokens;
 
 		// Vertex Shader
-		tokens = GLShaderParser::findToken(vertexSource, "struct");
+		tokens = GLShaderParser::findStructs(vertexSource);
 		for (QString s : tokens)
 		{
 			parseUniformStruct(s, ShaderType::VERTEX);
 		}
 
-		tokens = GLShaderParser::findToken(vertexSource, "uniform");
+		tokens = GLShaderParser::findUniforms(vertexSource);
 		for (QString s : tokens)
 		{
 			parseUniform(s, ShaderType::VERTEX);
 		}
 
 		// Fragment Shader
-		tokens = GLShaderParser::findToken(fragmentSource, "struct");
+		tokens = GLShaderParser::findStructs(fragmentSource);
 		for (QString s : tokens)
 		{
 			parseUniformStruct(s, ShaderType::FRAGMENT);
 		}
 
-		tokens = GLShaderParser::findToken(fragmentSource, "uniform");
+		tokens = GLShaderParser::findUniforms(fragmentSource);
 		for (QString s : tokens)
 		{
 			parseUniform(s, ShaderType::FRAGMENT);

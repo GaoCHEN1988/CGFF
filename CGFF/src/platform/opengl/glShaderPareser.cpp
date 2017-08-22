@@ -19,11 +19,49 @@ namespace CGFF {
 		m_source = shaderSource;
 	}
 
-	QStringList GLShaderParser::findToken(const QString& source, QString token)
+	//QStringList GLShaderParser::findToken(const QString& source, QString token)
+	//{
+	//	QStringList result;
+
+	//	QString t = "("+token + ".+?" + ";)";
+	//	QRegularExpression reg(t);
+
+	//	QRegularExpressionMatchIterator i = reg.globalMatch(source);
+
+	//	while (i.hasNext()) {
+	//		QRegularExpressionMatch match = i.next();
+	//		if (match.hasMatch()) {
+	//			result.append(match.captured(0));
+	//		}
+	//	}
+
+	//	return result;
+	//}
+
+	QStringList GLShaderParser::findUniforms(const QString& source)
 	{
 		QStringList result;
 
-		QString t = "("+token + ".+?" + ";)";
+		QString t = "(uniform.+?;)";
+		QRegularExpression reg(t);
+
+		QRegularExpressionMatchIterator i = reg.globalMatch(source);
+
+		while (i.hasNext()) {
+			QRegularExpressionMatch match = i.next();
+			if (match.hasMatch()) {
+				result.append(match.captured(0));
+			}
+		}
+
+		return result;
+	}
+
+	QStringList GLShaderParser::findStructs(const QString& source)
+	{
+		QStringList result;
+
+		QString t = "(struct(.|\n)+?})";
 		QRegularExpression reg(t);
 
 		QRegularExpressionMatchIterator i = reg.globalMatch(source);

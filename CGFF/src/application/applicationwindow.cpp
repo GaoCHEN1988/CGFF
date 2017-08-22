@@ -1,5 +1,6 @@
 ﻿#include "applicationwindow.h"
 #include "examples/test2DLayer.h"
+#include "examples/test3DLayer.h"
 #include "graphic/api/context.h"
 #include "graphic/renderer.h"
 
@@ -41,7 +42,8 @@ void ApplicationWindow::initialize()
 
 	m_debugLayer->init();
 
-	pushOverlay(QSharedPointer<CGFF::Layer>(new CGFF::Test2DLayer(this->size())));
+	pushLayer(QSharedPointer<CGFF::Layer>(new CGFF::Test3DLayer));
+	//pushOverlay(QSharedPointer<CGFF::Layer>(new CGFF::Test2DLayer(this->size())));
 
 	m_time.start();
 	m_framePerSecond = 0;

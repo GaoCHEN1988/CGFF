@@ -6,9 +6,15 @@
 namespace CGFF {
     struct Light
     {
+		QVector4D color;
         QVector3D position;
-        float attenuation;
-        QVector4D color;
+		float p0;
+		QVector3D direction;
+		float p1;
+		QVector3D lightVector;
+		float intensity;
+
+		Light(const QVector3D& direction, float intensity = 1.0f, const QVector4D& color = QVector4D(1.0f, 1.0f, 1.0f, 1.0f));
     };
 
 }

@@ -33,7 +33,7 @@ namespace CGFF {
 		switch (Context::getRenderAPI())
 		{
 		case RenderAPI::OPENGL:
-			return QSharedPointer<TextureCube>(nullptr); //To do: implement
+			return QSharedPointer<TextureCube>(new GLTextureCube(files[0], files, mips, InputFormat::VERTICAL_CROSS));
 		case RenderAPI::DIRECT3D:
 			return nullptr;
 		}

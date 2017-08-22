@@ -73,7 +73,7 @@ namespace CGFF {
         TextureLoadOptions()
         {
 			horizontalFlip = false;
-			verticalFlip = true;
+			verticalFlip = false;
         }
 
         TextureLoadOptions(bool horizontal, bool vertical)
