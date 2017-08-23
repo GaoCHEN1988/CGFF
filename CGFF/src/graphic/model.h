@@ -31,14 +31,27 @@ namespace CGFF {
     class Model : public IRenderable
     {
     public:
+
+		struct MeshStruct
+		{
+			QVector<Vertex> vertices;
+			QVector<uint> indices;
+
+			void clear()
+			{
+				vertices.clear();
+				indices.clear();
+			}
+		};
+
         // This eventually needs to be replaced by a global Asset Server.
         Model(const QString& path, QSharedPointer<MaterialInstance> materialInstance = nullptr);
         virtual ~Model();
 
         void render(Renderer3D& renderer) override;
 
-		//inline QSharedPointer<Mesh> getMesh() const { return m_mesh; }
-		inline const QVector<QSharedPointer<Mesh>>& getMeshes() const { return m_meshes; }
+		inline QSharedPointer<Mesh> getMesh() const { return m_mesh; }
+		//inline const QVector<QSharedPointer<Mesh>>& getMeshes() const { return m_meshes; }
     private:
         struct VertexSet
         {
@@ -50,12 +63,14 @@ namespace CGFF {
 
         //void insertVertex(QVector<Vertex>& vertices, QVector<uint>& indices, QHash<IndexSet, int>& mapping, VertexSet& inputVertices, IndexSet& indexSet);
 		void processNode(aiNode *node, const aiScene *scene);
-		QSharedPointer<Mesh> processMesh(aiMesh *mesh, const aiScene *scene);
+		void processMesh(aiMesh *mesh, const aiScene *scene);
 
 		bool load(const QString& path);
 
     private:
-		QVector<QSharedPointer<Mesh>> m_meshes;
+		//QVector<QSharedPointer<Mesh>> m_meshes;
+		QSharedPointer<Mesh> m_mesh;
+		MeshStruct m_meshStruct;
     };
 
 }

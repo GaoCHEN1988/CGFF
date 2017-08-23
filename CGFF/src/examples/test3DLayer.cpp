@@ -1,5 +1,6 @@
 #include "test3DLayer.h"
 #include "Debug/debugMenu.h"
+#include <QImageReader>
 
 namespace CGFF {
 
@@ -46,15 +47,37 @@ namespace CGFF {
 
     void Test3DLayer::init()
     {
-		QString files[6] =
+		QStringList skybox_files =
 		{
-			"Resources/skybox/sky_xp.png",
-			"Resources/skybox/sky_xn.png",
-			"Resources/skybox/sky_yp.png",
-			"Resources/skybox/sky_yn.png",
-			"Resources/skybox/sky_zp.png",
-			"Resources/skybox/sky_zn.png"
+			//"Resources/skybox/sky_xp.jpg",
+			//"Resources/skybox/sky_xn.jpg",
+			//"Resources/skybox/sky_yp.jpg",
+			//"Resources/skybox/sky_yn.jpg",
+			//"Resources/skybox/sky_zp.jpg",
+			//"Resources/skybox/sky_zn.jpg"
+
+			"Resources/skybox/interstellar_skybox/xpos.png",
+			"Resources/skybox/interstellar_skybox/xneg.png",
+			"Resources/skybox/interstellar_skybox/ypos.png",
+			"Resources/skybox/interstellar_skybox/yneg.png",
+			"Resources/skybox/interstellar_skybox/zpos.png",
+			"Resources/skybox/interstellar_skybox/zneg.png"
 		};
+
+		//{
+		//	QImageReader reader("Resources/skybox/ame_shadow/shadowpeak_nx.tga");
+		//	QList<QByteArray> b = reader.supportedImageFormats();
+		//	//TEst image
+		//	QImage posx = reader.read();
+		//	QImageReader::ImageReaderError error = reader.error();
+		//	QImage negx = QImage(skybox_files[1]);
+
+		//	QImage posy = QImage(skybox_files[2]);
+		//	QImage negy = QImage(skybox_files[3]);
+
+		//	QImage posz = QImage(skybox_files[4]);
+		//	QImage negz = QImage(skybox_files[5]);
+		//}
 
 		QStringList environmentFiles =
 		{
@@ -70,7 +93,19 @@ namespace CGFF {
 			"Resources/pbr/cubemap/CubeMap9.tga",
 			"Resources/pbr/cubemap/CubeMap10.tga"
 		};
-		QSharedPointer<TextureCube> environment = TextureCube::createFromVCross(environmentFiles, 11);
+
+		//QSharedPointer<TextureCube> environment = TextureCube::createFromVCross(environmentFiles, 11);
+		QSharedPointer<TextureCube> environment = TextureCube::createFromFiles(skybox_files);
+		QSharedPointer<Shader> skybox = Shader::createFromFile("Skybox", "src/graphic/shaders/Skybox.vert", "src/graphic/shaders/Skybox.frag");
+
+		QSharedPointer<Material> skyboxMaterial = QSharedPointer<Material>(new Material(skybox));
+		skyboxMaterial->setRenderFlag(Material::RenderFlags::DISABLE_DEPTH_TEST);
+		skybox->bind();
+		m_skyboxMaterial = QSharedPointer<MaterialInstance>(new MaterialInstance(skyboxMaterial));
+
+		m_skyboxMaterial->setTexture("u_EnvironmentMap", environment);
+		QSharedPointer<Entity> skyboxEntity = QSharedPointer<Entity>(new Entity(MeshFactory::CreateQuad(-1, -1, 2, 2, m_skyboxMaterial)));
+		m_scene->add(skyboxEntity);
 
 		QSharedPointer<Shader> pbrShader = Shader::createFromFile("AdvancedLighting", "src/graphic/shaders/AdvancedLighting.vert", "src/graphic/shaders/AdvancedLighting.frag");
 		ShaderManager::add(pbrShader);
@@ -80,24 +115,46 @@ namespace CGFF {
 		m_daggerMaterial->setEnviromentMap(environment);
 		{
 			TextureLoadOptions options(false, true);
-			m_daggerMaterial->setAlbedoMap(Texture2D::createFromFile("res/Dagger/Textures/Dagger_Albedo.tga", TextureParameters(), options));
-			m_daggerMaterial->setSpecularMap(Texture2D::createFromFile("res/Dagger/Textures/Dagger_Specular.tga", TextureParameters(), options));
-			m_daggerMaterial->setGlossMap(Texture2D::createFromFile("res/Dagger/Textures/Dagger_Gloss.tga", TextureParameters(), options));
-			m_daggerMaterial->setNormalMap(Texture2D::createFromFile("res/Dagger/Textures/Dagger_Normals.tga", TextureParameters(), options));
+			m_daggerMaterial->setAlbedoMap(Texture2D::createFromFile("Resources/Dagger/Textures/Dagger_Albedo.tga", TextureParameters(), options));
+			m_daggerMaterial->setSpecularMap(Texture2D::createFromFile("Resources/Dagger/Textures/Dagger_Specular.tga", TextureParameters(), options));
+			m_daggerMaterial->setGlossMap(Texture2D::createFromFile("Resources/Dagger/Textures/Dagger_Gloss.tga", TextureParameters(), options));
+			m_daggerMaterial->setNormalMap(Texture2D::createFromFile("Resources/Dagger/Textures/Dagger_Normals.tga", TextureParameters(), options));
 		}
 
-		QSharedPointer<Model> daggerModel = QSharedPointer<Model>(new Model("res/models/Dagger.spm", QSharedPointer<MaterialInstance>(new MaterialInstance(m_daggerMaterial))));
+		QSharedPointer<Model> daggerModel = QSharedPointer<Model>(new Model("Resources/Dagger/Dagger.obj", QSharedPointer<MaterialInstance>(new MaterialInstance(m_daggerMaterial))));
+		
 		QMatrix4x4 trans_dagger;
 		trans_dagger.translate(g_DaggerTransform);
 		//Test
-		m_dagger = QSharedPointer<Entity>(new Entity(daggerModel->getMeshes().front(), trans_dagger));
+		m_dagger = QSharedPointer<Entity>(new Entity(daggerModel->getMesh(), trans_dagger));
 		m_scene->add(m_dagger);
+
+		QMatrix4x4 trans_cube;
+		trans_cube.translate(g_CubeTransform);
+
+		QSharedPointer<PBRMaterial> cubeMaterial = QSharedPointer<PBRMaterial>(new PBRMaterial(pbrShader));
+		cubeMaterial->setEnviromentMap(environment);
+		QSharedPointer<Model> cubeModel = QSharedPointer<Model>(new Model("Resources/RoundedCube.obj", QSharedPointer<MaterialInstance>(new MaterialInstance(cubeMaterial))));
+		m_cube = QSharedPointer<Entity>(new Entity(cubeModel->getMesh(), trans_cube));
+		m_scene->add(m_cube);
+
+		QSharedPointer<LightSetup> lights = QSharedPointer<LightSetup>(new LightSetup());
+		m_light = QSharedPointer<Light>(new Light(QVector3D(0.8f, 0.8f, 0.8f)));
+		lights->add(m_light);
+		m_scene->pushLightSetup(lights);
     }
 
- //   void Test3DLayer::render()
- //   {
- //      
- //   }
+    void Test3DLayer::render()
+    {
+		Layer3D::render();
+
+		GLenum error = CGFF::GL->glGetError();
+		if (error != GL_NO_ERROR)
+		{
+			//To do: show error in logging system
+			qFatal("Opengl error!");
+		}
+    }
 
 	//void Test3DLayer::update()
 	//{
@@ -111,7 +168,10 @@ namespace CGFF {
 
     void Test3DLayer::resize(int width, int height) 
     {
-        CGFF::GL->glViewport(0, 0, (GLsizei)width, (GLsizei)height);
+		//if (!CGFF::Context::isInitialized())
+		//	return;
+
+  //      GLCall(CGFF::GL->glViewport(0, 0, (GLsizei)width, (GLsizei)height));
         Layer3D::getScene()->getCamera()->resize(width, height);
     }
 

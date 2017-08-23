@@ -102,7 +102,7 @@ namespace CGFF {
 	{
 		QStringList result;
 
-		QRegularExpression regName("struct\\s+(.+?)\\s+");
+		QRegularExpression regName("struct\\s+(.+?)\\s+|\n");
 
 		QRegularExpressionMatch match = regName.match(statement);
 
@@ -110,7 +110,7 @@ namespace CGFF {
 
 		if (match.hasMatch())
 		{
-			outName = match.captured(0);
+			outName = match.captured(1);
 		}
 
 		QRegularExpression reg("\\{((.|\n)+?)\\}");
@@ -119,16 +119,13 @@ namespace CGFF {
 		//Test
 		if (match.hasMatch())
 		{
-			QString tmp = match.captured(0);
+			QString tmp = match.captured(1);
 			QString t = "(.+?;)";
 			QRegularExpressionMatchIterator i = reg.globalMatch(tmp);
-			while (i.hasNext()) 
-			{
-				QRegularExpressionMatch match = i.next();
-				if (match.hasMatch()) {
-					result.append(match.captured(0));
-				}
-			}
+
+			result = tmp.split(QRegularExpression(";"));
+
+			result.removeLast();
 		}
 
 		return result;

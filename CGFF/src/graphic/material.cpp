@@ -4,6 +4,7 @@ namespace CGFF {
 
     Material::Material(QSharedPointer<Shader> shader)
         : m_shader(shader)
+		, m_renderFlags(0)
     {
 		allocateStorage();
 		m_resources = &shader->getResources();
@@ -15,13 +16,6 @@ namespace CGFF {
 
     void Material::bind() const
     {
-        //m_shader->bind();
-
-        //foreach(int key, m_uniformDatas.keys())
-        //{
-        //    ResolveAndSetUniform(key, m_uniformDatas[key], m_shader);
-        //}
-
 		m_shader->bind();
 		// TODO: Don't do this if a MaterialInstance is being used
 		if (!m_VSUserUniformBuffer.isNull())
@@ -146,6 +140,7 @@ namespace CGFF {
     MaterialInstance::MaterialInstance(QSharedPointer<Material> material)
         : m_material(material)
         , m_isRendererData(true)
+		, m_renderFlags(0)
     {
 		allocateStorage();
 
@@ -206,8 +201,17 @@ namespace CGFF {
 
 	void MaterialInstance::allocateStorage()
 	{
+		m_VSUserUniformBuffer = nullptr;
+		m_VSUserUniformBufferSize = 0;
+
+		m_PSUserUniformBuffer = nullptr;
+		m_PSUserUniformBufferSize = 0;
+
+		m_VSUserUniforms = nullptr;
+		m_PSUserUniforms = nullptr;
+
 		const QSharedPointer<ShaderUniformBufferDeclaration> vsBuffer = m_material->m_shader->getVSUserUniformBuffer();
-		if (vsBuffer)
+		if (!vsBuffer.isNull())
 		{
 			m_VSUserUniformBufferSize = vsBuffer->getSize();
 			m_VSUserUniformBuffer = QSharedPointer<uchar>(new uchar[m_VSUserUniformBufferSize]);
@@ -215,7 +219,7 @@ namespace CGFF {
 		}
 
 		const QSharedPointer<ShaderUniformBufferDeclaration> psBuffer = m_material->m_shader->getPSUserUniformBuffer();
-		if (psBuffer)
+		if (!psBuffer.isNull())
 		{
 			m_PSUserUniformBufferSize = psBuffer->getSize();
 			m_PSUserUniformBuffer = QSharedPointer<uchar>(new uchar[m_PSUserUniformBufferSize]);

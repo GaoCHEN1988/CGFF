@@ -45,6 +45,7 @@ namespace CGFF {
     {
         m_camera->update();
         renderer->begin();
+		renderer->beginScene(m_camera);
 
         for (uint i = 0; i < m_lightSetupStack.size(); i++)
             renderer->submitLightSetup(m_lightSetupStack[i]);
@@ -61,6 +62,7 @@ namespace CGFF {
             }
         }
 
+		renderer->endScene();
         renderer->end();
     }
 

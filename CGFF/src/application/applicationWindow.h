@@ -47,7 +47,6 @@ private:
 	QSharedPointer<CGFF::Layer> m_debugLayer;
 
 	static ApplicationWindow * m_instance;
-    QOpenGLContext *m_context;
 
 	QTime m_time;
 	int m_framePerSecond;

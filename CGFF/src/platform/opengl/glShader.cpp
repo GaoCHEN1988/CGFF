@@ -518,7 +518,7 @@ namespace CGFF {
 			}
 			{
 				QSharedPointer<GLShaderUniformBufferDeclaration> decl = m_VSUserUniformBuffer;
-				if (decl)
+				if (!decl.isNull())
 				{
 					const ShaderUniformList& uniforms = decl->getUniformDeclarations();
 					for (uint j = 0; j < uniforms.size(); j++)
@@ -544,7 +544,7 @@ namespace CGFF {
 
 			{
 				QSharedPointer<GLShaderUniformBufferDeclaration> decl = m_PSUserUniformBuffer;
-				if (decl)
+				if (!decl.isNull())
 				{
 					const ShaderUniformList& uniforms = decl->getUniformDeclarations();
 					for (uint j = 0; j < uniforms.size(); j++)

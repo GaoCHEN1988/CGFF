@@ -11,7 +11,6 @@ ApplicationWindow::ApplicationWindow(QWindow * parent, CGFF::RenderAPI api)
 	: QWindow(parent) 
 	, m_framePerSecond(0)
 	, fps_count(0)
-    , m_context(nullptr)
 {
     resize(800, 800);
     setMinimumSize(QSize(400, 400));
@@ -43,7 +42,7 @@ void ApplicationWindow::initialize()
 	m_debugLayer->init();
 
 	pushLayer(QSharedPointer<CGFF::Layer>(new CGFF::Test3DLayer));
-	//pushOverlay(QSharedPointer<CGFF::Layer>(new CGFF::Test2DLayer(this->size())));
+	pushOverlay(QSharedPointer<CGFF::Layer>(new CGFF::Test2DLayer(this->size())));
 
 	m_time.start();
 	m_framePerSecond = 0;
@@ -104,28 +103,10 @@ void ApplicationWindow::renderNow()
 		initialize();
 	}
 
-    //if (!m_context) {
-    //    m_context = new QOpenGLContext(this);
-    //    QSurfaceFormat qFormat = this->requestedFormat();
-    //    qFormat.setProfile(QSurfaceFormat::CoreProfile);
-    //    qFormat.setVersion(4, 4);
-    //    m_context->setFormat(qFormat);
-    //    m_context->create();
-    //    m_context->makeCurrent(this);
-    //    CGFF::GL = m_context->versionFunctions<QOpenGLFunctions_4_4_Core>();
-    //    CGFF::GL->initializeOpenGLFunctions();
-
-    //    initialize();
-
-    //}
-
     CGFF::Renderer::clear(CGFF::RendererBufferType::RENDERER_BUFFER_COLOR | CGFF::RendererBufferType::RENDERER_BUFFER_DEPTH);
-
-    //m_context->makeCurrent(this);
 
 	render();
 
-    //m_context->swapBuffers(this);
 	CGFF::Renderer::present();
 }
 
@@ -203,9 +184,6 @@ void ApplicationWindow::exposeEvent(QExposeEvent *event)
 
 void ApplicationWindow::resizeEvent(QResizeEvent* event)
 {
-    //if (!m_context)
-    //    return;
-
 	if (!CGFF::Context::isInitialized())
 		return;
 

@@ -18,7 +18,7 @@ namespace CGFF {
         virtual~Test3DLayer() {};
 
         void init() override;
-  //      void render() override;
+		void render() override;
 		//void update() override;
 		//void tick() override;
 
@@ -36,6 +36,7 @@ namespace CGFF {
 		QVector<QSharedPointer<CGFF::Entity>> m_Spheres;
 		QSharedPointer<CGFF::Entity> m_plane;
 		QSharedPointer<CGFF::Entity> m_dagger;
+		QSharedPointer<CGFF::Entity> m_cube;
 		QSharedPointer<CGFF::PBRMaterial> m_daggerMaterial;
 		QSharedPointer<CGFF::MaterialInstance> m_skyboxMaterial;
 		QSharedPointer<CGFF::Light> m_light;

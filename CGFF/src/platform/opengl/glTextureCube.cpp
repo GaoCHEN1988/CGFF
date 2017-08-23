@@ -68,6 +68,7 @@ namespace CGFF {
 
 			//Need to test
 			m_glTexture.create();
+			m_glTexture.bind();
 			m_glTexture.setSize(posx.width(), posx.height(), posx.depth());
 			m_glTexture.setFormat(m_parameters.gl_textureFormat);
 			m_glTexture.allocateStorage();
@@ -94,7 +95,7 @@ namespace CGFF {
 			m_glTexture.generateMipMaps();
 			m_glTexture.setWrapMode(m_parameters.gl_wrap);
 			m_glTexture.setMinMagFilters(m_parameters.gl_filter, m_parameters.gl_filter);
-
+			m_glTexture.release();
 		}
 		else
 		{
@@ -119,6 +120,12 @@ namespace CGFF {
 		for (int i = 0; i < mips; i++)
 		{
 			QImage image = QImage(m_fileNames[i]);
+
+			if (image.isNull())
+			{
+				qFatal("Load images for texture cube is not correct.");
+				return;
+			}
 
 			uint face = 0;
 			uint faceWidth = image.width() / 3;

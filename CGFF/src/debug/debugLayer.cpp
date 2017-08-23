@@ -67,7 +67,6 @@ namespace CGFF {
 
     void DebugLayer::resize(int width, int height)
     {
-        CGFF::GL->glViewport(0, 0, (GLsizei)width, (GLsizei)height);
         m_projectionMatrix.setToIdentity();
         m_projectionMatrix.ortho(0, GLfloat(width), 0, GLfloat(height), 0.0f, 100.0f);
     }

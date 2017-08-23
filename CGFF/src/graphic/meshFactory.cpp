@@ -27,19 +27,20 @@ namespace CGFF {
 			data[3].position = QVector3D(x, y + width, 0);
 			data[3].uv = QVector2D(1, 1);
 
+			QSharedPointer<VertexArray> va = VertexArray::create();
+			va->bind();
 			QSharedPointer<VertexBuffer> buffer = VertexBuffer::create(BufferUsage::STATIC);
 			buffer->setData(sizeof(QuadVertex) * 4, data);
-
 			LayoutBuffer layout;
 			layout.push<QVector3D>("POSITION");
 			layout.push<QVector2D>("TEXCOORD");
 			buffer->setLayout(layout);
-
-			QSharedPointer<VertexArray> va = VertexArray::create();
+			
 			va->pushBuffer(buffer);
 			uint indices[6] = { 0, 1, 2, 2, 3, 0, };
 			QSharedPointer<IndexBuffer> ib = IndexBuffer::create(indices, 6);
 
+			va->unBind();
 			return QSharedPointer<Mesh>(new Mesh(va, ib, material));
 		}
 
@@ -70,17 +71,15 @@ namespace CGFF {
 			data[6].normal = QVector3D(1.0f, 1.0f, -1.0f);
 			data[7].normal = QVector3D(-1.0f, 1.0f, -1.0f);
 
+			QSharedPointer<VertexArray> va = VertexArray::create();
+			va->bind();
 			QSharedPointer<VertexBuffer> buffer = VertexBuffer::create(BufferUsage::STATIC);
 			buffer->setData(8 * sizeof(Vertex), data);
-
 			LayoutBuffer layout;
 			layout.push<QVector3D>("position");
 			layout.push<QVector3D>("normal");
 			layout.push<QVector2D>("uv");
 			buffer->setLayout(layout);
-
-			QSharedPointer<VertexArray> va = VertexArray::create();
-			va->bind();
 			va->pushBuffer(buffer);
 
 			uint indices[36] = 
@@ -94,6 +93,8 @@ namespace CGFF {
 			};
 
 			QSharedPointer<IndexBuffer> ib = IndexBuffer::create(indices, 36);
+
+			va->unBind();
 
 			return QSharedPointer<Mesh>(new Mesh(va, ib, material));
 		}
@@ -155,9 +156,10 @@ namespace CGFF {
 			tmpRotate.rotate(90.0f, QVector3D(0, 0, 1));
 			data[3].tangent = tmpRotate * normal;
 
+			QSharedPointer<VertexArray> va = VertexArray::create();
+			va->bind();
 			QSharedPointer<VertexBuffer> buffer = VertexBuffer::create(BufferUsage::STATIC);
 			buffer->setData(8 * sizeof(Vertex), data);
-
 			LayoutBuffer layout;
 			layout.push<QVector3D>("POSITION");
 			layout.push<QVector3D>("NORMAL");
@@ -166,7 +168,6 @@ namespace CGFF {
 			layout.push<QVector3D>("TANGENT");
 			buffer->setLayout(layout);
 
-			QSharedPointer<VertexArray> va = VertexArray::create();
 			va->pushBuffer(buffer);
 
 			uint indices[6] =
@@ -176,6 +177,8 @@ namespace CGFF {
 			};
 
 			QSharedPointer<IndexBuffer> ib = IndexBuffer::create(indices, 6);
+
+			va->unBind();
 
 			return QSharedPointer<Mesh>(new Mesh(va, ib, material));
 		}

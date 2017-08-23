@@ -8,10 +8,7 @@ namespace CGFF {
     {
 		if (load(path))
 		{
-			for (QSharedPointer<Mesh>& m : m_meshes)
-			{
-				m->setMaterial(materialInstance);
-			}
+			m_mesh->setMaterial(materialInstance);
 		}
         else
             qFatal("Can't load model from ", path);
@@ -30,7 +27,7 @@ namespace CGFF {
 			// the node object only contains indices to index the actual objects in the scene. 
 			// the scene contains all the data, node is just to keep stuff organized (like relations between nodes).
 			aiMesh* mesh = scene->mMeshes[node->mMeshes[i]];
-			m_meshes.push_back(processMesh(mesh, scene));
+			processMesh(mesh, scene);
 		}
 		// after we've processed all of the meshes (if any) we then recursively process each of the children nodes
 		for (unsigned int i = 0; i < node->mNumChildren; i++)
@@ -40,13 +37,13 @@ namespace CGFF {
 
 	}
 
-	QSharedPointer<Mesh> Model::processMesh(aiMesh *mesh, const aiScene *scene)
+	void Model::processMesh(aiMesh *mesh, const aiScene *scene)
 	{
 		if (!(mesh->mNumVertices > 0))
 			qFatal("No meshes loaded");
 
-		QVector<Vertex> vertices;
-		QVector<uint> indices;
+		//QVector<Vertex> vertices;
+		//QVector<uint> indices;
 
 		// Walk through each of the mesh's vertices
 		for (unsigned int i = 0; i < mesh->mNumVertices; i++)
@@ -71,7 +68,7 @@ namespace CGFF {
 			vertex.tangent = QVector3D(mesh->mTangents[i].x, mesh->mTangents[i].y, mesh->mTangents[i].z);
 			// bitangent
 			vertex.binormal = QVector3D(mesh->mBitangents[i].x, mesh->mBitangents[i].y, mesh->mBitangents[i].z);
-			vertices.push_back(vertex);
+			m_meshStruct.vertices.push_back(vertex);
 		}
 
 		// now wak through each of the mesh's faces (a face is a mesh its triangle) and retrieve the corresponding vertex indices.
@@ -80,11 +77,12 @@ namespace CGFF {
 			aiFace face = mesh->mFaces[i];
 			// retrieve all indices of the face and store them in the indices vector
 			for (unsigned int j = 0; j < face.mNumIndices; j++)
-				indices.push_back(face.mIndices[j]);
+				m_meshStruct.indices.push_back(face.mIndices[j]);
 		}
 
-		ShaderManager::get("AdvancedLighting")->bind();
-
+		/*ShaderManager::get("AdvancedLighting")->bind();
+		QSharedPointer<VertexArray> va = VertexArray::create();
+		va->bind();
 		QSharedPointer<VertexBuffer> buffer = VertexBuffer::create(BufferUsage::STATIC);
 		buffer->setData(vertices.size(), (void*)vertices.data());
 
@@ -94,12 +92,12 @@ namespace CGFF {
 		layout.push<QVector2D>("TEXCOORD");
 		layout.push<QVector3D>("BINORMAL");
 		layout.push<QVector3D>("TANGENT");
+
 		buffer->setLayout(layout);
 
-		QSharedPointer<VertexArray> va =VertexArray::create();
 		va->pushBuffer(buffer);
 
-		QSharedPointer<IndexBuffer> ib = IndexBuffer::create((uint*)indices.data(), indices.size());
+		QSharedPointer<IndexBuffer> ib = IndexBuffer::create((uint*)indices.data(), indices.size());*/
 
 		//// process materials
 		//aiMaterial* material = scene->mMaterials[mesh->mMaterialIndex];
@@ -122,7 +120,8 @@ namespace CGFF {
 		//std::vector<Texture> heightMaps = loadMaterialTextures(material, aiTextureType_AMBIENT, "texture_height");
 		//textures.insert(textures.end(), heightMaps.begin(), heightMaps.end());
 
-		return QSharedPointer<Mesh>(new Mesh(va, ib, nullptr));
+		//va->unBind();
+		//return QSharedPointer<Mesh>(new Mesh(va, ib, nullptr));
 	}
 
     bool Model::load(const QString& path)
@@ -137,17 +136,38 @@ namespace CGFF {
 			return false;
 		}
 
+		m_meshStruct.clear();
+
 		// process ASSIMP's root node recursively
 		processNode(scene->mRootNode, scene);
+
+		ShaderManager::get("AdvancedLighting")->bind();
+		QSharedPointer<VertexArray> va = VertexArray::create();
+		va->bind();
+		QSharedPointer<VertexBuffer> buffer = VertexBuffer::create(BufferUsage::STATIC);
+		buffer->setData(m_meshStruct.vertices.size(), (void*)m_meshStruct.vertices.data());
+
+		LayoutBuffer layout;
+		layout.push<QVector3D>("POSITION");
+		layout.push<QVector3D>("NORMAL");
+		layout.push<QVector2D>("TEXCOORD");
+		layout.push<QVector3D>("BINORMAL");
+		layout.push<QVector3D>("TANGENT");
+
+		buffer->setLayout(layout);
+
+		va->pushBuffer(buffer);
+
+		QSharedPointer<IndexBuffer> ib = IndexBuffer::create((uint*)m_meshStruct.indices.data(), m_meshStruct.indices.size());
+
+		va->unBind();
+		m_mesh = QSharedPointer<Mesh>(new Mesh(va, ib, nullptr));
         
         return true;
     }
 
     void Model::render(Renderer3D& renderer)
     {
-		for (QSharedPointer<Mesh>& m : m_meshes)
-		{
-			m->render(renderer);
-		}
+		m_mesh->render(renderer);
     }
 }

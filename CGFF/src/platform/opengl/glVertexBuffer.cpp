@@ -44,8 +44,8 @@ namespace CGFF {
         for (uint i = 0; i < layout.size(); i++)
         {
             const BufferElement& element = layout[i];
-            GL->glEnableVertexAttribArray(i);
-            GL->glVertexAttribPointer(i, element.count, element.type, element.normalized, layoutbuffer.getStride(), (const void*)element.offset);
+			GLCall(GL->glEnableVertexAttribArray(i));
+			GLCall(GL->glVertexAttribPointer(i, element.count, element.type, element.normalized, layoutbuffer.getStride(), (const void*)element.offset));
         }
     }
 
