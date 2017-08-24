@@ -71,6 +71,19 @@ namespace CGFF {
 				QVector4D(maximum, maximum, maximum, maximum))));
 	}
 
+	void DebugMenu::remove(const QString& name)
+	{
+		auto& actions = s_instance->m_actionList;
+		for (uint i = 0; i < actions.size(); i++)
+		{
+			if (actions[i]->name == name)
+			{
+				actions.remove(i);
+				break;
+			}
+		}
+	}
+
     DebugMenu* DebugMenu::get()
     {
         return s_instance;

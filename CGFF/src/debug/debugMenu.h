@@ -36,7 +36,7 @@ namespace CGFF {
 		static void add(const QString& name, QVector2D* value, float minimum = 0.0f, float maximum = 100.0f);
 		static void add(const QString& name, QVector3D* value, float minimum = 0.0f, float maximum = 100.0f);
 		static void add(const QString& name, QVector4D* value, float minimum = 0.0f, float maximum = 100.0f);
-
+		static void remove(const QString& name);
 
         static DebugMenu* get();
         static DebugMenuSettings& getSettings();

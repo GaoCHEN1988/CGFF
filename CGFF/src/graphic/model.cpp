@@ -18,6 +18,23 @@ namespace CGFF {
     {
     }
 
+	void Model::insertVertex(const QVector3D& position, const QVector3D& normal, const QVector2D& uv, const QVector3D& binormal, const QVector3D& tangent)
+	{
+		Vertex vertex = { position, normal, uv, binormal, tangent };
+		auto lookup = m_indexMapping.find(vertex);
+		if (lookup != m_indexMapping.end())
+		{
+			m_indices.push_back(lookup.value());
+		}
+		else
+		{
+			int index = m_vertices.size();
+			m_indexMapping[vertex] = index;
+			m_indices.push_back(index);
+			m_vertices.push_back(vertex);
+		}
+	}
+
 	// processes a node in a recursive fashion. Processes each individual mesh located at the node and repeats this process on its children nodes (if any).
 	void Model::processNode(aiNode *node, const aiScene *scene)
 	{
@@ -42,91 +59,44 @@ namespace CGFF {
 		if (!(mesh->mNumVertices > 0))
 			qFatal("No meshes loaded");
 
-		//QVector<Vertex> vertices;
-		//QVector<uint> indices;
-
 		// Walk through each of the mesh's vertices
 		for (unsigned int i = 0; i < mesh->mNumVertices; i++)
 		{
-			Vertex vertex;
 			//position
-			vertex.position = QVector3D(mesh->mVertices[i].x, mesh->mVertices[i].y, mesh->mVertices[i].z);
+			QVector3D position = QVector3D(mesh->mVertices[i].x, mesh->mVertices[i].y, mesh->mVertices[i].z);
 			// normals
-			vertex.normal = QVector3D(mesh->mNormals[i].x, mesh->mNormals[i].y, mesh->mNormals[i].z);
+			QVector3D normal = QVector3D(mesh->mNormals[i].x, mesh->mNormals[i].y, mesh->mNormals[i].z);
+
+			QVector2D uv;
 			// texture coordinates
 			if (mesh->mTextureCoords[0]) // does the mesh contain texture coordinates?
 			{
 
 				// a vertex can contain up to 8 different texture coordinates. We thus make the assumption that we won't 
 				// use models where a vertex can have multiple texture coordinates so we always take the first set (0).
-				vertex.uv = QVector2D(mesh->mTextureCoords[0][i].x, mesh->mTextureCoords[0][i].y);
+				uv = QVector2D(mesh->mTextureCoords[0][i].x, mesh->mTextureCoords[0][i].y);
 			}
 			else
-				vertex.uv = QVector2D(0.0f, 0.0f);
+				uv = QVector2D(0.0f, 0.0f);
 
 			// tangent
-			vertex.tangent = QVector3D(mesh->mTangents[i].x, mesh->mTangents[i].y, mesh->mTangents[i].z);
+			QVector3D tangent = QVector3D(mesh->mTangents[i].x, mesh->mTangents[i].y, mesh->mTangents[i].z);
 			// bitangent
-			vertex.binormal = QVector3D(mesh->mBitangents[i].x, mesh->mBitangents[i].y, mesh->mBitangents[i].z);
-			m_meshStruct.vertices.push_back(vertex);
+			QVector3D binormal = QVector3D(mesh->mBitangents[i].x, mesh->mBitangents[i].y, mesh->mBitangents[i].z);
+			//m_meshStruct.vertices.push_back(vertex);
+			insertVertex(position, normal, uv, binormal, tangent);
 		}
+	}
 
-		// now wak through each of the mesh's faces (a face is a mesh its triangle) and retrieve the corresponding vertex indices.
-		for (unsigned int i = 0; i < mesh->mNumFaces; i++)
-		{
-			aiFace face = mesh->mFaces[i];
-			// retrieve all indices of the face and store them in the indices vector
-			for (unsigned int j = 0; j < face.mNumIndices; j++)
-				m_meshStruct.indices.push_back(face.mIndices[j]);
-		}
-
-		/*ShaderManager::get("AdvancedLighting")->bind();
-		QSharedPointer<VertexArray> va = VertexArray::create();
-		va->bind();
-		QSharedPointer<VertexBuffer> buffer = VertexBuffer::create(BufferUsage::STATIC);
-		buffer->setData(vertices.size(), (void*)vertices.data());
-
-		LayoutBuffer layout;
-		layout.push<QVector3D>("POSITION");
-		layout.push<QVector3D>("NORMAL");
-		layout.push<QVector2D>("TEXCOORD");
-		layout.push<QVector3D>("BINORMAL");
-		layout.push<QVector3D>("TANGENT");
-
-		buffer->setLayout(layout);
-
-		va->pushBuffer(buffer);
-
-		QSharedPointer<IndexBuffer> ib = IndexBuffer::create((uint*)indices.data(), indices.size());*/
-
-		//// process materials
-		//aiMaterial* material = scene->mMaterials[mesh->mMaterialIndex];
-		//// we assume a convention for sampler names in the shaders. Each diffuse texture should be named
-		//// as 'texture_diffuseN' where N is a sequential number ranging from 1 to MAX_SAMPLER_NUMBER. 
-		//// Same applies to other texture as the following list summarizes:
-		//// diffuse: texture_diffuseN
-		//// specular: texture_specularN
-		//// normal: texture_normalN
-		//// 1. diffuse maps
-		//vector<Texture> diffuseMaps = loadMaterialTextures(material, aiTextureType_DIFFUSE, "texture_diffuse");
-		//textures.insert(textures.end(), diffuseMaps.begin(), diffuseMaps.end());
-		//// 2. specular maps
-		//vector<Texture> specularMaps = loadMaterialTextures(material, aiTextureType_SPECULAR, "texture_specular");
-		//textures.insert(textures.end(), specularMaps.begin(), specularMaps.end());
-		//// 3. normal maps
-		//std::vector<Texture> normalMaps = loadMaterialTextures(material, aiTextureType_HEIGHT, "texture_normal");
-		//textures.insert(textures.end(), normalMaps.begin(), normalMaps.end());
-		//// 4. height maps
-		//std::vector<Texture> heightMaps = loadMaterialTextures(material, aiTextureType_AMBIENT, "texture_height");
-		//textures.insert(textures.end(), heightMaps.begin(), heightMaps.end());
-
-		//va->unBind();
-		//return QSharedPointer<Mesh>(new Mesh(va, ib, nullptr));
+	uchar* ReadBytes(FILE* file, uchar* buffer, uint size)
+	{
+		fread(buffer, 1, size, file);
+		return buffer;
 	}
 
     bool Model::load(const QString& path)
     {
-		// read file via ASSIMP
+		//// read file via ASSIMP
 		Assimp::Importer importer;
 		const aiScene* scene = importer.ReadFile(path.toStdString(), aiProcess_Triangulate | aiProcess_FlipUVs | aiProcess_CalcTangentSpace);
 		// check for errors
@@ -138,6 +108,10 @@ namespace CGFF {
 
 		m_meshStruct.clear();
 
+		m_vertices.clear();
+		m_indices.clear();
+		//m_indexMapping.clear();
+
 		// process ASSIMP's root node recursively
 		processNode(scene->mRootNode, scene);
 
@@ -145,7 +119,9 @@ namespace CGFF {
 		QSharedPointer<VertexArray> va = VertexArray::create();
 		va->bind();
 		QSharedPointer<VertexBuffer> buffer = VertexBuffer::create(BufferUsage::STATIC);
-		buffer->setData(m_meshStruct.vertices.size(), (void*)m_meshStruct.vertices.data());
+		//buffer->setData(m_meshStruct.vertices.size()* sizeof(Vertex), (void*)m_meshStruct.vertices.data());
+		//buffer->setData(format.vertexBufferSize, format.vertexData);
+		buffer->setData(m_vertices.size()* sizeof(Vertex), (void*)m_vertices.data());
 
 		LayoutBuffer layout;
 		layout.push<QVector3D>("POSITION");
@@ -158,7 +134,9 @@ namespace CGFF {
 
 		va->pushBuffer(buffer);
 
-		QSharedPointer<IndexBuffer> ib = IndexBuffer::create((uint*)m_meshStruct.indices.data(), m_meshStruct.indices.size());
+		QSharedPointer<IndexBuffer> ib = IndexBuffer::create((uint*)m_indices.data(), m_indices.size());
+		//QSharedPointer<IndexBuffer> ib = IndexBuffer::create((uint*)m_meshStruct.indices.data(), m_meshStruct.indices.size());
+		//QSharedPointer<IndexBuffer> ib = IndexBuffer::create((uint*)format.indexData, format.indexBufferSize / sizeof(uint));
 
 		va->unBind();
 		m_mesh = QSharedPointer<Mesh>(new Mesh(va, ib, nullptr));

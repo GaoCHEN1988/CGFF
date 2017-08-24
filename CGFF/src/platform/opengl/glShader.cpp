@@ -136,47 +136,57 @@ namespace CGFF {
         {
         case GLShaderUniformDeclaration::Type::GLfloat:
         {
-            m_glShaderProgram.setUniformValue(field->getLocation(), *(GLfloat *)&data[offset]);
+			m_glShaderProgram.setUniformValue(field->getLocation(), *(GLfloat *)&data[offset]);
+			//m_glShaderProgram.setUniformValue(field->getName().toStdString().c_str(), *(GLfloat *)&data[offset]);
             break;
         }
         case GLShaderUniformDeclaration::Type::GLint:
         {
             m_glShaderProgram.setUniformValue(field->getLocation(), *(GLint *)&data[offset]);
+			//m_glShaderProgram.setUniformValue(field->getName().toStdString().c_str(), *(GLint *)&data[offset]);
+
             break;
         }
         case GLShaderUniformDeclaration::Type::GLuint:
         {
             m_glShaderProgram.setUniformValue(field->getLocation(), *(GLuint *)&data[offset]);
+			//m_glShaderProgram.setUniformValue(field->getName().toStdString().c_str(), *(GLuint *)&data[offset]);
             break;
         }
         case GLShaderUniformDeclaration::Type::QVector2D:
         {
-            m_glShaderProgram.setUniformValue(field->getLocation(), *(QVector2D *)&data[offset]);
+			m_glShaderProgram.setUniformValue(field->getLocation(), *(QVector2D *)&data[offset]);
+			//m_glShaderProgram.setUniformValue(field->getName().toStdString().c_str(), *(QVector2D *)&data[offset]);
             break;
         }
         case GLShaderUniformDeclaration::Type::QVector3D:
         {
-            m_glShaderProgram.setUniformValue(field->getLocation(), *(QVector3D *)&data[offset]);
+			m_glShaderProgram.setUniformValue(field->getLocation(), *(QVector3D *)&data[offset]);
+			//m_glShaderProgram.setUniformValue(field->getName().toStdString().c_str(), *(QVector3D *)&data[offset]);
             break;
         }
         case GLShaderUniformDeclaration::Type::QVector4D:
         {
-            m_glShaderProgram.setUniformValue(field->getLocation(), *(QVector4D *)&data[offset]);
+			m_glShaderProgram.setUniformValue(field->getLocation(), *(QVector4D *)&data[offset]);
+			//m_glShaderProgram.setUniformValue(field->getName().toStdString().c_str(), *(QVector4D *)&data[offset]);
             break;
         }
         case GLShaderUniformDeclaration::Type::QMatrix2x2:
         {
-            m_glShaderProgram.setUniformValue(field->getLocation(), *(QMatrix2x2 *)&data[offset]);
+			m_glShaderProgram.setUniformValue(field->getLocation(), *(QMatrix2x2 *)&data[offset]);
+			//m_glShaderProgram.setUniformValue(field->getName().toStdString().c_str(), *(QMatrix2x2 *)&data[offset]);
             break;
         }
         case GLShaderUniformDeclaration::Type::QMatrix3x3:
         {
-            m_glShaderProgram.setUniformValue(field->getLocation(), *(QMatrix3x3 *)&data[offset]);
+			m_glShaderProgram.setUniformValue(field->getLocation(), *(QMatrix3x3 *)&data[offset]);
+			//m_glShaderProgram.setUniformValue(field->getName().toStdString().c_str(), *(QMatrix3x3 *)&data[offset]);
             break;
         }
         case GLShaderUniformDeclaration::Type::QMatrix4x4:
         {
-            m_glShaderProgram.setUniformValue(field->getLocation(), *(QMatrix4x4 *)&data[offset]);
+			m_glShaderProgram.setUniformValue(field->getLocation(), *(QMatrix4x4 *)&data[offset]);
+			//m_glShaderProgram.setUniformValue(field->getName().toStdString().c_str(), *(QMatrix4x4 *)&data[offset]);
             break;
         }
         default:
@@ -186,24 +196,12 @@ namespace CGFF {
 
 	void GLShader::load()
 	{
-		//if (isFromFile)
-		//{
-		//	if (!m_glShaderProgram.addShaderFromSourceFile(QOpenGLShader::Vertex, m_vertexFile))
-		//		qFatal("Error:Can't compile vertex shader");
-		//	if (!m_glShaderProgram.addShaderFromSourceFile(QOpenGLShader::Fragment, m_fragmentFile))
-		//		qFatal("Error:Can't compile vertex shader");
-		//	if (!m_glShaderProgram.link())
-		//		qFatal("Error:Can't link shaders");
-		//}
-		//else
-		//{
 		if (!m_glShaderProgram.addShaderFromSourceCode(QOpenGLShader::Vertex, m_vertexSource))
 			qFatal("Error:Can't compile vertex shader");
 		if (!m_glShaderProgram.addShaderFromSourceCode(QOpenGLShader::Fragment, m_fragmentSource))
 			qFatal("Error:Can't compile vertex shader");
 		if (!m_glShaderProgram.link())
 			qFatal("Error:Can't link shaders");
-		//}
 	}
 
 	QSharedPointer<ShaderUniformDeclaration> GLShader::findUniformDeclaration(const QString& name, QSharedPointer<ShaderUniformBufferDeclaration> buffer)
@@ -306,12 +304,12 @@ namespace CGFF {
 		}
 		case GLShaderUniformDeclaration::Type::QMatrix4x4:
 		{
-			QMatrix4x4 test = *(QMatrix4x4 *)&data[offset];
 			m_glShaderProgram.setUniformValue(uniform->getLocation(), *(QMatrix4x4 *)&data[offset]);
 			break;
 		}
 		case GLShaderUniformDeclaration::Type::STRUCT:
         {
+			//Test
 			setUniformStruct(uniform, data, offset);
 			break;
         }
@@ -484,7 +482,9 @@ namespace CGFF {
 					for (uint k = 0; k < fields.size(); k++)
 					{
 						QSharedPointer<GLShaderUniformDeclaration> field = qSharedPointerCast<GLShaderUniformDeclaration>(fields[k]);
+						//To do : Get location of struct members, not working yet
 						field->m_location = m_glShaderProgram.uniformLocation(uniform->m_name + "." + field->m_name);
+						field->m_name = uniform->m_name + "." + field->m_name;
 					}
 				}
 				else
@@ -507,7 +507,9 @@ namespace CGFF {
 						for (uint k = 0; k < fields.size(); k++)
 						{
 							QSharedPointer<GLShaderUniformDeclaration> field = qSharedPointerCast<GLShaderUniformDeclaration>(fields[k]);
+							//To do : Get location of struct members, not working yet
 							field->m_location = m_glShaderProgram.uniformLocation(uniform->m_name + "." + field->m_name);
+							field->m_name = uniform->m_name + "." + field->m_name;
 						}
 					}
 					else
@@ -531,7 +533,10 @@ namespace CGFF {
 							for (uint k = 0; k < fields.size(); k++)
 							{
 								QSharedPointer<GLShaderUniformDeclaration> field = qSharedPointerCast<GLShaderUniformDeclaration>(fields[k]);
+								//To do : Get location of struct members, not working yet
 								field->m_location = m_glShaderProgram.uniformLocation(uniform->m_name + "." + field->m_name);
+								field->m_name = uniform->m_name + "." + field->m_name;
+
 							}
 						}
 						else
@@ -557,7 +562,10 @@ namespace CGFF {
 							for (uint k = 0; k < fields.size(); k++)
 							{
 								QSharedPointer<GLShaderUniformDeclaration> field = qSharedPointerCast<GLShaderUniformDeclaration>(fields[k]);
+								//To do : Get location of struct members, not working yet
+								QString test = uniform->m_name + "." + field->m_name;
 								field->m_location = m_glShaderProgram.uniformLocation(uniform->m_name + "." + field->m_name);
+								field->m_name = uniform->m_name + "." + field->m_name;
 							}
 						}
 						else

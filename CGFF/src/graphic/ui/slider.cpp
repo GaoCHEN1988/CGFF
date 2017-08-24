@@ -1,5 +1,4 @@
 #include "slider.h"
-#include "application/applicationWidget.h"
 
 namespace CGFF {
     namespace UI {

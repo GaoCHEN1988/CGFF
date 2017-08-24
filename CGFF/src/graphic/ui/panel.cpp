@@ -1,5 +1,4 @@
 #include "panel.h"
-#include "application/applicationWidget.h"
 #include "application/applicationWindow.h"
 
 namespace CGFF {

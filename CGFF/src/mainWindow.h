@@ -12,8 +12,6 @@
 #include <QtWidgets/QStatusBar>
 #include <QtWidgets/QToolBar>
 #include <QtWidgets/QWidget>
-#include "application/applicationwidget.h"
-
 
 
 class MainWindow : public QMainWindow
@@ -31,7 +29,6 @@ private:
 private:
     QWidget *centralWidget;
     QGridLayout *gridLayout;
-    ApplicationWidget *openGLWidget;
     QMenuBar *menuBar;
     QToolBar *mainToolBar;
     QStatusBar *statusBar;

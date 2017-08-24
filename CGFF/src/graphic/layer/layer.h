@@ -9,7 +9,7 @@ namespace CGFF {
 	class Layer : public QObject
 	{
 	public:
-        Layer();
+        Layer(QObject *parent = Q_NULLPTR);
 		virtual ~Layer();
         virtual void init();
 		virtual void render();

@@ -1,8 +1,9 @@
 #include "layer.h"
 
 namespace CGFF {
-    Layer::Layer()
-        :m_isVisible(true)
+    Layer::Layer(QObject *parent)
+        : QObject(parent)
+		, m_isVisible(true)
     {
     }
     Layer::~Layer()

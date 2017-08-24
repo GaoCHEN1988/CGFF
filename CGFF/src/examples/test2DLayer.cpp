@@ -2,8 +2,9 @@
 #include "graphic/shader/shaderFactory.h"
 namespace CGFF {
 
-    Test2DLayer::Test2DLayer(QSize size)
-        : Layer2D(QSharedPointer<CGFF::BatchRenderer2D>(new CGFF::BatchRenderer2D(size)))
+    Test2DLayer::Test2DLayer(QSize size, QObject *parent)
+        : Layer2D(QSharedPointer<CGFF::BatchRenderer2D>(new CGFF::BatchRenderer2D(size))
+			, QMatrix4x4(), parent)
         , m_size(size)
     {
     }
@@ -88,5 +89,11 @@ namespace CGFF {
 		m_sprite.clear();
 		m_sprite2.clear();
 		m_mask.clear();
+	}
+
+	bool Test2DLayer::event(QEvent *event)
+	{
+		QEvent::Type test_type = event->type();
+		return false;
 	}
 }

@@ -1,5 +1,6 @@
 #include "MainWindow.h"
 #include "utils/qtopengl.h"
+#include "application/applicationWindow.h"
 
 MainWindow::MainWindow(QWidget *parent)
 	: QMainWindow(parent)
@@ -14,16 +15,20 @@ void MainWindow::setupUi()
     this->resize(800, 600);
     this->setMinimumSize(QSize(200, 200));
     this->setDocumentMode(false);
-    centralWidget = new QWidget(this);
+
+    //centralWidget = new QWidget(this);
+	centralWidget = QWidget::createWindowContainer(new ApplicationWindow, this);
+
     centralWidget->setObjectName(QStringLiteral("centralWidget"));
     gridLayout = new QGridLayout(centralWidget);
     gridLayout->setSpacing(6);
     gridLayout->setContentsMargins(11, 11, 11, 11);
     gridLayout->setObjectName(QStringLiteral("gridLayout"));
-    openGLWidget = new ApplicationWidget(centralWidget);
-    openGLWidget->setObjectName(QStringLiteral("openGLWidget"));
 
-    gridLayout->addWidget(openGLWidget, 0, 0, 1, 1);
+    //openGLWidget = new ApplicationWidget(centralWidget);
+    //openGLWidget->setObjectName(QStringLiteral("openGLWidget"));
+
+    //gridLayout->addWidget(openGLWidget, 0, 0, 1, 1);
 
     this->setCentralWidget(centralWidget);
     menuBar = new QMenuBar(this);

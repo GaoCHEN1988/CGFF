@@ -1,16 +1,19 @@
 #include "mayaCamera.h"
+#include <QCursor>
 
 namespace CGFF {
 
     MayaCamera::MayaCamera(const QMatrix4x4& projectionMatrix)
         : Camera(projectionMatrix)
+		, m_isLeftPressed(false)
+		, m_isRightPressed(false)
     {
         // Sensible defaults
-        m_panSpeed = 0.0015f;
-        m_rotationSpeed = 0.002f;
-        m_zoomSpeed = 0.2f;
+        m_panSpeed = 0.001f;
+        m_rotationSpeed = 0.001f;
+        m_zoomSpeed = 0.1f;
 
-        m_position = QVector3D(0.0f, 25.0f, -25.0f);
+        m_position = QVector3D(0.0f, 0.0f, -25.0f);
         m_rotation = QVector3D(90.0f, 0.0f, 0.0f);
 
         m_focalPoint = QVector3D(0.0f, 0.0f, 0.0f);
@@ -22,8 +25,9 @@ namespace CGFF {
 
     void MayaCamera::update()
     {
-        QVector2D delta = m_mouse_position - m_initialMousePosition;
-        m_initialMousePosition = m_mouse_position;
+		QVector2D mouse = QVector2D(QCursor::pos());
+        QVector2D delta = mouse - m_initialMousePosition;
+        m_initialMousePosition = mouse;
 
         if (m_isMiddlePressed)
             mousePan(delta);
@@ -62,7 +66,6 @@ namespace CGFF {
     {
         if (event->buttons() == Qt::LeftButton)
         {
-            m_initialMousePosition = m_mouse_position;
             m_isLeftPressed = true;
         }
         else 
@@ -72,7 +75,6 @@ namespace CGFF {
 
         if (event->buttons() == Qt::RightButton)
         {
-            m_initialMousePosition = m_mouse_position;
             m_isRightPressed = true;
         }
         else 
@@ -82,7 +84,6 @@ namespace CGFF {
             
         if (event->buttons() == Qt::MidButton)
         {
-            m_initialMousePosition = m_mouse_position;
             m_isMiddlePressed = true;
         }
         else
@@ -94,11 +95,6 @@ namespace CGFF {
 
     void MayaCamera::mouseMoveEvent(QMouseEvent * event)
     {
-        if (m_isLeftPressed || m_isRightPressed || m_isMiddlePressed)
-        {
-            m_mouse_position.setX(event->pos().x());
-            m_mouse_position.setY(event->pos().y());
-        }
     }
 
     void MayaCamera::resize(int width, int height)

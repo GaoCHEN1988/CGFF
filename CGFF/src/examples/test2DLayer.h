@@ -10,7 +10,7 @@ namespace CGFF {
     class Test2DLayer : public Layer2D
     {
     public:
-        Test2DLayer(QSize size);
+        Test2DLayer(QSize size, QObject *parent = Q_NULLPTR);
         virtual ~Test2DLayer() {};
 
         void init() override;
@@ -20,6 +20,8 @@ namespace CGFF {
         void mouseReleaseEvent(QMouseEvent *event) override;
         void keyPressEvent(QKeyEvent *event) override;
 		void closeEvent(QEvent *event) override;
+
+		virtual bool event(QEvent *event) override;
 
     private:
         QSharedPointer<CGFF::Sprite> m_sprite;

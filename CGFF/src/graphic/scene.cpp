@@ -5,7 +5,7 @@ namespace CGFF {
     Scene::Scene()
     {
         QMatrix4x4 m;
-        m.perspective(65.0f, 16.0f / 9.0f, 0.1f, 100.0f);
+        m.perspective(65.0f, float(CGFF::g_openglWidgetSize.width()) / float(CGFF::g_openglWidgetSize.height()), 0.1f, 100.0f);
         m_camera = QSharedPointer<Camera>(new MayaCamera(m));
     }
 

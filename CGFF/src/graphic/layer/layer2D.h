@@ -11,7 +11,7 @@ namespace CGFF {
     class Layer2D : public Layer
     {
     public:
-        Layer2D(QSharedPointer<Renderer2D> renderer, QMatrix4x4 projectionMatrix = QMatrix4x4());
+        Layer2D(QSharedPointer<Renderer2D> renderer, QMatrix4x4 projectionMatrix = QMatrix4x4(), QObject *parent = Q_NULLPTR);
         virtual ~Layer2D();
 
 		virtual void init();

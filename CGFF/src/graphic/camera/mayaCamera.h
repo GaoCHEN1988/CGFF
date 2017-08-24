@@ -44,7 +44,6 @@ namespace CGFF {
         bool m_isLeftPressed;
         bool m_isRightPressed;
         bool m_isMiddlePressed;
-        QVector2D m_mouse_position;
     };
 
 }

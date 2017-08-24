@@ -10,14 +10,14 @@ namespace CGFF {
 		m_mayaCamera = m_scene->getCamera();
 
 		QMatrix4x4 m;
-		m.perspective(65.0f, 16.0f / 9.0f, 0.1f, 100.0f);
+		m.perspective(65.0f, float(CGFF::g_openglWidgetSize.width()) / float(CGFF::g_openglWidgetSize.height()), 0.1f, 100.0f);
 		m_FPSCamera = QSharedPointer<FPSCamera>(new FPSCamera(m));
 
 		m_rotation = 0.0f;
     }
 
-	QVector3D g_CubeTransform(-10, 10, 0);
-	QVector3D g_DaggerTransform(0, 20, 0);
+	QVector3D g_CubeTransform(40, 0, 0);
+	QVector3D g_DaggerTransform(20, 0, 0);
 	QVector4D g_SphereColor(0.0f, 0.0f, 0.0f, 1.0f);
 	QVector3D g_SphereSpecularColor(1.0f, 1.0f, 0.6f);
 
@@ -49,52 +49,34 @@ namespace CGFF {
     {
 		QStringList skybox_files =
 		{
-			//"Resources/skybox/sky_xp.jpg",
-			//"Resources/skybox/sky_xn.jpg",
-			//"Resources/skybox/sky_yp.jpg",
-			//"Resources/skybox/sky_yn.jpg",
-			//"Resources/skybox/sky_zp.jpg",
-			//"Resources/skybox/sky_zn.jpg"
+			"Resources/skybox/sky_xp.jpg",
+			"Resources/skybox/sky_xn.jpg",
+			"Resources/skybox/sky_yp.jpg",
+			"Resources/skybox/sky_yn.jpg",
+			"Resources/skybox/sky_zp.jpg",
+			"Resources/skybox/sky_zn.jpg"
 
-			"Resources/skybox/interstellar_skybox/xpos.png",
-			"Resources/skybox/interstellar_skybox/xneg.png",
-			"Resources/skybox/interstellar_skybox/ypos.png",
-			"Resources/skybox/interstellar_skybox/yneg.png",
-			"Resources/skybox/interstellar_skybox/zpos.png",
-			"Resources/skybox/interstellar_skybox/zneg.png"
+			//"Resources/skybox/interstellar_skybox/xpos.png",
+			//"Resources/skybox/interstellar_skybox/xneg.png",
+			//"Resources/skybox/interstellar_skybox/ypos.png",
+			//"Resources/skybox/interstellar_skybox/yneg.png",
+			//"Resources/skybox/interstellar_skybox/zpos.png",
+			//"Resources/skybox/interstellar_skybox/zneg.png"
 		};
 
 		//{
 		//	QImageReader reader("Resources/skybox/ame_shadow/shadowpeak_nx.tga");
 		//	QList<QByteArray> b = reader.supportedImageFormats();
-		//	//TEst image
+		//	//Test image
 		//	QImage posx = reader.read();
 		//	QImageReader::ImageReaderError error = reader.error();
 		//	QImage negx = QImage(skybox_files[1]);
-
 		//	QImage posy = QImage(skybox_files[2]);
 		//	QImage negy = QImage(skybox_files[3]);
-
 		//	QImage posz = QImage(skybox_files[4]);
 		//	QImage negz = QImage(skybox_files[5]);
 		//}
 
-		QStringList environmentFiles =
-		{
-			"Resources/pbr/cubemap/CubeMap0.tga",
-			"Resources/pbr/cubemap/CubeMap1.tga",
-			"Resources/pbr/cubemap/CubeMap2.tga",
-			"Resources/pbr/cubemap/CubeMap3.tga",
-			"Resources/pbr/cubemap/CubeMap4.tga",
-			"Resources/pbr/cubemap/CubeMap5.tga",
-			"Resources/pbr/cubemap/CubeMap6.tga",
-			"Resources/pbr/cubemap/CubeMap7.tga",
-			"Resources/pbr/cubemap/CubeMap8.tga",
-			"Resources/pbr/cubemap/CubeMap9.tga",
-			"Resources/pbr/cubemap/CubeMap10.tga"
-		};
-
-		//QSharedPointer<TextureCube> environment = TextureCube::createFromVCross(environmentFiles, 11);
 		QSharedPointer<TextureCube> environment = TextureCube::createFromFiles(skybox_files);
 		QSharedPointer<Shader> skybox = Shader::createFromFile("Skybox", "src/graphic/shaders/Skybox.vert", "src/graphic/shaders/Skybox.frag");
 
@@ -105,7 +87,7 @@ namespace CGFF {
 
 		m_skyboxMaterial->setTexture("u_EnvironmentMap", environment);
 		QSharedPointer<Entity> skyboxEntity = QSharedPointer<Entity>(new Entity(MeshFactory::CreateQuad(-1, -1, 2, 2, m_skyboxMaterial)));
-		m_scene->add(skyboxEntity);
+		//m_scene->add(skyboxEntity);
 
 		QSharedPointer<Shader> pbrShader = Shader::createFromFile("AdvancedLighting", "src/graphic/shaders/AdvancedLighting.vert", "src/graphic/shaders/AdvancedLighting.frag");
 		ShaderManager::add(pbrShader);
@@ -114,18 +96,18 @@ namespace CGFF {
 		m_daggerMaterial = QSharedPointer<PBRMaterial>(new PBRMaterial(pbrShader));
 		m_daggerMaterial->setEnviromentMap(environment);
 		{
-			TextureLoadOptions options(false, true);
-			m_daggerMaterial->setAlbedoMap(Texture2D::createFromFile("Resources/Dagger/Textures/Dagger_Albedo.tga", TextureParameters(), options));
-			m_daggerMaterial->setSpecularMap(Texture2D::createFromFile("Resources/Dagger/Textures/Dagger_Specular.tga", TextureParameters(), options));
-			m_daggerMaterial->setGlossMap(Texture2D::createFromFile("Resources/Dagger/Textures/Dagger_Gloss.tga", TextureParameters(), options));
-			m_daggerMaterial->setNormalMap(Texture2D::createFromFile("Resources/Dagger/Textures/Dagger_Normals.tga", TextureParameters(), options));
+			m_daggerMaterial->setAlbedoMap(Texture2D::createFromFile("Resources/Dagger/Textures/Dagger_Albedo.tga"));
+			m_daggerMaterial->setSpecularMap(Texture2D::createFromFile("Resources/Dagger/Textures/Dagger_Specular.tga"));
+			m_daggerMaterial->setGlossMap(Texture2D::createFromFile("Resources/Dagger/Textures/Dagger_Gloss.tga"));
+			m_daggerMaterial->setNormalMap(Texture2D::createFromFile("Resources/Dagger/Textures/Dagger_Normals.tga"));
 		}
 
 		QSharedPointer<Model> daggerModel = QSharedPointer<Model>(new Model("Resources/Dagger/Dagger.obj", QSharedPointer<MaterialInstance>(new MaterialInstance(m_daggerMaterial))));
 		
 		QMatrix4x4 trans_dagger;
 		trans_dagger.translate(g_DaggerTransform);
-		//Test
+		trans_dagger.scale(0.2);
+
 		m_dagger = QSharedPointer<Entity>(new Entity(daggerModel->getMesh(), trans_dagger));
 		m_scene->add(m_dagger);
 
@@ -142,10 +124,20 @@ namespace CGFF {
 		m_light = QSharedPointer<Light>(new Light(QVector3D(0.8f, 0.8f, 0.8f)));
 		lights->add(m_light);
 		m_scene->pushLightSetup(lights);
+
+		DebugMenu::add("Light Direction", &lights->getLights()[0]->direction, -1.0f, 1.0f);
+		DebugMenu::add("Light Intensity", &lights->getLights()[0]->intensity, 0, 100);
+		DebugMenu::add("Dagger", &g_DaggerTransform, 0, 100);
     }
 
     void Test3DLayer::render()
     {
+		TransformComponent* dagger = m_dagger->getComponent<TransformComponent>();
+		QMatrix4x4 trans_dagger;
+		trans_dagger.translate(g_DaggerTransform);
+		trans_dagger.scale(0.2);
+		dagger->transform = trans_dagger;
+
 		Layer3D::render();
 
 		GLenum error = CGFF::GL->glGetError();
@@ -168,10 +160,7 @@ namespace CGFF {
 
     void Test3DLayer::resize(int width, int height) 
     {
-		//if (!CGFF::Context::isInitialized())
-		//	return;
-
-  //      GLCall(CGFF::GL->glViewport(0, 0, (GLsizei)width, (GLsizei)height));
+		Layer3D::resize(width, height);
         Layer3D::getScene()->getCamera()->resize(width, height);
     }
 

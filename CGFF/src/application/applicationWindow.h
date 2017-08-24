@@ -6,6 +6,7 @@
 #include <QWindow>
 #include <QTimer>
 #include <QTime>
+#include <QCoreApplication>
 
 class ApplicationWindow : public QWindow {
 	Q_OBJECT

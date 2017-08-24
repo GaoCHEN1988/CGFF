@@ -42,7 +42,7 @@ void ApplicationWindow::initialize()
 	m_debugLayer->init();
 
 	pushLayer(QSharedPointer<CGFF::Layer>(new CGFF::Test3DLayer));
-	pushOverlay(QSharedPointer<CGFF::Layer>(new CGFF::Test2DLayer(this->size())));
+	pushOverlay(QSharedPointer<CGFF::Layer>(new CGFF::Test2DLayer(this->size(), this)));
 
 	m_time.start();
 	m_framePerSecond = 0;
@@ -274,14 +274,17 @@ bool ApplicationWindow::event(QEvent *event)
 		for (auto layer : m_layerStack)
 		{
 			layer->closeEvent(event);
+			//QCoreApplication::sendEvent(layer.data(), event);
 		}
 
 		for (auto overLayer : m_overLayerStack)
 		{
 			overLayer->closeEvent(event);
+			//QCoreApplication::sendEvent(overLayer.data(), event);
 		}
 
-		m_debugLayer->closeEvent(event);		
+		m_debugLayer->closeEvent(event);	
+		//QCoreApplication::sendEvent(m_debugLayer.data(), event);
 	}
 
 	return QWindow::event(event);

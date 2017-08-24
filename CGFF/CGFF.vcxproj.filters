@@ -152,9 +152,6 @@
     <CustomBuild Include="src\mainWindow.h">
       <Filter>Header Files</Filter>
     </CustomBuild>
-    <CustomBuild Include="src\application\applicationWidget.h">
-      <Filter>Header Files\application</Filter>
-    </CustomBuild>
     <CustomBuild Include="src\application\applicationWindow.h">
       <Filter>Header Files\application</Filter>
     </CustomBuild>
@@ -186,15 +183,6 @@
     </ClCompile>
     <ClCompile Include="src\graphic\meshFactory.cpp">
       <Filter>Source Files\graphic</Filter>
-    </ClCompile>
-    <ClCompile Include="GeneratedFiles\Debug\moc_applicationWidget.cpp">
-      <Filter>Generated Files\Debug</Filter>
-    </ClCompile>
-    <ClCompile Include="GeneratedFiles\Release\moc_applicationWidget.cpp">
-      <Filter>Generated Files\Release</Filter>
-    </ClCompile>
-    <ClCompile Include="src\application\applicationWidget.cpp">
-      <Filter>Source Files\application</Filter>
     </ClCompile>
     <ClCompile Include="src\debug\debugLayer.cpp">
       <Filter>Source Files\debug</Filter>
@@ -389,7 +377,7 @@
       <Filter>Source Files\application</Filter>
     </ClCompile>
     <ClCompile Include="src\examples\test3DLayer.cpp">
-      <Filter>Generated Files</Filter>
+      <Filter>Source Files\examples</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -652,7 +640,7 @@
       <Filter>Header Files\platform\opengl</Filter>
     </ClInclude>
     <ClInclude Include="src\examples\test3DLayer.h">
-      <Filter>Generated Files</Filter>
+      <Filter>Header Files\examples</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

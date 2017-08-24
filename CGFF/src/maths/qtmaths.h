@@ -4,3 +4,4 @@
 #include <QVector4D>
 #include <QQuaternion>
 #include <QtMath>
+#include <QByteArray>

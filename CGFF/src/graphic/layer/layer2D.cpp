@@ -2,8 +2,8 @@
 
 namespace CGFF {
 
-    Layer2D::Layer2D(QSharedPointer<Renderer2D> renderer, QMatrix4x4 projectionMatrix)
-        : Layer()
+    Layer2D::Layer2D(QSharedPointer<Renderer2D> renderer, QMatrix4x4 projectionMatrix, QObject *parent)
+        : Layer(parent)
         , m_renderer(renderer)
         , m_projectionMatrix(projectionMatrix)
     {

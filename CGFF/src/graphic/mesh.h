@@ -6,6 +6,7 @@
 #include "api/indexBuffer.h"
 #include "material.h"
 #include "irenderable.h"
+#include <QDataStream>
 
 namespace CGFF {
 
@@ -18,6 +19,19 @@ namespace CGFF {
         QVector2D uv;
 		QVector3D binormal;
 		QVector3D tangent;
+
+		QByteArray byteData()
+		{
+			QByteArray baResult;
+			QDataStream dsOut(&baResult, QIODevice::ReadWrite);  
+			dsOut << position << normal << uv<< binormal<< tangent;
+			return baResult;
+		};
+
+		bool operator==(const Vertex& other) const
+		{
+			return position == other.position && normal == other.normal && uv == other.uv && binormal == other.binormal && tangent == other.tangent;
+		};
     };
 
     class Mesh : public IRenderable

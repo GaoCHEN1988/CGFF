@@ -10,22 +10,9 @@
 
 namespace CGFF {
 
-    // TODO: Replace with uvec3, whenever that begins to exist
-    struct IndexSet
+    inline uint qHash(Vertex key)
     {
-        uint position;
-        uint uv;
-        uint normal;
-
-        bool operator==(const IndexSet& other) const
-        {
-            return position == other.position && uv == other.uv && normal == other.uv;
-        }
-    };
-
-    inline uint qHash(const IndexSet &key)
-    {
-        return (key.position) ^ (key.normal << 14) ^ (key.uv << 23);
+        return qHash(key.byteData());
     }
 
     class Model : public IRenderable
@@ -58,10 +45,9 @@ namespace CGFF {
             QVector<QVector3D> positions, normals;
             QVector<QVector2D> uvs;
         };
-    
-        //friend struct std::hash<IndexSet>;
+   
 
-        //void insertVertex(QVector<Vertex>& vertices, QVector<uint>& indices, QHash<IndexSet, int>& mapping, VertexSet& inputVertices, IndexSet& indexSet);
+        void insertVertex(const QVector3D& position, const QVector3D& normal, const QVector2D& uv, const QVector3D& binormal, const QVector3D& tangent);
 		void processNode(aiNode *node, const aiScene *scene);
 		void processMesh(aiMesh *mesh, const aiScene *scene);
 
@@ -71,6 +57,11 @@ namespace CGFF {
 		//QVector<QSharedPointer<Mesh>> m_meshes;
 		QSharedPointer<Mesh> m_mesh;
 		MeshStruct m_meshStruct;
+
+		QVector<Vertex> m_vertices;
+		QVector<int> m_indices;
+
+		QHash<Vertex, int> m_indexMapping;
     };
 
 }

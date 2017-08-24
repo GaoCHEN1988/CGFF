@@ -305,7 +305,7 @@ namespace CGFF {
             textimg.fill(Qt::transparent);
             painter.setBrush(QColor(color.x() * 255, color.y() * 255, color.z() * 255, color.w() * 255));
             painter.setPen(QColor(color.x() * 255, color.y() * 255, color.z() * 255, color.w() * 255));
-            font.setPixelSize(height);
+            font.setPixelSize(height*0.8);
             painter.setFont(font);
             painter.drawText(0, height-10, text);
         }
