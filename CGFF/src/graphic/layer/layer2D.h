@@ -39,7 +39,6 @@ namespace CGFF {
         QSharedPointer<Renderer2D> m_renderer;
         QVector<QSharedPointer<Renderable2D>> m_renderables;
         QVector<QSharedPointer<Renderable2D>> m_submittedRenderables;
-        QMatrix4x4 m_projectionMatrix;
     };
 }
 

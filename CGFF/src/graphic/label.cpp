@@ -6,6 +6,7 @@ namespace CGFF {
 	Label::Label(QString text, float x, float y, int width, int height, QVector4D color)
 		: Renderable2D()
 		, m_text(text)
+		, position(m_position)
 	{
 		m_position = QVector3D(x, y, 0);
 		m_color = color;

@@ -17,6 +17,8 @@ namespace CGFF {
 
 		QSharedPointer<Mesh> CreateCube(float size, QSharedPointer<MaterialInstance> material);
 
+		QSharedPointer<Mesh> CreateSkyCube(QSharedPointer<MaterialInstance> material);
+
 		QSharedPointer<Mesh> CreatePlane(float width, float height, const QVector3D& normal, QSharedPointer<MaterialInstance> material);
 
     }

@@ -84,10 +84,10 @@ namespace CGFF {
 		skyboxMaterial->setRenderFlag(Material::RenderFlags::DISABLE_DEPTH_TEST);
 		skybox->bind();
 		m_skyboxMaterial = QSharedPointer<MaterialInstance>(new MaterialInstance(skyboxMaterial));
-
 		m_skyboxMaterial->setTexture("u_EnvironmentMap", environment);
-		QSharedPointer<Entity> skyboxEntity = QSharedPointer<Entity>(new Entity(MeshFactory::CreateQuad(-1, -1, 2, 2, m_skyboxMaterial)));
-		//m_scene->add(skyboxEntity);
+		//QSharedPointer<Entity> skyboxEntity = QSharedPointer<Entity>(new Entity(MeshFactory::CreateQuad(-1, -1, 2, 2, m_skyboxMaterial)));
+		QSharedPointer<Entity> skyboxEntity = QSharedPointer<Entity>(new Entity(MeshFactory::CreateSkyCube(m_skyboxMaterial)));
+		m_scene->add(skyboxEntity);
 
 		QSharedPointer<Shader> pbrShader = Shader::createFromFile("AdvancedLighting", "src/graphic/shaders/AdvancedLighting.vert", "src/graphic/shaders/AdvancedLighting.frag");
 		ShaderManager::add(pbrShader);
@@ -132,11 +132,14 @@ namespace CGFF {
 
     void Test3DLayer::render()
     {
-		TransformComponent* dagger = m_dagger->getComponent<TransformComponent>();
-		QMatrix4x4 trans_dagger;
-		trans_dagger.translate(g_DaggerTransform);
-		trans_dagger.scale(0.2);
-		dagger->transform = trans_dagger;
+		if (!m_dagger.isNull())
+		{
+			TransformComponent* dagger = m_dagger->getComponent<TransformComponent>();
+			QMatrix4x4 trans_dagger;
+			trans_dagger.translate(g_DaggerTransform);
+			trans_dagger.scale(0.2);
+			dagger->transform = trans_dagger;
+		}
 
 		Layer3D::render();
 

@@ -203,13 +203,14 @@ namespace CGFF {
         }
         else
         {
-            //GL->glBindFramebuffer(GL_FRAMEBUFFER, m_screenBuffer);
-            //glViewport(0, 0, m_screenSize.width(), m_screenSize.height());
 			Renderer::setViewport(0, 0, m_screenSize.width(), m_screenSize.height());
-        }
 
-		//m_vboBuffer->bind();
-		//m_buffer = (VertexData*)m_vboBuffer->map(QOpenGLBuffer::WriteOnly);
+			if (!m_camera.isNull())
+			{
+				m_camera->resize(m_screenSize.width(), m_screenSize.height());
+				memcpy(m_systemUniforms[sys_ProjectionMatrixIndex].buffer.buffer_pointer.data() + m_systemUniforms[sys_ProjectionMatrixIndex].offset, &m_camera->getProjectionMatrix(), sizeof(QMatrix4x4));
+			}
+        }
 
 		m_vertexArray->bind();
 		m_buffer = m_vertexArray->getBuffer()->getPointer<VertexData>();

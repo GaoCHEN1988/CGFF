@@ -67,8 +67,10 @@ namespace CGFF {
 
     void DebugLayer::resize(int width, int height)
     {
-        m_projectionMatrix.setToIdentity();
-        m_projectionMatrix.ortho(0, GLfloat(width), 0, GLfloat(height), 0.0f, 100.0f);
+		m_FPSLabel->position.setY(g_openglWidgetSize.height() - 50);
+		m_memoryUsageLabel->position.setY(g_openglWidgetSize.height() - 50);
+		m_frametimeLabel->position.setY(g_openglWidgetSize.height() - 50);
+		Layer2D::resize(width, height);
     }
 
     void DebugLayer::mousePressEvent(QMouseEvent *event)

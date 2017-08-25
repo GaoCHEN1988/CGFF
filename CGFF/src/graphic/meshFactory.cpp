@@ -99,6 +99,11 @@ namespace CGFF {
 			return QSharedPointer<Mesh>(new Mesh(va, ib, material));
 		}
 
+		QSharedPointer<Mesh> CreateSkyCube(QSharedPointer<MaterialInstance> material)
+		{
+			return CreateCube(2.0f, material);
+		}
+
 		QSharedPointer<Mesh> CreatePlane(float width, float height, const QVector3D& normal, QSharedPointer<MaterialInstance> material)
 		{
 			QVector3D vec = normal * 90.0f;

@@ -13,7 +13,6 @@ namespace CGFF {
         QSharedPointer<Mesh> mesh;
 		QMatrix4x4 transform;
 		QSharedPointer<Shader> shader;
-        QVector<RendererUniform> uniforms;
     };
 
     //static void SetRendererUniform(const RendererUniform& uniform, const QSharedPointer<QOpenGLShaderProgram>& shader)

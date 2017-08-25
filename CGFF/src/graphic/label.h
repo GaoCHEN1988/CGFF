@@ -13,6 +13,10 @@ namespace CGFF {
 		void submit(QSharedPointer<Renderer2D> renderer) override;
 
         void setText(const QString& text);
+
+	public:
+		QVector3D& position;
+
 	private:
 		QString m_text;
 	};

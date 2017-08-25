@@ -16,7 +16,11 @@ namespace CGFF {
         virtual void focus() { }
         virtual void mousePressEvent(QMouseEvent * event) {}
         virtual void mouseMoveEvent(QMouseEvent * event) {}
-        virtual void resize(int width, int height) {};
+        virtual void resize(int width, int height) 
+		{
+			m_projectionMatrix.setToIdentity();
+			m_projectionMatrix.ortho(0, (float)width, 0, (float)height, -1.0f, 100.0f);
+		}
 
         inline const QVector3D& getPosition() const { return m_position; }
         inline void SetPosition(const QVector3D& position) { m_position = position; }

@@ -271,7 +271,6 @@ void main()
 		diffuse += NdotL * Diffuse(light, material, eye) * light.color * light.intensity;
 		// Specular Calculation
 		specular += NdotL * Specular(light, material, eye) * light.color.xyz * light.intensity;
-		light.intensity /= 2.0;
 		light.lightVector = -light.lightVector;
 	}
 	// Shadows
@@ -286,6 +285,4 @@ void main()
 	vec3 finalColor = material.albedo.rgb * diffuse.rgb * visibility + (specular + IBL(light, material, eye)) * visibility;
 	finalColor = FinalGamma(finalColor);
 	color = vec4(finalColor, material.albedo.a);
-	////Test
-	//color = vec4(light.intensity, light.intensity, light.intensity, 1.0);
 };

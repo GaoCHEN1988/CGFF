@@ -1,5 +1,4 @@
 #include "button.h"
-#include "application/applicationWidget.h"
 
 namespace CGFF {
     namespace UI {
