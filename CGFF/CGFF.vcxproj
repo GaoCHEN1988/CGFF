@@ -96,7 +96,7 @@
     <ClCompile Include="GeneratedFiles\Release\moc_mainWindow.cpp">
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</ExcludedFromBuild>
     </ClCompile>
-    <ClCompile Include="src\application\applicationwindow.cpp" />
+    <ClCompile Include="src\application\applicationWindow.cpp" />
     <ClCompile Include="src\debug\debugLayer.cpp" />
     <ClCompile Include="src\debug\debugMenu.cpp" />
     <ClCompile Include="src\debug\debugMenuItem.cpp" />

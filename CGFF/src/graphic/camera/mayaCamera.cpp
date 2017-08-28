@@ -13,8 +13,7 @@ namespace CGFF {
         m_rotationSpeed = 0.001f;
         m_zoomSpeed = 0.1f;
 
-		//m_position = QVector3D(0.0f, 0.0f, -25.0f);
-		m_position = QVector3D(0.0f, 0.0f, 0.0f);
+		m_position = QVector3D(0.0f, 0.0f, -25.0f);
         m_rotation = QVector3D(90.0f, 0.0f, 0.0f);
 
         m_focalPoint = QVector3D(0.0f, 0.0f, 0.0f);

@@ -5,7 +5,7 @@ namespace CGFF {
 	GLTextureCube::GLTextureCube(const QString& name, const QString& filepath)
 		: m_name(name)
 		, m_inputFormat(InputFormat::VERTICAL_CROSS)
-		, m_glTexture(m_glTexture.TargetCubeMap)
+		, m_glTexture(QOpenGLTexture::TargetCubeMap)
 	{
 		m_fileNames.append(filepath);
 		loadFromFiles();
@@ -15,7 +15,7 @@ namespace CGFF {
 		: m_name(name)
 		, m_fileNames(files)
 		, m_inputFormat(InputFormat::VERTICAL_CROSS)
-		, m_glTexture(m_glTexture.TargetCubeMap)
+		, m_glTexture(QOpenGLTexture::TargetCubeMap)
 	{
 		loadFromFiles();
 	}
@@ -24,7 +24,7 @@ namespace CGFF {
 		: m_name(name)
 		, m_fileNames(files)
 		, m_inputFormat(format)
-		, m_glTexture(m_glTexture.TargetCubeMap)
+		, m_glTexture(QOpenGLTexture::TargetCubeMap)
 	{
 		if (m_inputFormat == InputFormat::VERTICAL_CROSS)
 			loadFromVCross(mips);
@@ -193,6 +193,7 @@ namespace CGFF {
 
 		m_glTexture.setWrapMode(m_parameters.gl_wrap);
 		m_glTexture.setMinMagFilters(m_parameters.gl_filter, m_parameters.gl_filter);
+		m_glTexture.release();
 
 		for (uint i = 0; i < mips; i++)
 		{

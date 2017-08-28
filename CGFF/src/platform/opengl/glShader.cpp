@@ -565,6 +565,7 @@ namespace CGFF {
 				{
 					resource->m_register = sampler;
 					m_glShaderProgram.setUniformValue(location, sampler++);
+					sampler++;
 				}
 				else if (resource->getCount() > 1)
 				{

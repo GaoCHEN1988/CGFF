@@ -109,7 +109,7 @@ namespace CGFF {
 		trans_dagger.scale(0.2);
 
 		m_dagger = QSharedPointer<Entity>(new Entity(daggerModel->getMesh(), trans_dagger));
-		m_scene->add(m_dagger);
+		//m_scene->add(m_dagger);
 
 		QMatrix4x4 trans_cube;
 		trans_cube.translate(g_CubeTransform);
@@ -118,12 +118,12 @@ namespace CGFF {
 		cubeMaterial->setEnviromentMap(environment);
 		QSharedPointer<Model> cubeModel = QSharedPointer<Model>(new Model("Resources/RoundedCube.obj", QSharedPointer<MaterialInstance>(new MaterialInstance(cubeMaterial))));
 		m_cube = QSharedPointer<Entity>(new Entity(cubeModel->getMesh(), trans_cube));
-		m_scene->add(m_cube);
+		//m_scene->add(m_cube);
 
 		QSharedPointer<LightSetup> lights = QSharedPointer<LightSetup>(new LightSetup());
 		m_light = QSharedPointer<Light>(new Light(QVector3D(0.8f, 0.8f, 0.8f)));
 		lights->add(m_light);
-		m_scene->pushLightSetup(lights);
+		//m_scene->pushLightSetup(lights);
 
 		DebugMenu::add("Light Direction", &lights->getLights()[0]->direction, -1.0f, 1.0f);
 		DebugMenu::add("Light Intensity", &lights->getLights()[0]->intensity, 0, 100);

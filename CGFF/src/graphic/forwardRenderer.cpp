@@ -118,7 +118,6 @@ namespace CGFF {
 			const RenderCommand& command = m_commandQueue[i];
 			QSharedPointer<MaterialInstance> material = command.mesh->getMaterialInstance();
 			int materialRenderFlags = material->getRenderFlags();
-
 			Renderer::setDepthTesting((materialRenderFlags & (int)Material::RenderFlags::DISABLE_DEPTH_TEST) == 0);
 			memcpy(m_VSSystemUniformBuffer.data() + m_VSSystemUniformBufferOffsets[VSSystemUniformIndex_ModelMatrix], &command.transform, sizeof(QMatrix4x4));
 			setSystemUniforms(command.shader);

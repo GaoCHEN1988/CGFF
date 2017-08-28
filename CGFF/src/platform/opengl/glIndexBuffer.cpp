@@ -7,7 +7,7 @@ namespace CGFF {
         , m_glIndexBuffer(QOpenGLBuffer::IndexBuffer)
     {
        m_glIndexBuffer.create();
-       m_glIndexBuffer.setUsagePattern(QOpenGLBuffer::DynamicDraw);
+       m_glIndexBuffer.setUsagePattern(QOpenGLBuffer::StaticDraw);
        m_glIndexBuffer.bind();
        m_glIndexBuffer.allocate(data, count* sizeof(uint));
 

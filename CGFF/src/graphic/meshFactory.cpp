@@ -77,8 +77,8 @@ namespace CGFF {
 			buffer->setData(8 * sizeof(Vertex), data);
 			LayoutBuffer layout;
 			layout.push<QVector3D>("position");
-			layout.push<QVector3D>("normal");
-			layout.push<QVector2D>("uv");
+			//layout.push<QVector3D>("normal");
+			//layout.push<QVector2D>("uv");
 			buffer->setLayout(layout);
 			va->pushBuffer(buffer);
 
