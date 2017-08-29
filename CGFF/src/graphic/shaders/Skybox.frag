@@ -8,6 +8,5 @@ in vec3 TexCoords;
 
 void main()
 {
-	//color = textureLod(u_EnvironmentMap, fs_in.position.xyz, 4.0f);
 	color = texture(u_EnvironmentMap, TexCoords);
 };

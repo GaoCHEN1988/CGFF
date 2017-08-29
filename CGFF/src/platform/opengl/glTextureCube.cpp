@@ -6,6 +6,8 @@ namespace CGFF {
 		: m_name(name)
 		, m_inputFormat(InputFormat::VERTICAL_CROSS)
 		, m_glTexture(QOpenGLTexture::TargetCubeMap)
+		, m_width(0)
+		, m_height(0)
 	{
 		m_fileNames.append(filepath);
 		loadFromFiles();
@@ -16,6 +18,8 @@ namespace CGFF {
 		, m_fileNames(files)
 		, m_inputFormat(InputFormat::VERTICAL_CROSS)
 		, m_glTexture(QOpenGLTexture::TargetCubeMap)
+		, m_width(0)
+		, m_height(0)
 	{
 		loadFromFiles();
 	}
@@ -25,6 +29,8 @@ namespace CGFF {
 		, m_fileNames(files)
 		, m_inputFormat(format)
 		, m_glTexture(QOpenGLTexture::TargetCubeMap)
+		, m_width(0)
+		, m_height(0)
 	{
 		if (m_inputFormat == InputFormat::VERTICAL_CROSS)
 			loadFromVCross(mips);
@@ -44,11 +50,7 @@ namespace CGFF {
 
 	void GLTextureCube::loadFromFiles()
 	{
-		if (m_fileNames.size() == 1)
-		{
-			//To do
-		}
-        else if (m_fileNames.size() == 6)
+		if (m_fileNames.size() == 6)
 		{
 
 			QImage posx = QImage(m_fileNames[0]).mirrored(m_loadOptions.horizontalFlip, m_loadOptions.verticalFlip).convertToFormat(m_parameters.imageFormat);

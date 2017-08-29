@@ -10,7 +10,7 @@ namespace CGFF {
 		m_mayaCamera = m_scene->getCamera();
 
 		QMatrix4x4 m;
-		m.perspective(65.0f, float(CGFF::g_openglWidgetSize.width()) / float(CGFF::g_openglWidgetSize.height()), 0.1f, 100.0f);
+		m.perspective(65.0f, float(CGFF::g_openglWidgetSize.width()) / float(CGFF::g_openglWidgetSize.height()), 0.1f, 1000.0f);
 		m_FPSCamera = QSharedPointer<FPSCamera>(new FPSCamera(m));
 
 		m_rotation = 0.0f;
@@ -85,7 +85,7 @@ namespace CGFF {
 		skybox->bind();
 		m_skyboxMaterial = QSharedPointer<MaterialInstance>(new MaterialInstance(skyboxMaterial));
 		m_skyboxMaterial->setTexture("u_EnvironmentMap", environment);
-		//QSharedPointer<Entity> skyboxEntity = QSharedPointer<Entity>(new Entity(MeshFactory::CreateQuad(-1, -1, 2, 2, m_skyboxMaterial)));
+
 		QSharedPointer<Entity> skyboxEntity = QSharedPointer<Entity>(new Entity(MeshFactory::CreateSkyCube(m_skyboxMaterial)));
 		m_scene->add(skyboxEntity);
 
@@ -109,7 +109,7 @@ namespace CGFF {
 		trans_dagger.scale(0.2);
 
 		m_dagger = QSharedPointer<Entity>(new Entity(daggerModel->getMesh(), trans_dagger));
-		//m_scene->add(m_dagger);
+		m_scene->add(m_dagger);
 
 		QMatrix4x4 trans_cube;
 		trans_cube.translate(g_CubeTransform);
@@ -118,12 +118,13 @@ namespace CGFF {
 		cubeMaterial->setEnviromentMap(environment);
 		QSharedPointer<Model> cubeModel = QSharedPointer<Model>(new Model("Resources/RoundedCube.obj", QSharedPointer<MaterialInstance>(new MaterialInstance(cubeMaterial))));
 		m_cube = QSharedPointer<Entity>(new Entity(cubeModel->getMesh(), trans_cube));
-		//m_scene->add(m_cube);
+		//m_cube = QSharedPointer<Entity>(new Entity(MeshFactory::CreateCube(50, QSharedPointer<MaterialInstance>(new MaterialInstance(cubeMaterial)))));
+		m_scene->add(m_cube);
 
 		QSharedPointer<LightSetup> lights = QSharedPointer<LightSetup>(new LightSetup());
 		m_light = QSharedPointer<Light>(new Light(QVector3D(0.8f, 0.8f, 0.8f)));
 		lights->add(m_light);
-		//m_scene->pushLightSetup(lights);
+		m_scene->pushLightSetup(lights);
 
 		DebugMenu::add("Light Direction", &lights->getLights()[0]->direction, -1.0f, 1.0f);
 		DebugMenu::add("Light Intensity", &lights->getLights()[0]->intensity, 0, 100);
@@ -141,6 +142,10 @@ namespace CGFF {
 			dagger->transform = trans_dagger;
 		}
 
+		// Remove the translation part for skybox
+		QMatrix4x4 vm = m_scene->getCamera()->getViewMatrix();
+		m_skyboxMaterial->setUniform("u_ViewMatrix", QMatrix4x4(QMatrix3x3(vm.toGenericMatrix<3,3>())));
+
 		Layer3D::render();
 
 		GLenum error = CGFF::GL->glGetError();
@@ -150,16 +155,6 @@ namespace CGFF {
 			qFatal("Opengl error!");
 		}
     }
-
-	//void Test3DLayer::update()
-	//{
-
-	//}
-
-	//void Test3DLayer::tick()
-	//{
-
-	//}
 
     void Test3DLayer::resize(int width, int height) 
     {

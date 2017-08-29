@@ -49,9 +49,14 @@ namespace CGFF {
 			return CreateQuad(position.x(), position.y(), size.x(), size.y(), material);
 		}
 
+		struct CubeVertex
+		{
+			QVector3D position;
+		};
+
 		QSharedPointer<Mesh> CreateCube(float size, QSharedPointer<MaterialInstance> material)
 		{
-			Vertex data[8];
+			CubeVertex data[8];
 
 			data[0].position = QVector3D(-size / 2.0f, -size / 2.0f, size / 2.0f);
 			data[1].position = QVector3D(size / 2.0f, -size / 2.0f, size / 2.0f);
@@ -62,27 +67,17 @@ namespace CGFF {
 			data[6].position = QVector3D(size / 2.0f, size / 2.0f, -size / 2.0f);
 			data[7].position = QVector3D(-size / 2.0f, size / 2.0f, -size / 2.0f);
 
-			data[0].normal = QVector3D(-1.0f, -1.0f, 1.0f);
-			data[1].normal = QVector3D(1.0f, -1.0f, 1.0f);
-			data[2].normal = QVector3D(1.0f, 1.0f, 1.0f);
-			data[3].normal = QVector3D(-1.0f, 1.0f, 1.0f);
-			data[4].normal = QVector3D(-1.0f, -1.0f, -1.0f);
-			data[5].normal = QVector3D(1.0f, -1.0f, -1.0f);
-			data[6].normal = QVector3D(1.0f, 1.0f, -1.0f);
-			data[7].normal = QVector3D(-1.0f, 1.0f, -1.0f);
-
 			QSharedPointer<VertexArray> va = VertexArray::create();
 			va->bind();
 			QSharedPointer<VertexBuffer> buffer = VertexBuffer::create(BufferUsage::STATIC);
-			buffer->setData(8 * sizeof(Vertex), data);
+			buffer->setData(8 * sizeof(CubeVertex), data);
 			LayoutBuffer layout;
 			layout.push<QVector3D>("position");
-			//layout.push<QVector3D>("normal");
-			//layout.push<QVector2D>("uv");
 			buffer->setLayout(layout);
+
 			va->pushBuffer(buffer);
 
-			uint indices[36] = 
+			uint indices[36] =
 			{
 				0, 1, 2, 2, 3, 0,
 				3, 2, 6, 6, 7, 3,

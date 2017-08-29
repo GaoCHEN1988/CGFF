@@ -104,7 +104,7 @@ void ApplicationWindow::renderNow()
 	}
 
     CGFF::Renderer::clear(CGFF::RendererBufferType::RENDERER_BUFFER_COLOR | CGFF::RendererBufferType::RENDERER_BUFFER_DEPTH);
-
+	CGFF::Renderer::setDepthTesting(true);
 	render();
 
 	CGFF::Renderer::present();

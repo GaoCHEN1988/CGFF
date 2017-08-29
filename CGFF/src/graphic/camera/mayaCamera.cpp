@@ -14,6 +14,7 @@ namespace CGFF {
         m_zoomSpeed = 0.1f;
 
 		m_position = QVector3D(0.0f, 0.0f, -25.0f);
+		//m_position = QVector3D(0.0f, 0.0f, 0.0f);
         m_rotation = QVector3D(90.0f, 0.0f, 0.0f);
 
         m_focalPoint = QVector3D(0.0f, 0.0f, 0.0f);
@@ -100,7 +101,7 @@ namespace CGFF {
     void MayaCamera::resize(int width, int height)
     {
         m_projectionMatrix.setToIdentity();
-        m_projectionMatrix.perspective(45.0f, float(width) / float(height), 0.01f, 1000.0f);
+        m_projectionMatrix.perspective(65.0f, float(width) / float(height), 0.1f, 1000.0f);
     }
 
     void MayaCamera::mousePan(const QVector2D& delta)

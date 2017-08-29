@@ -7,15 +7,14 @@ uniform mat4 sys_ViewMatrix;
 uniform mat4 sys_ModelMatrix;
 uniform vec3 sys_CameraPosition;
 
-uniform mat4 invViewProjMatrix;
+uniform mat4 u_ViewMatrix;
 
 out vec3 TexCoords;
 
 void main()
 {
 	TexCoords = position.xyz;
-    //vec4 pos = sys_ProjectionMatrix * sys_ViewMatrix * position;
-    vec4 pos =  sys_ProjectionMatrix * position;
+    vec4 pos = sys_ProjectionMatrix * u_ViewMatrix* position;
 	gl_Position = pos.xyww;
 };
 

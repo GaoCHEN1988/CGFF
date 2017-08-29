@@ -19,8 +19,6 @@ namespace CGFF {
 
         void init() override;
 		void render() override;
-		//void update() override;
-		//void tick() override;
 
         void resize(int width, int height) override;
         void mousePressEvent(QMouseEvent *event) override;

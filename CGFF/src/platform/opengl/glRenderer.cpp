@@ -15,10 +15,10 @@ namespace CGFF {
 		setBlend(true);
 		setBlendFunction(RendererBlendFunction::SOURCE_ALPHA, RendererBlendFunction::ONE_MINUS_SOURCE_ALPHA);
 
-		// Move to API independent layer
-		GL->glEnable(GL_CULL_FACE);
-		GL->glFrontFace(GL_CCW);
-		GL->glCullFace(GL_BACK);
+		//// Move to API independent layer
+		//GL->glEnable(GL_CULL_FACE);
+		//GL->glFrontFace(GL_CCW);
+		//GL->glCullFace(GL_BACK);
 
 		m_rendererTitle = "OpenGL";
 	}
