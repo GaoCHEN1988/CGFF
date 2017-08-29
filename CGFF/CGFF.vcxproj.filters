@@ -147,6 +147,12 @@
     <Filter Include="Header Files\platform\opengl">
       <UniqueIdentifier>{01f42401-97e6-406c-8ee8-bb67acb6bad0}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Source Files\system\fileSystem">
+      <UniqueIdentifier>{5ca93eac-2d97-41d9-97ca-bb6b80865997}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\system\fileSystem">
+      <UniqueIdentifier>{2845c277-7852-4ea1-92ca-11421f1b68bc}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <CustomBuild Include="src\mainWindow.h">
@@ -377,7 +383,10 @@
       <Filter>Source Files\examples</Filter>
     </ClCompile>
     <ClCompile Include="src\application\applicationWindow.cpp">
-      <Filter>Generated Files</Filter>
+      <Filter>Source Files\application</Filter>
+    </ClCompile>
+    <ClCompile Include="src\system\fileSystem\vfs.cpp">
+      <Filter>Source Files\system\fileSystem</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -641,6 +650,9 @@
     </ClInclude>
     <ClInclude Include="src\examples\test3DLayer.h">
       <Filter>Header Files\examples</Filter>
+    </ClInclude>
+    <ClInclude Include="src\system\fileSystem\vfs.h">
+      <Filter>Header Files\system\fileSystem</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

@@ -19,18 +19,6 @@ namespace CGFF {
     {
     public:
 
-		struct MeshStruct
-		{
-			QVector<Vertex> vertices;
-			QVector<uint> indices;
-
-			void clear()
-			{
-				vertices.clear();
-				indices.clear();
-			}
-		};
-
         // This eventually needs to be replaced by a global Asset Server.
         Model(const QString& path, QSharedPointer<MaterialInstance> materialInstance = nullptr);
         virtual ~Model();
@@ -56,11 +44,8 @@ namespace CGFF {
     private:
 		//QVector<QSharedPointer<Mesh>> m_meshes;
 		QSharedPointer<Mesh> m_mesh;
-		MeshStruct m_meshStruct;
-
 		QVector<Vertex> m_vertices;
 		QVector<int> m_indices;
-
 		QHash<Vertex, int> m_indexMapping;
     };
 

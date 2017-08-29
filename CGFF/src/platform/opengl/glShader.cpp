@@ -1,7 +1,7 @@
 #include "glShader.h"
-#include <QFile>
+//#include <QFile>
 #include "glShaderPareser.h"
-
+#include "system/fileSystem/vfs.h"
 namespace CGFF {
 
 	GLShader::GLShader(QString name)
@@ -22,27 +22,11 @@ namespace CGFF {
 		m_vertexFile = vertexFile;
 		m_fragmentFile = fragmentFile;
 
-		QFile vFile(vertexFile);
-		if (!vFile.open(QIODevice::ReadOnly | QIODevice::Text))
-		{
-			qFatal("Cannot read from vertex shader source file!");
-			return;
-		}		
-		QTextStream vertexIn(&vFile);
 		m_vertexSource.clear();
-		m_vertexSource = vertexIn.readAll();
-		vFile.close();
+		m_vertexSource = VFS::get()->readTextFile(vertexFile);
 
-		QFile fragFile(fragmentFile);
-		if (!fragFile.open(QIODevice::ReadOnly | QIODevice::Text))
-		{
-			qFatal("Cannot read from fragment shader source file!");
-			return;
-		}
-		QTextStream fragIn(&fragFile);
 		m_fragmentSource.clear();
-		m_fragmentSource = fragIn.readAll();
-		fragFile.close();
+		m_fragmentSource = VFS::get()->readTextFile(fragmentFile);
 
 		load();
 		init();

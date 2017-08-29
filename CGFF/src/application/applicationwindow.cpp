@@ -3,6 +3,7 @@
 #include "examples/test3DLayer.h"
 #include "graphic/api/context.h"
 #include "graphic/renderer.h"
+#include "system/fileSystem/vfs.h"
 
 ApplicationWindow * ApplicationWindow::m_instance = nullptr;
 
@@ -14,9 +15,9 @@ ApplicationWindow::ApplicationWindow(QWindow * parent, CGFF::RenderAPI api)
 {
     resize(800, 800);
     setMinimumSize(QSize(400, 400));
+
 	m_instance = this;
     CGFF::Context::setRenderAPI(api);
-
 	switch (api)
 	{
 	case CGFF::RenderAPI::OPENGL:
@@ -26,7 +27,11 @@ ApplicationWindow::ApplicationWindow(QWindow * parent, CGFF::RenderAPI api)
 		break;
 	}
 
-	timer_id_ = startTimer(1);
+	timer_id_ = startTimer(0);
+	CGFF::VFS::init();
+	CGFF::VFS::get()->mount("resource", "Resources/");
+	CGFF::VFS::get()->mount("pbr", "Resources/pbr");
+	CGFF::VFS::get()->mount("shaders", "src/graphic/shaders");
 }
 
 ApplicationWindow::~ApplicationWindow() 

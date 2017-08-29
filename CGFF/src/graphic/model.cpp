@@ -1,6 +1,6 @@
 #include "model.h"
 #include "graphic/shader/shaderManager.h"
-#include <QFile>
+#include "system/fileSystem/vfs.h"
 
 namespace CGFF {
 
@@ -51,7 +51,6 @@ namespace CGFF {
 		{
 			processNode(node->mChildren[i], scene);
 		}
-
 	}
 
 	void Model::processMesh(aiMesh *mesh, const aiScene *scene)
@@ -83,7 +82,6 @@ namespace CGFF {
 			QVector3D tangent = QVector3D(mesh->mTangents[i].x, mesh->mTangents[i].y, mesh->mTangents[i].z);
 			// bitangent
 			QVector3D binormal = QVector3D(mesh->mBitangents[i].x, mesh->mBitangents[i].y, mesh->mBitangents[i].z);
-			//m_meshStruct.vertices.push_back(vertex);
 			insertVertex(position, normal, uv, binormal, tangent);
 		}
 	}
@@ -96,9 +94,13 @@ namespace CGFF {
 
     bool Model::load(const QString& path)
     {
+		QString filename;
+		if (!VFS::get()->resolvePhysicalPath(path, filename))
+			qFatal("Can't load file: ", path);
+
 		//// read file via ASSIMP
 		Assimp::Importer importer;
-		const aiScene* scene = importer.ReadFile(path.toStdString(), aiProcess_Triangulate | aiProcess_FlipUVs | aiProcess_CalcTangentSpace);
+		const aiScene* scene = importer.ReadFile(filename.toStdString(), aiProcess_Triangulate | aiProcess_FlipUVs | aiProcess_CalcTangentSpace);
 		// check for errors
 		if (!scene || scene->mFlags & AI_SCENE_FLAGS_INCOMPLETE || !scene->mRootNode) // if is Not Zero
 		{
@@ -106,11 +108,8 @@ namespace CGFF {
 			return false;
 		}
 
-		m_meshStruct.clear();
-
 		m_vertices.clear();
 		m_indices.clear();
-		//m_indexMapping.clear();
 
 		// process ASSIMP's root node recursively
 		processNode(scene->mRootNode, scene);
@@ -119,8 +118,6 @@ namespace CGFF {
 		QSharedPointer<VertexArray> va = VertexArray::create();
 		va->bind();
 		QSharedPointer<VertexBuffer> buffer = VertexBuffer::create(BufferUsage::STATIC);
-		//buffer->setData(m_meshStruct.vertices.size()* sizeof(Vertex), (void*)m_meshStruct.vertices.data());
-		//buffer->setData(format.vertexBufferSize, format.vertexData);
 		buffer->setData(m_vertices.size()* sizeof(Vertex), (void*)m_vertices.data());
 
 		LayoutBuffer layout;
@@ -135,8 +132,6 @@ namespace CGFF {
 		va->pushBuffer(buffer);
 
 		QSharedPointer<IndexBuffer> ib = IndexBuffer::create((uint*)m_indices.data(), m_indices.size());
-		//QSharedPointer<IndexBuffer> ib = IndexBuffer::create((uint*)m_meshStruct.indices.data(), m_meshStruct.indices.size());
-		//QSharedPointer<IndexBuffer> ib = IndexBuffer::create((uint*)format.indexData, format.indexBufferSize / sizeof(uint));
 
 		va->unBind();
 		m_mesh = QSharedPointer<Mesh>(new Mesh(va, ib, nullptr));

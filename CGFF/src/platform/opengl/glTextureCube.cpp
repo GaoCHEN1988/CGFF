@@ -1,4 +1,5 @@
 #include "glTextureCube.h"
+#include "system/fileSystem/vfs.h"
 
 namespace CGFF {
 
@@ -9,29 +10,37 @@ namespace CGFF {
 		, m_width(0)
 		, m_height(0)
 	{
-		m_fileNames.append(filepath);
-		loadFromFiles();
+		QString file;
+		if (!VFS::get()->resolvePhysicalPath(filepath, file))
+			qFatal("Can't load file: ", filepath);
+
+		//m_fileNames.append(filepath);
+		//loadFromFiles();
+
+		//TO DO
 	}
 
 	GLTextureCube::GLTextureCube(const QString& name, const QStringList& files)
 		: m_name(name)
-		, m_fileNames(files)
 		, m_inputFormat(InputFormat::VERTICAL_CROSS)
 		, m_glTexture(QOpenGLTexture::TargetCubeMap)
 		, m_width(0)
 		, m_height(0)
 	{
+		resolvePhysicalPath(files);
+
 		loadFromFiles();
 	}
 
 	GLTextureCube::GLTextureCube(const QString& name, const QStringList& files, int mips, InputFormat format)
 		: m_name(name)
-		, m_fileNames(files)
 		, m_inputFormat(format)
 		, m_glTexture(QOpenGLTexture::TargetCubeMap)
 		, m_width(0)
 		, m_height(0)
 	{
+		resolvePhysicalPath(files);
+
 		if (m_inputFormat == InputFormat::VERTICAL_CROSS)
 			loadFromVCross(mips);
 		else
@@ -202,5 +211,21 @@ namespace CGFF {
 			delete[] cubeTextureData[i];
 		}
 		delete[] cubeTextureData;
+	}
+
+	void GLTextureCube::resolvePhysicalPath(const QStringList& files)
+	{
+		for (int i = 0; i < files.size(); i++)
+		{
+			QString physicalPath;
+			if (!VFS::get()->resolvePhysicalPath(files[i], physicalPath))
+			{
+				qFatal("Can't load file: ", files);
+				continue;
+			}
+
+			m_fileNames.append(physicalPath);
+		}
+
 	}
 }

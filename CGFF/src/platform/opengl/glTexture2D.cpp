@@ -1,6 +1,6 @@
 #include "glTexture2D.h"
-
 #include "glContext.h"
+#include "system/fileSystem/vfs.h"
 
 namespace CGFF {
 
@@ -30,13 +30,16 @@ namespace CGFF {
 
 	GLTexture2D::GLTexture2D(const QString& name, const QString& filename, TextureParameters parameters, TextureLoadOptions loadOptions)
 		: m_name(name)
-		, m_fileName(filename)
+		, m_fileName("")
 		, m_width(1)
 		, m_height(1)
 		, m_parameters(parameters)
 		, m_loadOptions(loadOptions)
 		, m_glTexture(QOpenGLTexture::Target2D)
 	{
+		if (!VFS::get()->resolvePhysicalPath(filename, m_fileName))
+			qFatal("Can't load file: ", filename);
+
 		load();
 	}
 

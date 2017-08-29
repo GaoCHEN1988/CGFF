@@ -8,8 +8,8 @@ namespace CGFF {
 		{
 		case RenderAPI::OPENGL:
 			return Shader::createFromFile("DefaultShader",
-				"src/graphic/shaders/SimpleVertexShader.vert",
-				"src/graphic/shaders/SimpleFragmentShader.frag");
+				"/shaders/SimpleVertexShader.vert",
+				"/shaders/SimpleFragmentShader.frag");
 		case RenderAPI::DIRECT3D:
 			return nullptr;
 		}
@@ -32,8 +32,8 @@ namespace CGFF {
 		{
 		case RenderAPI::OPENGL:
 			return Shader::createFromFile("BatchRenderer", 
-				"src/graphic/shaders/BatchRenderer.vert", 
-				"src/graphic/shaders/BatchRenderer.frag");
+				"/shaders/BatchRenderer.vert", 
+				"/shaders/BatchRenderer.frag");
 		case RenderAPI::DIRECT3D:
 			return nullptr;
 		}

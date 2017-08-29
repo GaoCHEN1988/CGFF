@@ -95,7 +95,7 @@ namespace CGFF {
     void ForwardRenderer::submitLightSetup(const QSharedPointer<LightSetup>& lightSetup)
     {
         auto lights = lightSetup->getLights();
-        Q_ASSERT(lights.size() <= 1);
+        Q_ASSERT(lights.size() <= 1);//To do: support multiple lights
         for (int i = 0; i < lights.size(); i++)
         {
 			memcpy(m_PSSystemUniformBuffer.data() + m_PSSystemUniformBufferOffsets[PSSystemUniformIndex_Lights], lights[i].data(), sizeof(Light));

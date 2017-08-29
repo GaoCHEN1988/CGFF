@@ -49,12 +49,12 @@ namespace CGFF {
     {
 		QStringList skybox_files =
 		{
-			"Resources/skybox/sky_xp.jpg",
-			"Resources/skybox/sky_xn.jpg",
-			"Resources/skybox/sky_yp.jpg",
-			"Resources/skybox/sky_yn.jpg",
-			"Resources/skybox/sky_zp.jpg",
-			"Resources/skybox/sky_zn.jpg"
+			"/resource/skybox/sky_xp.jpg",
+			"/resource/skybox/sky_xn.jpg",
+			"/resource/skybox/sky_yp.jpg",
+			"/resource/skybox/sky_yn.jpg",
+			"/resource/skybox/sky_zp.jpg",
+			"/resource/skybox/sky_zn.jpg"
 
 			//"Resources/skybox/interstellar_skybox/xpos.png",
 			//"Resources/skybox/interstellar_skybox/xneg.png",
@@ -78,7 +78,7 @@ namespace CGFF {
 		//}
 
 		QSharedPointer<TextureCube> environment = TextureCube::createFromFiles(skybox_files);
-		QSharedPointer<Shader> skybox = Shader::createFromFile("Skybox", "src/graphic/shaders/Skybox.vert", "src/graphic/shaders/Skybox.frag");
+		QSharedPointer<Shader> skybox = Shader::createFromFile("Skybox", "/shaders/Skybox.vert", "/shaders/Skybox.frag");
 
 		QSharedPointer<Material> skyboxMaterial = QSharedPointer<Material>(new Material(skybox));
 		skyboxMaterial->setRenderFlag(Material::RenderFlags::DISABLE_DEPTH_TEST);
@@ -89,20 +89,20 @@ namespace CGFF {
 		QSharedPointer<Entity> skyboxEntity = QSharedPointer<Entity>(new Entity(MeshFactory::CreateSkyCube(m_skyboxMaterial)));
 		m_scene->add(skyboxEntity);
 
-		QSharedPointer<Shader> pbrShader = Shader::createFromFile("AdvancedLighting", "src/graphic/shaders/AdvancedLighting.vert", "src/graphic/shaders/AdvancedLighting.frag");
+		QSharedPointer<Shader> pbrShader = Shader::createFromFile("AdvancedLighting", "/shaders/AdvancedLighting.vert", "/shaders/AdvancedLighting.frag");
 		ShaderManager::add(pbrShader);
 		QSharedPointer<PBRMaterial> material = QSharedPointer<PBRMaterial>(new PBRMaterial(pbrShader));
 
 		m_daggerMaterial = QSharedPointer<PBRMaterial>(new PBRMaterial(pbrShader));
 		m_daggerMaterial->setEnviromentMap(environment);
 		{
-			m_daggerMaterial->setAlbedoMap(Texture2D::createFromFile("Resources/Dagger/Textures/Dagger_Albedo.tga"));
-			m_daggerMaterial->setSpecularMap(Texture2D::createFromFile("Resources/Dagger/Textures/Dagger_Specular.tga"));
-			m_daggerMaterial->setGlossMap(Texture2D::createFromFile("Resources/Dagger/Textures/Dagger_Gloss.tga"));
-			m_daggerMaterial->setNormalMap(Texture2D::createFromFile("Resources/Dagger/Textures/Dagger_Normals.tga"));
+			m_daggerMaterial->setAlbedoMap(Texture2D::createFromFile("/resource/Dagger/Textures/Dagger_Albedo.tga"));
+			m_daggerMaterial->setSpecularMap(Texture2D::createFromFile("/resource/Dagger/Textures/Dagger_Specular.tga"));
+			m_daggerMaterial->setGlossMap(Texture2D::createFromFile("/resource/Dagger/Textures/Dagger_Gloss.tga"));
+			m_daggerMaterial->setNormalMap(Texture2D::createFromFile("/resource/Dagger/Textures/Dagger_Normals.tga"));
 		}
 
-		QSharedPointer<Model> daggerModel = QSharedPointer<Model>(new Model("Resources/Dagger/Dagger.obj", QSharedPointer<MaterialInstance>(new MaterialInstance(m_daggerMaterial))));
+		QSharedPointer<Model> daggerModel = QSharedPointer<Model>(new Model("/resource/Dagger/Dagger.obj", QSharedPointer<MaterialInstance>(new MaterialInstance(m_daggerMaterial))));
 		
 		QMatrix4x4 trans_dagger;
 		trans_dagger.translate(g_DaggerTransform);
@@ -116,9 +116,8 @@ namespace CGFF {
 
 		QSharedPointer<PBRMaterial> cubeMaterial = QSharedPointer<PBRMaterial>(new PBRMaterial(pbrShader));
 		cubeMaterial->setEnviromentMap(environment);
-		QSharedPointer<Model> cubeModel = QSharedPointer<Model>(new Model("Resources/RoundedCube.obj", QSharedPointer<MaterialInstance>(new MaterialInstance(cubeMaterial))));
+		QSharedPointer<Model> cubeModel = QSharedPointer<Model>(new Model("/resource/RoundedCube.obj", QSharedPointer<MaterialInstance>(new MaterialInstance(cubeMaterial))));
 		m_cube = QSharedPointer<Entity>(new Entity(cubeModel->getMesh(), trans_cube));
-		//m_cube = QSharedPointer<Entity>(new Entity(MeshFactory::CreateCube(50, QSharedPointer<MaterialInstance>(new MaterialInstance(cubeMaterial)))));
 		m_scene->add(m_cube);
 
 		QSharedPointer<LightSetup> lights = QSharedPointer<LightSetup>(new LightSetup());

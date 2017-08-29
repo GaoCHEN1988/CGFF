@@ -165,6 +165,7 @@
     <ClCompile Include="src\platform\opengl\glTextureDepth.cpp" />
     <ClCompile Include="src\platform\opengl\glVertexArray.cpp" />
     <ClCompile Include="src\platform\opengl\glVertexBuffer.cpp" />
+    <ClCompile Include="src\system\fileSystem\vfs.cpp" />
     <ClCompile Include="src\utils\qtopengl.cpp" />
   </ItemGroup>
   <ItemGroup>
@@ -277,6 +278,7 @@
     <ClInclude Include="src\platform\opengl\glTextureDepth.h" />
     <ClInclude Include="src\platform\opengl\glVertexArray.h" />
     <ClInclude Include="src\platform\opengl\glVertexBuffer.h" />
+    <ClInclude Include="src\system\fileSystem\vfs.h" />
     <ClInclude Include="src\utils\qtopengl.h" />
     <ClInclude Include="src\utils\types.h" />
   </ItemGroup>
