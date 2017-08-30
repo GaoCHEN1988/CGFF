@@ -1,6 +1,5 @@
 #include "MainWindow.h"
 #include "utils/qtopengl.h"
-#include "application/applicationWindow.h"
 
 MainWindow::MainWindow(QWidget *parent)
 	: QMainWindow(parent)
@@ -8,6 +7,10 @@ MainWindow::MainWindow(QWidget *parent)
     setupUi();
 }
 
+MainWindow::~MainWindow()
+{
+	delete applicationWindow;
+}
 void MainWindow::setupUi()
 {
     if (this->objectName().isEmpty())
@@ -17,7 +20,8 @@ void MainWindow::setupUi()
     this->setDocumentMode(false);
 
     //centralWidget = new QWidget(this);
-	centralWidget = QWidget::createWindowContainer(new ApplicationWindow, this);
+	applicationWindow = new ApplicationWindow;
+	centralWidget = QWidget::createWindowContainer(applicationWindow, this);
 
     centralWidget->setObjectName(QStringLiteral("centralWidget"));
     gridLayout = new QGridLayout(centralWidget);
@@ -52,3 +56,8 @@ void MainWindow::retranslateUi()
 {
     this->setWindowTitle(QApplication::translate("this", "CGFF", Q_NULLPTR));
 } // retranslateUi
+
+void MainWindow::closeEvent(QCloseEvent * event)
+{
+	QCoreApplication::sendEvent(applicationWindow, event);
+}

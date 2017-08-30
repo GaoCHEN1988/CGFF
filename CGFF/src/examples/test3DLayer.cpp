@@ -16,6 +16,10 @@ namespace CGFF {
 		m_rotation = 0.0f;
     }
 
+	Test3DLayer::~Test3DLayer()
+	{
+	}
+
 	QVector3D g_CubeTransform(40, 0, 0);
 	QVector3D g_DaggerTransform(20, 0, 0);
 	QVector4D g_SphereColor(0.0f, 0.0f, 0.0f, 1.0f);
@@ -191,4 +195,15 @@ namespace CGFF {
 		}
 		}
     }
+
+	void Test3DLayer::closeEvent(QEvent *event)
+	{
+		Layer3D::closeEvent(event);
+		m_Spheres.clear();
+		m_plane.clear();
+		m_dagger.clear();
+		m_cube.clear();
+		m_daggerMaterial.clear();
+		m_skyboxMaterial.clear();
+	}
 }

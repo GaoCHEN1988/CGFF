@@ -388,6 +388,15 @@
     <ClCompile Include="src\system\fileSystem\vfs.cpp">
       <Filter>Source Files\system\fileSystem</Filter>
     </ClCompile>
+    <ClCompile Include="src\entity\component\spriteComponent.cpp">
+      <Filter>Source Files\entity\component</Filter>
+    </ClCompile>
+    <ClCompile Include="src\graphic\camera\orthographicCamera.cpp">
+      <Filter>Source Files\graphic\camera</Filter>
+    </ClCompile>
+    <ClCompile Include="src\graphic\scene2D.cpp">
+      <Filter>Source Files\graphic</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <None Include="ClassDiagram.cd" />
@@ -653,6 +662,15 @@
     </ClInclude>
     <ClInclude Include="src\system\fileSystem\vfs.h">
       <Filter>Header Files\system\fileSystem</Filter>
+    </ClInclude>
+    <ClInclude Include="src\graphic\camera\orthographicCamera.h">
+      <Filter>Header Files\graphic\camera</Filter>
+    </ClInclude>
+    <ClInclude Include="src\graphic\scene2D.h">
+      <Filter>Header Files\graphic</Filter>
+    </ClInclude>
+    <ClInclude Include="src\entity\component\spriteComponent.h">
+      <Filter>Header Files\entity\component</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

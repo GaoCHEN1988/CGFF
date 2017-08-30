@@ -15,7 +15,6 @@ namespace CGFF {
         virtual ~DebugLayer() {};
 
         void init() override;
-		void init(QSharedPointer<Renderer2D> renderer, QSharedPointer<Material> material) override;
 		void render() override;
 		void tick() override;
         void resize(int width, int height) override;

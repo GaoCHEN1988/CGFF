@@ -7,7 +7,7 @@ namespace CGFF {
 	DebugLayer* DebugLayer::s_instance = nullptr;
 
     DebugLayer::DebugLayer(QSize screenSize)
-        : Layer2D(QSharedPointer<CGFF::BatchRenderer2D>(new CGFF::BatchRenderer2D(screenSize)))
+        : Layer2D()
     {
         m_isVisible = false;
 		s_instance = this;
@@ -30,24 +30,6 @@ namespace CGFF {
         DebugMenu::setVisible(true);
     }
 
-	void DebugLayer::init(QSharedPointer<Renderer2D> renderer, QSharedPointer<Material> material)
-	{
-		renderer->setRenderTarget(CGFF::RenderTarget::SCREEN);
-
-		//Test
-		m_FPSLabel = QSharedPointer<Label>(new Label("fps", 10, g_openglWidgetSize.height() - 50, 150, 50, QVector4D(1, 1, 1, 1)));
-		m_memoryUsageLabel = QSharedPointer<Label>(new Label("memory", 110, g_openglWidgetSize.height() - 50, 150, 50, QVector4D(1, 1, 1, 1)));
-		m_frametimeLabel = QSharedPointer<Label>(new Label("frametime", 210, g_openglWidgetSize.height() - 50, 150, 50, QVector4D(1, 1, 1, 1)));
-
-		add(m_FPSLabel);
-		add(m_memoryUsageLabel);
-		add(m_frametimeLabel);
-
-		//Test
-		DebugMenu::init();
-		DebugMenu::setVisible(true);
-	}
-
     void DebugLayer::render()
     {
         Layer2D::render();
@@ -62,14 +44,18 @@ namespace CGFF {
 
 	void DebugLayer::tick()
 	{
-		m_FPSLabel->setText("FPS: "+QString::number(ApplicationWindow::getApplication()->getFPS()));
+		if (m_FPSLabel)
+			m_FPSLabel->setText("FPS: "+QString::number(ApplicationWindow::getApplication()->getFPS()));
 	}
 
     void DebugLayer::resize(int width, int height)
     {
-		m_FPSLabel->position.setY(g_openglWidgetSize.height() - 50);
-		m_memoryUsageLabel->position.setY(g_openglWidgetSize.height() - 50);
-		m_frametimeLabel->position.setY(g_openglWidgetSize.height() - 50);
+		if(m_FPSLabel)
+			m_FPSLabel->position.setY(g_openglWidgetSize.height() - 50);
+		if (m_memoryUsageLabel)
+			m_memoryUsageLabel->position.setY(g_openglWidgetSize.height() - 50);
+		if (m_frametimeLabel)
+			m_frametimeLabel->position.setY(g_openglWidgetSize.height() - 50);
 		Layer2D::resize(width, height);
     }
 
@@ -128,5 +114,8 @@ namespace CGFF {
 		Layer2D::closeEvent(event);
 		DebugMenu::get()->closeEvent(event);
 		m_tempSprites.clear();
+		m_FPSLabel.clear();
+		m_memoryUsageLabel.clear();
+		m_frametimeLabel.clear();
 	}
 }

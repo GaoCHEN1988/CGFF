@@ -5,7 +5,7 @@ namespace CGFF {
     namespace UI {
 
 	Panel::Panel()
-		: Layer2D(QSharedPointer<CGFF::BatchRenderer2D>(new CGFF::BatchRenderer2D(ApplicationWindow::getApplication()->size())))
+		: Layer2D()
 	{
         //ApplicationWidget::getApplication()->pushOverlay(QSharedPointer<Panel>(this));
 	}

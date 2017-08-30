@@ -11,7 +11,7 @@ namespace CGFF {
 		GLTextureCube(const QString& name, const QString& filepath);
 		GLTextureCube(const QString& name, const QStringList& files);
 		GLTextureCube(const QString& name, const QStringList& files, int mips, InputFormat format);
-		virtual ~GLTextureCube() {};
+		virtual ~GLTextureCube();
 
 		void bind(uint slot = 0) override;
 		void unBind(uint slot = 0) override;

@@ -3,8 +3,7 @@
 namespace CGFF {
 
     Test2DLayer::Test2DLayer(QSize size, QObject *parent)
-        : Layer2D(QSharedPointer<CGFF::BatchRenderer2D>(new CGFF::BatchRenderer2D(size))
-			, QMatrix4x4(), parent)
+        : Layer2D(QMatrix4x4(), parent)
         , m_size(size)
     {
     }

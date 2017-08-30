@@ -76,6 +76,7 @@ namespace CGFF {
     public:
 
         MaterialInstance(QSharedPointer<Material> material);
+		virtual ~MaterialInstance();
         void bind();
         void unbind();
 

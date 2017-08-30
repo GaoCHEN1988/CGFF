@@ -31,7 +31,7 @@ namespace CGFF {
 		virtual void endScene() = 0;
         virtual void end() = 0;
         virtual void flush() = 0;
-
+		virtual void close() {};
 		virtual void setScreenBufferSize(int width, int height) { m_screenBufferWidth = width; m_screenBufferHeight = height; }
 
     protected:

@@ -126,6 +126,11 @@ namespace CGFF {
 
     }
 
+	void ForwardRenderer::close()
+	{
+		m_commandQueue.clear();
+	}
+
 	void ForwardRenderer::setSystemUniforms(QSharedPointer<Shader> shader)
 	{
 		// TODO: Set per-mesh buffer to slot 1

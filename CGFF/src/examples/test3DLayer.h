@@ -15,7 +15,7 @@ namespace CGFF {
     {
     public:
         Test3DLayer();
-        virtual~Test3DLayer() {};
+        virtual ~Test3DLayer();
 
         void init() override;
 		void render() override;
@@ -25,6 +25,7 @@ namespace CGFF {
         void mouseMoveEvent(QMouseEvent *event) override;
         void mouseReleaseEvent(QMouseEvent *event) override;
         void keyPressEvent(QKeyEvent *event) override;
+		void closeEvent(QEvent *event) override;
 
     private:
 

@@ -47,6 +47,10 @@ namespace CGFF {
 			qFatal("Horizontal cross not implemented!");
 	}
 
+	GLTextureCube::~GLTextureCube()
+	{
+	}
+
 	void GLTextureCube::bind(uint slot)
 	{
 		m_glTexture.bind(slot);

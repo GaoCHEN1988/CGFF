@@ -1,11 +1,11 @@
 #ifndef CGFF_LABEL_H
 #define CGFF_LABEL_H
 
-#include "renderable2d.h"
+#include "sprite.h"
 
 namespace CGFF {
 
-	class Label : public Renderable2D
+	class Label : public Sprite
 	{
 	public:
 		Label(QString text, float x, float y, int width, int height, QVector4D color);

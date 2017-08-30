@@ -71,4 +71,10 @@ namespace CGFF {
 		m_camera = camera;
 		m_camera->focus();
 	}
+
+	void Scene::close()
+	{
+		m_entities.clear();
+		m_lightSetupStack.clear();
+	}
 }

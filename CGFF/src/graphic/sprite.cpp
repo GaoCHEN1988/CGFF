@@ -2,6 +2,13 @@
 
 namespace CGFF {
 
+	Sprite::Sprite()
+		: Renderable2D()
+		, position(m_position)
+		, size(m_size)
+	{
+	}
+
     Sprite::Sprite(QSharedPointer<Texture2D> texture)
         : Renderable2D(QVector3D(0.0f, 0.0f, 0.0f), 
             QVector2D((float)texture->getWidth(), (float)texture->getHeight()), 
@@ -11,6 +18,7 @@ namespace CGFF {
     {
         m_texture = texture;
     }
+
     Sprite::Sprite(float x, float y, QSharedPointer<Texture2D> texture)
         : Renderable2D(QVector3D(x, y, 0.0f),
             QVector2D((float)texture->getWidth(), (float)texture->getHeight()),
@@ -34,6 +42,11 @@ namespace CGFF {
         , size(m_size)
 	{
 		m_texture = texture;
+	}
+
+	Sprite::~Sprite()
+	{
+		m_texture.clear();
 	}
 
     void Sprite::setUV(const QVector<QVector2D>& uv)

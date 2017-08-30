@@ -1,5 +1,5 @@
-#ifndef MESH_COMPONENTS_H
-#define MESH_COMPONENTS_H
+#ifndef CGFF_MESH_COMPONENTS_H
+#define CGFF_MESH_COMPONENTS_H
 
 #include "component.h"
 #include "graphic/mesh.h"

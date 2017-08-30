@@ -103,6 +103,7 @@
     <ClCompile Include="src\debug\debugMenuSlider.cpp" />
     <ClCompile Include="src\entity\component\component.cpp" />
     <ClCompile Include="src\entity\component\meshComponent.cpp" />
+    <ClCompile Include="src\entity\component\spriteComponent.cpp" />
     <ClCompile Include="src\entity\component\transformComponent.cpp" />
     <ClCompile Include="src\entity\entity.cpp" />
     <ClCompile Include="src\examples\test2DLayer.cpp" />
@@ -122,6 +123,7 @@
     <ClCompile Include="src\graphic\camera\camera.cpp" />
     <ClCompile Include="src\graphic\camera\fpsCamea.cpp" />
     <ClCompile Include="src\graphic\camera\mayaCamera.cpp" />
+    <ClCompile Include="src\graphic\camera\orthographicCamera.cpp" />
     <ClCompile Include="src\graphic\forwardRenderer.cpp" />
     <ClCompile Include="src\graphic\label.cpp" />
     <ClCompile Include="src\graphic\layer\group.cpp" />
@@ -133,6 +135,7 @@
     <ClCompile Include="src\graphic\model.cpp" />
     <ClCompile Include="src\graphic\pbrMaterial.cpp" />
     <ClCompile Include="src\graphic\renderer.cpp" />
+    <ClCompile Include="src\graphic\scene2D.cpp" />
     <ClCompile Include="src\graphic\shader\shader.cpp" />
     <ClCompile Include="src\graphic\shader\shaderFactory.cpp" />
     <ClCompile Include="src\graphic\shader\shaderManager.cpp" />
@@ -208,6 +211,7 @@
     <ClInclude Include="src\entity\component\component.h" />
     <ClInclude Include="src\entity\component\components.h" />
     <ClInclude Include="src\entity\component\meshComponent.h" />
+    <ClInclude Include="src\entity\component\spriteComponent.h" />
     <ClInclude Include="src\entity\component\transformComponent.h" />
     <ClInclude Include="src\entity\entity.h" />
     <ClInclude Include="src\examples\test2DLayer.h" />
@@ -228,6 +232,7 @@
     <ClInclude Include="src\graphic\camera\camera.h" />
     <ClInclude Include="src\graphic\camera\fpsCamera.h" />
     <ClInclude Include="src\graphic\camera\mayaCamera.h" />
+    <ClInclude Include="src\graphic\camera\orthographicCamera.h" />
     <ClInclude Include="src\graphic\forwardRenderer.h" />
     <ClInclude Include="src\graphic\irenderable.h" />
     <ClInclude Include="src\graphic\label.h" />
@@ -251,6 +256,7 @@
     <ClInclude Include="src\graphic\renderer2d.h" />
     <ClInclude Include="src\graphic\renderer3d.h" />
     <ClInclude Include="src\graphic\scene.h" />
+    <ClInclude Include="src\graphic\scene2D.h" />
     <ClInclude Include="src\graphic\shader\shader.h" />
     <ClInclude Include="src\graphic\shader\shaderFactory.h" />
     <ClInclude Include="src\graphic\shader\shaderManager.h" />

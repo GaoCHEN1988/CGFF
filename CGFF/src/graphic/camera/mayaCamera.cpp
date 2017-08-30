@@ -7,6 +7,7 @@ namespace CGFF {
         : Camera(projectionMatrix)
 		, m_isLeftPressed(false)
 		, m_isRightPressed(false)
+		, m_isMiddlePressed(false)
     {
         // Sensible defaults
         m_panSpeed = 0.001f;

@@ -1,5 +1,5 @@
-#ifndef COMPONENT_H
-#define COMPONENT_H
+#ifndef CGFF_COMPONENT_H
+#define CGFF_COMPONENT_H
 
 #include <QString>
 #include <QSharedPointer>

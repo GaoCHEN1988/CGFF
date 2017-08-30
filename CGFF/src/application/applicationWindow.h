@@ -42,6 +42,7 @@ private:
 	void mouseReleaseEvent(QMouseEvent *event) Q_DECL_OVERRIDE;
 	void keyPressEvent(QKeyEvent *event) Q_DECL_OVERRIDE;
 	bool event(QEvent *event) Q_DECL_OVERRIDE;
+
 private:
 	QVector<QSharedPointer<CGFF::Layer>> m_layerStack;
 	QVector<QSharedPointer<CGFF::Layer>> m_overLayerStack;

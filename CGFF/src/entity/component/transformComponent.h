@@ -1,5 +1,5 @@
-#ifndef TRANSFORM_COMPONENTS_H
-#define TRANSFORM_COMPONENTS_H
+#ifndef CGFF_TRANSFORM_COMPONENTS_H
+#define CGFF_TRANSFORM_COMPONENTS_H
 
 #include "maths/qtmaths.h"
 #include "component.h"

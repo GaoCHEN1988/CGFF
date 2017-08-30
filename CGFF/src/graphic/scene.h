@@ -20,6 +20,7 @@ namespace CGFF {
         QSharedPointer<LightSetup> popLightSetup();
         void render(QSharedPointer<Renderer3D>& renderer);
 		void setCamera(QSharedPointer<Camera> camera);
+		void close();
    
         inline const QSharedPointer<Camera>& getCamera() const { return m_camera; }
         inline const QVector<QSharedPointer<Entity>>& getEntities() const { return m_entities; }

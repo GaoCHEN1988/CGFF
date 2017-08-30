@@ -21,6 +21,7 @@ namespace CGFF {
 		void endScene() override;
 		void end() override;
         void flush() override;
+		void close() override;
 
     private:
         //void setRequiredUniforms(QSharedPointer<QOpenGLShaderProgram> shader, const QVector<RendererUniform>& uniforms);

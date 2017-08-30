@@ -4,7 +4,7 @@
 namespace CGFF {
 
 	Label::Label(QString text, float x, float y, int width, int height, QVector4D color)
-		: Renderable2D()
+		: Sprite()
 		, m_text(text)
 		, position(m_position)
 	{

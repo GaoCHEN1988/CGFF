@@ -12,6 +12,7 @@ namespace CGFF {
 
     Material::~Material()
     {
+		m_textures.clear();
     }
 
     void Material::bind() const
@@ -151,6 +152,11 @@ namespace CGFF {
 		m_renderFlags = material->m_renderFlags;
     }
 
+	MaterialInstance::~MaterialInstance()
+	{
+		m_textures.clear();
+	}
+
     void MaterialInstance::bind()
     {
         m_material->bind();
@@ -263,24 +269,4 @@ namespace CGFF {
 		}
 		return nullptr;
 	}
-
-    //void MaterialInstance::unsetUniform(const QString& name, bool unset)
-    //{
-    //    int key = m_material->getShader()->uniformLocation(name);
-    //    m_unsetUniformMap[key] = unset;
-    //    m_isRendererData = false;
-    //}
-   
-    //void MaterialInstance::setRendererUniform(const RendererUniform& uniform)
-    //{
-    //    int index = m_material->getShader()->uniformLocation(uniform.uniform);
-    //    if (-1 == index)
-    //    {
-    //        qFatal("Could not find uniform %s", uniform.uniform);
-    //    }
-
-    //    m_rUniformDatas[index] = uniform;
-
-    //    m_isRendererData = true;
-    //}
 }

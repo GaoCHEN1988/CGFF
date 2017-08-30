@@ -274,8 +274,9 @@ void ApplicationWindow::keyPressEvent(QKeyEvent *event)
 
 bool ApplicationWindow::event(QEvent *event)
 {
+	QEvent::Type t = event->type();
 	if (event->type() == QEvent::Close)
-	{
+	{	 
 		for (auto layer : m_layerStack)
 		{
 			layer->closeEvent(event);
@@ -288,7 +289,8 @@ bool ApplicationWindow::event(QEvent *event)
 			//QCoreApplication::sendEvent(overLayer.data(), event);
 		}
 
-		m_debugLayer->closeEvent(event);	
+		if(!m_debugLayer.isNull())
+			m_debugLayer->closeEvent(event);	
 		//QCoreApplication::sendEvent(m_debugLayer.data(), event);
 	}
 

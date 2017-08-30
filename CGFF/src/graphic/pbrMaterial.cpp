@@ -28,6 +28,7 @@ namespace CGFF {
 
 	PBRMaterial::~PBRMaterial()
 	{
+		s_preintegratedFG.clear();
 	}
 
 	void PBRMaterial::setEnviromentMap(QSharedPointer<TextureCube> texture)
