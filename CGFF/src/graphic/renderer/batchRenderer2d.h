@@ -1,21 +1,17 @@
 #ifndef CGFF_BATCH_RENDERER_2D_H
 #define CGFF_BATCH_RENDERER_2D_H
 
-#include "../utils/types.h"
-#include "../maths/qtmaths.h"
+#include "utils/types.h"
+#include "maths/qtmaths.h"
 #include "renderer2d.h"
-#include "renderable2d.h"
-//#include "meshFactory.h"
+#include "graphic/renderable2d.h"
+#include "graphic/api/framebuffer2D.h"
+#include "graphic/api/vertexArray.h"
+#include "graphic/api/indexBuffer.h"
+
 #include <cstddef>
 #include <QPainter>
-
-//#include <QOpenGLBuffer>
-//#include <QOpenGLVertexArrayObject>
 #include <QOpenGLFramebufferObject>
-
-#include "api/framebuffer2D.h"
-#include "api/vertexArray.h"
-#include "api/indexBuffer.h"
 
 namespace CGFF {
 

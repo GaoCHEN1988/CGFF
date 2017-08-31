@@ -2,7 +2,7 @@
 #include "examples/test2DLayer.h"
 #include "examples/test3DLayer.h"
 #include "graphic/api/context.h"
-#include "graphic/renderer.h"
+#include "graphic/renderer/renderer.h"
 #include "system/fileSystem/vfs.h"
 
 ApplicationWindow * ApplicationWindow::m_instance = nullptr;

@@ -1,5 +1,5 @@
-#ifndef DEBUG_MENU_SLIDER_H
-#define DEBUG_MENU_SLIDER_H
+#ifndef CGFF_DEBUG_MENU_SLIDER_H
+#define CGFF_DEBUG_MENU_SLIDER_H
 
 namespace CGFF {
 

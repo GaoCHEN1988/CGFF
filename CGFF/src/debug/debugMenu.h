@@ -1,8 +1,8 @@
-#ifndef DEBUG_MENU_H
-#define DEBUG_MENU_H
+#ifndef CGFF_DEBUG_MENU_H
+#define CGFF_DEBUG_MENU_H
 
 //#include "debugMenuAction.h"
-#include "graphic/renderer2d.h"
+#include "graphic/renderer/renderer2d.h"
 #include "graphic/ui/slider.h"
 #include "graphic/ui/panel.h"
 #include "debugMenuItem.h"

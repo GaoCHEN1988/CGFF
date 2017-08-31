@@ -1,5 +1,5 @@
-#ifndef DEBUG_MENU_ACTION_H
-#define DEBUG_MENU_ACTION_H
+#ifndef CGFF_DEBUG_MENU_ACTION_H
+#define CGFF_DEBUG_MENU_ACTION_H
 
 #include <QString>
 #include <QSharedPointer>

@@ -3,19 +3,20 @@
 
 #include "layer.h"
 #include "graphic/scene.h"
-#include "graphic/renderer3d.h"
-#include "graphic/forwardRenderer.h"
+#include "graphic/renderer/renderer3d.h"
+#include "graphic/renderer/forwardRenderer.h"
 
 namespace CGFF {
 
     class Layer3D : public Layer
     {
     public:
-        Layer3D(QSharedPointer<Scene> scene, QSharedPointer<Renderer3D> renderer = QSharedPointer<Renderer3D>(new ForwardRenderer()));
+        Layer3D(QSharedPointer<Scene> scene, QSharedPointer<Renderer3D> renderer = QSharedPointer<ForwardRenderer>(new ForwardRenderer()));
         virtual ~Layer3D();
 
         virtual void init() override;
 		virtual void render() override;
+		virtual void render(QSharedPointer<Renderer3D>& renderer) {};
 		virtual void resize(int width, int height) override;
 		virtual void closeEvent(QEvent *event) override;
 

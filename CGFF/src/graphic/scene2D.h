@@ -1,7 +1,7 @@
 #ifndef CGFF_SCENE_2D_H
 #define CGFF_SCENE_2D_H
 
-#include "batchRenderer2d.h"
+#include "renderer/batchRenderer2d.h"
 #include "entity/entity.h"
 #include "camera/orthographicCamera.h"
 

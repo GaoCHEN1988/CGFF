@@ -30,13 +30,11 @@ namespace CGFF {
         DebugMenu::setVisible(true);
     }
 
-    void DebugLayer::render()
+    void DebugLayer::render(QSharedPointer<Renderer2D>& renderer)
     {
-        Layer2D::render();
-
         if (DebugMenu::isVisible())
         {
-            DebugMenu::get()->render(m_renderer);
+            DebugMenu::get()->render(renderer);
         }
 
 		m_tempSprites.clear();

@@ -3,10 +3,10 @@
 
 #include "utils/qtopengl.h"
 #include "maths/qtmaths.h"
-#include "mask.h"
-#include "postfx/postEffects.h"
-#include "api/texture.h"
-#include "camera/camera.h"
+#include "graphic/mask.h"
+#include "graphic/postfx/postEffects.h"
+#include "graphic/api/texture.h"
+#include "graphic/camera/camera.h"
 
 namespace CGFF {
 

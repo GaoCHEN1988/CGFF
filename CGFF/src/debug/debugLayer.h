@@ -1,5 +1,5 @@
-#ifndef DEBUG_LAYER_H
-#define DEBUG_LAYER_H
+#ifndef CGFF_DEBUG_LAYER_H
+#define CGFF_DEBUG_LAYER_H
 
 #include "graphic/layer/layer2D.h"
 #include "graphic/sprite.h"
@@ -15,7 +15,7 @@ namespace CGFF {
         virtual ~DebugLayer() {};
 
         void init() override;
-		void render() override;
+		void render(QSharedPointer<Renderer2D>& renderer) override;
 		void tick() override;
         void resize(int width, int height) override;
 		void closeEvent(QEvent *event) override;

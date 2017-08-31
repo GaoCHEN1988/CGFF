@@ -1,7 +1,7 @@
 #ifndef CGFF_SCENE_H
 #define CGFF_SCENE_H
 
-#include "renderer3d.h"
+#include "renderer/renderer3d.h"
 #include "entity/entity.h"
 #include "camera/camera.h"
 #include "camera/mayaCamera.h"

@@ -1,10 +1,10 @@
 #ifndef CGFF_RENDERER_3D_H
 #define CGFF_RENDERER_3D_H
 
-#include "mesh.h"
-#include "renderCommand.h"
-#include "camera/camera.h"
-#include "lightSetup.h"
+#include "graphic/mesh.h"
+#include "graphic/renderCommand.h"
+#include "graphic/camera/camera.h"
+#include "graphic/lightSetup.h"
 
 namespace CGFF {
 

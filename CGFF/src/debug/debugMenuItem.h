@@ -1,5 +1,5 @@
-#ifndef DEBUG_MENU_ITEM_H
-#define DEBUG_MENU_ITEM_H
+#ifndef CGFF_DEBUG_MENU_ITEM_H
+#define CGFF_DEBUG_MENU_ITEM_H
 
 //#include "debugMenuAction.h"
 #include "graphic/ui/button.h"

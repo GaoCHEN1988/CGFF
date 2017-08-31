@@ -1,7 +1,7 @@
 #ifndef CGFF_GL_RENDERER_H
 #define CGFF_GL_RENDERER_H
 
-#include "graphic/renderer.h"
+#include "graphic/renderer/renderer.h"
 #include "glContext.h"
 
 namespace CGFF {

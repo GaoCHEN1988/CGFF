@@ -3,7 +3,7 @@
 
 #include "layer.h"
 #include "../mask.h"
-#include "graphic/batchRenderer2d.h"
+#include "graphic/renderer/batchRenderer2d.h"
 #include "graphic/scene2D.h"
 
 namespace CGFF {

@@ -18,6 +18,7 @@ namespace CGFF {
     void Layer3D::render()
     {
         m_scene->render(m_renderer);
+		render(m_renderer);
         m_renderer->flush();
     }
 

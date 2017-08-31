@@ -172,9 +172,6 @@
     <ClCompile Include="GeneratedFiles\Release\moc_mainWindow.cpp">
       <Filter>Generated Files\Release</Filter>
     </ClCompile>
-    <ClCompile Include="src\graphic\batchRenderer2d.cpp">
-      <Filter>Source Files\graphic</Filter>
-    </ClCompile>
     <ClCompile Include="src\graphic\sprite.cpp">
       <Filter>Source Files\graphic</Filter>
     </ClCompile>
@@ -189,9 +186,6 @@
     </ClCompile>
     <ClCompile Include="src\graphic\meshFactory.cpp">
       <Filter>Source Files\graphic</Filter>
-    </ClCompile>
-    <ClCompile Include="src\debug\debugLayer.cpp">
-      <Filter>Source Files\debug</Filter>
     </ClCompile>
     <ClCompile Include="src\debug\debugMenu.cpp">
       <Filter>Source Files\debug</Filter>
@@ -286,9 +280,6 @@
     <ClCompile Include="src\graphic\postfx\postEffects.cpp">
       <Filter>Source Files\graphic\postfx</Filter>
     </ClCompile>
-    <ClCompile Include="src\graphic\forwardRenderer.cpp">
-      <Filter>Source Files\graphic</Filter>
-    </ClCompile>
     <ClCompile Include="src\graphic\API\context.cpp">
       <Filter>Source Files\graphic\api</Filter>
     </ClCompile>
@@ -324,9 +315,6 @@
     </ClCompile>
     <ClCompile Include="src\graphic\api\framebuffer2D.cpp">
       <Filter>Source Files\graphic\api</Filter>
-    </ClCompile>
-    <ClCompile Include="src\graphic\renderer.cpp">
-      <Filter>Source Files\graphic</Filter>
     </ClCompile>
     <ClCompile Include="src\graphic\api\framebuffer.cpp">
       <Filter>Source Files\graphic\api</Filter>
@@ -400,6 +388,18 @@
     <ClCompile Include="src\maths\aabb.cpp">
       <Filter>Source Files\maths</Filter>
     </ClCompile>
+    <ClCompile Include="src\graphic\renderer\forwardRenderer.cpp">
+      <Filter>Source Files\graphic</Filter>
+    </ClCompile>
+    <ClCompile Include="src\graphic\renderer\batchRenderer2d.cpp">
+      <Filter>Source Files\graphic</Filter>
+    </ClCompile>
+    <ClCompile Include="src\graphic\renderer\renderer.cpp">
+      <Filter>Source Files\graphic</Filter>
+    </ClCompile>
+    <ClCompile Include="src\debug\debugLayer.cpp">
+      <Filter>Generated Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <None Include="ClassDiagram.cd" />
@@ -435,9 +435,6 @@
     <ClInclude Include="src\graphic\ui\internalUI.h">
       <Filter>Header Files\graphic</Filter>
     </ClInclude>
-    <ClInclude Include="src\graphic\forwardRenderer.h">
-      <Filter>Header Files\graphic</Filter>
-    </ClInclude>
     <ClInclude Include="src\debug\debugMenuSlider.h">
       <Filter>Header Files\debug</Filter>
     </ClInclude>
@@ -448,9 +445,6 @@
       <Filter>Header Files\debug</Filter>
     </ClInclude>
     <ClInclude Include="src\debug\debugMenuItem.h">
-      <Filter>Header Files\debug</Filter>
-    </ClInclude>
-    <ClInclude Include="src\debug\debugLayer.h">
       <Filter>Header Files\debug</Filter>
     </ClInclude>
     <ClInclude Include="src\graphic\camera\camera.h">
@@ -501,19 +495,10 @@
     <ClInclude Include="src\graphic\renderable2d.h">
       <Filter>Header Files\graphic</Filter>
     </ClInclude>
-    <ClInclude Include="src\graphic\renderer2d.h">
-      <Filter>Header Files\graphic</Filter>
-    </ClInclude>
     <ClInclude Include="src\graphic\sprite.h">
       <Filter>Header Files\graphic</Filter>
     </ClInclude>
     <ClInclude Include="src\graphic\meshFactory.h">
-      <Filter>Header Files\graphic</Filter>
-    </ClInclude>
-    <ClInclude Include="src\graphic\batchRenderer2d.h">
-      <Filter>Header Files\graphic</Filter>
-    </ClInclude>
-    <ClInclude Include="src\graphic\renderer3d.h">
       <Filter>Header Files\graphic</Filter>
     </ClInclude>
     <ClInclude Include="src\graphic\renderCommand.h">
@@ -609,9 +594,6 @@
     <ClInclude Include="src\graphic\api\framebuffer2D.h">
       <Filter>Header Files\graphic\api</Filter>
     </ClInclude>
-    <ClInclude Include="src\graphic\renderer.h">
-      <Filter>Header Files\graphic</Filter>
-    </ClInclude>
     <ClInclude Include="src\graphic\api\framebuffer.h">
       <Filter>Header Files\graphic\api</Filter>
     </ClInclude>
@@ -677,6 +659,24 @@
     </ClInclude>
     <ClInclude Include="src\maths\aabb.h">
       <Filter>Header Files\maths</Filter>
+    </ClInclude>
+    <ClInclude Include="src\graphic\renderer\forwardRenderer.h">
+      <Filter>Header Files\graphic</Filter>
+    </ClInclude>
+    <ClInclude Include="src\graphic\renderer\batchRenderer2d.h">
+      <Filter>Header Files\graphic</Filter>
+    </ClInclude>
+    <ClInclude Include="src\graphic\renderer\renderer3d.h">
+      <Filter>Header Files\graphic</Filter>
+    </ClInclude>
+    <ClInclude Include="src\graphic\renderer\renderer2d.h">
+      <Filter>Header Files\graphic</Filter>
+    </ClInclude>
+    <ClInclude Include="src\graphic\renderer\renderer.h">
+      <Filter>Header Files\graphic</Filter>
+    </ClInclude>
+    <ClInclude Include="src\debug\debugLayer.h">
+      <Filter>Generated Files</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

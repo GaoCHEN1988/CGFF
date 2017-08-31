@@ -1,10 +1,10 @@
 #include "batchRenderer2d.h"
-#include "meshFactory.h"
+#include "graphic/meshFactory.h"
 
-#include "api/vertexBuffer.h"
-#include "api/layoutBuffer.h"
+#include "graphic/api/vertexBuffer.h"
+#include "graphic/api/layoutBuffer.h"
 #include "renderer.h"
-#include "shader/shaderFactory.h"
+#include "graphic/shader/shaderFactory.h"
 
 namespace CGFF {
 
