@@ -397,6 +397,9 @@
     <ClCompile Include="src\graphic\scene2D.cpp">
       <Filter>Source Files\graphic</Filter>
     </ClCompile>
+    <ClCompile Include="src\maths\aabb.cpp">
+      <Filter>Source Files\maths</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <None Include="ClassDiagram.cd" />
@@ -671,6 +674,9 @@
     </ClInclude>
     <ClInclude Include="src\entity\component\spriteComponent.h">
       <Filter>Header Files\entity\component</Filter>
+    </ClInclude>
+    <ClInclude Include="src\maths\aabb.h">
+      <Filter>Header Files\maths</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

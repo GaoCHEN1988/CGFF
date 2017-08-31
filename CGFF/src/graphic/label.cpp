@@ -1,5 +1,4 @@
 #include "label.h"
-#include <QPainter>
 
 namespace CGFF {
 

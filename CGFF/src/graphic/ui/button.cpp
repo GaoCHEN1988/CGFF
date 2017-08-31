@@ -10,6 +10,7 @@ namespace CGFF {
         , m_state(ButtonState::UNPRESSED)
 		, m_font(QFont("Sans"))
 	{
+		m_font.setPixelSize(20);
 	}
 
 	bool Button::onMousePressed(QMouseEvent* e)
