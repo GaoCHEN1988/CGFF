@@ -7,15 +7,17 @@ namespace CGFF {
 		: Sprite()
 		, m_text(text)
 		, position(m_position)
+		, m_font(QFont("Sans"))
 	{
 		m_position = QVector3D(x, y, 0);
 		m_color = color;
         m_size = QVector2D(width, height);
+		m_font.setPixelSize(height);
 	}
 
 	void Label::submit(QSharedPointer<Renderer2D> renderer)
 	{
-        renderer->drawString(m_text, m_position, (int)m_size.x(), (int)m_size.y(),  m_color);
+        renderer->drawString(m_text, m_position, m_color, m_font);
 	}
 
     void Label::setText(const QString& text)

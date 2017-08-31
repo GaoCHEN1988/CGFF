@@ -2,6 +2,8 @@
 #include "Debug/debugMenu.h"
 #include <QImageReader>
 
+#define DEBUG_MENU(name, var, min, max) DebugMenu::add("Test3D/" ## name, var, min, max)
+
 namespace CGFF {
 
     Test3DLayer::Test3DLayer()
@@ -129,9 +131,13 @@ namespace CGFF {
 		lights->add(m_light);
 		m_scene->pushLightSetup(lights);
 
-		DebugMenu::add("Light Direction", &lights->getLights()[0]->direction, -1.0f, 1.0f);
-		DebugMenu::add("Light Intensity", &lights->getLights()[0]->intensity, 0, 100);
-		DebugMenu::add("Dagger", &g_DaggerTransform, 0, 100);
+		//DebugMenu::add("Light Direction", &lights->getLights()[0]->direction, -1.0f, 1.0f);
+		//DebugMenu::add("Light Intensity", &lights->getLights()[0]->intensity, 0, 100);
+		//DebugMenu::add("Dagger", &g_DaggerTransform, 0, 100);
+
+		DEBUG_MENU("Light Direction", &lights->getLights()[0]->direction, -1.0f, 1.0f);
+		DEBUG_MENU("Light Intensity", &lights->getLights()[0]->intensity, 0, 100);
+		DEBUG_MENU("Dagger", &g_DaggerTransform, 0, 100);
     }
 
     void Test3DLayer::render()

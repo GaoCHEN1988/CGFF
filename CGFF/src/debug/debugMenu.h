@@ -10,7 +10,8 @@
 namespace CGFF {
 
 	struct IAction;
-    typedef QVector<QSharedPointer<IAction>> ActionList;
+	struct PathAction;
+	typedef QVector<QSharedPointer<IAction>> ActionList;
 
     struct DebugMenuSettings
     {
@@ -22,6 +23,8 @@ namespace CGFF {
     {
     private:
         DebugMenu();
+		QSharedPointer<PathAction> createOrFindPaths(QStringList& paths, QSharedPointer<PathAction> action = nullptr);
+		void refresh();
 
     public:
         static void init()
@@ -29,17 +32,22 @@ namespace CGFF {
             static DebugMenu instance;
         };
 
-        static void add(QString name);
-		static void add(const QString& name, bool* value);
-        static void add(const QString& name, float* value);
-        static void add(const QString& name, float* value, float minimum, float maximum);
-		static void add(const QString& name, QVector2D* value, float minimum = 0.0f, float maximum = 100.0f);
-		static void add(const QString& name, QVector3D* value, float minimum = 0.0f, float maximum = 100.0f);
-		static void add(const QString& name, QVector4D* value, float minimum = 0.0f, float maximum = 100.0f);
-		static void remove(const QString& name);
+		static void add(const QString& path, QSharedPointer<IAction> action);
+        static void add(const QString& path);
+		static void add(const QString& path, const std::function<void()>& function);
+		static void add(const QString& path, bool* value);
+        static void add(const QString& path, float* value);
+        static void add(const QString& path, float* value, float minimum, float maximum);
+		static void add(const QString& path, QVector2D* value, float minimum = 0.0f, float maximum = 100.0f);
+		static void add(const QString& path, QVector3D* value, float minimum = 0.0f, float maximum = 100.0f);
+		static void add(const QString& path, QVector4D* value, float minimum = 0.0f, float maximum = 100.0f);
+		static void remove(const QString& path);
+
+		QSharedPointer<PathAction> findPath(const QString& path);
 
         static DebugMenu* get();
         static DebugMenuSettings& getSettings();
+		static void setPath(QSharedPointer<PathAction> path);
 
         static bool isVisible();
         static void setVisible(bool visible);
@@ -63,11 +71,9 @@ namespace CGFF {
         bool m_visible;
         DebugMenuSettings m_settings;
         ActionList m_actionList;
-        float m_padding, m_fontSize;
-
+		QSharedPointer<PathAction> m_path;
         QSharedPointer<UI::Panel> m_panel;
         QVector<QSharedPointer<UI::Slider>> m_sliders;
-
 		QString m_lastEditedName;
     };
 }

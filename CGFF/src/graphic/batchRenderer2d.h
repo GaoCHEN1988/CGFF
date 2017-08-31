@@ -56,7 +56,7 @@ namespace CGFF {
 
 		void begin() override;
 		void submit(QSharedPointer<Renderable2D>& renderable) override;
-        void drawString(QString text, const QVector3D& position, int width, int height, QVector4D& color, QFont font = QFont("Sans")) override;
+        void drawString(QString text, const QVector3D& position, QVector4D& color, QFont font) override;
 		void flush() override;
 		void end() override;
 		void close() override;

@@ -19,6 +19,7 @@ namespace CGFF {
 
 	private:
 		QString m_text;
+		QFont m_font;
 	};
 
 }

@@ -8,8 +8,8 @@ namespace CGFF {
         , m_label(label)
         , m_actionHandler(handler)
         , m_state(ButtonState::UNPRESSED)
+		, m_font(QFont("Sans"))
 	{
-		m_font = QFont("Sans");
 	}
 
 	bool Button::onMousePressed(QMouseEvent* e)
@@ -52,7 +52,7 @@ namespace CGFF {
 
 		renderer->fillRect(m_bounds, m_state == ButtonState::PRESSED ? QVector4D(0.984f, 0.733f, 0.733f, 0.733f) : QVector4D(0.498f, 0.498f, 0.498f, 0.498f));
         ////test
-		renderer->drawString(m_label, QVector3D(m_bounds.topLeft().x() + 0.2f, m_bounds.topLeft().y()+0.7f, 0.0f), 300, 40, QVector4D(1.0f, 1.0f, 1.0f, 1.0f), m_font);
+		renderer->drawString(m_label, QVector3D(m_bounds.topLeft().x() + 0.2f, m_bounds.topLeft().y()+0.7f, 0.0f), QVector4D(1.0f, 1.0f, 1.0f, 1.0f), m_font);
 	}
 
 } }

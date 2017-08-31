@@ -292,23 +292,23 @@ namespace CGFF {
 		m_indexCount += 6;
 	}
 
-    void BatchRenderer2D::drawString(QString text, const QVector3D& position, int width, int height, QVector4D& color, QFont font)
+    void BatchRenderer2D::drawString(QString text, const QVector3D& position, QVector4D& color, QFont font)
     {
         //Test
         int size = font.pixelSize();
-        int width_ = size * 5;
+        int width_ = size * text.size();
         int height_ = size;
 
         // create the QImage and draw txt into it
-        QImage textimg(width, height, QImage::Format_ARGB32);
+        QImage textimg(width_, height_, QImage::Format_ARGB32);
         {
             QPainter painter(&textimg);
             textimg.fill(Qt::transparent);
             painter.setBrush(QColor(color.x() * 255, color.y() * 255, color.z() * 255, color.w() * 255));
             painter.setPen(QColor(color.x() * 255, color.y() * 255, color.z() * 255, color.w() * 255));
-            font.setPixelSize(height*0.8);
+            //font.setPixelSize(height*0.8);
             painter.setFont(font);
-            painter.drawText(0, height-10, text);
+            painter.drawText(0, height_*0.8, text);
         }
 
         QSharedPointer<Texture> strTexture = Texture2D::createFromImage(textimg);
@@ -326,19 +326,19 @@ namespace CGFF {
         m_buffer->color = color;
         m_buffer++;
 
-        m_buffer->vertex = *m_tranformationBack * QVector3D(position.x()+ width, position.y(), position.z());
+        m_buffer->vertex = *m_tranformationBack * QVector3D(position.x()+ width_, position.y(), position.z());
         m_buffer->uv = QVector2D(1, 1);
         m_buffer->tid = ts;
         m_buffer->color = color;
         m_buffer++;
 
-        m_buffer->vertex = *m_tranformationBack * QVector3D(position.x() + width, position.y() + height, position.z());
+        m_buffer->vertex = *m_tranformationBack * QVector3D(position.x() + width_, position.y() + height_, position.z());
         m_buffer->uv = QVector2D(1, 0);
         m_buffer->tid = ts;
         m_buffer->color = color;
         m_buffer++;
 
-        m_buffer->vertex = *m_tranformationBack * QVector3D(position.x(), position.y() + height, position.z());
+        m_buffer->vertex = *m_tranformationBack * QVector3D(position.x(), position.y() + height_, position.z());
         m_buffer->uv = QVector2D(0, 0);
         m_buffer->tid = ts;
         m_buffer->color = color;

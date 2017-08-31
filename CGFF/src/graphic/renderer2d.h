@@ -39,7 +39,7 @@ namespace CGFF {
 		virtual void close() {}
 		virtual void setCamera(QSharedPointer<Camera> camera) {}
         
-        virtual void drawString(QString text, const QVector3D& position, int width, int height, QVector4D& color, QFont font = QFont("Sans")) {};
+        virtual void drawString(QString text, const QVector3D& position, QVector4D& color, QFont font) {};
         virtual void drawLine(float x0, float y0, float x1, float y1, QVector4D color = QVector4D(1, 1, 1, 1), float thickness = 1.0f) {}
         virtual void drawLine(const QVector2D& start, const QVector2D& end, QVector4D color = QVector4D(1, 1, 1, 1), float thickness = 1.0f) {}
         virtual void drawRect(float x, float y, float width, float height, QVector4D color = QVector4D(1, 1, 1, 1), float thickness = 1.0f) {}

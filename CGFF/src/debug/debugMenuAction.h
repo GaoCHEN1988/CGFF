@@ -2,23 +2,142 @@
 #define DEBUG_MENU_ACTION_H
 
 #include <QString>
+#include <QSharedPointer>
 #include "common.h"
 
 namespace CGFF {
 
     struct IAction
     {
+		enum class Type
+		{
+			NONE = 0, EMPTY, PATH, BOOLEAN, VALUE, VEC2, VEC3, VEC4
+		};
+
         QString name;
+		Type type;
         virtual void onAction() = 0;
         virtual QString toString() = 0;
     };
 
+	typedef QVector<QSharedPointer<IAction>> ActionList;
+
     struct EmptyAction : public IAction
     {
-        EmptyAction(const QString& name) { this->name = name; }
+        EmptyAction(const QString& name) 
+		{ 
+			this->name = name; 
+			this->type = Type::EMPTY;
+		}
         void onAction() override {}
         QString toString() override { return name; }
     };
+
+	struct PathAction : public IAction, public QEnableSharedFromThis<PathAction>
+	{
+		ActionList actionList;
+		QSharedPointer<PathAction> parent;
+
+		PathAction(const QString& name, QSharedPointer<PathAction> parent)
+		{
+			this->name = name;
+			this->parent = parent;
+			type = Type::PATH;
+		}
+
+		void onAction() override
+		{
+			DebugMenu::setPath(sharedFromThis());
+		}
+
+		QString toString() override
+		{
+			return name + "  >";
+		}
+
+		bool containsAction(const QString& name)
+		{
+			for (QSharedPointer<IAction> action : actionList)
+			{
+				if (action->name == name)
+					return true;
+			}
+			return false;
+		}
+
+		QSharedPointer<PathAction> findPath(const QString& name)
+		{
+			for (QSharedPointer<IAction> action : actionList)
+			{
+				if (action->type == IAction::Type::PATH)
+				{
+					QSharedPointer<PathAction> a = qSharedPointerCast<PathAction>(action);
+					if (a->name == name)
+						return a;
+					else
+						a->findPath(name);
+				}
+			}
+			return nullptr;
+		}
+
+		bool DeleteChild(QSharedPointer<PathAction> child)
+		{
+			for (uint i = 0; i < actionList.size(); i++)
+			{
+				if (actionList[i] == child)
+				{
+					actionList.remove(i);
+					return true;
+				}
+			}
+			return false;
+		}
+	};
+
+	struct BackAction : public IAction
+	{
+		QSharedPointer<PathAction> destination;
+
+		BackAction(QSharedPointer<PathAction> destination)
+		{
+			this->name = "..  ";
+			this->destination = destination;
+			type = Type::PATH;
+		}
+
+		void onAction() override
+		{
+			DebugMenu::setPath(destination);
+		}
+
+		QString toString() override
+		{
+			return name;
+		}
+	};
+
+	struct CustomAction : public IAction
+	{
+	private:
+		std::function<void()> m_function;
+	public:
+		CustomAction(const QString& name, const std::function<void()>& function)
+			: m_function(function)
+		{
+			this->name = name;
+		}
+
+		void onAction() override
+		{
+			m_function();
+		}
+
+		QString toString() override
+		{
+			return name;
+		}
+	};
 
 	struct BooleanAction : public IAction
 	{

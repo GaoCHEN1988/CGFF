@@ -15,7 +15,7 @@ namespace CGFF {
 
         void update() override;
 
-    private:
+	protected:
         QSharedPointer<IAction> m_action;
     };
 
