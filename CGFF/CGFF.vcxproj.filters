@@ -153,6 +153,12 @@
     <Filter Include="Header Files\system\fileSystem">
       <UniqueIdentifier>{2845c277-7852-4ea1-92ca-11421f1b68bc}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Header Files\qtUI">
+      <UniqueIdentifier>{91ebe43c-842d-4e0e-b8fa-ffad86f31477}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\qtUI">
+      <UniqueIdentifier>{6899100b-8727-4b35-8b41-2c66196f3877}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <CustomBuild Include="src\mainWindow.h">
@@ -160,6 +166,9 @@
     </CustomBuild>
     <CustomBuild Include="src\application\applicationWindow.h">
       <Filter>Header Files\application</Filter>
+    </CustomBuild>
+    <CustomBuild Include="src\qtUI\explorerView.h">
+      <Filter>Header Files\qtUI</Filter>
     </CustomBuild>
   </ItemGroup>
   <ItemGroup>
@@ -402,6 +411,15 @@
     </ClCompile>
     <ClCompile Include="src\debug\debugLayer.cpp">
       <Filter>Source Files\debug</Filter>
+    </ClCompile>
+    <ClCompile Include="GeneratedFiles\Debug\moc_explorerView.cpp">
+      <Filter>Generated Files\Debug</Filter>
+    </ClCompile>
+    <ClCompile Include="GeneratedFiles\Release\moc_explorerView.cpp">
+      <Filter>Generated Files\Release</Filter>
+    </ClCompile>
+    <ClCompile Include="src\qtUI\explorerView.cpp">
+      <Filter>Source Files\qtUI</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

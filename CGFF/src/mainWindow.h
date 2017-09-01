@@ -12,7 +12,9 @@
 #include <QtWidgets/QStatusBar>
 #include <QtWidgets/QToolBar>
 #include <QtWidgets/QWidget>
+#include <QDockWidget>
 #include "application/applicationWindow.h"
+#include "qtUI/explorerView.h"
 
 class MainWindow : public QMainWindow
 {
@@ -24,17 +26,23 @@ public:
 
 private:
     void setupUi();
-
     void retranslateUi();
-
+	void setupDockWidgets();
+	void setupMenuBar();
 	void closeEvent(QCloseEvent * event) Q_DECL_OVERRIDE;
+
 private:
-	ApplicationWindow * applicationWindow;
-    QWidget *centralWidget;
+	ApplicationWindow * m_applicationWindow;
+    QWidget *m_centralWidget;
     QGridLayout *gridLayout;
-    QMenuBar *menuBar;
-    QToolBar *mainToolBar;
-    QStatusBar *statusBar;
+    QMenuBar *m_menuBar;
+    QToolBar *m_mainToolBar;
+    QStatusBar *m_statusBar;
+	QMenu * m_menuView;
+	QAction *m_actionExplorerView;
+
+	QTUI::ExplorerView * m_explorer;
+	QDockWidget * m_explorerDockWidget_;
 };
 
 #endif

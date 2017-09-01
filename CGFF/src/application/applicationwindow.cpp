@@ -28,10 +28,10 @@ ApplicationWindow::ApplicationWindow(QWindow * parent, CGFF::RenderAPI api)
 	}
 
 	timer_id_ = startTimer(0);
-	CGFF::VFS::init();
-	CGFF::VFS::get()->mount("resource", "Resources/");
-	CGFF::VFS::get()->mount("pbr", "Resources/pbr");
-	CGFF::VFS::get()->mount("shaders", "src/graphic/shaders");
+	//CGFF::VFS::init();
+	//CGFF::VFS::get()->mount("resource", "Resources/");
+	//CGFF::VFS::get()->mount("pbr", "Resources/pbr");
+	//CGFF::VFS::get()->mount("shaders", "src/graphic/shaders");
 }
 
 ApplicationWindow::~ApplicationWindow() 
