@@ -18,7 +18,10 @@ namespace CGFF {
         void bind()  override;
         void unBind() override;
 
-        void draw(uint count) const override;
+        void draw(uint count, DrawMode mode = DrawMode::TRIANGLES) const override;
+
+	private:
+		GLenum toGlMode(DrawMode mode) const;
 
     private:
         QOpenGLVertexArrayObject m_glVertexArray;

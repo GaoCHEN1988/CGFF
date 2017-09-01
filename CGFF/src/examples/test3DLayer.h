@@ -18,7 +18,7 @@ namespace CGFF {
         virtual ~Test3DLayer();
 
         void init() override;
-		void render() override;
+		void render(QSharedPointer<Renderer3D>& renderer) override;
 
         void resize(int width, int height) override;
         void mousePressEvent(QMouseEvent *event) override;

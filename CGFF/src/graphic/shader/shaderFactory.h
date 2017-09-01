@@ -5,11 +5,14 @@
 #include "shader.h"
 
 namespace CGFF {
+	namespace ShaderFactory {
 
-    QSharedPointer<Shader> DefaultShader();
-    QSharedPointer<Shader> SimpleShader();
-    QSharedPointer<Shader> BasicLightShader();
-	QSharedPointer<Shader> BatchRendererShader();
+		QSharedPointer<Shader> DefaultShader();
+		QSharedPointer<Shader> SimpleShader();
+		QSharedPointer<Shader> BasicLightShader();
+		QSharedPointer<Shader> BatchRendererShader();
+		QSharedPointer<Shader> DebugShader();
+	}
 }
 
 #endif

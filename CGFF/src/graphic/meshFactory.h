@@ -21,6 +21,8 @@ namespace CGFF {
 
 		QSharedPointer<Mesh> CreatePlane(float width, float height, const QVector3D& normal, QSharedPointer<MaterialInstance> material);
 
+		QSharedPointer<Mesh> CreateLine(const QVector3D& start, const QVector3D& end, const QVector4D& color, QSharedPointer<MaterialInstance> material);
+
     }
 }
 

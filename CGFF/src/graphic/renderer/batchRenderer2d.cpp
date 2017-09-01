@@ -44,7 +44,7 @@ namespace CGFF {
 
 		m_systemUniforms.resize(g_RequiredSystemUniformsCount);
 
-		m_shader = BatchRendererShader();
+		m_shader = ShaderFactory::BatchRendererShader();
 
 		const ShaderUniformBufferList& vssu = m_shader->getVSSystemUniforms();
 		Q_ASSERT(vssu.size());

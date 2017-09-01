@@ -42,9 +42,13 @@ void ApplicationWindow::initialize()
 {
 	CGFF::Renderer::init();
 
-	m_debugLayer = QSharedPointer<CGFF::Layer>(new CGFF::DebugLayer(this->size()));
+	m_debugLayer = QSharedPointer<CGFF::DebugLayer>(new CGFF::DebugLayer(this->size()));
 
 	m_debugLayer->init();
+
+	m_debugLayer3D = QSharedPointer<CGFF::DebugLayer3D>(new CGFF::DebugLayer3D());
+
+	m_debugLayer3D->init();
 
 	pushLayer(QSharedPointer<CGFF::Layer>(new CGFF::Test3DLayer));
 	pushOverlay(QSharedPointer<CGFF::Layer>(new CGFF::Test2DLayer(this->size(), this)));
@@ -71,6 +75,8 @@ void ApplicationWindow::render()
 		m_debugLayer->update();
 		m_debugLayer->render();
 	}
+
+	m_debugLayer3D->render();
 }
 
 void ApplicationWindow::tick()
@@ -207,6 +213,7 @@ void ApplicationWindow::resizeEvent(QResizeEvent* event)
 	}
 
 	m_debugLayer->resize(width, height);
+	m_debugLayer3D->resize(width, height);
 }
 
 void ApplicationWindow::mousePressEvent(QMouseEvent *event)
@@ -223,6 +230,8 @@ void ApplicationWindow::mousePressEvent(QMouseEvent *event)
 
 	if (m_debugLayer->isVisible())
 		m_debugLayer->mousePressEvent(event);
+
+	m_debugLayer3D->mousePressEvent(event);
 }
 
 void ApplicationWindow::mouseMoveEvent(QMouseEvent *event)
@@ -239,6 +248,8 @@ void ApplicationWindow::mouseMoveEvent(QMouseEvent *event)
 
 	if (m_debugLayer->isVisible())
 		m_debugLayer->mouseMoveEvent(event);
+
+	m_debugLayer3D->mouseMoveEvent(event);
 }
 
 void ApplicationWindow::mouseReleaseEvent(QMouseEvent *event)
@@ -255,6 +266,9 @@ void ApplicationWindow::mouseReleaseEvent(QMouseEvent *event)
 
 	if (m_debugLayer->isVisible())
 		m_debugLayer->mouseReleaseEvent(event);
+
+	m_debugLayer3D->mouseReleaseEvent(event);
+
 }
 
 void ApplicationWindow::keyPressEvent(QKeyEvent *event)
@@ -270,6 +284,8 @@ void ApplicationWindow::keyPressEvent(QKeyEvent *event)
 	}
 
 	m_debugLayer->keyPressEvent(event);
+
+	m_debugLayer3D->keyPressEvent(event);
 }
 
 bool ApplicationWindow::event(QEvent *event)
@@ -292,6 +308,9 @@ bool ApplicationWindow::event(QEvent *event)
 		if(!m_debugLayer.isNull())
 			m_debugLayer->closeEvent(event);	
 		//QCoreApplication::sendEvent(m_debugLayer.data(), event);
+
+		if (!m_debugLayer3D.isNull())
+			m_debugLayer3D->closeEvent(event);
 	}
 
 	return QWindow::event(event);

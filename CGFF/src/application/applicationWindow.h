@@ -2,6 +2,7 @@
 #include "utils/qtopengl.h"
 #include "graphic/layer/layer.h"
 #include "Debug/debugLayer.h"
+#include "Debug/debugLayer3D.h"
 #include "graphic/api/context.h"
 #include <QWindow>
 #include <QTimer>
@@ -47,6 +48,7 @@ private:
 	QVector<QSharedPointer<CGFF::Layer>> m_layerStack;
 	QVector<QSharedPointer<CGFF::Layer>> m_overLayerStack;
 	QSharedPointer<CGFF::Layer> m_debugLayer;
+	QSharedPointer<CGFF::Layer> m_debugLayer3D;
 
 	static ApplicationWindow * m_instance;
 

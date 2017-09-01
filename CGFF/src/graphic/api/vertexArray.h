@@ -5,6 +5,20 @@
 
 namespace CGFF {
 
+	enum class DrawMode
+	{
+		POINTS,
+		LINES,
+		LINE_LOOP,
+		LINE_STRIP,
+		TRIANGLES,
+		TRIANGLE_STRIP,
+		TRIANGLE_FAN,
+		QUADS,
+		QUAD_STRIP,
+		POLYGON
+	};
+
     class VertexArray
     {
     public:
@@ -14,7 +28,7 @@ namespace CGFF {
         virtual void bind() = 0;
         virtual void unBind() = 0;
 
-        virtual void draw(uint count) const = 0;
+        virtual void draw(uint count, DrawMode mode = DrawMode::TRIANGLES) const = 0;
 
     public:
         static QSharedPointer<VertexArray> create();

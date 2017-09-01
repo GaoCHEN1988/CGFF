@@ -36,19 +36,21 @@ namespace CGFF {
 
     class Mesh : public IRenderable
     {
-    private:
-		QSharedPointer<VertexArray> m_vertexArray;
-		QSharedPointer<IndexBuffer> m_indexBuffer;
-        QSharedPointer<MaterialInstance> m_materialInstance;
     public:
-		Mesh(QSharedPointer<VertexArray> vertexArray, QSharedPointer<IndexBuffer> indexBuffer, QSharedPointer<MaterialInstance> materialInstance);
-		Mesh(QSharedPointer<Mesh> mesh);
+		Mesh(QSharedPointer<VertexArray> vertexArray, QSharedPointer<IndexBuffer> indexBuffer, QSharedPointer<MaterialInstance> materialInstance, DrawMode mode = DrawMode::TRIANGLES);
+		Mesh(QSharedPointer<Mesh> mesh, DrawMode mode = DrawMode::TRIANGLES);
         virtual ~Mesh();
 
         inline void setMaterial(QSharedPointer<MaterialInstance>& materialInstance) { m_materialInstance = materialInstance; }
         inline QSharedPointer<MaterialInstance>& getMaterialInstance() { return m_materialInstance; }
 
         void render(Renderer3D& renderer) override;
+
+	private:
+		QSharedPointer<VertexArray> m_vertexArray;
+		QSharedPointer<IndexBuffer> m_indexBuffer;
+		QSharedPointer<MaterialInstance> m_materialInstance;
+		DrawMode m_drawMode;
     };
 }
 

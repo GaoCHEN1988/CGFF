@@ -32,9 +32,26 @@ namespace CGFF {
 		    m_buffers.front()->unBind();
     }
 
-    void GLVertexArray::draw(uint count) const 
+    void GLVertexArray::draw(uint count, DrawMode mode) const
     {
-        GL->glDrawElements(GL_TRIANGLES, count, GL_UNSIGNED_INT, NULL);
+        GL->glDrawElements(toGlMode(mode), count, GL_UNSIGNED_INT, NULL);
     }
 
+	GLenum GLVertexArray::toGlMode(DrawMode mode) const
+	{
+		switch (mode)
+		{
+		case DrawMode::POINTS:			return GL_POINTS;
+		case DrawMode::LINES:			return GL_LINES;
+		case DrawMode::LINE_LOOP:		return GL_LINE_LOOP;
+		case DrawMode::LINE_STRIP:		return GL_LINE_STRIP;
+		case DrawMode::TRIANGLES:		return GL_TRIANGLES;
+		case DrawMode::TRIANGLE_STRIP:	return GL_TRIANGLE_STRIP;
+		case DrawMode::TRIANGLE_FAN:	return GL_TRIANGLE_FAN;
+		case DrawMode::QUADS:			return GL_QUADS;
+		case DrawMode::QUAD_STRIP:		return GL_QUAD_STRIP;
+		case DrawMode::POLYGON:			return GL_POLYGON;
+		}
+		return GL_TRIANGLES;
+	}
 }

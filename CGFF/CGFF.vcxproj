@@ -98,6 +98,7 @@
     </ClCompile>
     <ClCompile Include="src\application\applicationWindow.cpp" />
     <ClCompile Include="src\debug\debugLayer.cpp" />
+    <ClCompile Include="src\debug\debugLayer3D.cpp" />
     <ClCompile Include="src\debug\debugMenu.cpp" />
     <ClCompile Include="src\debug\debugMenuItem.cpp" />
     <ClCompile Include="src\debug\debugMenuSlider.cpp" />
@@ -205,6 +206,7 @@
     <ClInclude Include="src\cgff.h" />
     <ClInclude Include="src\common.h" />
     <ClInclude Include="src\debug\debugLayer.h" />
+    <ClInclude Include="src\debug\debugLayer3D.h" />
     <ClInclude Include="src\debug\debugMenu.h" />
     <ClInclude Include="src\debug\debugMenuAction.h" />
     <ClInclude Include="src\debug\debugMenuItem.h" />

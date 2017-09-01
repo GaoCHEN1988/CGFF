@@ -1,0 +1,89 @@
+#include "debugLayer3D.h"
+#include "graphic/shader/shaderFactory.h"
+#include "graphic/meshFactory.h"
+
+namespace CGFF {
+
+	DebugLayer3D::DebugLayer3D()
+		: Layer3D(QSharedPointer<CGFF::Scene>(new CGFF::Scene()))
+	{
+		m_debugShader = ShaderFactory::DebugShader();
+	}
+
+	void DebugLayer3D::init()
+	{
+		QSharedPointer<Material> lineMaterial = QSharedPointer<Material>(new Material(m_debugShader));
+
+		QSharedPointer<MaterialInstance> lineInstance = QSharedPointer<MaterialInstance>(new MaterialInstance(lineMaterial));
+
+		m_lineX = QSharedPointer<Entity>(
+			new Entity(MeshFactory::CreateLine(
+				QVector3D(0,0,0), 
+				QVector3D(20,0,0), 
+				QVector4D(0.0, 1.0, 0.0, 1.0),  
+				lineInstance)));
+
+		m_lineY = QSharedPointer<Entity>(
+			new Entity(MeshFactory::CreateLine(
+			QVector3D(0, 0, 0),
+			QVector3D(0, 20, 0),
+			QVector4D(1.0, 0.0, 0.0, 1.0),
+			lineInstance)));
+
+		m_lineZ = QSharedPointer<Entity>(
+			new Entity(MeshFactory::CreateLine(
+			QVector3D(0, 0, 0),
+			QVector3D(0, 0, 20),
+			QVector4D(0.0, 0.0, 1.0, 1.0),
+			lineInstance)));
+
+		m_scene->add(m_lineX);
+		m_scene->add(m_lineY);
+		m_scene->add(m_lineZ);
+	}
+
+	void DebugLayer3D::render(QSharedPointer<Renderer3D>& renderer)
+	{
+		GLenum error = CGFF::GL->glGetError();
+		if (error != GL_NO_ERROR)
+		{
+			//To do: show error in logging system
+			qFatal("Opengl error!");
+		}
+	}
+
+	void DebugLayer3D::tick()
+	{
+	}
+
+	void DebugLayer3D::resize(int width, int height)
+	{
+		Layer3D::resize(width, height);
+		Layer3D::getScene()->getCamera()->resize(width, height);
+	}
+
+	void DebugLayer3D::closeEvent(QEvent *event)
+	{
+		m_lineX.clear();
+		m_lineY.clear();
+		m_lineZ.clear();
+	}
+
+	void DebugLayer3D::mousePressEvent(QMouseEvent *event)
+	{
+		Layer3D::getScene()->getCamera()->mousePressEvent(event);
+	}
+
+	void DebugLayer3D::mouseMoveEvent(QMouseEvent *event)
+	{
+		Layer3D::getScene()->getCamera()->mouseMoveEvent(event);
+	}
+
+	void DebugLayer3D::mouseReleaseEvent(QMouseEvent *event)
+	{
+		Layer3D::getScene()->getCamera()->mousePressEvent(event);
+	}
+
+	void DebugLayer3D::keyPressEvent(QKeyEvent *event)
+	{}
+}

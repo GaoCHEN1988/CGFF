@@ -140,7 +140,7 @@ namespace CGFF {
 		DEBUG_MENU("Dagger", &g_DaggerTransform, 0, 100);
     }
 
-    void Test3DLayer::render()
+    void Test3DLayer::render(QSharedPointer<Renderer3D>& renderer)
     {
 		if (!m_dagger.isNull())
 		{
@@ -154,8 +154,6 @@ namespace CGFF {
 		// Remove the translation part for skybox
 		QMatrix4x4 vm = m_scene->getCamera()->getViewMatrix();
 		m_skyboxMaterial->setUniform("u_ViewMatrix", QMatrix4x4(QMatrix3x3(vm.toGenericMatrix<3,3>())));
-
-		Layer3D::render();
 
 		GLenum error = CGFF::GL->glGetError();
 		if (error != GL_NO_ERROR)
