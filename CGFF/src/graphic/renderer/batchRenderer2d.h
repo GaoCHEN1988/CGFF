@@ -11,7 +11,8 @@
 
 #include <cstddef>
 #include <QPainter>
-#include <QOpenGLFramebufferObject>
+//#include <QOpenGLFramebufferObject>
+#define FRAMEBUDDER_TEST
 
 namespace CGFF {
 
@@ -90,24 +91,27 @@ namespace CGFF {
 		QSharedPointer<IndexBuffer> m_lineIBO;
 
 		VertexData* m_buffer;
-        QSharedPointer<QOpenGLFramebufferObject> m_frameBuffer;
-        QSharedPointer<QOpenGLShaderProgram> m_framebufferShader;
-        QSharedPointer<QOpenGLFramebufferObject> m_postEffectsBuffer;
+        QSharedPointer<Framebuffer2D> m_frameBuffer;
+        //QSharedPointer<QOpenGLShaderProgram> m_framebufferShader;
+        QSharedPointer<Framebuffer2D> m_postEffectsBuffer;
+        QSharedPointer<Material> m_framebufferMaterial;
+
 		GLsizei m_indexCount;
 		//QVector<GLuint> m_textureSlots;
         QSize m_viewportSize;
         QSize m_screenSize;
         int m_screenBuffer;
-        QOpenGLFramebufferObjectFormat m_format;
+        //QOpenGLFramebufferObjectFormat m_format;
         //QSharedPointer<QOpenGLTexture> m_strTexture;
 		QVector<QSharedPointer<Texture>> m_strTextures;
 		QVector<QSharedPointer<Texture>> m_textures;
 
-		QSharedPointer<Material> m_framebufferMaterial;
+        QSharedPointer<Material> m_framebufferMaterial;
+        QSharedPointer<Material> m_screenMaterial;
 		//QSharedPointer<VertexArray> m_ScreenQuad;
 		QSharedPointer<Camera> m_camera;
 
-        //MeshFactory::Quad m_screenQuad;
+        QSharedPointer<Mesh> m_screenQuad;
 		uint* m_indices;
 	};
 }

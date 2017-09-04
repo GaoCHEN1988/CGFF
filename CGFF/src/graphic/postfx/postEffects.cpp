@@ -13,21 +13,21 @@ namespace CGFF {
 
     void PostEffects::push(QSharedPointer<PostEffectsPass> pass)
     {
-        m_Passes.push_back(pass);
+        m_passes.push_back(pass);
     }
 
     void PostEffects::pop()
     {
-        m_Passes.pop_back();
+        m_passes.pop_back();
     }
 
-    void PostEffects::renderPostEffects(const QSharedPointer<Framebuffer>& source, const QSharedPointer<Framebuffer>& target, VertexArray* quad, IndexBuffer* indices)
+    void PostEffects::renderPostEffects(const QSharedPointer<Framebuffer>& source, const QSharedPointer<Framebuffer>& target, QSharedPointer<VertexArray> quad, QSharedPointer<IndexBuffer> indices)
     {
         target->bind();
         quad->bind();
         indices->bind();
 
-        for (QSharedPointer<PostEffectsPass> pass : m_Passes)
+        for (QSharedPointer<PostEffectsPass> pass : m_passes)
             pass->renderPass(target);
 
         indices->unBind();

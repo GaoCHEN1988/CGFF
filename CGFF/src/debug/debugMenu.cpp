@@ -51,7 +51,7 @@ namespace CGFF {
 		onActivate();
 	}
 
-	void DebugMenu::add(const QString& path, QSharedPointer<IAction> action)
+	void DebugMenu::addAction(const QString& path, QSharedPointer<IAction> action)
 	{
 		if (path.contains("/"))
 		{
@@ -74,17 +74,17 @@ namespace CGFF {
 
 	void DebugMenu::add(const QString& path)
 	{
-		add(path, QSharedPointer<EmptyAction>(new EmptyAction(path)));
+        addAction(path, QSharedPointer<EmptyAction>(new EmptyAction(path)));
 	}
 
 	void DebugMenu::add(const QString& path, const std::function<void()>& function)
 	{
-		add(path, QSharedPointer<CustomAction>(new CustomAction(path, function)));
+        addAction(path, QSharedPointer<CustomAction>(new CustomAction(path, function)));
 	}
 
 	void DebugMenu::add(const QString& path, bool* value)
 	{
-		add(path, QSharedPointer<BooleanAction>(new BooleanAction(path, [value]() { return *value; }, [value](bool v) { *value = v; })));
+        addAction(path, QSharedPointer<BooleanAction>(new BooleanAction(path, [value]() { return *value; }, [value](bool v) { *value = v; })));
 	}
 
     void DebugMenu::add(const QString& path, float* value)
@@ -94,13 +94,13 @@ namespace CGFF {
 
     void DebugMenu::add(const QString& path, float* value, float minimum, float maximum)
     {
-		add(path, QSharedPointer<FloatAction>(
+        addAction(path, QSharedPointer<FloatAction>(
 			new FloatAction(path, [value]() { return *value; }, [value](float v) { *value = v; }, minimum, maximum)));
     }
 
 	void DebugMenu::add(const QString& path, QVector2D* value, float minimum, float maximum)
 	{
-		add(path, QSharedPointer<Vec2Action>(
+        addAction(path, QSharedPointer<Vec2Action>(
 			new Vec2Action(path, [value]() { return *value; }, 
 				[value](QVector2D v) { *value = v; }, 
 				QVector2D(minimum, minimum), 
@@ -109,7 +109,7 @@ namespace CGFF {
 
 	void DebugMenu::add(const QString& path, QVector3D* value, float minimum, float maximum)
 	{
-		add(path, QSharedPointer<Vec3Action>(
+        addAction(path, QSharedPointer<Vec3Action>(
 			new Vec3Action(path, [value]() { return *value; }, 
 				[value](QVector3D v) { *value = v; }, 
 				QVector3D(minimum, minimum, minimum), 
@@ -118,7 +118,7 @@ namespace CGFF {
 
 	void DebugMenu::add(const QString& path, QVector4D* value, float minimum, float maximum)
 	{
-		add(path, QSharedPointer<Vec4Action>(
+        addAction(path, QSharedPointer<Vec4Action>(
 			new Vec4Action(path, [value]() { return *value; }, 
 				[value](QVector4D v) { *value = v; }, 
 				QVector4D(minimum, minimum, minimum, minimum),

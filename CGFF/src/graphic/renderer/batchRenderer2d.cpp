@@ -5,6 +5,7 @@
 #include "graphic/api/layoutBuffer.h"
 #include "renderer.h"
 #include "graphic/shader/shaderFactory.h"
+#include "graphic/meshFactory.h"
 
 namespace CGFF {
 
@@ -116,33 +117,48 @@ namespace CGFF {
 
 #ifdef FRAMEBUDDER_TEST
 		//set frame buffer
-		m_format.setAttachment(QOpenGLFramebufferObject::CombinedDepthStencil);
+		//m_format.setAttachment(QOpenGLFramebufferObject::CombinedDepthStencil);
 		//m_format.setSamples(8);
-		glGetIntegerv(GL_FRAMEBUFFER_BINDING, &m_screenBuffer);
-		m_frameBuffer = QSharedPointer<QOpenGLFramebufferObject>(new QOpenGLFramebufferObject(m_viewportSize, m_format));
+		//glGetIntegerv(GL_FRAMEBUFFER_BINDING, &m_screenBuffer);
+		//m_frameBuffer = QSharedPointer<QOpenGLFramebufferObject>(new QOpenGLFramebufferObject(m_viewportSize, m_format));
 		//m_frameBuffer->addColorAttachment(m_viewportSize);
-		m_framebufferShader = QSharedPointer<QOpenGLShaderProgram>(new QOpenGLShaderProgram);
-		// load and compile vertex shader
-		bool success = m_framebufferShader->addShaderFromSourceFile(QOpenGLShader::Vertex, "src/graphic/shaders/fbVertexShader.vert");
-		// load and compile fragment shader
-		success = m_framebufferShader->addShaderFromSourceFile(QOpenGLShader::Fragment, "src/graphic/shaders/fbfragmentShader.frag");
-		m_framebufferShader->link();
-		m_framebufferShader->bind();
-		QMatrix4x4 proj = QMatrix4x4();
-		proj.ortho(0, (float)m_screenSize.width(), (float)m_screenSize.height(), 0, -1.0f, 100.0f);
-		m_framebufferShader->setUniformValue("projMatrix", proj);
-		m_framebufferShader->setUniformValue("tex", 0);
-		m_framebufferShader->release();
+		//m_framebufferShader = QSharedPointer<QOpenGLShaderProgram>(new QOpenGLShaderProgram);
 
-		m_screenQuad.create(m_framebufferShader, 0, 0, (float)m_screenSize.width(), (float)m_screenSize.height());
+        m_frameBuffer = Framebuffer2D::create(m_viewportSize.width(), m_viewportSize.height());
+        m_framebufferMaterial = QSharedPointer<Material>(new Material(ShaderFactory::SimpleShader()));
+        m_screenMaterial = QSharedPointer<Material>(new Material(ShaderFactory::FramebufferShader()));
+		//// load and compile vertex shader
+		//bool success = m_framebufferShader->addShaderFromSourceFile(QOpenGLShader::Vertex, "src/graphic/shaders/fbVertexShader.vert");
+		//// load and compile fragment shader
+		//success = m_framebufferShader->addShaderFromSourceFile(QOpenGLShader::Fragment, "src/graphic/shaders/fbfragmentShader.frag");
+		//m_framebufferShader->link();
+		//m_framebufferShader->bind();
+		//QMatrix4x4 proj = QMatrix4x4();
+		//proj.ortho(0, (float)m_screenSize.width(), (float)m_screenSize.height(), 0, -1.0f, 100.0f);
+		//m_framebufferShader->setUniformValue("projMatrix", proj);
+		//m_framebufferShader->setUniformValue("tex", 0);
+		//m_framebufferShader->release();
 
-		m_postEffects = QSharedPointer<PostEffects>(new PostEffects());
-		m_postEffectsBuffer = QSharedPointer<QOpenGLFramebufferObject>(new QOpenGLFramebufferObject(m_viewportSize, m_format));
+        QMatrix4x4 proj = QMatrix4x4();
+        proj.ortho(0, (float)m_screenSize.width(), (float)m_screenSize.height(), 0, -1.0f, 100.0f);
+
+        m_framebufferMaterial->setUniform("pr_matrix", proj);
+        m_framebufferMaterial->setTexture("u_Texture", m_frameBuffer->getTexture());
+        m_screenQuad = MeshFactory::CreateQuad(0, 0, (float)m_screenSize.width(), (float)m_screenSize.height(), 
+            QSharedPointer<MaterialInstance>(new MaterialInstance(m_screenMaterial)));
+
+        m_postEffects = QSharedPointer<PostEffects>(new PostEffects());
+        m_postEffectsBuffer = Framebuffer2D::create(m_viewportSize.width(), m_viewportSize.height());
+
+		//m_screenQuad.create(m_framebufferShader, 0, 0, (float)m_screenSize.width(), (float)m_screenSize.height());
+
+		//m_postEffects = QSharedPointer<PostEffects>(new PostEffects());
+		//m_postEffectsBuffer = QSharedPointer<QOpenGLFramebufferObject>(new QOpenGLFramebufferObject(m_viewportSize, m_format));
 		//m_postEffectsBuffer->addColorAttachment(m_viewportSize);
 
 		//!!Important
-		m_frameBuffer->release();
-		m_postEffectsBuffer->release();
+		m_frameBuffer->unBind();
+		m_postEffectsBuffer->unBind();
 #endif
 	}
 
@@ -378,7 +394,7 @@ namespace CGFF {
             // Post Effects pass should go here!
             if (m_postEffectsEnabled)
             {
-                m_postEffects->renderPostEffects(m_frameBuffer, m_postEffectsBuffer, m_screenQuad.vao, m_iboBuffer);
+                m_postEffects->renderPostEffects(m_frameBuffer, m_postEffectsBuffer, m_screenQuad.vao, m_indexBuffer);
             }
 
             // Display Framebuffer - potentially move to Framebuffer class

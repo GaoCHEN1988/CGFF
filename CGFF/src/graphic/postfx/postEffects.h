@@ -16,10 +16,10 @@ namespace CGFF {
         void push(QSharedPointer<PostEffectsPass> pass);
         void pop();
 
-        void renderPostEffects(const QSharedPointer<Framebuffer>& source, const QSharedPointer<Framebuffer>& target, VertexArray* quad, IndexBuffer* indices);
+        void renderPostEffects(const QSharedPointer<Framebuffer>& source, const QSharedPointer<Framebuffer>& target, QSharedPointer<VertexArray> quad, QSharedPointer<IndexBuffer> indices);
 
     private:
-        QVector<QSharedPointer<PostEffectsPass>> m_Passes;
+        QVector<QSharedPointer<PostEffectsPass>> m_passes;
     };
 }
 #endif

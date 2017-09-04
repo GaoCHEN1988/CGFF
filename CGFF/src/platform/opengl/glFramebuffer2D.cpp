@@ -6,6 +6,7 @@ namespace CGFF {
 		: m_glTexture(nullptr)
 		, m_width(width)
 		, m_height(height)
+        , m_clearColor(0, 0, 0, 0)
 	{
 		init();
 	}
@@ -59,7 +60,6 @@ namespace CGFF {
 
 		GL->glGenFramebuffers(1, &m_framebufferHandle);
 		GL->glGenRenderbuffers(1, &m_depthbufferHandle);
-
 
 		GL->glBindRenderbuffer(GL_RENDERBUFFER, m_depthbufferHandle);
 		GL->glRenderbufferStorage(GL_RENDERBUFFER, GL_DEPTH_COMPONENT16, (GLsizei)m_width, (GLsizei)m_height);
