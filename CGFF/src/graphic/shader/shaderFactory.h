@@ -4,12 +4,15 @@
 #include "utils/qtopengl.h"
 #include "shader.h"
 
-namespace CGFF {
+namespace CGFF { namespace ShaderFactory {
 
     QSharedPointer<Shader> DefaultShader();
     QSharedPointer<Shader> SimpleShader();
+    QSharedPointer<Shader> FramebufferShader();
     QSharedPointer<Shader> BasicLightShader();
 	QSharedPointer<Shader> BatchRendererShader();
+    
+    }
 }
 
 #endif

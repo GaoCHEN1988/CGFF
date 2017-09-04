@@ -32,7 +32,7 @@ namespace CGFF {
             static DebugMenu instance;
         };
 
-		static void add(const QString& path, QSharedPointer<IAction> action);
+		static void addAction(const QString& path, QSharedPointer<IAction> action);
         static void add(const QString& path);
 		static void add(const QString& path, const std::function<void()>& function);
 		static void add(const QString& path, bool* value);

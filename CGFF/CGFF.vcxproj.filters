@@ -398,7 +398,7 @@
       <Filter>Source Files\graphic</Filter>
     </ClCompile>
     <ClCompile Include="src\debug\debugLayer.cpp">
-      <Filter>Generated Files</Filter>
+      <Filter>Source Files\debug</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -676,7 +676,7 @@
       <Filter>Header Files\graphic</Filter>
     </ClInclude>
     <ClInclude Include="src\debug\debugLayer.h">
-      <Filter>Generated Files</Filter>
+      <Filter>Header Files\debug</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

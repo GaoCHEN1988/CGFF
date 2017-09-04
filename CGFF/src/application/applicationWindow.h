@@ -1,7 +1,7 @@
 ﻿#pragma once
 #include "utils/qtopengl.h"
 #include "graphic/layer/layer.h"
-#include "Debug/debugLayer.h"
+#include "debug/debugLayer.h"
 #include "graphic/api/context.h"
 #include <QWindow>
 #include <QTimer>
