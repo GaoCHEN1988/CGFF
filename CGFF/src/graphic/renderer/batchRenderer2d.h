@@ -12,7 +12,7 @@
 #include <cstddef>
 #include <QPainter>
 //#include <QOpenGLFramebufferObject>
-#define FRAMEBUDDER_TEST
+//#define FRAMEBUDDER_TEST
 
 namespace CGFF {
 
@@ -106,12 +106,12 @@ namespace CGFF {
 		QVector<QSharedPointer<Texture>> m_strTextures;
 		QVector<QSharedPointer<Texture>> m_textures;
 
-        QSharedPointer<Material> m_framebufferMaterial;
-        QSharedPointer<Material> m_screenMaterial;
+        //QSharedPointer<Material> m_framebufferMaterial;
+        //QSharedPointer<Material> m_screenMaterial;
 		//QSharedPointer<VertexArray> m_ScreenQuad;
 		QSharedPointer<Camera> m_camera;
 
-        QSharedPointer<Mesh> m_screenQuad;
+        //QSharedPointer<Mesh> m_screenQuad;
 		uint* m_indices;
 	};
 }

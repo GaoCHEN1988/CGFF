@@ -23,6 +23,20 @@ namespace CGFF {
 			return nullptr;
 		}
 
+        QSharedPointer<Shader> FramebufferShader()
+        {
+            switch (Context::getRenderAPI())
+            {
+            case RenderAPI::OPENGL:
+                return Shader::createFromFile("FramebufferShader",
+                    "/shaders/fbVertexShader.vert",
+                    "/shaders/fbfragmentShader.frag");
+            case RenderAPI::DIRECT3D:
+                return nullptr;
+            }
+            return nullptr;
+        }
+
 		QSharedPointer<Shader> BasicLightShader()
 		{
 			return nullptr;
