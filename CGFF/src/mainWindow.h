@@ -15,6 +15,7 @@
 #include <QDockWidget>
 #include "application/applicationWindow.h"
 #include "qtUI/explorerView.h"
+#include "qtUI/view/objectInfoView.h"
 
 class MainWindow : public QMainWindow
 {
@@ -43,6 +44,9 @@ private:
 
 	QTUI::ExplorerView * m_explorer;
 	QDockWidget * m_explorerDockWidget_;
+
+	QTUI::ObjectInfoView * m_objectInfo;
+	QDockWidget * m_propertiesDockWidget_;
 };
 
 #endif

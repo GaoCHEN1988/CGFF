@@ -5,6 +5,7 @@
 #include <QFileSystemModel>
 #include <QTreeView>
 #include <QPushButton>
+#include <QTabWidget>
 
 namespace QTUI {
 
@@ -22,11 +23,18 @@ namespace QTUI {
 		void onRm();
 
 	private:
-		QFileSystemModel * m_fileModel;
-		QTreeView * m_treeView;
+		void init();
+		void mountDirectory(const QString& path, const QString& name);
+		void mountDirs();
 
-		QPushButton * m_mkdirButton;
-		QPushButton * m_rmButton;
+	private:
+		//QFileSystemModel *	m_fileModel;
+		//QTreeView *			m_treeView;
+		QMap<int, QTreeView*> m_treeViews;
+		QMap<int, QFileSystemModel*> m_fileModels;
+		QTabWidget *		m_tabWidget;
+		QPushButton *		m_mkdirButton;
+		QPushButton *		m_rmButton;
 	};
 }
 

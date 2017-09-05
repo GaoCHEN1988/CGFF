@@ -37,6 +37,7 @@ namespace CGFF {
 		QSharedPointer<CGFF::Entity> m_dagger;
 		QSharedPointer<CGFF::Entity> m_cube;
 		QSharedPointer<CGFF::PBRMaterial> m_daggerMaterial;
+		QSharedPointer<CGFF::PBRMaterial> m_planeMaterial;
 		QSharedPointer<CGFF::MaterialInstance> m_skyboxMaterial;
 		QSharedPointer<CGFF::Light> m_light;
 

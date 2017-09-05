@@ -6,8 +6,18 @@
 
 namespace CGFF {
 
-    Test3DLayer::Test3DLayer()
-        : Layer3D(QSharedPointer<CGFF::Scene>(new CGFF::Scene()))
+	Test3DLayer::Test3DLayer()
+		: Layer3D(QSharedPointer<CGFF::Scene>(new CGFF::Scene()))
+		, m_mayaCamera(nullptr)
+		, m_FPSCamera(nullptr)
+		, m_Spheres()
+		, m_plane(nullptr)
+		, m_dagger(nullptr)
+		, m_cube(nullptr)
+		, m_daggerMaterial(nullptr)
+		, m_planeMaterial(nullptr)
+		, m_skyboxMaterial(nullptr)
+		, m_light(nullptr)
     {
 		m_mayaCamera = m_scene->getCamera();
 
@@ -22,8 +32,8 @@ namespace CGFF {
 	{
 	}
 
-	QVector3D g_CubeTransform(40, 0, 0);
-	QVector3D g_DaggerTransform(20, 0, 0);
+	QVector3D g_CubeTransform(40, 10, 0);
+	QVector3D g_DaggerTransform(20, 10, 0);
 	QVector4D g_SphereColor(0.0f, 0.0f, 0.0f, 1.0f);
 	QVector3D g_SphereSpecularColor(1.0f, 1.0f, 0.6f);
 
@@ -126,14 +136,27 @@ namespace CGFF {
 		m_cube = QSharedPointer<Entity>(new Entity(cubeModel->getMesh(), trans_cube));
 		m_scene->add(m_cube);
 
+		//test
+		QSharedPointer<PBRMaterial> planeMaterial = QSharedPointer<PBRMaterial>(new PBRMaterial(pbrShader));
+
+		m_planeMaterial = QSharedPointer<PBRMaterial>(new PBRMaterial(pbrShader));
+		m_planeMaterial->setEnviromentMap(environment);
+		{
+			m_planeMaterial->setAlbedoMap(Texture2D::createFromFile("/resource/pbr/WornWood/WornWood_Albedo.tga"));
+			m_planeMaterial->setSpecularMap(Texture2D::createFromFile("/resource/pbr/WornWood/WornWood_Specular.tga"));
+			m_planeMaterial->setGlossMap(Texture2D::createFromFile("/resource/pbr/WornWood/WornWood_Gloss.tga"));
+			m_planeMaterial->setNormalMap(Texture2D::createFromFile("/resource/pbr/WornWood/WornWood_Normal.tga"));
+		}
+
+		m_plane = QSharedPointer<Entity>(new Entity(MeshFactory::CreatePlane(128, 128, QVector3D(0, 1, 0), QSharedPointer<MaterialInstance>(new MaterialInstance(m_planeMaterial)))));
+
+		m_scene->add(m_plane);
+
 		QSharedPointer<LightSetup> lights = QSharedPointer<LightSetup>(new LightSetup());
 		m_light = QSharedPointer<Light>(new Light(QVector3D(0.8f, 0.8f, 0.8f)));
 		lights->add(m_light);
 		m_scene->pushLightSetup(lights);
 
-		//DebugMenu::add("Light Direction", &lights->getLights()[0]->direction, -1.0f, 1.0f);
-		//DebugMenu::add("Light Intensity", &lights->getLights()[0]->intensity, 0, 100);
-		//DebugMenu::add("Dagger", &g_DaggerTransform, 0, 100);
 
 		DEBUG_MENU("Light Direction", &lights->getLights()[0]->direction, -1.0f, 1.0f);
 		DEBUG_MENU("Light Intensity", &lights->getLights()[0]->intensity, 0, 100);

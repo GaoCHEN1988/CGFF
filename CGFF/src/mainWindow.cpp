@@ -3,6 +3,18 @@
 
 MainWindow::MainWindow(QWidget *parent)
 	: QMainWindow(parent)
+	, m_applicationWindow(nullptr)
+	, m_centralWidget(nullptr)
+	, gridLayout(nullptr)
+	, m_menuBar(nullptr)
+	, m_mainToolBar(nullptr)
+	, m_statusBar(nullptr)
+	, m_menuView(nullptr)
+	, m_actionExplorerView(nullptr)
+	, m_explorer(nullptr)
+	, m_explorerDockWidget_(nullptr)
+	, m_objectInfo(nullptr)
+	, m_propertiesDockWidget_(nullptr)
 {
     setupUi();
 }
@@ -15,11 +27,10 @@ void MainWindow::setupUi()
 {
     if (this->objectName().isEmpty())
         this->setObjectName(QStringLiteral("this"));
-    this->resize(800, 600);
+    this->resize(1024, 960);
     this->setMinimumSize(QSize(200, 200));
     this->setDocumentMode(false);
 
-    //m_centralWidget = new QWidget(this);
 	m_applicationWindow = new ApplicationWindow;
 	m_centralWidget = QWidget::createWindowContainer(m_applicationWindow, this);
 
@@ -28,9 +39,6 @@ void MainWindow::setupUi()
     gridLayout->setSpacing(6);
     gridLayout->setContentsMargins(11, 11, 11, 11);
     gridLayout->setObjectName(QStringLiteral("gridLayout"));
-
-    //openGLWidget = new ApplicationWidget(m_centralWidget);
-    //openGLWidget->setObjectName(QStringLiteral("openGLWidget"));
 
     this->setCentralWidget(m_centralWidget);
     
@@ -63,6 +71,12 @@ void MainWindow::setupDockWidgets()
 	m_explorerDockWidget_->setWidget(m_explorer);
 
 	addDockWidget(Qt::LeftDockWidgetArea, m_explorerDockWidget_);
+
+	m_propertiesDockWidget_ = new QDockWidget("Properties", this);
+	m_objectInfo = new QTUI::ObjectInfoView(this);
+	m_propertiesDockWidget_->setWidget(m_objectInfo);
+
+	addDockWidget(Qt::RightDockWidgetArea, m_propertiesDockWidget_);
 }
 
 void MainWindow::setupMenuBar()
@@ -71,8 +85,8 @@ void MainWindow::setupMenuBar()
 	m_menuBar->setGeometry(QRect(0, 0, 800, 26));
 
 	m_menuView = new QMenu("View", m_menuBar);
-	//QAction * actionExplorerView = new QAction("Sql Query Viewer", this);
 	m_menuView->addAction(m_explorerDockWidget_->toggleViewAction());
+	m_menuView->addAction(m_propertiesDockWidget_->toggleViewAction());
 
 	m_menuBar->addAction(m_menuView->menuAction());
 
