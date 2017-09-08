@@ -2,29 +2,26 @@
 
 namespace CGFF {
 
-    Layer2D::Layer2D(QMatrix4x4 projectionMatrix, QObject *parent)
+    Layer2D::Layer2D(QSize size1, QWidget *parent ,QMatrix4x4 projectionMatrix)
         : Layer(parent)
+		, m_size(size1)
     {
-		m_renderer = QSharedPointer<BatchRenderer2D>(new BatchRenderer2D(QSize(g_openglWidgetSize.width(), g_openglWidgetSize.height())));
-		m_scene2D = QSharedPointer<Scene2D>(new Scene2D(projectionMatrix));
+		m_renderer = QSharedPointer<BatchRenderer2D>(new BatchRenderer2D(QSize(size().width(), size().height())));
+		m_scene2D = QSharedPointer<Scene2D>(new Scene2D(size(), projectionMatrix));
 		m_renderer->setCamera(m_scene2D->getCamera());
     }
 
-	Layer2D::Layer2D(QSharedPointer<Scene2D> scene, QObject *parent)
+	Layer2D::Layer2D(QSharedPointer<Scene2D> scene, QWidget *parent)
 		: Layer(parent)
 		, m_scene2D(scene)
 	{
-		m_renderer = QSharedPointer<BatchRenderer2D>(new BatchRenderer2D(QSize(g_openglWidgetSize.width(), g_openglWidgetSize.height())));
+		m_renderer = QSharedPointer<BatchRenderer2D>(new BatchRenderer2D(QSize(size().width(), size().height())));
 		m_renderer->setCamera(m_scene2D->getCamera());
 	}
 
     Layer2D::~Layer2D()
     {
     }
-
-	void Layer2D::init()
-	{
-	}
 
     //void Layer2D::add(QSharedPointer<Renderable2D> renderable)
     //{
@@ -58,16 +55,24 @@ namespace CGFF {
 		m_submittedRenderables.clear();
     }
 
-    void Layer2D::resize(int width, int height)
-    {
-		qSharedPointerCast<CGFF::BatchRenderer2D>(m_renderer)->setScreenSize(QSize(width, height));
-		m_scene2D->getRenderer()->setScreenSize(QSize(width, height));
-    }
+ //   void Layer2D::resize(int width, int height)
+ //   {
+	//	m_size = QSize(width, height);
+	//	qSharedPointerCast<CGFF::BatchRenderer2D>(m_renderer)->setScreenSize(QSize(width, height));
+	//	m_scene2D->getRenderer()->setScreenSize(QSize(width, height));
+ //   }
 
-	void Layer2D::closeEvent(QEvent *event)
+	void Layer2D::resizeEvent(QResizeEvent *event)
 	{
-		m_submittedRenderables.clear();
-		m_renderer->close();
-		m_scene2D->close();
+		m_size = event->size();
+		qSharedPointerCast<CGFF::BatchRenderer2D>(m_renderer)->setScreenSize(event->size());
+		m_scene2D->getRenderer()->setScreenSize(event->size());
 	}
+
+	//void Layer2D::closeEvent(QEvent *event)
+	//{
+	//	m_submittedRenderables.clear();
+	//	m_renderer->close();
+	//	m_scene2D->close();
+	//}
 }

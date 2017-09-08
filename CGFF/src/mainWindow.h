@@ -13,7 +13,11 @@
 #include <QtWidgets/QToolBar>
 #include <QtWidgets/QWidget>
 #include <QDockWidget>
-#include "application/applicationWindow.h"
+#include <QMdiArea>
+#include <QMdiSubWindow>
+//#include "application/applicationWindow.h"
+#include "application/debugWindow.h"
+#include "application/appWindow.h"
 #include "qtUI/explorerView.h"
 #include "qtUI/view/objectInfoView.h"
 
@@ -27,26 +31,36 @@ public:
 
 private:
     void setupUi();
-    void retranslateUi();
 	void setupDockWidgets();
 	void setupMenuBar();
+	void createConnections();
 	void closeEvent(QCloseEvent * event) Q_DECL_OVERRIDE;
+	void createProject();
+
+	private slots:
+	void onNewProject();
+	void onSaveProject();
 
 private:
-	ApplicationWindow * m_applicationWindow;
-    QWidget *m_centralWidget;
-    QGridLayout *gridLayout;
+	//ApplicationWindow * m_applicationWindow;
+	CGFF::DebugWindow * m_debugWindow;
+	CGFF::AppWindow * m_appWindow;
+    //QWidget *m_centralWidget;
     QMenuBar *m_menuBar;
     QToolBar *m_mainToolBar;
     QStatusBar *m_statusBar;
 	QMenu * m_menuView;
-	QAction *m_actionExplorerView;
+	QMenu * m_menuProject;
+	QAction *m_newProjectAction;
+	QAction *m_saveProjectAction;
 
 	QTUI::ExplorerView * m_explorer;
-	QDockWidget * m_explorerDockWidget_;
+	QDockWidget * m_explorerDockWidget;
 
 	QTUI::ObjectInfoView * m_objectInfo;
-	QDockWidget * m_propertiesDockWidget_;
+	QDockWidget * m_propertiesDockWidget;
+
+	QMdiArea * m_mdiArea;
 };
 
 #endif

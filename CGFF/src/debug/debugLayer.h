@@ -11,14 +11,16 @@ namespace CGFF {
     class DebugLayer : public Layer2D
     {
     public:
-        DebugLayer(QSize screenSize);
+        DebugLayer(QSize screenSize, QWidget *parent = Q_NULLPTR);
         virtual ~DebugLayer() {};
 
         void init() override;
 		void render(QSharedPointer<Renderer2D>& renderer) override;
 		void tick() override;
-        void resize(int width, int height) override;
-		void closeEvent(QEvent *event) override;
+  //      void resize(int width, int height) override;
+		void resizeEvent(QResizeEvent *event) override;
+		//void closeEvent(QEvent *event) override;
+		bool event(QEvent *event) override;
 
         void mousePressEvent(QMouseEvent *event) override;
         void mouseMoveEvent(QMouseEvent *event) override;
@@ -41,6 +43,7 @@ namespace CGFF {
 		QSharedPointer<Label> m_memoryUsageLabel;
 		QSharedPointer<Label> m_frametimeLabel;
 		QVector<QSharedPointer<Sprite>> m_tempSprites;
+		
     };
 
 }

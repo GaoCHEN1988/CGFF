@@ -11,7 +11,7 @@ namespace CGFF {
     class DebugMenuItem : public UI::Button
     {
     public:
-        DebugMenuItem(QSharedPointer<IAction> action, const QRect& bounds);
+		DebugMenuItem(QSharedPointer<IAction> action, const QRect& bounds, UI::Widget * parent);
 
         void update() override;
 

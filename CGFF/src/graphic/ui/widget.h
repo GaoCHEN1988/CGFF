@@ -8,13 +8,15 @@ namespace CGFF {
 
 	class Widget
 	{
-	private:
-		Widget() {}
 	protected:
-		Widget(const QRect& bounds);
+		//Widget(Widget* parent);
+		Widget(const QRect& bounds, Widget* parent);
+		Widget(const QSize& widgetSize);
+		//Widget(const QSize& screenSize, const QRect& bounds);
         virtual ~Widget() {};
 
 	public:
+		virtual void resize(int width, int height);
 		virtual bool onMousePressed(QMouseEvent* e);
 		virtual bool onMouseReleased(QMouseEvent* e);
 		virtual bool onMouseMoved(QMouseEvent* e);
@@ -27,12 +29,15 @@ namespace CGFF {
 
 		inline bool isActive() const { return m_active; }
 		inline void setActive(bool active) { m_active = active; }
+		inline QSize getSize() { return m_widgetSize; }
 
     protected:
         bool m_active;
         bool m_focused;
 
         QRect m_bounds;
+
+		QSize m_widgetSize;
 	};
 
 } } 

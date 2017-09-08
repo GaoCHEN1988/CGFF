@@ -4,7 +4,6 @@
 #include "Debug/debugLayer3D.h"
 #include "graphic/api/context.h"
 #include <QWindow>
-#include <QTimer>
 #include <QTime>
 #include <QCoreApplication>
 

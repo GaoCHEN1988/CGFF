@@ -6,8 +6,10 @@
 
 namespace CGFF {
 
-	Test3DLayer::Test3DLayer()
-		: Layer3D(QSharedPointer<CGFF::Scene>(new CGFF::Scene()))
+	Test3DLayer::Test3DLayer(QSize size, QWidget *parent)
+		: Layer3D(QSharedPointer<CGFF::Scene>(new CGFF::Scene(size))
+			, QSharedPointer<ForwardRenderer>(new ForwardRenderer(size))
+			, parent)
 		, m_mayaCamera(nullptr)
 		, m_FPSCamera(nullptr)
 		, m_Spheres()
@@ -22,7 +24,7 @@ namespace CGFF {
 		m_mayaCamera = m_scene->getCamera();
 
 		QMatrix4x4 m;
-		m.perspective(65.0f, float(CGFF::g_openglWidgetSize.width()) / float(CGFF::g_openglWidgetSize.height()), 0.1f, 1000.0f);
+		m.perspective(65.0f, static_cast<float>(size.width()) / static_cast<float>(size.height()), 0.1f, 1000.0f);
 		m_FPSCamera = QSharedPointer<FPSCamera>(new FPSCamera(m));
 
 		m_rotation = 0.0f;
@@ -158,9 +160,9 @@ namespace CGFF {
 		m_scene->pushLightSetup(lights);
 
 
-		DEBUG_MENU("Light Direction", &lights->getLights()[0]->direction, -1.0f, 1.0f);
-		DEBUG_MENU("Light Intensity", &lights->getLights()[0]->intensity, 0, 100);
-		DEBUG_MENU("Dagger", &g_DaggerTransform, 0, 100);
+		//DEBUG_MENU("Light Direction", &lights->getLights()[0]->direction, -1.0f, 1.0f);
+		//DEBUG_MENU("Light Intensity", &lights->getLights()[0]->intensity, 0, 100);
+		//DEBUG_MENU("Dagger", &g_DaggerTransform, 0, 100);
     }
 
     void Test3DLayer::render(QSharedPointer<Renderer3D>& renderer)
@@ -186,11 +188,17 @@ namespace CGFF {
 		}
     }
 
-    void Test3DLayer::resize(int width, int height) 
-    {
-		Layer3D::resize(width, height);
-        Layer3D::getScene()->getCamera()->resize(width, height);
-    }
+  //  void Test3DLayer::resize(int width, int height) 
+  //  {
+		//Layer3D::resize(width, height);
+  //      Layer3D::getScene()->getCamera()->resize(width, height);
+  //  }
+
+	void Test3DLayer::resizeEvent(QResizeEvent *event)
+	{
+		Layer3D::resizeEvent(event);
+		Layer3D::getScene()->getCamera()->resize(event->size().width(), event->size().height());
+	}
 
     void Test3DLayer::mousePressEvent(QMouseEvent *event)
     {
@@ -223,14 +231,14 @@ namespace CGFF {
 		}
     }
 
-	void Test3DLayer::closeEvent(QEvent *event)
-	{
-		Layer3D::closeEvent(event);
-		m_Spheres.clear();
-		m_plane.clear();
-		m_dagger.clear();
-		m_cube.clear();
-		m_daggerMaterial.clear();
-		m_skyboxMaterial.clear();
-	}
+	//void Test3DLayer::closeEvent(QEvent *event)
+	//{
+	//	Layer3D::closeEvent(event);
+	//	m_Spheres.clear();
+	//	m_plane.clear();
+	//	m_dagger.clear();
+	//	m_cube.clear();
+	//	m_daggerMaterial.clear();
+	//	m_skyboxMaterial.clear();
+	//}
 }

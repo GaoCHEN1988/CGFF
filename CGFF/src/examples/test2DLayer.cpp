@@ -2,8 +2,8 @@
 #include "graphic/shader/shaderFactory.h"
 namespace CGFF {
 
-    Test2DLayer::Test2DLayer(QSize size, QObject *parent)
-        : Layer2D(QMatrix4x4(), parent)
+    Test2DLayer::Test2DLayer(QSize size, QWidget *parent)
+        : Layer2D(size, parent)
         , m_size(size)
     {
     }
@@ -22,13 +22,6 @@ namespace CGFF {
         Layer2D::setMask(m_mask);
     }
 
-    void Test2DLayer::resize(int width, int height) 
-    {
-        Layer2D::resize(width, height);
-    }
-    void Test2DLayer::mousePressEvent(QMouseEvent *event) {}
-    void Test2DLayer::mouseMoveEvent(QMouseEvent *event) {}
-    void Test2DLayer::mouseReleaseEvent(QMouseEvent *event) {}
     void Test2DLayer::keyPressEvent(QKeyEvent *event) 
     {
         float speed = 10.0f;
@@ -82,13 +75,13 @@ namespace CGFF {
         }
     }
 
-	void Test2DLayer::closeEvent(QEvent *event)
-	{
-		Layer2D::closeEvent(event);
-		m_sprite.clear();
-		m_sprite2.clear();
-		m_mask.clear();
-	}
+	//void Test2DLayer::closeEvent(QEvent *event)
+	//{
+	//	Layer2D::closeEvent(event);
+	//	m_sprite.clear();
+	//	m_sprite2.clear();
+	//	m_mask.clear();
+	//}
 
 	bool Test2DLayer::event(QEvent *event)
 	{

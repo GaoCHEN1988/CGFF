@@ -29,10 +29,6 @@ ApplicationWindow::ApplicationWindow(QWindow * parent, CGFF::RenderAPI api)
 	}
 
 	timer_id_ = startTimer(0);
-	//CGFF::VFS::init();
-	//CGFF::VFS::get()->mount("resource", "Resources/");
-	//CGFF::VFS::get()->mount("pbr", "Resources/pbr");
-	//CGFF::VFS::get()->mount("shaders", "src/graphic/shaders");
 }
 
 ApplicationWindow::~ApplicationWindow() 
@@ -47,11 +43,11 @@ void ApplicationWindow::initialize()
 
 	m_debugLayer->init();
 
-	m_debugLayer3D = QSharedPointer<CGFF::DebugLayer3D>(new CGFF::DebugLayer3D());
+	m_debugLayer3D = QSharedPointer<CGFF::DebugLayer3D>(new CGFF::DebugLayer3D(this->size()));
 
 	m_debugLayer3D->init();
 
-	pushLayer(QSharedPointer<CGFF::Layer>(new CGFF::Test3DLayer));
+	pushLayer(QSharedPointer<CGFF::Layer>(new CGFF::Test3DLayer(this->size(), this)));
 	pushOverlay(QSharedPointer<CGFF::Layer>(new CGFF::Test2DLayer(this->size(), this)));
 
 	m_time.start();

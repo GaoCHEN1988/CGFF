@@ -19,17 +19,18 @@ namespace CGFF {
         float fontPixelSize;
     };
 
-    class DebugMenu
+    class DebugMenu : public UI::Widget
     {
     private:
-        DebugMenu();
+		DebugMenu(QSize size);
+		virtual ~DebugMenu() {};
 		QSharedPointer<PathAction> createOrFindPaths(QStringList& paths, QSharedPointer<PathAction> action = nullptr);
 		void refresh();
 
     public:
-        static void init()
+        static void init(QSize size)
         {
-            static DebugMenu instance;
+            static DebugMenu instance(size);
         };
 
 		static void addAction(const QString& path, QSharedPointer<IAction> action);
@@ -58,7 +59,8 @@ namespace CGFF {
         void render(QSharedPointer<Renderer2D>& renderer);
         void onActivate();
         void onDeactivate();
-        void mousePressEvent(QMouseEvent *event);
+		void resize(int width, int height);
+		void mousePressEvent(QMouseEvent *event);
         void mouseMoveEvent(QMouseEvent *event);
 		void mouseReleaseEvent(QMouseEvent *event);
 		void closeEvent(QEvent *event);

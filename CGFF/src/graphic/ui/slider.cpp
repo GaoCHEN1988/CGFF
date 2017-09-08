@@ -3,34 +3,41 @@
 namespace CGFF {
     namespace UI {
 
-	Slider::Slider(const QRect& bounds, bool vertical)
-		: Widget(bounds)
+	Slider::Slider(const QRect& bounds, UI::Widget * parent, bool vertical)
+		: Widget(bounds, parent)
         , m_value(0.0f)
         , m_state(SliderState::UNPRESSED)
         , m_headOffset(0.0f)
         , m_callback(&Slider::noCallback)
         , m_vertical(vertical)
+		, m_parent(parent)
 	{
 		float size = vertical ? bounds.width() : bounds.height();
 		m_headBounds = QRect(bounds.x(), bounds.y(), size, size);
 	}
 
-	Slider::Slider(const QRect& bounds, float value, const ValueChangedCallback& callback, bool vertical)
-		: Widget(bounds)
+	Slider::Slider(const QRect& bounds, UI::Widget * parent, float value, const ValueChangedCallback& callback, bool vertical)
+		: Widget(bounds, parent)
         , m_value(value)
         , m_state(SliderState::UNPRESSED)
         , m_headOffset(0.0f)
         , m_callback(callback)
         , m_vertical(vertical)
+		, m_parent(parent)
 	{
 		float size = vertical ? bounds.width() : bounds.height();
 		m_headBounds = QRect(bounds.x(), bounds.y(), size, size);
 	}
 
+	Slider::~Slider()
+	{
+		m_parent = nullptr;
+	}
+
 	bool Slider::onMousePressed(QMouseEvent* e)
 	{
 		// TODO: remove these hard coded mouse maths throughout the engine
-        QPoint mouse(e->x(), (g_openglWidgetSize.height() - e->y()));
+        QPoint mouse(e->x(), (m_parent->getSize().height() - e->y()));
 		if (m_headBounds.contains(mouse))
 		{
 			m_state = SliderState::PRESSEDHEAD;
@@ -52,7 +59,7 @@ namespace CGFF {
 	bool Slider::onMouseMoved(QMouseEvent* e)
 	{
 		// TODO: remove these hard coded mouse maths throughout the engine
-        QPoint mouse(e->x(), (g_openglWidgetSize.height() - e->y()));
+        QPoint mouse(e->x(), (m_parent->getSize().height() - e->y()));
 		if (m_state == SliderState::PRESSEDHEAD)
 		{
 			if (m_vertical)

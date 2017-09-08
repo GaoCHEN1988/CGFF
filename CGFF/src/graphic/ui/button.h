@@ -16,8 +16,8 @@ namespace CGFF { namespace UI {
 		};
 
 	public:
-		Button(const QString& label, const QRect& bounds, const ActionHandler& handler = &Button::noAction);
-        virtual ~Button() {};
+		Button(const QString& label, const QRect& bounds, UI::Widget * parent, const ActionHandler& handler = &Button::noAction);
+        virtual ~Button();
 
 		bool onMousePressed(QMouseEvent* e) override;
 		bool onMouseReleased(QMouseEvent* e) override;
@@ -42,6 +42,7 @@ namespace CGFF { namespace UI {
         ButtonState m_state;
         ActionHandler m_actionHandler;
         QFont m_font;
+		UI::Widget* m_parent;
 	};
 
 

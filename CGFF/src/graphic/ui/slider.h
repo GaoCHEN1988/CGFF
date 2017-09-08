@@ -15,17 +15,10 @@ namespace CGFF {
 		{
 			UNPRESSED, PRESSED, PRESSEDHEAD
 		};
-	private:
-		QRect m_headBounds;
-		float m_value;
-		float m_headOffset;
-		SliderState m_state;
-		ValueChangedCallback m_callback;
-		bool m_vertical;
 	public:
-		Slider(const QRect& bounds, bool vertical = false);
-		Slider(const QRect& bounds, float value = 0.0f, const ValueChangedCallback& callback = &Slider::noCallback, bool vertical = false);
-        virtual ~Slider() {};
+		Slider(const QRect& bounds, UI::Widget * parent, bool vertical = false);
+		Slider(const QRect& bounds, UI::Widget * parent, float value = 0.0f, const ValueChangedCallback& callback = &Slider::noCallback, bool vertical = false);
+        virtual ~Slider();
 
 		bool onMousePressed(QMouseEvent* e) override;
 		bool onMouseReleased(QMouseEvent* e) override;
@@ -41,6 +34,15 @@ namespace CGFF {
 		void setValue(float value);
 	private:
 		static void noCallback(float) {}
+
+	private:
+		QRect m_headBounds;
+		float m_value;
+		float m_headOffset;
+		SliderState m_state;
+		ValueChangedCallback m_callback;
+		bool m_vertical;
+		UI::Widget* m_parent;
 	};
 
 } } 

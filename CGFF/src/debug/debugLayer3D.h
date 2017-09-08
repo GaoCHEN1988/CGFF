@@ -7,13 +7,14 @@ namespace CGFF {
 	class DebugLayer3D : public Layer3D
 	{
 	public:
-		DebugLayer3D();
+		DebugLayer3D(const QSize& size, QWidget *parent = Q_NULLPTR);
 
 		void init() override;
 		void render(QSharedPointer<Renderer3D>& renderer) override;
 		void tick() override;
-		void resize(int width, int height) override;
-		void closeEvent(QEvent *event) override;
+		//void resize(int width, int height) override;
+		void resizeEvent(QResizeEvent *event) override;
+		//void closeEvent(QEvent *event) override;
 
 		void mousePressEvent(QMouseEvent *event) override;
 		void mouseMoveEvent(QMouseEvent *event) override;

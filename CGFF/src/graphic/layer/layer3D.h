@@ -11,14 +11,15 @@ namespace CGFF {
     class Layer3D : public Layer
     {
     public:
-        Layer3D(QSharedPointer<Scene> scene, QSharedPointer<Renderer3D> renderer = QSharedPointer<ForwardRenderer>(new ForwardRenderer()));
+        Layer3D(QSharedPointer<Scene> scene, QSharedPointer<Renderer3D> renderer, QWidget *parent = Q_NULLPTR);
         virtual ~Layer3D();
 
         virtual void init() override;
 		virtual void render() override;
 		virtual void render(QSharedPointer<Renderer3D>& renderer) {};
-		virtual void resize(int width, int height) override;
-		virtual void closeEvent(QEvent *event) override;
+		//virtual void resize(int width, int height) override;
+		void resizeEvent(QResizeEvent *event) override;
+		//virtual void closeEvent(QEvent *event) override;
 
         inline QSharedPointer<Scene>& getScene() { return m_scene; }
 

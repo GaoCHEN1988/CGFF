@@ -25,7 +25,7 @@ namespace CGFF {
 		m_material->bind();
 
 		//Test
-		GL->glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, NULL);
+		GLCall(GL->glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, NULL));
 		m_material->unbind();
     }
 }

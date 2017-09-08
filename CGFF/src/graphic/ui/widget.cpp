@@ -3,11 +3,38 @@
 namespace CGFF {
     namespace UI {
 
-	Widget::Widget(const QRect& bounds)
+	//Widget::Widget(Widget* parent)
+	//	: m_bounds()
+	//	, m_screenSize(parent->m_screenSize)
+	//	, m_active(true)
+	//	, m_focused(false)
+	//{
+	//}
+
+	Widget::Widget(const QRect& bounds, Widget* parent)
 		: m_bounds(bounds)
-        , m_active(true)
-        , m_focused(false)
+		, m_widgetSize(parent->m_widgetSize)
+		, m_active(true)
+		, m_focused(false)
 	{
+	}
+
+	Widget::Widget(const QSize& screenSize)
+		: m_bounds()
+		, m_widgetSize(screenSize)
+		, m_active(true)
+		, m_focused(false)
+	{}
+	//Widget::Widget(const QSize& screenSize, const QRect& bounds)
+	//	: m_bounds(bounds)
+ //       , m_active(true)
+ //       , m_focused(false)
+	//{
+	//}
+
+	void Widget::resize(int width, int height)
+	{
+		m_widgetSize = QSize(width, height);
 	}
 
 	bool Widget::onMousePressed(QMouseEvent* e)

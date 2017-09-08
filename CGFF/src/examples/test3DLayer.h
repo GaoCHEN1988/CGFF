@@ -14,18 +14,19 @@ namespace CGFF {
     class Test3DLayer : public Layer3D
     {
     public:
-        Test3DLayer();
+        Test3DLayer(QSize size, QWidget *parent = Q_NULLPTR);
         virtual ~Test3DLayer();
 
         void init() override;
 		void render(QSharedPointer<Renderer3D>& renderer) override;
 
-        void resize(int width, int height) override;
+        //void resize(int width, int height) override;
+		void resizeEvent(QResizeEvent *event) override;
         void mousePressEvent(QMouseEvent *event) override;
         void mouseMoveEvent(QMouseEvent *event) override;
         void mouseReleaseEvent(QMouseEvent *event) override;
         void keyPressEvent(QKeyEvent *event) override;
-		void closeEvent(QEvent *event) override;
+		//void closeEvent(QEvent *event) override;
 
     private:
 

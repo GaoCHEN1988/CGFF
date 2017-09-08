@@ -10,15 +10,15 @@ namespace CGFF {
     class Layer2D : public Layer
     {
     public:
-        Layer2D(QMatrix4x4 projectionMatrix = QMatrix4x4(), QObject *parent = Q_NULLPTR);
-		Layer2D(QSharedPointer<Scene2D> scene, QObject *parent = Q_NULLPTR);
+        Layer2D(QSize size, QWidget *parent = Q_NULLPTR, QMatrix4x4 projectionMatrix = QMatrix4x4());
+		Layer2D(QSharedPointer<Scene2D> scene, QWidget *parent = Q_NULLPTR);
         virtual ~Layer2D();
 
-		virtual void init() override;
         virtual void render() override;
 		virtual void render(QSharedPointer<Renderer2D>& renderer) {};
-		virtual void resize(int width, int height) override;
-		virtual void closeEvent(QEvent *event) override;
+		//virtual void resize(int width, int height) override;
+		void resizeEvent(QResizeEvent *event) override;
+		//virtual void closeEvent(QEvent *event) override;
 
 		virtual void add(QSharedPointer<Sprite> sprite);
 		inline QSharedPointer<Scene2D> getScene() { return m_scene2D; }
@@ -38,6 +38,7 @@ namespace CGFF {
 		QSharedPointer<Renderer2D> m_renderer;
 		QSharedPointer<Scene2D> m_scene2D;
         QVector<QSharedPointer<Renderable2D>> m_submittedRenderables;
+		QSize m_size;
     };
 }
 

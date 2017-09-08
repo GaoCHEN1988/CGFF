@@ -10,8 +10,8 @@ namespace CGFF {
 	class Scene2D
 	{
 	public:
-		Scene2D();
-		Scene2D(const QMatrix4x4& projectionMatrix);
+		Scene2D(const QSize& size);
+		Scene2D(const QSize& size, const QMatrix4x4& projectionMatrix);
 		virtual ~Scene2D();
 
 		void add(QSharedPointer<Entity> entity);
@@ -26,6 +26,8 @@ namespace CGFF {
 		QSharedPointer<BatchRenderer2D> m_renderer;
 
 		QVector<QSharedPointer<Entity>> m_entities;
+
+		QSize m_size;
 	};
 }
 

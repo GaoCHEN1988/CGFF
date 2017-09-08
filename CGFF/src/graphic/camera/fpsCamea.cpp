@@ -20,8 +20,8 @@ namespace CGFF {
     }
     void FPSCamera::update()
     {
-        QSize windowSize = g_openglWidgetSize;
-        QVector2D windowCenter = QVector2D((float)(windowSize.width() / 2.0f), (float)(windowSize.height() / 2.0f));
+        //QSize windowSize = g_openglWidgetSize;
+        //QVector2D windowCenter = QVector2D((float)(windowSize.width() / 2.0f), (float)(windowSize.height() / 2.0f));
 
         //if (Input::IsMouseButtonPressed(SP_MOUSE_RIGHT))
         //{

@@ -10,16 +10,13 @@ namespace CGFF {
     class Test2DLayer : public Layer2D
     {
     public:
-        Test2DLayer(QSize size, QObject *parent = Q_NULLPTR);
+        Test2DLayer(QSize size, QWidget *parent = Q_NULLPTR);
         virtual ~Test2DLayer() {};
 
         void init() override;
-        void resize(int width, int height) override;
-        void mousePressEvent(QMouseEvent *event) override;
-        void mouseMoveEvent(QMouseEvent *event) override;
-        void mouseReleaseEvent(QMouseEvent *event) override;
+
         void keyPressEvent(QKeyEvent *event) override;
-		void closeEvent(QEvent *event) override;
+		//void closeEvent(QEvent *event) override;
 
 		virtual bool event(QEvent *event) override;
 

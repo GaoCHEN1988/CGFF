@@ -1,20 +1,22 @@
 #include "scene2D.h"
 
 namespace CGFF {
-	Scene2D::Scene2D()
+	Scene2D::Scene2D(const QSize& size)
+		: m_size(size)
 	{
 		QMatrix4x4 proj = QMatrix4x4();
-		proj.ortho(0, (float)g_openglWidgetSize.width(), 0, (float)g_openglWidgetSize.height(), -1.0f, 100.0f);
+		proj.ortho(0, (float)m_size.width(), 0, (float)m_size.height(), -1.0f, 100.0f);
 
 		m_camera = QSharedPointer<OrthographicCamera>(new OrthographicCamera(proj));
-		m_renderer = QSharedPointer<BatchRenderer2D>(new BatchRenderer2D(QSize(g_openglWidgetSize.width(), g_openglWidgetSize.height())));
+		m_renderer = QSharedPointer<BatchRenderer2D>(new BatchRenderer2D(QSize(m_size.width(), m_size.height())));
 		m_renderer->setCamera(m_camera);
 	}
 
-	Scene2D::Scene2D(const QMatrix4x4& projectionMatrix)
-		: m_camera(QSharedPointer<OrthographicCamera>(new OrthographicCamera(projectionMatrix)))
+	Scene2D::Scene2D(const QSize& size, const QMatrix4x4& projectionMatrix)
+		: m_size(size)
+		, m_camera(QSharedPointer<OrthographicCamera>(new OrthographicCamera(projectionMatrix)))
 	{
-		m_renderer = QSharedPointer<BatchRenderer2D>(new BatchRenderer2D(QSize(g_openglWidgetSize.width(), g_openglWidgetSize.height())));
+		m_renderer = QSharedPointer<BatchRenderer2D>(new BatchRenderer2D(QSize(m_size.width(), m_size.height())));
 		m_renderer->setCamera(m_camera);
 	}
 

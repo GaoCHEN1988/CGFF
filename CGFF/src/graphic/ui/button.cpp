@@ -3,14 +3,20 @@
 namespace CGFF {
     namespace UI {
 
-	Button::Button(const QString& label, const QRect& bounds, const ActionHandler& handler)
-		: Widget(bounds)
+	Button::Button(const QString& label, const QRect& bounds, UI::Widget * parent, const ActionHandler& handler)
+		: Widget(bounds, parent)
         , m_label(label)
         , m_actionHandler(handler)
         , m_state(ButtonState::UNPRESSED)
 		, m_font(QFont("Sans"))
+		, m_parent(parent)
 	{
 		m_font.setPixelSize(20);
+	}
+
+	Button::~Button()
+	{
+		m_parent = nullptr;
 	}
 
 	bool Button::onMousePressed(QMouseEvent* e)
@@ -31,7 +37,7 @@ namespace CGFF {
 	bool Button::onMouseMoved(QMouseEvent* e)
 	{
 		// TODO: remove these hard coded mouse maths throughout the engine
-        QPoint mouse(e->x(), (g_openglWidgetSize.height()- e->y()));
+        QPoint mouse(e->x(), (m_parent->getSize().height()- e->y()));
 		if (m_state == ButtonState::PRESSED && !m_bounds.contains(mouse))
   			m_state = ButtonState::UNPRESSED;
 

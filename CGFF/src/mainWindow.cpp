@@ -3,25 +3,34 @@
 
 MainWindow::MainWindow(QWidget *parent)
 	: QMainWindow(parent)
-	, m_applicationWindow(nullptr)
-	, m_centralWidget(nullptr)
-	, gridLayout(nullptr)
+	//, m_applicationWindow(nullptr)
+	, m_debugWindow(nullptr)
+	, m_appWindow(nullptr)
+	//, m_centralWidget(nullptr)
 	, m_menuBar(nullptr)
 	, m_mainToolBar(nullptr)
 	, m_statusBar(nullptr)
 	, m_menuView(nullptr)
-	, m_actionExplorerView(nullptr)
+	, m_menuProject(nullptr)
+	, m_newProjectAction(nullptr)
+	, m_saveProjectAction(nullptr)
 	, m_explorer(nullptr)
-	, m_explorerDockWidget_(nullptr)
+	, m_explorerDockWidget(nullptr)
 	, m_objectInfo(nullptr)
-	, m_propertiesDockWidget_(nullptr)
+	, m_propertiesDockWidget(nullptr)
+	, m_mdiArea(nullptr)
 {
     setupUi();
 }
 
 MainWindow::~MainWindow()
 {
-	delete m_applicationWindow;
+	//delete m_applicationWindow;
+
+	//if(m_debugWindow)
+	//	delete m_debugWindow;
+
+	m_debugWindow = nullptr;
 }
 void MainWindow::setupUi()
 {
@@ -30,17 +39,35 @@ void MainWindow::setupUi()
     this->resize(1024, 960);
     this->setMinimumSize(QSize(200, 200));
     this->setDocumentMode(false);
+	this->setWindowTitle(QApplication::translate("this", "CGFF", Q_NULLPTR));
 
-	m_applicationWindow = new ApplicationWindow;
-	m_centralWidget = QWidget::createWindowContainer(m_applicationWindow, this);
+	m_mdiArea = new QMdiArea(this);
+	m_mdiArea->setHorizontalScrollBarPolicy(Qt::ScrollBarAsNeeded);
+	m_mdiArea->setVerticalScrollBarPolicy(Qt::ScrollBarAsNeeded);
+	setCentralWidget(m_mdiArea);
+	
+	//m_applicationWindow = new ApplicationWindow;
+	//m_centralWidget = QWidget::createWindowContainer(m_applicationWindow, this);
 
-    m_centralWidget->setObjectName(QStringLiteral("m_centralWidget"));
-    gridLayout = new QGridLayout(m_centralWidget);
-    gridLayout->setSpacing(6);
-    gridLayout->setContentsMargins(11, 11, 11, 11);
-    gridLayout->setObjectName(QStringLiteral("gridLayout"));
+	m_debugWindow = new CGFF::DebugWindow(this);
+	QWidget * debugWidget = QWidget::createWindowContainer(m_debugWindow, this);
+	QMdiSubWindow * debugMdiSubWindow = m_mdiArea->addSubWindow(debugWidget);
+	debugMdiSubWindow->setWindowTitle("Debug");
+	debugMdiSubWindow->setMinimumSize(400, 400);
 
-    this->setCentralWidget(m_centralWidget);
+	//m_appWindow = new CGFF::AppWindow(m_mdiArea);
+	//QWidget * appWidget = QWidget::createWindowContainer(m_appWindow, this);
+	//QMdiSubWindow * appMdiSubWindow = m_mdiArea->addSubWindow(appWidget);
+	//appMdiSubWindow->setWindowTitle("Application");
+	//appMdiSubWindow->setMinimumSize(400, 400);
+
+ //   m_centralWidget->setObjectName(QStringLiteral("m_centralWidget"));
+ //   gridLayout = new QGridLayout(m_centralWidget);
+ //   gridLayout->setSpacing(6);
+ //   gridLayout->setContentsMargins(11, 11, 11, 11);
+ //   gridLayout->setObjectName(QStringLiteral("gridLayout"));
+
+    //this->setCentralWidget(m_centralWidget);
     
     m_mainToolBar = new QToolBar(this);
     m_mainToolBar->setObjectName(QStringLiteral("m_mainToolBar"));
@@ -54,29 +81,24 @@ void MainWindow::setupUi()
 
 	setupMenuBar();
 
-    retranslateUi();
+	createConnections();
 
     QMetaObject::connectSlotsByName(this);
 } // setupUi
 
-void MainWindow::retranslateUi()
-{
-    this->setWindowTitle(QApplication::translate("this", "CGFF", Q_NULLPTR));
-} // retranslateUi
-
 void MainWindow::setupDockWidgets()
 {
-	m_explorerDockWidget_ = new QDockWidget("Explorer",this);
+	m_explorerDockWidget = new QDockWidget("Explorer",this);
 	m_explorer = new QTUI::ExplorerView(this);
-	m_explorerDockWidget_->setWidget(m_explorer);
+	m_explorerDockWidget->setWidget(m_explorer);
 
-	addDockWidget(Qt::LeftDockWidgetArea, m_explorerDockWidget_);
+	addDockWidget(Qt::LeftDockWidgetArea, m_explorerDockWidget);
 
-	m_propertiesDockWidget_ = new QDockWidget("Properties", this);
+	m_propertiesDockWidget = new QDockWidget("Properties", this);
 	m_objectInfo = new QTUI::ObjectInfoView(this);
-	m_propertiesDockWidget_->setWidget(m_objectInfo);
+	m_propertiesDockWidget->setWidget(m_objectInfo);
 
-	addDockWidget(Qt::RightDockWidgetArea, m_propertiesDockWidget_);
+	addDockWidget(Qt::RightDockWidgetArea, m_propertiesDockWidget);
 }
 
 void MainWindow::setupMenuBar()
@@ -84,16 +106,61 @@ void MainWindow::setupMenuBar()
 	m_menuBar = new QMenuBar(this);
 	m_menuBar->setGeometry(QRect(0, 0, 800, 26));
 
+	//view menu
 	m_menuView = new QMenu("View", m_menuBar);
-	m_menuView->addAction(m_explorerDockWidget_->toggleViewAction());
-	m_menuView->addAction(m_propertiesDockWidget_->toggleViewAction());
+	m_menuView->addAction(m_explorerDockWidget->toggleViewAction());
+	m_menuView->addAction(m_propertiesDockWidget->toggleViewAction());
 
+	//project menu
+	m_menuProject = new QMenu("Project", m_menuBar);
+	m_newProjectAction = new QAction("New Project", this);
+	m_newProjectAction->setShortcutContext(Qt::ApplicationShortcut);
+	m_newProjectAction->setShortcut(Qt::CTRL + Qt::Key_N);
+	m_menuProject->addAction(m_newProjectAction);
+
+	m_saveProjectAction = new QAction("Save Project", this);
+	m_saveProjectAction->setShortcutContext(Qt::ApplicationShortcut);
+	m_saveProjectAction->setShortcut(Qt::CTRL + Qt::Key_S);
+	m_menuProject->addAction(m_saveProjectAction);
+
+	m_menuBar->addAction(m_menuProject->menuAction());
 	m_menuBar->addAction(m_menuView->menuAction());
 
 	this->setMenuBar(m_menuBar);
 }
 
+void MainWindow::createConnections()
+{
+	connect(m_newProjectAction, &QAction::triggered,
+		this, &MainWindow::onNewProject);
+
+	connect(m_saveProjectAction, &QAction::triggered,
+		this, &MainWindow::onSaveProject);
+}
+
 void MainWindow::closeEvent(QCloseEvent * event)
 {
-	QCoreApplication::sendEvent(m_applicationWindow, event);
+	//foreach(QMdiSubWindow* w, m_mdiArea->subWindowList())
+	//{
+	//	QCoreApplication::sendEvent(w, event);
+	//}
+}
+
+void MainWindow::createProject()
+{
+
+}
+
+void MainWindow::onNewProject()
+{
+	if (!m_mdiArea)
+		return;
+
+	m_mdiArea->closeAllSubWindows();
+
+}
+
+void MainWindow::onSaveProject()
+{
+
 }

@@ -9,10 +9,8 @@ namespace CGFF {
 
 	class Panel : public Layer2D
 	{
-	private:
-		QVector<QSharedPointer<Widget>> m_widgets;
 	public:
-		Panel();
+		Panel(QSize size);
 		virtual ~Panel();
 
 		QSharedPointer<Widget> add(QSharedPointer<Widget> widget);
@@ -24,6 +22,9 @@ namespace CGFF {
 
 		void update() override;
 		void render(QSharedPointer<Renderer2D>& renderer) override;
+
+	private:
+		QVector<QSharedPointer<Widget>> m_widgets;
 	};
 
 } } 

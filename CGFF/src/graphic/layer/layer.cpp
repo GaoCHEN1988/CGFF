@@ -1,8 +1,8 @@
 #include "layer.h"
 
 namespace CGFF {
-    Layer::Layer(QObject *parent)
-        : QObject(parent)
+    Layer::Layer(QWidget *parent)
+        : QWidget(parent)
 		, m_isVisible(true)
     {
     }

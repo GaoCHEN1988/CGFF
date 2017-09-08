@@ -4,8 +4,8 @@
 
 namespace CGFF {
 
-    DebugMenuItem::DebugMenuItem(QSharedPointer<IAction> action, const QRect& bounds)
-        : Button(action->toString(), bounds, [action]() { action->onAction(); }), m_action(action)
+    DebugMenuItem::DebugMenuItem(QSharedPointer<IAction> action, const QRect& bounds, UI::Widget * parent)
+        : Button(action->toString(), bounds, parent,[action]() { action->onAction(); }), m_action(action)
     {
     }
 

@@ -75,11 +75,11 @@ namespace QTUI {
 	void ExplorerView::onMkdir()
 	{
 		int index = m_tabWidget->currentIndex();
-		QModelIndex modelIndex = ((QTreeView*)m_tabWidget->currentWidget())->currentIndex();
+		QModelIndex modelIndex = qobject_cast<QTreeView*>(m_tabWidget->currentWidget())->currentIndex();
 
 		if (!modelIndex.isValid())
 		{
-			modelIndex = ((QTreeView*)m_tabWidget->currentWidget())->rootIndex();
+			modelIndex = qobject_cast<QTreeView*>(m_tabWidget->currentWidget())->rootIndex();
 
 			if (!modelIndex.isValid())
 				return;
@@ -101,7 +101,7 @@ namespace QTUI {
 	void ExplorerView::onRm()
 	{
 		int index = m_tabWidget->currentIndex();
-		QModelIndex modelIndex = ((QTreeView*)m_tabWidget->currentWidget())->currentIndex();
+		QModelIndex modelIndex = qobject_cast<QTreeView*>(m_tabWidget->currentWidget())->currentIndex();
 		if (!modelIndex.isValid()) {
 			return;
 		}

@@ -1,0 +1,284 @@
+#include "baseWindow.h"
+#include "graphic/renderer/renderer.h"
+#include <QCoreApplication>
+
+namespace CGFF {
+
+	BaseWindow::BaseWindow(QWidget * parent , CGFF::RenderAPI api)
+		: QWindow()
+		, m_framePerSecond(0)
+		, m_fps_count(0)
+		, m_timer_id(0)
+		, m_parent(parent)
+	{
+		resize(800, 800);
+		setMinimumSize(QSize(400, 400));
+
+		CGFF::Context::setRenderAPI(api);
+		switch (api)
+		{
+		case CGFF::RenderAPI::OPENGL:
+			setSurfaceType(QWindow::OpenGLSurface);
+			break;
+		case CGFF::RenderAPI::DIRECT3D:
+			break;
+		}
+
+		m_timer_id = startTimer(0);
+	}
+
+	BaseWindow::~BaseWindow()
+	{
+		killTimer(m_timer_id);
+	}
+
+	void BaseWindow::initialize()
+	{
+		CGFF::Renderer::init();
+
+		m_time.start();
+		m_framePerSecond = 0;
+		m_fps_count = 0;
+	}
+
+	void BaseWindow::update()
+	{
+		for (auto layer : m_layerStack)
+		{
+			layer->update();
+		}
+
+		for (auto overLayer : m_overLayerStack)
+		{
+			overLayer->update();
+		}
+	}
+
+	void BaseWindow::render()
+	{
+		for (auto layer : m_layerStack)
+		{
+			layer->render();
+		}
+
+		for (auto overLayer : m_overLayerStack)
+		{
+			overLayer->render();
+		}
+	}
+
+	void BaseWindow::tick()
+	{
+		for (auto layer : m_layerStack)
+		{
+			layer->tick();
+		}
+
+		for (auto overLayer : m_overLayerStack)
+		{
+			overLayer->tick();
+		}
+	}
+
+	void BaseWindow::renderLater(){}
+	void BaseWindow::renderNow()
+	{
+		if (!isExposed())
+			return;
+
+		if (!CGFF::Context::isInitialized())
+		{
+			//CGFF::g_openglWidgetSize = this->size();
+
+			CGFF::Context::create(this);
+			initialize();
+		}
+
+		CGFF::Renderer::clear(CGFF::RendererBufferType::RENDERER_BUFFER_COLOR | CGFF::RendererBufferType::RENDERER_BUFFER_DEPTH);
+		CGFF::Renderer::setDepthTesting(true);
+		update();
+		render();
+
+		CGFF::Renderer::present();
+	}
+
+	void BaseWindow::pushLayer(QSharedPointer<CGFF::Layer> layer)
+	{
+		m_layerStack.append(layer);
+		layer->init();
+	}
+
+	QSharedPointer<CGFF::Layer> BaseWindow::popLayer()
+	{
+		QSharedPointer<CGFF::Layer> layer = m_layerStack.back();
+		m_layerStack.pop_back();
+		return layer;
+	}
+
+	QSharedPointer<CGFF::Layer> BaseWindow::popLayer(QSharedPointer<CGFF::Layer> layer)
+	{
+		for (uint i = 0; i < m_layerStack.size(); i++)
+		{
+			if (m_layerStack[i] == layer)
+			{
+				m_layerStack.remove(i);
+				break;
+			}
+		}
+		return layer;
+	}
+
+	void BaseWindow::pushOverlay(QSharedPointer<CGFF::Layer> layer)
+	{
+		m_overLayerStack.append(layer);
+		layer->init();
+	}
+
+	QSharedPointer<CGFF::Layer> BaseWindow::popOverlay()
+	{
+		QSharedPointer<CGFF::Layer> layer = m_overLayerStack.back();
+		m_overLayerStack.pop_back();
+		return layer;
+	}
+
+	QSharedPointer<CGFF::Layer> BaseWindow::popOverlay(QSharedPointer<CGFF::Layer> layer)
+	{
+		for (uint i = 0; i < m_overLayerStack.size(); i++)
+		{
+			if (m_overLayerStack[i] == layer)
+			{
+				m_overLayerStack.remove(i);
+				break;
+			}
+		}
+		return layer;
+	}
+
+	void BaseWindow::timerEvent(QTimerEvent *event)
+	{
+		renderNow();
+
+		// FPS count
+		++m_fps_count;
+		int elapsed = m_time.elapsed();
+		if (elapsed >= 1000)
+		{
+			m_framePerSecond = m_fps_count;
+			m_fps_count = 0;
+			m_time.restart();
+			tick();
+		}
+	}
+
+	void BaseWindow::exposeEvent(QExposeEvent *event)
+	{
+		Q_UNUSED(event);
+
+		if (isExposed())
+			renderNow();
+	}
+
+	void BaseWindow::resizeEvent(QResizeEvent* event)
+	{
+		if (!CGFF::Context::isInitialized())
+			return;
+
+		////CGFF::g_openglWidgetSize = event->size();
+		//int width = event->size().width();
+		//int height = event->size().height();
+
+		//for (auto layer : m_layerStack)
+		//{
+		//	layer->resize(width, height);
+		//}
+
+		//for (auto overLayer : m_overLayerStack)
+		//{
+		//	overLayer->resize(width, height);
+		//}
+	}
+
+	//void BaseWindow::mousePressEvent(QMouseEvent *event)
+	//{
+	//	for (auto layer : m_layerStack)
+	//	{
+	//		layer->mousePressEvent(event);
+	//	}
+
+	//	for (auto overLayer : m_overLayerStack)
+	//	{
+	//		overLayer->mousePressEvent(event);
+	//	}
+	//}
+
+	//void BaseWindow::mouseMoveEvent(QMouseEvent *event)
+	//{
+	//	for (auto layer : m_layerStack)
+	//	{
+	//		layer->mouseMoveEvent(event);
+	//	}
+
+	//	for (auto overLayer : m_overLayerStack)
+	//	{
+	//		overLayer->mouseMoveEvent(event);
+	//	}
+	//}
+
+	//void BaseWindow::mouseReleaseEvent(QMouseEvent *event)
+	//{
+	//	for (auto layer : m_layerStack)
+	//	{
+	//		layer->mouseReleaseEvent(event);
+	//	}
+
+	//	for (auto overLayer : m_overLayerStack)
+	//	{
+	//		overLayer->mouseReleaseEvent(event);
+	//	}
+	//}
+
+	//void BaseWindow::keyPressEvent(QKeyEvent *event)
+	//{
+	//	for (auto layer : m_layerStack)
+	//	{
+	//		layer->keyPressEvent(event);
+	//	}
+
+	//	for (auto overLayer : m_overLayerStack)
+	//	{
+	//		overLayer->keyPressEvent(event);
+	//	}
+	//}
+
+	bool BaseWindow::event(QEvent *event)
+	{
+		//QEvent::Type t = event->type();
+		//if (event->type() == QEvent::Close)
+		//{
+		//	for (auto layer : m_layerStack)
+		//	{
+		//		layer->closeEvent(event);
+		//		//QCoreApplication::sendEvent(layer.data(), event);
+		//	}
+
+		//	for (auto overLayer : m_overLayerStack)
+		//	{
+		//		overLayer->closeEvent(event);
+		//		//QCoreApplication::sendEvent(overLayer.data(), event);
+		//	}
+		//}
+
+		for (auto layer : m_layerStack)
+		{
+			QCoreApplication::sendEvent(layer.data(), event);
+		}
+
+		for (auto overLayer : m_overLayerStack)
+		{
+			QCoreApplication::sendEvent(overLayer.data(), event);
+		}
+
+		return QWindow::event(event);
+	}
+
+}

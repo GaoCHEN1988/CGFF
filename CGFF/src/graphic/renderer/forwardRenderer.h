@@ -8,7 +8,7 @@ namespace CGFF {
     class ForwardRenderer : public Renderer3D
     {
     public:
-        ForwardRenderer();
+        ForwardRenderer(const QSize& size);
 		ForwardRenderer(int width, int height);
 		virtual ~ForwardRenderer() {}
 

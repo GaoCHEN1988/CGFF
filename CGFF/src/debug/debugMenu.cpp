@@ -7,8 +7,9 @@ namespace CGFF {
 
     DebugMenu * DebugMenu::s_instance = nullptr;
 
-    DebugMenu::DebugMenu()
-        : m_visible(false)
+    DebugMenu::DebugMenu(QSize size)
+        : Widget(size)
+		, m_visible(false)
 		, m_path(nullptr)
     {
         s_instance = this;
@@ -19,7 +20,7 @@ namespace CGFF {
         add("Debug Menu/Font Size", &m_settings.fontPixelSize, 8.0f, 50.0f);
 
         m_sliders.resize(4);
-        m_panel = QSharedPointer<UI::Panel>(new UI::Panel());
+        m_panel = QSharedPointer<UI::Panel>(new UI::Panel(size));
     }
 
 	QSharedPointer<PathAction> DebugMenu::createOrFindPaths(QStringList& paths, QSharedPointer<PathAction> action)
@@ -272,7 +273,7 @@ namespace CGFF {
 		{
 			QSharedPointer<DebugMenuItem> item = QSharedPointer<DebugMenuItem>(
 				new DebugMenuItem(QSharedPointer<BackAction>(new BackAction(m_path->parent)),
-					QRect(0.0f, yOffset, width, height)));
+					QRect(0.0f, yOffset, width, height), this));
 			m_panel->add(item);
 			yOffset += height;
 		}
@@ -280,13 +281,13 @@ namespace CGFF {
         for (QSharedPointer<IAction> action : *actionList)
         {
             float y = yOffset;
-            m_panel->add(QSharedPointer<DebugMenuItem>(new DebugMenuItem(action, QRect(0.0f, y, width, height))));
+            m_panel->add(QSharedPointer<DebugMenuItem>(new DebugMenuItem(action, QRect(0.0f, y, width, height), this)));
             yOffset += height;
         }
 
 		for (uint i = 0; i < 4; i++)
 		{
-			m_sliders[i] = QSharedPointer<UI::Slider>(new UI::Slider(QRect((int)width + i * 40, 10, 40, 400), true));
+			m_sliders[i] = QSharedPointer<UI::Slider>(new UI::Slider(QRect((int)width + i * 40, 10, 40, 400), this, true));
 			m_panel->add(m_sliders[i])->setActive(false);
 		}
     }
@@ -295,6 +296,12 @@ namespace CGFF {
     {
         m_panel->clear();
     }
+
+	void DebugMenu::resize(int width, int height)
+	{
+		Widget::resize(width, height);
+		m_panel->resize(width, height);
+	}
 
     void DebugMenu::mousePressEvent(QMouseEvent *event)
     {
@@ -318,6 +325,6 @@ namespace CGFF {
 
 	void DebugMenu::closeEvent(QEvent *event)
 	{
-		m_panel->closeEvent(event);
+		//m_panel->closeEvent(event);
 	}
 }

@@ -219,7 +219,7 @@ namespace CGFF {
         }
         else
         {
-			Renderer::setViewport(0, 0, m_screenSize.width(), m_screenSize.height());
+			GLCall(Renderer::setViewport(0, 0, m_screenSize.width(), m_screenSize.height()));
 
 			if (!m_camera.isNull())
 			{

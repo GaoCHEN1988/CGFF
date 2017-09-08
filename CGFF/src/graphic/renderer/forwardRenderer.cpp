@@ -18,9 +18,9 @@ namespace CGFF {
 		PSSystemUniformIndex_Size = 1
 	};
 
-    ForwardRenderer::ForwardRenderer()
+    ForwardRenderer::ForwardRenderer(const QSize& size)
     {
-		setScreenBufferSize(g_openglWidgetSize.width(), g_openglWidgetSize.height());
+		setScreenBufferSize(size.width(), size.height());
 		init();
 	}
 

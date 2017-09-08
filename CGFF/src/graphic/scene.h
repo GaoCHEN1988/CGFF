@@ -12,7 +12,7 @@ namespace CGFF {
     class Scene
     {
     public:
-        Scene();
+        Scene(QSize size);
         Scene(QSharedPointer<Camera>& camera);
         virtual~Scene();
         void add(QSharedPointer<Entity>& entity);
@@ -29,6 +29,7 @@ namespace CGFF {
         QVector<QSharedPointer<Entity>> m_entities;
         QSharedPointer<Camera> m_camera;
         QVector<QSharedPointer<LightSetup>> m_lightSetupStack;
+		QSize m_size;
     };
 }
 #endif

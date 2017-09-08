@@ -2,8 +2,9 @@
 
 namespace CGFF {
 
-    Layer3D::Layer3D(QSharedPointer<Scene> scene, QSharedPointer<Renderer3D> renderer)
-        : m_scene(scene)
+    Layer3D::Layer3D(QSharedPointer<Scene> scene, QSharedPointer<Renderer3D> renderer, QWidget *parent)
+        : Layer(parent)
+		, m_scene(scene)
         , m_renderer(renderer)
     {
     }
@@ -22,14 +23,19 @@ namespace CGFF {
         m_renderer->flush();
     }
 
-	void Layer3D::resize(int width, int height)
+	//void Layer3D::resize(int width, int height)
+	//{
+	//	m_renderer->setScreenBufferSize(width, height);
+	//}
+
+	void Layer3D::resizeEvent(QResizeEvent *event)
 	{
-		m_renderer->setScreenBufferSize(width, height);
+		m_renderer->setScreenBufferSize(event->size().width(), event->size().height());
 	}
 
-	void Layer3D::closeEvent(QEvent *event)
-	{
-		m_renderer->close();
-		m_scene->close();
-	}
+	//void Layer3D::closeEvent(QEvent *event)
+	//{
+	//	m_renderer->close();
+	//	m_scene->close();
+	//}
 }
