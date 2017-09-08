@@ -5,6 +5,7 @@
 #include "graphic/api/vertexArray.h"
 #include "graphic/api/indexBuffer.h"
 #include "postEffectsPass.h"
+#include "graphic/mesh.h"
 
 namespace CGFF {
     class PostEffects
@@ -16,7 +17,8 @@ namespace CGFF {
         void push(QSharedPointer<PostEffectsPass> pass);
         void pop();
 
-        void renderPostEffects(const QSharedPointer<Framebuffer>& source, const QSharedPointer<Framebuffer>& target, QSharedPointer<VertexArray> quad, QSharedPointer<IndexBuffer> indices);
+        //void renderPostEffects(const QSharedPointer<Framebuffer>& source, const QSharedPointer<Framebuffer>& target, QSharedPointer<VertexArray> quad, QSharedPointer<IndexBuffer> indices);
+        void renderPostEffects(const QSharedPointer<Framebuffer>& source, const QSharedPointer<Framebuffer>& target, QSharedPointer<Mesh> mesh);
 
     private:
         QVector<QSharedPointer<PostEffectsPass>> m_passes;

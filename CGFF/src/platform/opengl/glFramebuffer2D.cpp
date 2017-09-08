@@ -43,6 +43,11 @@ namespace CGFF {
 		return m_height;
 	}
 
+    QSize GLFramebuffer2D::getSize() const
+    {
+        return QSize(m_width, m_height);
+    }
+
 	QSharedPointer<Texture> GLFramebuffer2D::getTexture() const
 	{
 		return m_glTexture;

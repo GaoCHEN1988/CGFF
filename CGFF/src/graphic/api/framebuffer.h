@@ -15,6 +15,7 @@ namespace CGFF {
 
 		virtual int getWidth() const = 0;
 		virtual int getHeight() const = 0;
+        virtual QSize getSize() const = 0;
 		virtual QSharedPointer<Texture> getTexture() const = 0;
 	protected:
 		virtual void Init() {};

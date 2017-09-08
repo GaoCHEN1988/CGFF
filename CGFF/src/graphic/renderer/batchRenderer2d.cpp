@@ -21,10 +21,25 @@ namespace CGFF {
 
 	BatchRenderer2D::BatchRenderer2D(const QSize& screenSize)
 		: Renderer2D()
+        , m_shader(nullptr)
+        , m_systemUniforms()
+        , m_systemUniformBuffers()
+        , m_vertexArray(nullptr)
+        , m_indexBuffer(nullptr)
+        , m_lineIBO(nullptr)
+        , m_buffer(nullptr)
+        , m_frameBuffer(nullptr)
+        , m_postEffectsBuffer(nullptr)
+        , m_framebufferMaterial(nullptr)
+        , m_postEffectsMaterial(nullptr)
+        , m_screenMaterial(nullptr)
+        , m_strTextures()
+        , m_textures()
 		, m_indexCount(0)
         , m_viewportSize(screenSize)
         , m_screenSize(screenSize)
-        , m_screenBuffer(0)
+        , m_camera(nullptr)
+        , m_screenQuad(nullptr)
 		, m_indices(nullptr)
 	{
 		init();
@@ -125,7 +140,7 @@ namespace CGFF {
 		//m_framebufferShader = QSharedPointer<QOpenGLShaderProgram>(new QOpenGLShaderProgram);
 
         m_frameBuffer = Framebuffer2D::create(m_viewportSize.width(), m_viewportSize.height());
-        m_framebufferMaterial = QSharedPointer<Material>(new Material(ShaderFactory::SimpleShader()));
+        m_framebufferMaterial = QSharedPointer<Material>(new Material(ShaderFactory::FramebufferShader()));
         m_screenMaterial = QSharedPointer<Material>(new Material(ShaderFactory::FramebufferShader()));
 		//// load and compile vertex shader
 		//bool success = m_framebufferShader->addShaderFromSourceFile(QOpenGLShader::Vertex, "src/graphic/shaders/fbVertexShader.vert");
@@ -141,9 +156,12 @@ namespace CGFF {
 
         QMatrix4x4 proj = QMatrix4x4();
         proj.ortho(0, (float)m_screenSize.width(), (float)m_screenSize.height(), 0, -1.0f, 100.0f);
-
         m_framebufferMaterial->setUniform("pr_matrix", proj);
         m_framebufferMaterial->setTexture("u_Texture", m_frameBuffer->getTexture());
+
+        m_screenMaterial->setUniform("projMatrix", proj);
+        m_screenMaterial->setTexture("tex", m_frameBuffer->getTexture());
+
         m_screenQuad = MeshFactory::CreateQuad(0, 0, (float)m_screenSize.width(), (float)m_screenSize.height(), 
             QSharedPointer<MaterialInstance>(new MaterialInstance(m_screenMaterial)));
 
@@ -197,24 +215,36 @@ namespace CGFF {
         if (m_renderTarget == RenderTarget::BUFFER)
         {
 #ifdef FRAMEBUDDER_TEST
-            if (m_viewportSize != m_frameBuffer->size())
+            if (m_viewportSize != m_frameBuffer->getSize())
             {
                 m_frameBuffer.clear();
-                m_frameBuffer = QSharedPointer<QOpenGLFramebufferObject>(new QOpenGLFramebufferObject(m_viewportSize));
+                //m_frameBuffer = QSharedPointer<QOpenGLFramebufferObject>(new QOpenGLFramebufferObject(m_viewportSize));
+                m_frameBuffer = Framebuffer2D::create(m_viewportSize.width(), m_viewportSize.height());
                 m_postEffectsBuffer.clear();
-                m_postEffectsBuffer = QSharedPointer<QOpenGLFramebufferObject>(new QOpenGLFramebufferObject(m_viewportSize));
+                //m_postEffectsBuffer = QSharedPointer<QOpenGLFramebufferObject>(new QOpenGLFramebufferObject(m_viewportSize));
+                m_postEffectsBuffer = Framebuffer2D::create(m_viewportSize.width(), m_viewportSize.height());
             }
 
             if (m_postEffectsEnabled)
             {
                 m_postEffectsBuffer->bind();
-                GL->glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+                //GL->glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+                Renderer::clear(RENDERER_BUFFER_DEPTH | RENDERER_BUFFER_COLOR);
             }
 
             m_frameBuffer->bind();
-            GL->glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+            //GL->glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
             //GL->glBlendFunc(GL_ONE, GL_ZERO);
 
+            //Test
+            Renderer::clear(RENDERER_BUFFER_DEPTH | RENDERER_BUFFER_COLOR);
+            Renderer::setBlendFunction(RendererBlendFunction::ONE, RendererBlendFunction::ZERO);
+            //Renderer::setViewport(0, 0, m_screenSize.width(), m_screenSize.height());
+            //if (!m_camera.isNull())
+            //{
+            //    m_camera->resize(m_screenSize.width(), m_screenSize.height());
+            //    memcpy(m_systemUniforms[sys_ProjectionMatrixIndex].buffer.buffer_pointer.data() + m_systemUniforms[sys_ProjectionMatrixIndex].offset, &m_camera->getProjectionMatrix(), sizeof(QMatrix4x4));
+            //}
 #endif
         }
         else
@@ -394,37 +424,39 @@ namespace CGFF {
             // Post Effects pass should go here!
             if (m_postEffectsEnabled)
             {
-                m_postEffects->renderPostEffects(m_frameBuffer, m_postEffectsBuffer, m_screenQuad.vao, m_indexBuffer);
+                m_postEffects->renderPostEffects(m_frameBuffer, m_postEffectsBuffer, m_screenQuad);
             }
 
-            // Display Framebuffer - potentially move to Framebuffer class
-            GL->glBindFramebuffer(GL_FRAMEBUFFER, m_screenBuffer);
+            //// Display Framebuffer - potentially move to Framebuffer class
+            //GL->glBindFramebuffer(GL_FRAMEBUFFER, m_screenBuffer);
             //glViewport(0, 0, m_screenSize.width(), m_screenSize.height());
             //GL->glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 
-            m_framebufferShader->bind();
 
-            //Need to test
-            GL->glActiveTexture(GL_TEXTURE0);
 
-            if (m_postEffectsEnabled)
-				GL->glBindTexture(GL_TEXTURE_2D, m_postEffectsBuffer->texture());
-            else
-				GL->glBindTexture(GL_TEXTURE_2D, m_frameBuffer->texture());
+    //        m_framebufferShader->bind();
+    //        //Need to test
+    //        GL->glActiveTexture(GL_TEXTURE0);
+    //        if (m_postEffectsEnabled)
+				//GL->glBindTexture(GL_TEXTURE_2D, m_postEffectsBuffer->texture());
+    //        else
+				//GL->glBindTexture(GL_TEXTURE_2D, m_frameBuffer->texture());
 
-            m_screenQuad.vao.bind();
+    //        m_screenQuad.vao.bind();
+    //        m_iboBuffer->bind();
+    //        GL->glDrawElements(GL_TRIANGLES, m_screenQuad.count, GL_UNSIGNED_INT, NULL);
+    //        m_iboBuffer->release();
+    //        m_screenQuad.vao.release();
+    //        m_framebufferShader->release();
+    //        m_iboBuffer->release();
 
-            m_iboBuffer->bind();
-            GL->glDrawElements(GL_TRIANGLES, m_screenQuad.count, GL_UNSIGNED_INT, NULL);
-            m_iboBuffer->release();
+            m_framebufferMaterial->bind();
 
-            m_screenQuad.vao.release();
-            m_framebufferShader->release();
-            m_iboBuffer->release();
+
         }
-        GL->glBindFramebuffer(GL_FRAMEBUFFER, 0);
-        m_frameBuffer->release();
-        m_postEffectsBuffer->release();
+       
+        m_frameBuffer->unBind();
+        m_postEffectsBuffer->unBind();
 #endif
 
 		m_strTextures.clear();

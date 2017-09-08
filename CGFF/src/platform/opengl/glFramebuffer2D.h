@@ -20,6 +20,7 @@ namespace CGFF {
 
 		int getWidth() const override;
 		int getHeight() const override;
+        QSize getSize() const override;
 
 		QSharedPointer<Texture> getTexture() const override;
 
