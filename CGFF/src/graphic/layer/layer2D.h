@@ -18,7 +18,7 @@ namespace CGFF {
 		virtual void render(QSharedPointer<Renderer2D>& renderer) {};
 		//virtual void resize(int width, int height) override;
 		void resizeEvent(QResizeEvent *event) override;
-		//virtual void closeEvent(QEvent *event) override;
+		virtual void closeEvent(QCloseEvent *event) override;
 
 		virtual void add(QSharedPointer<Sprite> sprite);
 		inline QSharedPointer<Scene2D> getScene() { return m_scene2D; }

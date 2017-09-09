@@ -16,9 +16,7 @@ namespace CGFF {
         void init() override;
 
         void keyPressEvent(QKeyEvent *event) override;
-		//void closeEvent(QEvent *event) override;
-
-		virtual bool event(QEvent *event) override;
+		void closeEvent(QCloseEvent *event) override;
 
     private:
         QSharedPointer<CGFF::Sprite> m_sprite;

@@ -15,8 +15,6 @@ namespace CGFF {
         virtual void update();
         virtual void tick();
 
-		bool event(QEvent *event) override { return false; };
-
         inline bool isVisible() const { return m_isVisible; }
         inline void setVisible(bool visible) { m_isVisible = visible; }
 

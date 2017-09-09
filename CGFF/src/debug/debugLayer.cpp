@@ -19,16 +19,15 @@ namespace CGFF {
         Layer2D::getRenderer()->setRenderTarget(CGFF::RenderTarget::SCREEN);
 
 		//Test
-		QSize s = size();
-		m_FPSLabel = QSharedPointer<Label>(new Label("FPS", 10, size().height() - 50, 150, 32, QVector4D(1, 1, 1, 1)));
-		m_memoryUsageLabel = QSharedPointer<Label>(new Label("memory", 200, size().height() - 50, 150, 32, QVector4D(1, 1, 1, 1)));
-		m_frametimeLabel = QSharedPointer<Label>(new Label("frametime", 390, size().height() - 50, 150, 32, QVector4D(1, 1, 1, 1)));
+		m_FPSLabel = QSharedPointer<Label>(new Label("FPS", 10, m_size.height() - 50, 150, 32, QVector4D(1, 1, 1, 1)));
+		m_memoryUsageLabel = QSharedPointer<Label>(new Label("memory", 200, m_size.height() - 50, 150, 32, QVector4D(1, 1, 1, 1)));
+		m_frametimeLabel = QSharedPointer<Label>(new Label("frametime", 390, m_size.height() - 50, 150, 32, QVector4D(1, 1, 1, 1)));
 
 		add(m_FPSLabel);
 		//add(m_memoryUsageLabel);
 		//add(m_frametimeLabel);
 
-        DebugMenu::init(size());
+        DebugMenu::init(m_size);
         DebugMenu::setVisible(true);
     }
 
@@ -62,26 +61,9 @@ namespace CGFF {
 
 		if (DebugMenu::isVisible())
 		{
-			DebugMenu::get()->resize(s.width(), s.height());
+			DebugMenu::get()->resizeEvent(event);
 		}
 	}
-
-  //  void DebugLayer::resize(int width, int height)
-  //  {
-		//if(m_FPSLabel)
-		//	m_FPSLabel->position.setY(height - 50);
-		//if (m_memoryUsageLabel)
-		//	m_memoryUsageLabel->position.setY(height - 50);
-		//if (m_frametimeLabel)
-		//	m_frametimeLabel->position.setY(height - 50);
-
-		//Layer2D::resize(width, height);
-
-		//if (DebugMenu::isVisible())
-		//{
-		//	DebugMenu::get()->resize(width, height);
-		//}
-  //  }
 
     void DebugLayer::mousePressEvent(QMouseEvent *event)
     {
@@ -90,6 +72,7 @@ namespace CGFF {
             DebugMenu::get()->mousePressEvent(event);
         }
     }
+
     void DebugLayer::mouseMoveEvent(QMouseEvent *event) 
     {
         if (DebugMenu::isVisible())
@@ -97,6 +80,7 @@ namespace CGFF {
             DebugMenu::get()->mouseMoveEvent(event);
         }
     }
+
     void DebugLayer::mouseReleaseEvent(QMouseEvent *event)
     {
         if (DebugMenu::isVisible())
@@ -133,47 +117,14 @@ namespace CGFF {
 		s_instance->submit(sprite);
 	}
 
-	//void DebugLayer::closeEvent(QEvent *event)
-	//{
-	//	Layer2D::closeEvent(event);
-	//	DebugMenu::get()->closeEvent(event);
-	//	m_tempSprites.clear();
-	//	m_FPSLabel.clear();
-	//	m_memoryUsageLabel.clear();
-	//	m_frametimeLabel.clear();
-	//}
-
-	bool DebugLayer::event(QEvent *event)
+	void DebugLayer::closeEvent(QCloseEvent *event)
 	{
-		QEvent::Type t = event->type();
-		if (t == QEvent::Resize)
-		{
-			QSize s = ((QResizeEvent *)event)->size();
-			if (m_FPSLabel)
-				m_FPSLabel->position.setY(s.height() - 50);
-			if (m_memoryUsageLabel)
-				m_memoryUsageLabel->position.setY(s.height() - 50);
-			if (m_frametimeLabel)
-				m_frametimeLabel->position.setY(s.height() - 50);
-
-			Layer2D::resizeEvent(((QResizeEvent *)event));
-
-			if (DebugMenu::isVisible())
-			{
-				DebugMenu::get()->resize(s.width(), s.height());
-			}
-		}
-
-		if (t == QEvent::Close)
-		{
-			Layer2D::closeEvent((QCloseEvent *)event);
-			DebugMenu::get()->closeEvent(event);
-			m_tempSprites.clear();
-			m_FPSLabel.clear();
-			m_memoryUsageLabel.clear();
-			m_frametimeLabel.clear();
-		}
-
-		return false;
+		Layer2D::closeEvent(event);
+		DebugMenu::get()->closeEvent(event);
+		m_tempSprites.clear();
+		m_FPSLabel.clear();
+		m_memoryUsageLabel.clear();
+		m_frametimeLabel.clear();
 	}
+
 }

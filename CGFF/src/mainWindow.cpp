@@ -45,9 +45,6 @@ void MainWindow::setupUi()
 	m_mdiArea->setHorizontalScrollBarPolicy(Qt::ScrollBarAsNeeded);
 	m_mdiArea->setVerticalScrollBarPolicy(Qt::ScrollBarAsNeeded);
 	setCentralWidget(m_mdiArea);
-	
-	//m_applicationWindow = new ApplicationWindow;
-	//m_centralWidget = QWidget::createWindowContainer(m_applicationWindow, this);
 
 	m_debugWindow = new CGFF::DebugWindow(this);
 	QWidget * debugWidget = QWidget::createWindowContainer(m_debugWindow, this);
@@ -60,14 +57,6 @@ void MainWindow::setupUi()
 	//QMdiSubWindow * appMdiSubWindow = m_mdiArea->addSubWindow(appWidget);
 	//appMdiSubWindow->setWindowTitle("Application");
 	//appMdiSubWindow->setMinimumSize(400, 400);
-
- //   m_centralWidget->setObjectName(QStringLiteral("m_centralWidget"));
- //   gridLayout = new QGridLayout(m_centralWidget);
- //   gridLayout->setSpacing(6);
- //   gridLayout->setContentsMargins(11, 11, 11, 11);
- //   gridLayout->setObjectName(QStringLiteral("gridLayout"));
-
-    //this->setCentralWidget(m_centralWidget);
     
     m_mainToolBar = new QToolBar(this);
     m_mainToolBar->setObjectName(QStringLiteral("m_mainToolBar"));

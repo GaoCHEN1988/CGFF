@@ -7,7 +7,7 @@
 #include <QTime>
 
 namespace CGFF {
-	class BaseWindow : public QWindow 
+	class BaseWindow : public QWindow
 	{
 		Q_OBJECT
 
@@ -35,11 +35,6 @@ namespace CGFF {
 	private:
 		void timerEvent(QTimerEvent *event) Q_DECL_OVERRIDE;
 		void exposeEvent(QExposeEvent *event) Q_DECL_OVERRIDE;
-		void resizeEvent(QResizeEvent* event) Q_DECL_OVERRIDE;
-		//void mousePressEvent(QMouseEvent *event) Q_DECL_OVERRIDE;
-		//void mouseMoveEvent(QMouseEvent *event) Q_DECL_OVERRIDE;
-		//void mouseReleaseEvent(QMouseEvent *event) Q_DECL_OVERRIDE;
-		//void keyPressEvent(QKeyEvent *event) Q_DECL_OVERRIDE;
 		bool event(QEvent *event) Q_DECL_OVERRIDE;
 
 	private:

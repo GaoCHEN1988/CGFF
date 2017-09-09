@@ -1,8 +1,6 @@
 #include "debugMenu.h"
 #include "debugMenuAction.h"
 
-#include <QPainter>
-
 namespace CGFF {
 
     DebugMenu * DebugMenu::s_instance = nullptr;
@@ -297,10 +295,10 @@ namespace CGFF {
         m_panel->clear();
     }
 
-	void DebugMenu::resize(int width, int height)
+	void DebugMenu::resizeEvent(QResizeEvent *event)
 	{
-		Widget::resize(width, height);
-		m_panel->resize(width, height);
+		Widget::resize(event->size().width(), event->size().height());
+        m_panel->resizeEvent(event);
 	}
 
     void DebugMenu::mousePressEvent(QMouseEvent *event)
@@ -323,8 +321,9 @@ namespace CGFF {
         m_panel->update();
     }
 
-	void DebugMenu::closeEvent(QEvent *event)
+	void DebugMenu::closeEvent(QCloseEvent *event)
 	{
 		//m_panel->closeEvent(event);
 	}
+
 }

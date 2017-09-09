@@ -33,9 +33,9 @@ namespace CGFF {
 		m_renderer->setScreenBufferSize(event->size().width(), event->size().height());
 	}
 
-	//void Layer3D::closeEvent(QEvent *event)
-	//{
-	//	m_renderer->close();
-	//	m_scene->close();
-	//}
+	void Layer3D::closeEvent(QCloseEvent *event)
+	{
+		m_renderer->close();
+		m_scene->close();
+	}
 }

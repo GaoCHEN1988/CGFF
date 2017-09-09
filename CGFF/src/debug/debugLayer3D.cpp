@@ -56,25 +56,18 @@ namespace CGFF {
 	{
 	}
 
-	//void DebugLayer3D::resize(int width, int height)
-	//{
-	//	Layer3D::resize(width, height);
-	//	Layer3D::getScene()->getCamera()->resize(width, height);
-	//}
-
-
 	void DebugLayer3D::resizeEvent(QResizeEvent *event)
 	{
 		Layer3D::resizeEvent(event);
 		Layer3D::getScene()->getCamera()->resize(event->size().width(), event->size().height());
 	}
 
-	//void DebugLayer3D::closeEvent(QEvent *event)
-	//{
-	//	m_lineX.clear();
-	//	m_lineY.clear();
-	//	m_lineZ.clear();
-	//}
+	void DebugLayer3D::closeEvent(QCloseEvent *event)
+	{
+		m_lineX.clear();
+		m_lineY.clear();
+		m_lineZ.clear();
+	}
 
 	void DebugLayer3D::mousePressEvent(QMouseEvent *event)
 	{

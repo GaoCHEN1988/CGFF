@@ -231,14 +231,14 @@ namespace CGFF {
 		}
     }
 
-	//void Test3DLayer::closeEvent(QEvent *event)
-	//{
-	//	Layer3D::closeEvent(event);
-	//	m_Spheres.clear();
-	//	m_plane.clear();
-	//	m_dagger.clear();
-	//	m_cube.clear();
-	//	m_daggerMaterial.clear();
-	//	m_skyboxMaterial.clear();
-	//}
+	void Test3DLayer::closeEvent(QCloseEvent *event)
+	{
+		Layer3D::closeEvent(event);
+		m_Spheres.clear();
+		m_plane.clear();
+		m_dagger.clear();
+		m_cube.clear();
+		m_daggerMaterial.clear();
+		m_skyboxMaterial.clear();
+	}
 }

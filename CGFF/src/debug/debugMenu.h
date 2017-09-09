@@ -59,14 +59,12 @@ namespace CGFF {
         void render(QSharedPointer<Renderer2D>& renderer);
         void onActivate();
         void onDeactivate();
-		void resize(int width, int height);
+		void resizeEvent(QResizeEvent *event);
 		void mousePressEvent(QMouseEvent *event);
         void mouseMoveEvent(QMouseEvent *event);
 		void mouseReleaseEvent(QMouseEvent *event);
-		void closeEvent(QEvent *event);
+		void closeEvent(QCloseEvent *event);
         void update();
-    
-
 
     private:
         static DebugMenu * s_instance;

@@ -75,17 +75,12 @@ namespace CGFF {
         }
     }
 
-	//void Test2DLayer::closeEvent(QEvent *event)
-	//{
-	//	Layer2D::closeEvent(event);
-	//	m_sprite.clear();
-	//	m_sprite2.clear();
-	//	m_mask.clear();
-	//}
-
-	bool Test2DLayer::event(QEvent *event)
+	void Test2DLayer::closeEvent(QCloseEvent *event)
 	{
-		QEvent::Type test_type = event->type();
-		return false;
+		Layer2D::closeEvent(event);
+		m_sprite.clear();
+		m_sprite2.clear();
+		m_mask.clear();
 	}
+
 }
