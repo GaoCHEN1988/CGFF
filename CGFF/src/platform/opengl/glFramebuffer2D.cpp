@@ -13,7 +13,7 @@ namespace CGFF {
 
 	GLFramebuffer2D::~GLFramebuffer2D()
 	{
-		GL->glDeleteFramebuffers(1, &m_framebufferHandle);
+		//GL->glDeleteFramebuffers(1, &m_framebufferHandle);
 	}
 
 	void GLFramebuffer2D::bind()
@@ -42,6 +42,11 @@ namespace CGFF {
 	{
 		return m_height;
 	}
+
+    QSize GLFramebuffer2D::getSize() const
+    {
+        return QSize(m_width, m_height);
+    }
 
 	QSharedPointer<Texture> GLFramebuffer2D::getTexture() const
 	{
