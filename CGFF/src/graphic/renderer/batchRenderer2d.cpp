@@ -41,6 +41,7 @@ namespace CGFF {
         , m_camera(nullptr)
         , m_screenQuad(nullptr)
 		, m_indices(nullptr)
+        , m_screenBuffer(0)
 	{
 		init();
 	}
@@ -134,7 +135,7 @@ namespace CGFF {
 		//set frame buffer
 		//m_format.setAttachment(QOpenGLFramebufferObject::CombinedDepthStencil);
 		//m_format.setSamples(8);
-		//glGetIntegerv(GL_FRAMEBUFFER_BINDING, &m_screenBuffer);
+		glGetIntegerv(GL_FRAMEBUFFER_BINDING, &m_screenBuffer);
 		//m_frameBuffer = QSharedPointer<QOpenGLFramebufferObject>(new QOpenGLFramebufferObject(m_viewportSize, m_format));
 		//m_frameBuffer->addColorAttachment(m_viewportSize);
 		//m_framebufferShader = QSharedPointer<QOpenGLShaderProgram>(new QOpenGLShaderProgram);
@@ -165,7 +166,7 @@ namespace CGFF {
         m_screenQuad = MeshFactory::CreateQuad(0, 0, (float)m_screenSize.width(), (float)m_screenSize.height(), 
             QSharedPointer<MaterialInstance>(new MaterialInstance(m_screenMaterial)));
 
-        m_postEffects = QSharedPointer<PostEffects>(new PostEffects());
+        m_postEffects = QSharedPointer<PostEffects>(new PostEffects);
         m_postEffectsBuffer = Framebuffer2D::create(m_viewportSize.width(), m_viewportSize.height());
 
 		//m_screenQuad.create(m_framebufferShader, 0, 0, (float)m_screenSize.width(), (float)m_screenSize.height());
@@ -223,6 +224,11 @@ namespace CGFF {
                 m_postEffectsBuffer.clear();
                 //m_postEffectsBuffer = QSharedPointer<QOpenGLFramebufferObject>(new QOpenGLFramebufferObject(m_viewportSize));
                 m_postEffectsBuffer = Framebuffer2D::create(m_viewportSize.width(), m_viewportSize.height());
+
+                //Resize screen Quad
+                QMatrix4x4 proj = QMatrix4x4();
+                proj.ortho(0, (float)m_viewportSize.width(), (float)m_viewportSize.height(), 0, -1.0f, 100.0f);
+                m_screenQuad->getMaterialInstance()->setUniform("projMatrix", proj);
             }
 
             if (m_postEffectsEnabled)
@@ -428,10 +434,12 @@ namespace CGFF {
             }
 
             //// Display Framebuffer - potentially move to Framebuffer class
-            //GL->glBindFramebuffer(GL_FRAMEBUFFER, m_screenBuffer);
+            GL->glBindFramebuffer(GL_FRAMEBUFFER, m_screenBuffer);
             //glViewport(0, 0, m_screenSize.width(), m_screenSize.height());
             //GL->glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 
+            Renderer::setViewport(0, 0, m_screenSize.width(), m_screenSize.height());
+            Renderer::setBlendFunction(RendererBlendFunction::SOURCE_ALPHA, RendererBlendFunction::ONE_MINUS_SOURCE_ALPHA);
 
 
     //        m_framebufferShader->bind();
@@ -452,6 +460,18 @@ namespace CGFF {
 
             m_framebufferMaterial->bind();
 
+            //Need to test
+            GL->glActiveTexture(GL_TEXTURE0);
+            if (m_postEffectsEnabled)
+                GL->glBindTexture(GL_TEXTURE_2D, m_postEffectsBuffer->getTexture()->getID());
+            else
+                GL->glBindTexture(GL_TEXTURE_2D, m_frameBuffer->getTexture()->getID());
+
+            m_screenQuad->bind();
+            m_screenQuad->draw();
+            m_screenQuad->unBind();
+
+            m_framebufferMaterial->unbind();
 
         }
        

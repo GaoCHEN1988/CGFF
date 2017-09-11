@@ -11,7 +11,13 @@ namespace CGFF {
     void Test2DLayer::init() 
     {
         Layer2D::getRenderer()->setRenderTarget(CGFF::RenderTarget::SCREEN);
-  
+
+        QSharedPointer<CGFF::Shader> pfShader = Shader::createFromFile("PostfxShader",
+            "/shaders/postfx.vert",
+            "/shaders/postfx.frag");
+        Layer2D::getRenderer()->addPostEffectsPass(QSharedPointer<CGFF::PostEffectsPass>(new CGFF::PostEffectsPass(pfShader, m_size)));
+        Layer2D::getRenderer()->setPostEffects(false);
+
         m_sprite = QSharedPointer<CGFF::Sprite>(new CGFF::Sprite(0.0f, 0.0f, 100, 100, Texture2D::createFromFile("Resources/tb.png")));
         m_sprite2 = QSharedPointer<CGFF::Sprite>(new CGFF::Sprite(500.0f, 500.0f, 100.0, 100.0, Texture2D::createFromFile("Resources/particle.png")));
 

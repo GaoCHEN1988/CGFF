@@ -45,6 +45,9 @@ namespace CGFF {
         inline QSharedPointer<MaterialInstance>& getMaterialInstance() { return m_materialInstance; }
 
         void render(Renderer3D& renderer) override;
+        void bind();
+        void unBind();
+        void draw();
 
 	private:
 		QSharedPointer<VertexArray> m_vertexArray;

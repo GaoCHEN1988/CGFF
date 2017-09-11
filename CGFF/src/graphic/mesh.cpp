@@ -34,4 +34,20 @@ namespace CGFF {
 
         m_materialInstance->unbind();
     }
+
+    void Mesh::bind() 
+    {
+        m_vertexArray->bind();
+        m_indexBuffer->bind();
+    }
+    void Mesh::unBind()
+    {
+        m_indexBuffer->unBind();
+        m_vertexArray->unBind();
+    }
+    void Mesh::draw()
+    {
+        m_vertexArray->draw(m_indexBuffer->getCount(), m_drawMode);
+    }
+
 }

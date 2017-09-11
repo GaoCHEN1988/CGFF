@@ -46,17 +46,17 @@ void MainWindow::setupUi()
 	m_mdiArea->setVerticalScrollBarPolicy(Qt::ScrollBarAsNeeded);
 	setCentralWidget(m_mdiArea);
 
-	m_debugWindow = new CGFF::DebugWindow(this);
-	QWidget * debugWidget = QWidget::createWindowContainer(m_debugWindow, this);
-	QMdiSubWindow * debugMdiSubWindow = m_mdiArea->addSubWindow(debugWidget);
-	debugMdiSubWindow->setWindowTitle("Debug");
-	debugMdiSubWindow->setMinimumSize(400, 400);
+	//m_debugWindow = new CGFF::DebugWindow(this);
+	//QWidget * debugWidget = QWidget::createWindowContainer(m_debugWindow, this);
+	//QMdiSubWindow * debugMdiSubWindow = m_mdiArea->addSubWindow(debugWidget);
+	//debugMdiSubWindow->setWindowTitle("Debug");
+	//debugMdiSubWindow->setMinimumSize(400, 400);
 
-	//m_appWindow = new CGFF::AppWindow(this);
-	//QWidget * appWidget = QWidget::createWindowContainer(m_appWindow, this);
-	//QMdiSubWindow * appMdiSubWindow = m_mdiArea->addSubWindow(appWidget);
-	//appMdiSubWindow->setWindowTitle("Application");
-	//appMdiSubWindow->setMinimumSize(400, 400);
+	m_appWindow = new CGFF::AppWindow(this);
+	QWidget * appWidget = QWidget::createWindowContainer(m_appWindow, this);
+	QMdiSubWindow * appMdiSubWindow = m_mdiArea->addSubWindow(appWidget);
+	appMdiSubWindow->setWindowTitle("Application");
+	appMdiSubWindow->setMinimumSize(400, 400);
     
     m_mainToolBar = new QToolBar(this);
     m_mainToolBar->setObjectName(QStringLiteral("m_mainToolBar"));

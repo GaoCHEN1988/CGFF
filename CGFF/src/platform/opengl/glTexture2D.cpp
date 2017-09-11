@@ -83,7 +83,6 @@ namespace CGFF {
 			//To do: Test tga files
 			if (texImage.load(m_fileName))
 			{
-				//Need to test
 				m_glTexture.create();
                 //m_glTexture.setSize(texImage.width(), texImage.height(), texImage.depth());
                 m_glTexture.setSize(texImage.width(), texImage.height(), texImage.depth());
@@ -100,6 +99,18 @@ namespace CGFF {
 				return;
 			}
 		}
+        else
+        {
+            m_glTexture.create();
+            //m_glTexture.setSize(texImage.width(), texImage.height(), texImage.depth());
+            m_glTexture.setSize(m_width, m_height);
+            m_glTexture.setFormat(m_parameters.gl_textureFormat);
+            m_glTexture.allocateStorage();
+
+            QImage tmp(m_width, m_height, m_parameters.imageFormat);
+            tmp = tmp.mirrored(m_loadOptions.horizontalFlip, m_loadOptions.verticalFlip);
+            m_glTexture.setData(0, 0, m_parameters.gl_pixelFormat, m_parameters.gl_pixelType, (const void*)tmp.constBits(), 0);
+        }
 	}
 
 	void GLTexture2D::load(QColor color)

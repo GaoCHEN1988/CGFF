@@ -37,7 +37,14 @@ namespace CGFF {
 
     void PostEffects::renderPostEffects(const QSharedPointer<Framebuffer>& source, const QSharedPointer<Framebuffer>& target, QSharedPointer<Mesh> mesh)
     {
+        target->bind();
+        GL->glActiveTexture(GL_TEXTURE0);
+        GL->glBindTexture(GL_TEXTURE_2D, source->getTexture()->getID());
+        mesh->bind();
         for (QSharedPointer<PostEffectsPass> pass : m_passes)
-            pass->renderPass(target);
+            pass->renderPass(target, mesh);
+
+        mesh->unBind();
+        target->unBind();
     }
 }

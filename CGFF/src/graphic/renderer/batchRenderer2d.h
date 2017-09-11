@@ -113,6 +113,8 @@ namespace CGFF {
 		QSharedPointer<Camera> m_camera;
         QSharedPointer<Mesh> m_screenQuad;
 		uint* m_indices;
+
+        int m_screenBuffer;
 	};
 }
 #endif
