@@ -2,7 +2,8 @@
 #define CGFF_DEBUG_WINDOW_H
 
 #include "baseWindow.h"
-#include <QTime>
+#include "debug/debugLayer.h"
+#include "Debug/debugLayer3D.h"
 
 namespace CGFF {
 
@@ -15,10 +16,14 @@ namespace CGFF {
 		virtual ~DebugWindow();
 
 		inline static DebugWindow* getApplication() { return m_instance; }
-		void initialize() override;
 
 	private:
+		void setupLayers() override;
+	private:
 		static DebugWindow * m_instance;
+
+		QSharedPointer<CGFF::DebugLayer3D> m_debug3DLayer;
+		QSharedPointer<CGFF::DebugLayer> m_debugLayer;
 	};
 }
 

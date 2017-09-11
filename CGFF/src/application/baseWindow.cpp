@@ -10,6 +10,7 @@ namespace CGFF {
 		, m_fps_count(0)
 		, m_timer_id(0)
 		, m_parent(parent)
+		, m_isActive(false)
 	{
 		resize(800, 800);
 		setMinimumSize(QSize(400, 400));
@@ -35,7 +36,7 @@ namespace CGFF {
 	void BaseWindow::initialize()
 	{
 		CGFF::Renderer::init();
-
+		setupLayers();
 		m_time.start();
 		m_framePerSecond = 0;
 		m_fps_count = 0;
@@ -83,14 +84,12 @@ namespace CGFF {
 	void BaseWindow::renderLater(){}
 	void BaseWindow::renderNow()
 	{
-		if (!isExposed())
-			return;
+		//if (!isExposed())
+		//	return;
 
 		if (!CGFF::Context::isInitialized())
 		{
-			//CGFF::g_openglWidgetSize = this->size();
-
-			CGFF::Context::create(this);
+			setUpContext();
 			initialize();
 		}
 
@@ -100,6 +99,12 @@ namespace CGFF {
 		render();
 
 		CGFF::Renderer::present();
+	}
+
+	void BaseWindow::clearLayers()
+	{
+		m_layerStack.clear();
+		m_overLayerStack.clear();
 	}
 
 	void BaseWindow::pushLayer(QSharedPointer<CGFF::Layer> layer)
@@ -154,8 +159,35 @@ namespace CGFF {
 		return layer;
 	}
 
+	void BaseWindow::onActivate()
+	{
+		m_isActive = true;
+
+		if (!CGFF::Context::isInitialized())
+		{
+			setUpContext();
+			initialize();
+		}
+		else
+		{
+			CGFF::Context::resetContext(this);
+			initialize();
+		}
+	}
+	void BaseWindow::onDisactivate()
+	{
+		m_isActive = false;
+		if (CGFF::Context::isInitialized())
+			CGFF::Renderer::clear(CGFF::RendererBufferType::RENDERER_BUFFER_COLOR | CGFF::RendererBufferType::RENDERER_BUFFER_DEPTH);
+
+		clearLayers();
+	}
+
 	void BaseWindow::timerEvent(QTimerEvent *event)
 	{
+		if (!m_isActive)
+			return;
+
 		renderNow();
 
 		// FPS count
@@ -170,16 +202,11 @@ namespace CGFF {
 		}
 	}
 
-	void BaseWindow::exposeEvent(QExposeEvent *event)
-	{
-		Q_UNUSED(event);
-
-		if (isExposed())
-			renderNow();
-	}
-
 	bool BaseWindow::event(QEvent *event)
 	{
+		if (!m_isActive)
+			return QWindow::event(event);
+
 		for (auto layer : m_layerStack)
 		{
 			QCoreApplication::sendEvent(layer.data(), event);
@@ -193,4 +220,8 @@ namespace CGFF {
 		return QWindow::event(event);
 	}
 
+	void BaseWindow::setUpContext()
+	{
+		CGFF::Context::create(this);
+	}
 }

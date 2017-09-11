@@ -23,4 +23,12 @@ namespace CGFF {
 		}
 	}
 
+	void Context::resetContext(QWindow *parent)
+	{
+		if (!s_context.isNull())
+		{
+			s_context->resetContextInternal(parent);
+		}
+	}
+
 }

@@ -15,7 +15,7 @@ namespace CGFF {
         Scene(QSize size);
         Scene(QSharedPointer<Camera>& camera);
         virtual~Scene();
-        void add(QSharedPointer<Entity>& entity);
+        void add(const QSharedPointer<Entity>& entity);
         void pushLightSetup(QSharedPointer<LightSetup>& lightSetup);
         QSharedPointer<LightSetup> popLightSetup();
         void render(QSharedPointer<Renderer3D>& renderer);

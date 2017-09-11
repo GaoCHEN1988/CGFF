@@ -18,14 +18,18 @@ namespace CGFF {
     public:
         Context() {};
         virtual ~Context();
-        static void create(QWindow *parent = Q_NULLPTR);
+		static void create(QWindow *parent = Q_NULLPTR);
+		static void resetContext(QWindow *parent);
 
         static RenderAPI getRenderAPI() { return s_renderAPI; }
         static void setRenderAPI(RenderAPI api) { s_renderAPI = api; }
 
 		static bool isInitialized() { return !s_context.isNull(); }
+	
 
     protected:
+		virtual void resetContextInternal(QWindow *parent) {};
+
         static QSharedPointer<Context> s_context;
         static RenderAPI s_renderAPI;
     };

@@ -1,6 +1,4 @@
 #include "debugWindow.h"
-#include "debug/debugLayer.h"
-#include "Debug/debugLayer3D.h"
 
 namespace CGFF {
 
@@ -8,19 +6,28 @@ namespace CGFF {
 	
 	DebugWindow::DebugWindow(QWidget * parent, CGFF::RenderAPI api)
 		: BaseWindow(parent, api)
+		, m_debug3DLayer(nullptr)
+		, m_debugLayer(nullptr)
 	{
 		m_instance = this;
 	}
+
 	DebugWindow::~DebugWindow()
 	{
 	}
 
-	void DebugWindow::initialize()
+	void DebugWindow::setupLayers()
 	{
-		BaseWindow::initialize();
-		pushLayer(QSharedPointer<CGFF::DebugLayer3D>(new CGFF::DebugLayer3D(this->size(), m_parent)));
-		pushOverlay(QSharedPointer<CGFF::DebugLayer>(new CGFF::DebugLayer(this->size(), m_parent)));
+		//if (!m_debug3DLayer)
+		{
+			m_debug3DLayer = QSharedPointer<CGFF::DebugLayer3D>(new CGFF::DebugLayer3D(this->size(), m_parent));
+			pushLayer(m_debug3DLayer);
+		}
+
+		//if (!m_debugLayer)
+		{
+			m_debugLayer = QSharedPointer<CGFF::DebugLayer>(new CGFF::DebugLayer(this->size(), m_parent));
+			pushOverlay(m_debugLayer);
+		}
 	}
-
-
 }

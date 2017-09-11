@@ -32,4 +32,24 @@ namespace CGFF {
     {
         m_glContext->makeCurrent(m_parent);
     }
+
+	void GLContext::resetContextInternal(QWindow *parent)
+	{
+		if (!m_glContext)
+			return;
+
+		//Test
+		m_parent = parent;
+		QOpenGLContext* tmpContext = new QOpenGLContext(m_parent);
+		tmpContext->setFormat(m_glContext->format());
+		tmpContext->setShareContext(m_glContext);
+		tmpContext->create();
+		tmpContext->makeCurrent(m_parent);
+		// initialize OpenGL functions
+		CGFF::GL = tmpContext->versionFunctions<QOpenGLFunctions_4_4_Core>();
+		CGFF::GL->initializeOpenGLFunctions();
+		QOpenGLContext* t = m_glContext;
+		m_glContext = tmpContext;
+		delete t;
+	}
 }

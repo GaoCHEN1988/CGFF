@@ -13,8 +13,8 @@ namespace CGFF {
 		AppWindow(QWidget * parent, CGFF::RenderAPI api = CGFF::RenderAPI::OPENGL);
 		virtual ~AppWindow();
 
-		void initialize() override;
-
+	private:
+		void setupLayers() override;
 	};
 }
 

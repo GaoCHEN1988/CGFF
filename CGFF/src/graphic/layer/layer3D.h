@@ -17,7 +17,6 @@ namespace CGFF {
         virtual void init() override;
 		virtual void render() override;
 		virtual void render(QSharedPointer<Renderer3D>& renderer) {};
-		//virtual void resize(int width, int height) override;
 		void resizeEvent(QResizeEvent *event) override;
 		virtual void closeEvent(QCloseEvent *event) override;
 

@@ -15,6 +15,8 @@
 #include <QDockWidget>
 #include <QMdiArea>
 #include <QMdiSubWindow>
+#include <QPushButton>
+
 //#include "application/applicationWindow.h"
 #include "application/debugWindow.h"
 #include "application/appWindow.h"
@@ -33,6 +35,7 @@ private:
     void setupUi();
 	void setupDockWidgets();
 	void setupMenuBar();
+	void setupToolBar();
 	void createConnections();
 	void closeEvent(QCloseEvent * event) Q_DECL_OVERRIDE;
 	void createProject();
@@ -40,6 +43,7 @@ private:
 	private slots:
 	void onNewProject();
 	void onSaveProject();
+	void onSetStatus();
 
 private:
 	//ApplicationWindow * m_applicationWindow;
@@ -53,6 +57,8 @@ private:
 	QMenu * m_menuProject;
 	QAction *m_newProjectAction;
 	QAction *m_saveProjectAction;
+	QAction *m_playAction;
+	QAction *m_stopAction;
 
 	QTUI::ExplorerView * m_explorer;
 	QDockWidget * m_explorerDockWidget;
@@ -61,6 +67,10 @@ private:
 	QDockWidget * m_propertiesDockWidget;
 
 	QMdiArea * m_mdiArea;
+
+	QMdiSubWindow * m_debugMdiSubWindow;
+	QMdiSubWindow * m_appMdiSubWindow;
+	bool m_toolBarActionStatus;
 };
 
 #endif

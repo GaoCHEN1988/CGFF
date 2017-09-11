@@ -21,7 +21,7 @@ namespace CGFF {
         m_entities.clear();
     }
 
-    void Scene::add(QSharedPointer<Entity>& entity)
+    void Scene::add(const QSharedPointer<Entity>& entity)
     {
         m_entities.append(entity);
         if (!entity->getComponent<TransformComponent>())

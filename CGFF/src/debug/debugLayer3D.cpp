@@ -6,6 +6,11 @@ namespace CGFF {
 
 	DebugLayer3D::DebugLayer3D(const QSize& size, QWidget *parent)
 		: Layer3D(QSharedPointer<CGFF::Scene>(new CGFF::Scene(size)), QSharedPointer<ForwardRenderer>(new ForwardRenderer(size)), parent)
+		, m_mayaCamera(nullptr)
+		, m_debugShader(nullptr)
+		, m_lineX(nullptr)
+		, m_lineY(nullptr)
+		, m_lineZ(nullptr)
 	{
 		m_debugShader = ShaderFactory::DebugShader();
 	}
@@ -84,6 +89,8 @@ namespace CGFF {
 		Layer3D::getScene()->getCamera()->mousePressEvent(event);
 	}
 
-	void DebugLayer3D::keyPressEvent(QKeyEvent *event)
-	{}
+	void DebugLayer3D::addEntity(const QSharedPointer<CGFF::Entity>& entity)
+	{
+		m_scene->add(entity);
+	}
 }

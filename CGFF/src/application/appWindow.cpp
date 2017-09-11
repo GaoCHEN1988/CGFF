@@ -13,9 +13,8 @@ namespace CGFF {
 	{
 	}
 
-	void AppWindow::initialize()
+	void AppWindow::setupLayers()
 	{
-		BaseWindow::initialize();
 		pushLayer(QSharedPointer<CGFF::Layer>(new CGFF::Test3DLayer(this->size(), m_parent)));
 		pushOverlay(QSharedPointer<CGFF::Layer>(new CGFF::Test2DLayer(this->size(), m_parent)));
 	}

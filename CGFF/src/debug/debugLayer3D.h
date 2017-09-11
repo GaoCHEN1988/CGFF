@@ -18,7 +18,8 @@ namespace CGFF {
 		void mousePressEvent(QMouseEvent *event) override;
 		void mouseMoveEvent(QMouseEvent *event) override;
 		void mouseReleaseEvent(QMouseEvent *event) override;
-		void keyPressEvent(QKeyEvent *event) override;
+
+		void addEntity(const QSharedPointer<CGFF::Entity>& entity);
 
 	private:
 		QSharedPointer<CGFF::Camera> m_mayaCamera;

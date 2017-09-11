@@ -22,6 +22,8 @@ namespace CGFF {
 		virtual void tick();
 		virtual void renderLater();
 		virtual void renderNow();
+		virtual void setupLayers() = 0;
+		virtual void clearLayers();
 
 		void pushLayer(QSharedPointer<CGFF::Layer> layer);
 		QSharedPointer<CGFF::Layer> popLayer();
@@ -31,11 +33,17 @@ namespace CGFF {
 		QSharedPointer<CGFF::Layer> popOverlay(QSharedPointer<CGFF::Layer> layer);
 
 		inline int getFPS() { return m_framePerSecond; }
+		inline void setActive(bool active) { m_isActive = active; }
+
+		public slots:
+		void onActivate();
+		void onDisactivate();
 
 	private:
 		void timerEvent(QTimerEvent *event) Q_DECL_OVERRIDE;
-		void exposeEvent(QExposeEvent *event) Q_DECL_OVERRIDE;
 		bool event(QEvent *event) Q_DECL_OVERRIDE;
+
+		void setUpContext();
 
 	private:
 		QVector<QSharedPointer<CGFF::Layer>> m_layerStack;
@@ -45,6 +53,8 @@ namespace CGFF {
 		int m_framePerSecond;
 		int m_fps_count;
 		int m_timer_id;
+
+		bool m_isActive;
 
 	protected:
 		QWidget * m_parent;

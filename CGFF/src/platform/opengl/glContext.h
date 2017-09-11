@@ -15,6 +15,7 @@ namespace CGFF {
 
         void present();
         void makeCurrent();
+		void resetContextInternal(QWindow *parent) override;
 
         inline static QSharedPointer<GLContext> get() { return qSharedPointerCast<GLContext>(s_context); }
 

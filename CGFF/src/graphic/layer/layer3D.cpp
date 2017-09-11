@@ -23,11 +23,6 @@ namespace CGFF {
         m_renderer->flush();
     }
 
-	//void Layer3D::resize(int width, int height)
-	//{
-	//	m_renderer->setScreenBufferSize(width, height);
-	//}
-
 	void Layer3D::resizeEvent(QResizeEvent *event)
 	{
 		m_renderer->setScreenBufferSize(event->size().width(), event->size().height());
