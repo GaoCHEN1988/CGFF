@@ -179,6 +179,9 @@
     <CustomBuild Include="src\application\baseWindow.h">
       <Filter>Header Files\application</Filter>
     </CustomBuild>
+    <CustomBuild Include="src\application\debugWindow.h">
+      <Filter>Header Files\application</Filter>
+    </CustomBuild>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\main.cpp">
@@ -444,6 +447,12 @@
     </ClCompile>
     <ClCompile Include="src\application\appWindow.cpp">
       <Filter>Source Files\application</Filter>
+    </ClCompile>
+    <ClCompile Include="GeneratedFiles\Debug\moc_debugWindow.cpp">
+      <Filter>Generated Files\Debug</Filter>
+    </ClCompile>
+    <ClCompile Include="GeneratedFiles\Release\moc_debugWindow.cpp">
+      <Filter>Generated Files\Release</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -727,9 +736,6 @@
       <Filter>Header Files\debug</Filter>
     </ClInclude>
     <ClInclude Include="src\application\appWindow.h">
-      <Filter>Header Files\application</Filter>
-    </ClInclude>
-    <ClInclude Include="src\application\debugWindow.h">
       <Filter>Header Files\application</Filter>
     </ClInclude>
   </ItemGroup>

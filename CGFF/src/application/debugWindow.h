@@ -7,15 +7,19 @@
 
 namespace CGFF {
 
-
 	class DebugWindow : public BaseWindow 
 	{
+		Q_OBJECT
+
 	public:
 
 		DebugWindow(QWidget * parent, CGFF::RenderAPI api = CGFF::RenderAPI::OPENGL);
 		virtual ~DebugWindow();
 
 		inline static DebugWindow* getApplication() { return m_instance; }
+
+		public slots:
+		void onAddEntity(EntityType type);
 
 	private:
 		void setupLayers() override;

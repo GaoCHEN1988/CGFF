@@ -37,7 +37,6 @@ private:
 	void setupMenuBar();
 	void setupToolBar();
 	void createConnections();
-	void closeEvent(QCloseEvent * event) Q_DECL_OVERRIDE;
 	void createProject();
 
 	private slots:
@@ -55,10 +54,19 @@ private:
     QStatusBar *m_statusBar;
 	QMenu * m_menuView;
 	QMenu * m_menuProject;
+	QMenu * m_menuGeometry;
+	QMenu * m_menuLight;
+	QMenu * m_menuCamera;
 	QAction *m_newProjectAction;
 	QAction *m_saveProjectAction;
 	QAction *m_playAction;
 	QAction *m_stopAction;
+	//Geometry actions
+	QAction *m_cubeAction;
+	QAction *m_sphereAction;
+	QAction *m_planeAction;
+	QAction *m_lightAction;
+	QAction *m_mayaCameraAction;
 
 	QTUI::ExplorerView * m_explorer;
 	QDockWidget * m_explorerDockWidget;

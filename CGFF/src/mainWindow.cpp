@@ -11,9 +11,19 @@ MainWindow::MainWindow(QWidget *parent)
 	, m_mainToolBar(nullptr)
 	, m_statusBar(nullptr)
 	, m_menuView(nullptr)
+	, m_menuGeometry(nullptr)
+	, m_menuLight(nullptr)
+	, m_menuCamera(nullptr)
 	, m_menuProject(nullptr)
 	, m_newProjectAction(nullptr)
 	, m_saveProjectAction(nullptr)
+	, m_playAction(nullptr)
+	, m_stopAction(nullptr)
+	, m_cubeAction(nullptr)
+	, m_sphereAction(nullptr)
+	, m_planeAction(nullptr)
+	, m_lightAction(nullptr)
+	, m_mayaCameraAction(nullptr)
 	, m_explorer(nullptr)
 	, m_explorerDockWidget(nullptr)
 	, m_objectInfo(nullptr)
@@ -119,8 +129,30 @@ void MainWindow::setupMenuBar()
 	m_saveProjectAction->setShortcut(Qt::CTRL + Qt::Key_S);
 	m_menuProject->addAction(m_saveProjectAction);
 
+	//geometry menu
+	m_menuGeometry = new QMenu("Geometry", m_menuBar);
+	m_cubeAction = new QAction("Cube", this);
+	m_sphereAction = new QAction("Sphere", this);
+	m_planeAction = new QAction("Plane", this);
+	m_menuGeometry->addAction(m_cubeAction);
+	m_menuGeometry->addAction(m_sphereAction);
+	m_menuGeometry->addAction(m_planeAction);
+
+	//light menu
+	m_menuLight = new QMenu("Light", m_menuBar);
+	m_lightAction = new QAction("Light", this);
+	m_menuLight->addAction(m_lightAction);
+
+	//camera menu
+	m_menuCamera = new QMenu("Camera", m_menuBar);
+	m_mayaCameraAction = new QAction("Maya Camera", this);
+	m_menuCamera->addAction(m_mayaCameraAction);
+
 	m_menuBar->addAction(m_menuProject->menuAction());
 	m_menuBar->addAction(m_menuView->menuAction());
+	m_menuBar->addAction(m_menuGeometry->menuAction());
+	m_menuBar->addAction(m_menuLight->menuAction());
+	m_menuBar->addAction(m_menuCamera->menuAction());
 
 	this->setMenuBar(m_menuBar);
 }
@@ -161,20 +193,16 @@ void MainWindow::createConnections()
 	connect(m_stopAction, &QAction::triggered,
 		m_debugWindow, &CGFF::BaseWindow::onActivate);
 
+	connect(m_cubeAction, &QAction::triggered, [=]() { m_debugWindow->onAddEntity(CGFF::EntityType::CUBE); });
+	connect(m_sphereAction, &QAction::triggered, [=]() { m_debugWindow->onAddEntity(CGFF::EntityType::SPHERE); });
+	connect(m_planeAction, &QAction::triggered, [=]() { m_debugWindow->onAddEntity(CGFF::EntityType::PLANE); });
+
 	connect(m_playAction, &QAction::triggered,
 		this, &MainWindow::onSetStatus);
 
 	connect(m_stopAction, &QAction::triggered,
 		this, &MainWindow::onSetStatus);
 
-}
-
-void MainWindow::closeEvent(QCloseEvent * event)
-{
-	//foreach(QMdiSubWindow* w, m_mdiArea->subWindowList())
-	//{
-	//	QCoreApplication::sendEvent(w, event);
-	//}
 }
 
 void MainWindow::createProject()

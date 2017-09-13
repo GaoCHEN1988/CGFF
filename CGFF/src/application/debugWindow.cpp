@@ -16,6 +16,28 @@ namespace CGFF {
 	{
 	}
 
+	void DebugWindow::onAddEntity(EntityType type)
+	{
+		switch (type)
+		{
+		case EntityType::CUBE:
+		{
+			m_debug3DLayer->addCube();
+			break;
+		}		
+		case EntityType::PLANE:
+		{
+			m_debug3DLayer->addPlane();
+			break;
+		}
+		case EntityType::SPHERE:
+		{
+			break;
+		}
+		}
+
+	}
+
 	void DebugWindow::setupLayers()
 	{
 		//if (!m_debug3DLayer)

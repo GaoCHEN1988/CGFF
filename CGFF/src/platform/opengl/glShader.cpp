@@ -171,11 +171,11 @@ namespace CGFF {
 	void GLShader::load()
 	{
 		if (!m_glShaderProgram.addShaderFromSourceCode(QOpenGLShader::Vertex, m_vertexSource))
-			qFatal("Error:Can't compile vertex shader");
+			qFatal(QString("Error:Can't compile vertex shader:\n" + m_glShaderProgram.log()).toStdString().c_str());
 		if (!m_glShaderProgram.addShaderFromSourceCode(QOpenGLShader::Fragment, m_fragmentSource))
-			qFatal("Error:Can't compile fragment shader");
+			qFatal(QString("Error:Can't compile fragment shader:\n" + m_glShaderProgram.log()).toStdString().c_str());
 		if (!m_glShaderProgram.link())
-			qFatal("Error:Can't link shaders");
+			qFatal(QString("Error:Can't link shaders:\n" + m_glShaderProgram.log()).toStdString().c_str());
 	}
 
 	QSharedPointer<ShaderUniformDeclaration> GLShader::findUniformDeclaration(const QString& name, QSharedPointer<ShaderUniformBufferDeclaration> buffer)

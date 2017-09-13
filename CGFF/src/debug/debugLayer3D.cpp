@@ -13,6 +13,7 @@ namespace CGFF {
 		, m_lineZ(nullptr)
 	{
 		m_debugShader = ShaderFactory::DebugShader();
+		m_debugMaterial = QSharedPointer<Material>(new Material(m_debugShader));
 	}
 
 	void DebugLayer3D::init()
@@ -49,6 +50,9 @@ namespace CGFF {
 
 	void DebugLayer3D::render(QSharedPointer<Renderer3D>& renderer)
 	{
+		QVector3D cameraPosition = m_scene->getCamera()->getPosition();
+		m_debugMaterial->setUniform("viewPos", cameraPosition);
+
 		GLenum error = CGFF::GL->glGetError();
 		if (error != GL_NO_ERROR)
 		{
@@ -92,5 +96,27 @@ namespace CGFF {
 	void DebugLayer3D::addEntity(const QSharedPointer<CGFF::Entity>& entity)
 	{
 		m_scene->add(entity);
+	}
+
+	void DebugLayer3D::addCube()
+	{
+		QSharedPointer<Entity> cube = QSharedPointer<Entity>(
+			new Entity(MeshFactory::CreateDebugCube(5, QVector4D(0.6,0.6,0.6,1.0),
+				QSharedPointer<MaterialInstance>(new MaterialInstance(m_debugMaterial)))));
+
+		addEntity(cube);
+	}
+
+	void DebugLayer3D::addPlane()
+	{
+		QSharedPointer<Entity> plane = QSharedPointer<Entity>(new Entity(MeshFactory::CreateDebugPlane(64, 64, QVector3D(0, 1, 0), QVector4D(0.6, 0.6, 0.6, 1.0), QSharedPointer<MaterialInstance>(new MaterialInstance(m_debugMaterial)))));
+	
+		addEntity(plane);
+	}
+
+	void DebugLayer3D::addSphere()
+	{
+		//QSharedPointer<Material> sphereMaterial = QSharedPointer<Material>(new Material(m_debugShader));
+
 	}
 }
