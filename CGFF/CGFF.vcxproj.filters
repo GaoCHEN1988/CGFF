@@ -165,6 +165,12 @@
     <Filter Include="Source Files\qtUI\view">
       <UniqueIdentifier>{9eea77f8-5994-4c9c-89b6-6d2df12807ce}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Header Files\resource">
+      <UniqueIdentifier>{bedd791b-b5c2-4e2e-a6cc-ffa441f30cef}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\resource">
+      <UniqueIdentifier>{399dea59-ab0a-4b8f-85d5-0017c4655ec3}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <CustomBuild Include="src\mainWindow.h">
@@ -454,6 +460,15 @@
     <ClCompile Include="GeneratedFiles\Release\moc_debugWindow.cpp">
       <Filter>Generated Files\Release</Filter>
     </ClCompile>
+    <ClCompile Include="src\resource\resourceUnit.cpp">
+      <Filter>Source Files\resource</Filter>
+    </ClCompile>
+    <ClCompile Include="src\resource\resourceManager.cpp">
+      <Filter>Source Files\resource</Filter>
+    </ClCompile>
+    <ClCompile Include="src\examples\app3DLayer.cpp">
+      <Filter>Source Files\examples</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <None Include="ClassDiagram.cd" />
@@ -737,6 +752,15 @@
     </ClInclude>
     <ClInclude Include="src\application\appWindow.h">
       <Filter>Header Files\application</Filter>
+    </ClInclude>
+    <ClInclude Include="src\resource\resourceUnit.h">
+      <Filter>Header Files\resource</Filter>
+    </ClInclude>
+    <ClInclude Include="src\resource\resourceManager.h">
+      <Filter>Header Files\resource</Filter>
+    </ClInclude>
+    <ClInclude Include="src\examples\app3DLayer.h">
+      <Filter>Header Files\examples</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

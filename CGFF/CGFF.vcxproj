@@ -127,6 +127,7 @@
     <ClCompile Include="src\entity\component\spriteComponent.cpp" />
     <ClCompile Include="src\entity\component\transformComponent.cpp" />
     <ClCompile Include="src\entity\entity.cpp" />
+    <ClCompile Include="src\examples\app3DLayer.cpp" />
     <ClCompile Include="src\examples\test2DLayer.cpp" />
     <ClCompile Include="src\examples\test3DLayer.cpp" />
     <ClCompile Include="src\graphic\API\context.cpp" />
@@ -192,6 +193,8 @@
     <ClCompile Include="src\platform\opengl\glVertexBuffer.cpp" />
     <ClCompile Include="src\qtUI\explorerView.cpp" />
     <ClCompile Include="src\qtUI\view\objectInfoView.cpp" />
+    <ClCompile Include="src\resource\resourceManager.cpp" />
+    <ClCompile Include="src\resource\resourceUnit.cpp" />
     <ClCompile Include="src\system\fileSystem\vfs.cpp" />
     <ClCompile Include="src\utils\qtopengl.cpp" />
   </ItemGroup>
@@ -250,6 +253,7 @@
     <ClInclude Include="src\entity\component\spriteComponent.h" />
     <ClInclude Include="src\entity\component\transformComponent.h" />
     <ClInclude Include="src\entity\entity.h" />
+    <ClInclude Include="src\examples\app3DLayer.h" />
     <ClInclude Include="src\examples\test2DLayer.h" />
     <ClInclude Include="src\examples\test3DLayer.h" />
     <ClInclude Include="src\graphic\API\context.h" />
@@ -341,6 +345,8 @@
       <Outputs Condition="'$(Configuration)|$(Platform)'=='Release|x64'">.\GeneratedFiles\$(ConfigurationName)\moc_%(Filename).cpp</Outputs>
       <Command Condition="'$(Configuration)|$(Platform)'=='Release|x64'">"$(QTDIR)\bin\moc.exe"  "%(FullPath)" -o ".\GeneratedFiles\$(ConfigurationName)\moc_%(Filename).cpp"  -DUNICODE -DWIN32 -DWIN64 -DQT_NO_DEBUG -DNDEBUG -DQT_CORE_LIB -DQT_GUI_LIB -DQT_OPENGL_LIB -DQT_WIDGETS_LIB -DFT2_BUILD_LIBRARY -DQT_DLL  "-I.\GeneratedFiles" "-I." "-I$(QTDIR)\include" "-I.\GeneratedFiles\$(ConfigurationName)\." "-I$(QTDIR)\include\QtCore" "-I$(QTDIR)\include\QtGui" "-I$(QTDIR)\include\QtOpenGL" "-I$(QTDIR)\include\QtWidgets" "-I.\src\application" "-I.\src" "-I$(SolutionDir)Dependencies\Assimp\include"</Command>
     </CustomBuild>
+    <ClInclude Include="src\resource\resourceManager.h" />
+    <ClInclude Include="src\resource\resourceUnit.h" />
     <ClInclude Include="src\system\fileSystem\vfs.h" />
     <ClInclude Include="src\utils\qtopengl.h" />
     <ClInclude Include="src\utils\types.h" />
