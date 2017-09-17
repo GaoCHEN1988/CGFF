@@ -31,7 +31,7 @@ namespace CGFF {
         }
         inline QSharedPointer<Renderer2D> getRenderer()
         {
-            return m_renderer;
+            return m_scene2D->getRenderer();
         }
     protected:
         QSharedPointer<Material> m_material;

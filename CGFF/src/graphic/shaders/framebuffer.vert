@@ -9,10 +9,10 @@ layout (location = 5) in vec4 v_color;
 
 out vec2 uv;
 
-uniform mat4 projMatrix = mat4(1.0);
+uniform mat4 projectionMatrix = mat4(1.0);
 
 void main()
 {
 	uv = in_uv;
-	gl_Position = projMatrix * position;
+	gl_Position = projectionMatrix * position;
 }

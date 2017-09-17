@@ -13,8 +13,8 @@
 
 #include <cstddef>
 #include <QPainter>
-//#include <QOpenGLFramebufferObject>
-#define FRAMEBUDDER_TEST
+
+//#define FRAMEBUFFER_TEST
 
 namespace CGFF {
 
@@ -96,7 +96,6 @@ namespace CGFF {
         QSharedPointer<Framebuffer2D> m_frameBuffer;
         //QSharedPointer<QOpenGLShaderProgram> m_framebufferShader;
         QSharedPointer<Framebuffer2D> m_postEffectsBuffer;
-        QSharedPointer<Material> m_framebufferMaterial;
         QSharedPointer<Material> m_postEffectsMaterial;
         QSharedPointer<Material> m_screenMaterial;
 
@@ -113,6 +112,8 @@ namespace CGFF {
 		QSharedPointer<Camera> m_camera;
         QSharedPointer<Mesh> m_screenQuad;
 		uint* m_indices;
+
+        int m_screenBuffer;
 	};
 }
 #endif

@@ -1,4 +1,5 @@
 #include "layer2D.h"
+#include "graphic/renderer/renderer.h"
 
 namespace CGFF {
 
@@ -58,8 +59,11 @@ namespace CGFF {
 	void Layer2D::resizeEvent(QResizeEvent *event)
 	{
 		m_size = event->size();
-		qSharedPointerCast<CGFF::BatchRenderer2D>(m_renderer)->setScreenSize(event->size());
+        GLCall(Renderer::setViewport(0, 0, m_size.width(), m_size.height()));
+        qSharedPointerCast<CGFF::BatchRenderer2D>(m_renderer)->setScreenSize(event->size());
+        qSharedPointerCast<CGFF::BatchRenderer2D>(m_renderer)->setViewportSize(event->size());
 		m_scene2D->getRenderer()->setScreenSize(event->size());
+        m_scene2D->getRenderer()->setViewportSize(event->size());
 	}
 
 	void Layer2D::closeEvent(QCloseEvent *event)

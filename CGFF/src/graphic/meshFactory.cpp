@@ -19,13 +19,13 @@ namespace CGFF {
 			data[0].uv = QVector2D(0, 1);
 
 			data[1].position = QVector3D(x + width, y, 0);
-			data[1].uv = QVector2D(0, 0);
+			data[1].uv = QVector2D(1, 1);
 
 			data[2].position = QVector3D(x + width, y + height, 0);
 			data[2].uv = QVector2D(1, 0);
 
 			data[3].position = QVector3D(x, y + width, 0);
-			data[3].uv = QVector2D(1, 1);
+			data[3].uv = QVector2D(0, 0);
 
 			QSharedPointer<VertexArray> va = VertexArray::create();
 			va->bind();

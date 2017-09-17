@@ -29,8 +29,8 @@ namespace CGFF {
             {
             case RenderAPI::OPENGL:
                 return Shader::createFromFile("FramebufferShader",
-                    "/shaders/fbVertexShader.vert",
-                    "/shaders/fbfragmentShader.frag");
+                    "/shaders/framebuffer.vert",
+                    "/shaders/framebuffer.frag");
             case RenderAPI::DIRECT3D:
                 return nullptr;
             }
