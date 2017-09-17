@@ -17,7 +17,7 @@ namespace CGFF {
         void unBind();
         void setSize(QSize size);
 
-        void renderPass(const QSharedPointer<Framebuffer>& target, const QSharedPointer<Mesh>& mesh);
+        void renderPass(const QSharedPointer<Framebuffer>& source, const QSharedPointer<Mesh>& mesh);
 
     private:
         QSharedPointer<Material> m_material;

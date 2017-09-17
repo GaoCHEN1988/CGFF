@@ -25,6 +25,7 @@ namespace CGFF {
 	void GLFramebuffer2D::unBind()
 	{
 		GL->glBindFramebuffer(GL_FRAMEBUFFER, 0);
+        GL->glViewport(0, 0, m_width, m_height);
 	}
 
 	void GLFramebuffer2D::clear()
@@ -72,6 +73,10 @@ namespace CGFF {
 		GL->glBindFramebuffer(GL_FRAMEBUFFER, m_framebufferHandle);
 		GL->glFramebufferTexture2D(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT0, GL_TEXTURE_2D, m_glTexture->getID(), 0);
 		GL->glFramebufferRenderbuffer(GL_FRAMEBUFFER, GL_DEPTH_ATTACHMENT, GL_RENDERBUFFER, m_depthbufferHandle);
+
+        if (GL->glCheckFramebufferStatus(GL_FRAMEBUFFER) != GL_FRAMEBUFFER_COMPLETE)
+            qFatal("ERROR::FRAMEBUFFER:: Framebuffer is not complete!");
+
 		GL->glBindFramebuffer(GL_FRAMEBUFFER, 0);
 	}
 }

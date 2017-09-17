@@ -10,6 +10,7 @@ namespace CGFF {
 		, m_fragmentFile("")
 		, m_vertexSource("")
 		, m_fragmentSource("")
+        , m_glShaderProgram()
 	{
 	}
 	GLShader::~GLShader()

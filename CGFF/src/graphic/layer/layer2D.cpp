@@ -63,6 +63,7 @@ namespace CGFF {
         qSharedPointerCast<CGFF::BatchRenderer2D>(m_renderer)->setScreenSize(event->size());
         qSharedPointerCast<CGFF::BatchRenderer2D>(m_renderer)->setViewportSize(event->size());
 		m_scene2D->getRenderer()->setScreenSize(event->size());
+        m_scene2D->getRenderer()->setViewportSize(event->size());
 	}
 
 	void Layer2D::closeEvent(QCloseEvent *event)

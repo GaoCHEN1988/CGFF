@@ -1,5 +1,6 @@
 #include "test2DLayer.h"
 #include "graphic/shader/shaderFactory.h"
+
 namespace CGFF {
 
     Test2DLayer::Test2DLayer(QSize size, QWidget *parent)
@@ -12,15 +13,17 @@ namespace CGFF {
     {
         Layer2D::getRenderer()->setRenderTarget(CGFF::RenderTarget::SCREEN);
 
+#ifdef FRAMEBUFFER_TEST
         QSharedPointer<CGFF::Shader> pfShader = Shader::createFromFile("PostfxShader",
             "/shaders/postfx.vert",
             "/shaders/postfx.frag");
         Layer2D::getRenderer()->addPostEffectsPass(QSharedPointer<CGFF::PostEffectsPass>(new CGFF::PostEffectsPass(pfShader, m_size)));
-        Layer2D::getRenderer()->setPostEffects(false);
+        Layer2D::getRenderer()->setPostEffects(true);
+#endif
 
         m_sprite = QSharedPointer<CGFF::Sprite>(new CGFF::Sprite(0.0f, 0.0f, 100, 100, Texture2D::createFromFile("Resources/tb.png")));
         m_sprite2 = QSharedPointer<CGFF::Sprite>(new CGFF::Sprite(500.0f, 500.0f, 100.0, 100.0, Texture2D::createFromFile("Resources/particle.png")));
-
+        
         Layer2D::add(m_sprite);
         Layer2D::add(m_sprite2);
 

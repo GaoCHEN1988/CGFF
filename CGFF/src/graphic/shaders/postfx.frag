@@ -36,5 +36,7 @@ void main()
 	sum += texture(tex, vec2(tc.x + 3.0*blur*hstep, tc.y + 3.0*blur*vstep)) * 0.0540540541;
 	sum += texture(tex, vec2(tc.x + 4.0*blur*hstep, tc.y + 4.0*blur*vstep)) * 0.0162162162;
 
+    //vec4 test = texture(tex, uv);
     out_color = sum;
+    //out_color = test;
 }

@@ -11,7 +11,11 @@ namespace CGFF {
         : m_material(QSharedPointer<Material>(new Material(shader)))
         , m_size(size)
     {
-
+        m_material->bind();
+        QMatrix4x4 proj;
+        proj.ortho(0, (float)m_size.width(), (float)m_size.height(), 0, -1.0f, 100.0f);
+        m_material->setUniform("projectionMatrix", proj);
+        m_material->unbind();
     }
     PostEffectsPass::~PostEffectsPass()
     {
@@ -29,18 +33,16 @@ namespace CGFF {
     void PostEffectsPass::setSize(QSize size)
     {
         QMatrix4x4 proj;
-        proj.ortho(0, (float)size.width(), (float)size.height(), 0, -1.0f, 100.0f);
-        m_material->setUniform("projMatrix", proj);
+        proj.ortho(0, (float)m_size.width(), (float)m_size.height(), 0, -1.0f, 100.0f);
+        m_material->setUniform("projectionMatrix", proj);
     }
 
 
-    void PostEffectsPass::renderPass(const QSharedPointer<Framebuffer>& target, const QSharedPointer<Mesh>& mesh)
+    void PostEffectsPass::renderPass(const QSharedPointer<Framebuffer>& source, const QSharedPointer<Mesh>& mesh)
     {
-		QMatrix4x4 proj;
-		proj.ortho(0, (float)target->getWidth(), (float)target->getHeight(), 0, -1.0f, 100.0f);
-        m_material->setUniform("projMatrix", proj);
-        m_material->setTexture("tex", 0);
 		m_material->bind();
+
+        m_material->setTexture("tex", source->getTexture());
 
         mesh->draw();
 
