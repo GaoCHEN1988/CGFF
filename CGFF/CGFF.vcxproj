@@ -99,21 +99,13 @@
     <ClCompile Include="GeneratedFiles\Debug\moc_objectInfoView.cpp">
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|x64'">true</ExcludedFromBuild>
     </ClCompile>
-    <ClCompile Include="GeneratedFiles\Release\moc_baseWindow.cpp">
-      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</ExcludedFromBuild>
-    </ClCompile>
+    <ClCompile Include="GeneratedFiles\Release\moc_baseWindow.cpp" />
     <ClCompile Include="GeneratedFiles\Release\moc_debugWindow.cpp">
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</ExcludedFromBuild>
     </ClCompile>
-    <ClCompile Include="GeneratedFiles\Release\moc_explorerView.cpp">
-      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</ExcludedFromBuild>
-    </ClCompile>
-    <ClCompile Include="GeneratedFiles\Release\moc_mainWindow.cpp">
-      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</ExcludedFromBuild>
-    </ClCompile>
-    <ClCompile Include="GeneratedFiles\Release\moc_objectInfoView.cpp">
-      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</ExcludedFromBuild>
-    </ClCompile>
+    <ClCompile Include="GeneratedFiles\Release\moc_explorerView.cpp" />
+    <ClCompile Include="GeneratedFiles\Release\moc_mainWindow.cpp" />
+    <ClCompile Include="GeneratedFiles\Release\moc_objectInfoView.cpp" />
     <ClCompile Include="src\application\appWindow.cpp" />
     <ClCompile Include="src\application\baseWindow.cpp" />
     <ClCompile Include="src\application\debugWindow.cpp" />

@@ -22,7 +22,7 @@ namespace CGFF {
 #endif
 
         m_sprite = QSharedPointer<CGFF::Sprite>(new CGFF::Sprite(0.0f, 0.0f, 100, 100, Texture2D::createFromFile("Resources/tb.png")));
-        m_sprite2 = QSharedPointer<CGFF::Sprite>(new CGFF::Sprite(500.0f, 500.0f, 100.0, 100.0, Texture2D::createFromFile("Resources/particle.png")));
+        m_sprite2 = QSharedPointer<CGFF::Sprite>(new CGFF::Sprite(100.0f, 100.0f, 100.0, 100.0, Texture2D::createFromFile("Resources/particle.png")));
         
         Layer2D::add(m_sprite);
         Layer2D::add(m_sprite2);

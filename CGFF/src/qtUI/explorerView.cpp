@@ -50,6 +50,7 @@ namespace QTUI {
 		QTreeView * view = new QTreeView(this);
 		view->setModel(model);
 		view->setRootIndex(model->index(path));
+        view->sortByColumn(0, Qt::SortOrder::AscendingOrder);
 		view->header()->setStretchLastSection(true);
 		view->header()->setSortIndicatorShown(true);
 		view->setSortingEnabled(true);

@@ -24,8 +24,8 @@ namespace CGFF {
 		m_frametimeLabel = QSharedPointer<Label>(new Label("frametime", 390, m_size.height() - 50, 150, 32, QVector4D(1, 1, 1, 1)));
 
 		add(m_FPSLabel);
-		//add(m_memoryUsageLabel);
-		//add(m_frametimeLabel);
+		add(m_memoryUsageLabel);
+		add(m_frametimeLabel);
 
         DebugMenu::init(m_size);
         DebugMenu::setVisible(true);

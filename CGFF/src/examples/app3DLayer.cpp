@@ -26,8 +26,11 @@ namespace CGFF
 	void App3DLayer::render(QSharedPointer<Renderer3D>& renderer)
 	{
 		// Remove the translation part for skybox
-		QMatrix4x4 vm = m_scene->getCamera()->getViewMatrix();
-		m_skyboxMaterial->setUniform("u_ViewMatrix", QMatrix4x4(QMatrix3x3(vm.toGenericMatrix<3, 3>())));
+        if (m_skyboxMaterial)
+        {
+            QMatrix4x4 vm = m_scene->getCamera()->getViewMatrix();
+            m_skyboxMaterial->setUniform("u_ViewMatrix", QMatrix4x4(QMatrix3x3(vm.toGenericMatrix<3, 3>())));
+        }
 	}
 
 	void App3DLayer::resizeEvent(QResizeEvent *event)
