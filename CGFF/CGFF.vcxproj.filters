@@ -448,9 +448,6 @@
     <ClCompile Include="GeneratedFiles\Release\moc_debugWindow.cpp">
       <Filter>Generated Files\Release</Filter>
     </ClCompile>
-    <ClCompile Include="src\resource\resourceUnit.cpp">
-      <Filter>Source Files\resource</Filter>
-    </ClCompile>
     <ClCompile Include="src\resource\resourceManager.cpp">
       <Filter>Source Files\resource</Filter>
     </ClCompile>
@@ -468,6 +465,9 @@
     </ClCompile>
     <ClCompile Include="GeneratedFiles\Release\moc_objectInfoView.cpp">
       <Filter>Generated Files\Release</Filter>
+    </ClCompile>
+    <ClCompile Include="src\resource\sceneResource.cpp">
+      <Filter>Source Files\resource</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -753,14 +753,14 @@
     <ClInclude Include="src\application\appWindow.h">
       <Filter>Header Files\application</Filter>
     </ClInclude>
-    <ClInclude Include="src\resource\resourceUnit.h">
-      <Filter>Header Files\resource</Filter>
-    </ClInclude>
     <ClInclude Include="src\resource\resourceManager.h">
       <Filter>Header Files\resource</Filter>
     </ClInclude>
     <ClInclude Include="src\examples\app3DLayer.h">
       <Filter>Header Files\examples</Filter>
+    </ClInclude>
+    <ClInclude Include="src\resource\sceneResource.h">
+      <Filter>Header Files\resource</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

@@ -1,6 +1,7 @@
 #include "debugLayer3D.h"
 #include "graphic/shader/shaderFactory.h"
 #include "graphic/meshFactory.h"
+#include "resource/resourceManager.h"
 
 namespace CGFF {
 
