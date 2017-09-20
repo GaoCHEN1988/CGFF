@@ -42,6 +42,11 @@ namespace CGFF
 			{
 				m_entities.insert(name, QSharedPointer<Entity>(object));
 			}
+			else
+			{
+				//TO DO: use message box
+				qWarning("Object with name is existed, use another name.");
+			}
 		}
 
 		const QMap<QString, QSharedPointer<Light>>& getLights() const

@@ -5,7 +5,6 @@ MainWindow::MainWindow(QWidget *parent)
 	: QMainWindow(parent)
 	//, m_applicationWindow(nullptr)
 	, m_debugWindow(nullptr)
-	, m_appWindow(nullptr)
 	//, m_centralWidget(nullptr)
 	, m_menuBar(nullptr)
 	, m_mainToolBar(nullptr)
@@ -28,9 +27,6 @@ MainWindow::MainWindow(QWidget *parent)
 	, m_explorerDockWidget(nullptr)
 	, m_objectInfo(nullptr)
 	, m_propertiesDockWidget(nullptr)
-	, m_mdiArea(nullptr)
-	, m_debugMdiSubWindow(nullptr)
-	, m_appMdiSubWindow(nullptr)
 	, m_toolBarActionStatus(true)
 {
     setupUi();
@@ -54,26 +50,11 @@ void MainWindow::setupUi()
     this->setDocumentMode(false);
 	this->setWindowTitle(QApplication::translate("this", "CGFF", Q_NULLPTR));
 
-	m_mdiArea = new QMdiArea(this);
-	m_mdiArea->setHorizontalScrollBarPolicy(Qt::ScrollBarAsNeeded);
-	m_mdiArea->setVerticalScrollBarPolicy(Qt::ScrollBarAsNeeded);
-	setCentralWidget(m_mdiArea);
-
 	m_debugWindow = new CGFF::DebugWindow(this);
 	m_debugWindow->setActive(true);
 	QWidget * debugWidget = QWidget::createWindowContainer(m_debugWindow, this);
-	m_debugMdiSubWindow = m_mdiArea->addSubWindow(debugWidget);
-	m_debugMdiSubWindow->setWindowTitle("Debug");
-	m_debugMdiSubWindow->setMinimumSize(400, 400);
-	m_debugMdiSubWindow->setWindowFlags(Qt::CustomizeWindowHint | Qt::WindowTitleHint | Qt::WindowMinMaxButtonsHint);
-
-	m_appWindow = new CGFF::AppWindow(this);
-	QWidget * appWidget = QWidget::createWindowContainer(m_appWindow, this);
-	m_appMdiSubWindow = m_mdiArea->addSubWindow(appWidget);
-	m_appMdiSubWindow->setWindowTitle("Application");
-	m_appMdiSubWindow->setMinimumSize(400, 400);
-	m_appMdiSubWindow->setWindowFlags(Qt::CustomizeWindowHint | Qt::WindowTitleHint | Qt::WindowMinMaxButtonsHint);
-
+	setCentralWidget(debugWidget);
+	
     
     m_statusBar = new QStatusBar(this);
     m_statusBar->setObjectName(QStringLiteral("m_statusBar"));
@@ -182,12 +163,6 @@ void MainWindow::createConnections()
 		this, &MainWindow::onSaveProject);
 
 	connect(m_playAction, &QAction::triggered,
-		m_appWindow, &CGFF::BaseWindow::onActivate);
-
-	connect(m_stopAction, &QAction::triggered,
-		m_appWindow, &CGFF::BaseWindow::onDisactivate);
-
-	connect(m_playAction, &QAction::triggered,
 		m_debugWindow, &CGFF::BaseWindow::onDisactivate);
 
 	connect(m_stopAction, &QAction::triggered,
@@ -212,10 +187,6 @@ void MainWindow::createProject()
 
 void MainWindow::onNewProject()
 {
-	if (!m_mdiArea)
-		return;
-
-	m_mdiArea->closeAllSubWindows();
 
 }
 
@@ -228,9 +199,5 @@ void MainWindow::onSetStatus()
 {
 	m_playAction->setEnabled(m_toolBarActionStatus);
 	m_stopAction->setEnabled(!m_toolBarActionStatus);
-
-	m_debugMdiSubWindow->setEnabled(m_toolBarActionStatus);
-	m_appMdiSubWindow->setEnabled(!m_toolBarActionStatus);
-
 	m_toolBarActionStatus = !m_toolBarActionStatus;
 }

@@ -19,7 +19,6 @@ namespace CGFF {
 		void init() override;
 		void render(QSharedPointer<Renderer3D>& renderer) override;
 		void tick() override;
-		void resizeEvent(QResizeEvent *event) override;
 		void closeEvent(QCloseEvent *event) override;
 
 		void mousePressEvent(QMouseEvent *event) override;

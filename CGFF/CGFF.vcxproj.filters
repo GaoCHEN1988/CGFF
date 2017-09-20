@@ -436,9 +436,6 @@
     <ClCompile Include="src\application\baseWindow.cpp">
       <Filter>Source Files\application</Filter>
     </ClCompile>
-    <ClCompile Include="src\application\appWindow.cpp">
-      <Filter>Source Files\application</Filter>
-    </ClCompile>
     <ClCompile Include="src\main.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
@@ -749,9 +746,6 @@
     </ClInclude>
     <ClInclude Include="src\debug\debugLayer.h">
       <Filter>Header Files\debug</Filter>
-    </ClInclude>
-    <ClInclude Include="src\application\appWindow.h">
-      <Filter>Header Files\application</Filter>
     </ClInclude>
     <ClInclude Include="src\resource\resourceManager.h">
       <Filter>Header Files\resource</Filter>

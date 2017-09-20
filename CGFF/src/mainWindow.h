@@ -13,13 +13,10 @@
 #include <QtWidgets/QToolBar>
 #include <QtWidgets/QWidget>
 #include <QDockWidget>
-#include <QMdiArea>
-#include <QMdiSubWindow>
 #include <QPushButton>
 
 //#include "application/applicationWindow.h"
 #include "application/debugWindow.h"
-#include "application/appWindow.h"
 #include "qtUI/explorerView.h"
 #include "qtUI/view/objectInfoView.h"
 
@@ -47,7 +44,6 @@ private:
 private:
 	//ApplicationWindow * m_applicationWindow;
 	CGFF::DebugWindow * m_debugWindow;
-	CGFF::AppWindow * m_appWindow;
     //QWidget *m_centralWidget;
     QMenuBar *m_menuBar;
     QToolBar *m_mainToolBar;
@@ -73,11 +69,6 @@ private:
 
 	QTUI::ObjectInfoView * m_objectInfo;
 	QDockWidget * m_propertiesDockWidget;
-
-	QMdiArea * m_mdiArea;
-
-	QMdiSubWindow * m_debugMdiSubWindow;
-	QMdiSubWindow * m_appMdiSubWindow;
 	bool m_toolBarActionStatus;
 };
 

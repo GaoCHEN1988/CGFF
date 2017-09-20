@@ -1,6 +1,5 @@
 #include "debugLayer.h"
 #include "graphic/shader/shaderFactory.h"
-#include "applicationWindow.h"
 #include "debugWindow.h"
 
 namespace CGFF {

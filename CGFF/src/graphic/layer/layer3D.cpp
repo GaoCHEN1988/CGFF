@@ -26,6 +26,7 @@ namespace CGFF {
 	void Layer3D::resizeEvent(QResizeEvent *event)
 	{
 		m_renderer->setScreenBufferSize(event->size().width(), event->size().height());
+		m_scene->getCamera()->resize(event->size().width(), event->size().height());
 	}
 
 	void Layer3D::closeEvent(QCloseEvent *event)

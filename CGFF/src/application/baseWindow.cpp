@@ -40,6 +40,16 @@ namespace CGFF {
 		m_time.start();
 		m_framePerSecond = 0;
 		m_fps_count = 0;
+
+		for (auto layer : m_layerStack)
+		{
+			layer->init();
+		}
+
+		for (auto overLayer : m_overLayerStack)
+		{
+			overLayer->init();
+		}
 	}
 
 	void BaseWindow::update()
@@ -84,9 +94,6 @@ namespace CGFF {
 	void BaseWindow::renderLater(){}
 	void BaseWindow::renderNow()
 	{
-		//if (!isExposed())
-		//	return;
-
 		if (!CGFF::Context::isInitialized())
 		{
 			setUpContext();
@@ -110,7 +117,6 @@ namespace CGFF {
 	void BaseWindow::pushLayer(QSharedPointer<CGFF::Layer> layer)
 	{
 		m_layerStack.append(layer);
-		layer->init();
 	}
 
 	QSharedPointer<CGFF::Layer> BaseWindow::popLayer()
@@ -136,7 +142,6 @@ namespace CGFF {
 	void BaseWindow::pushOverlay(QSharedPointer<CGFF::Layer> layer)
 	{
 		m_overLayerStack.append(layer);
-		layer->init();
 	}
 
 	QSharedPointer<CGFF::Layer> BaseWindow::popOverlay()
@@ -162,32 +167,14 @@ namespace CGFF {
 	void BaseWindow::onActivate()
 	{
 		m_isActive = true;
-
-		if (!CGFF::Context::isInitialized())
-		{
-			setUpContext();
-			initialize();
-		}
-		else
-		{
-			CGFF::Context::resetContext(this);
-			initialize();
-		}
 	}
 	void BaseWindow::onDisactivate()
 	{
 		m_isActive = false;
-		if (CGFF::Context::isInitialized())
-			CGFF::Renderer::clear(CGFF::RendererBufferType::RENDERER_BUFFER_COLOR | CGFF::RendererBufferType::RENDERER_BUFFER_DEPTH);
-
-		clearLayers();
 	}
 
 	void BaseWindow::timerEvent(QTimerEvent *event)
 	{
-		if (!m_isActive)
-			return;
-
 		renderNow();
 
 		// FPS count

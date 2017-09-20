@@ -20,11 +20,9 @@ namespace CGFF {
 		void init() override;
 		void render(QSharedPointer<Renderer3D>& renderer) override;
 
-		void resizeEvent(QResizeEvent *event) override;
 		void mousePressEvent(QMouseEvent *event) override;
 		void mouseMoveEvent(QMouseEvent *event) override;
 		void mouseReleaseEvent(QMouseEvent *event) override;
-		void keyPressEvent(QKeyEvent *event) override;
 		void closeEvent(QCloseEvent *event) override;
 
 	private:
@@ -34,7 +32,7 @@ namespace CGFF {
 
 		QSharedPointer<Camera> m_camera;
 		QVector<QSharedPointer<Entity>> m_entities;
-		QVector<QSharedPointer<Light>> m_lights;
+		QSharedPointer<LightSetup> m_lights;
 		QSharedPointer<MaterialInstance> m_skyboxMaterial;
 	};
 }

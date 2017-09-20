@@ -50,6 +50,6 @@ namespace CGFF {
 		CGFF::GL->initializeOpenGLFunctions();
 		QOpenGLContext* t = m_glContext;
 		m_glContext = tmpContext;
-		delete t;
+		//delete t;
 	}
 }
