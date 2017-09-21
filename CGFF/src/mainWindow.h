@@ -17,8 +17,9 @@
 
 //#include "application/applicationWindow.h"
 #include "application/debugWindow.h"
-#include "qtUI/explorerView.h"
+#include "qtUI/view/explorerView.h"
 #include "qtUI/view/objectInfoView.h"
+#include "qtUI/view/objectListView.h"
 
 class MainWindow : public QMainWindow
 {
@@ -70,6 +71,9 @@ private:
 	QTUI::ObjectInfoView * m_objectInfo;
 	QDockWidget * m_propertiesDockWidget;
 	bool m_toolBarActionStatus;
+
+	QTUI::ObjectListView* m_objectList;
+	QDockWidget * m_objectListDockWidget;
 };
 
 #endif

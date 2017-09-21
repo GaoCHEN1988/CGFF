@@ -8,16 +8,24 @@ namespace CGFF {
 	QMap<QString, QSharedPointer<SceneResource>> ResourceManger::m_sceneResources;
 	QMap<QString, QSharedPointer<Texture>> ResourceManger::m_textureResources;
 
+	QString ResourceManger::m_scene3DName = "Scene3D";
+	QString ResourceManger::m_scene2DName = "Scene2D";
+
+	QSharedPointer<SceneResource> ResourceManger::m_currentScene2D = nullptr;
+	QSharedPointer<SceneResource> ResourceManger::m_currentScene3D = nullptr;
+
 	QSharedPointer<SceneResource> ResourceManger::getSceneResource(const QString& name)
 	{
 		auto lookup = m_sceneResources.find(name);
 		if (lookup != m_sceneResources.end())
 		{
+			m_currentScene3D = lookup.value();
 			return lookup.value();
 		}
 		else
 		{
 			m_sceneResources.insert(name, QSharedPointer<SceneResource>(new SceneResource));
+			m_currentScene3D = m_sceneResources[name];
 			return m_sceneResources[name];
 		}
 	}

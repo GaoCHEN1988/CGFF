@@ -41,6 +41,7 @@ namespace CGFF
 			if (lookup == m_entities.end())
 			{
 				m_entities.insert(name, QSharedPointer<Entity>(object));
+				m_objectNameList.append(name);
 			}
 			else
 			{
@@ -60,6 +61,7 @@ namespace CGFF
 			if (lookup == m_lights.end())
 			{
 				m_lights.insert(name, QSharedPointer<Light>(light));
+				m_lightNameList.append(name);
 			}
 		}
 
@@ -76,7 +78,9 @@ namespace CGFF
 	private:
 		QSharedPointer<Camera> m_camera;
 		QMap<QString, QSharedPointer<Entity>> m_entities;
+		QList<QString> m_objectNameList;
 		QMap<QString, QSharedPointer<Light>> m_lights;
+		QList<QString> m_lightNameList;
 		QSharedPointer<Material> m_skyBox;
 
 	};

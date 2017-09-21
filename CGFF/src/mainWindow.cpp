@@ -28,6 +28,8 @@ MainWindow::MainWindow(QWidget *parent)
 	, m_objectInfo(nullptr)
 	, m_propertiesDockWidget(nullptr)
 	, m_toolBarActionStatus(true)
+	, m_objectList(nullptr)
+	, m_objectListDockWidget(nullptr)
 {
     setupUi();
 }
@@ -80,6 +82,12 @@ void MainWindow::setupDockWidgets()
 	m_explorerDockWidget->setWidget(m_explorer);
 
 	addDockWidget(Qt::LeftDockWidgetArea, m_explorerDockWidget);
+
+	m_objectListDockWidget = new QDockWidget("Hierarchy", this);
+	m_objectList = new QTUI::ObjectListView(this);
+	m_objectListDockWidget->setWidget(m_objectList);
+
+	addDockWidget(Qt::RightDockWidgetArea, m_objectListDockWidget);
 
 	m_propertiesDockWidget = new QDockWidget("Properties", this);
 	m_objectInfo = new QTUI::ObjectInfoView(this);
@@ -168,9 +176,10 @@ void MainWindow::createConnections()
 	connect(m_stopAction, &QAction::triggered,
 		m_debugWindow, &CGFF::BaseWindow::onActivate);
 
-	connect(m_cubeAction, &QAction::triggered, [=]() { m_debugWindow->onAddEntity(CGFF::EntityType::CUBE); });
-	connect(m_sphereAction, &QAction::triggered, [=]() { m_debugWindow->onAddEntity(CGFF::EntityType::SPHERE); });
-	connect(m_planeAction, &QAction::triggered, [=]() { m_debugWindow->onAddEntity(CGFF::EntityType::PLANE); });
+	connect(m_cubeAction, &QAction::triggered, [=]() { m_objectList->onAddEntity(CGFF::EntityType::CUBE); });
+	connect(m_sphereAction, &QAction::triggered, [=]() { m_objectList->onAddEntity(CGFF::EntityType::SPHERE); });
+	connect(m_planeAction, &QAction::triggered, [=]() { m_objectList->onAddEntity(CGFF::EntityType::PLANE); });
+	connect(m_objectList, &QTUI::ObjectListView::entityAdded, m_debugWindow, &CGFF::DebugWindow::onAddEntity);
 
 	connect(m_playAction, &QAction::triggered,
 		this, &MainWindow::onSetStatus);

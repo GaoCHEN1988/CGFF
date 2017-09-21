@@ -4,13 +4,6 @@
 #include "graphic/layer/layer3D.h"
 namespace CGFF {
 
-	enum class EntityType
-	{
-		CUBE,
-		PLANE,
-		SPHERE
-	};
-
 	class DebugLayer3D : public Layer3D
 	{
 	public:
@@ -26,9 +19,7 @@ namespace CGFF {
 		void mouseReleaseEvent(QMouseEvent *event) override;
 
 		void addEntity(const QSharedPointer<CGFF::Entity>& entity);
-		void addCube();
-		void addPlane();
-		void addSphere();
+		void addEntity(const QString& name);
 
 	private:
 		QSharedPointer<CGFF::Camera> m_mayaCamera;

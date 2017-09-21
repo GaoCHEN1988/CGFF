@@ -23,15 +23,6 @@ namespace CGFF
 	void App3DLayer::init()
 	{
 		loadFromResource();
-
-		//QSharedPointer<LightSetup> lights = QSharedPointer<LightSetup>(new LightSetup());
-		//lights->add(QSharedPointer<Light>(new Light(QVector3D(0.8f, 0.8f, 0.8f))));
-		//m_scene->pushLightSetup(lights);
-
-		//QSharedPointer<Entity> cube = QSharedPointer<Entity>(
-		//	new Entity(MeshFactory::CreateDebugCube(5, QVector4D(0.6, 0.6, 0.6, 1.0),
-		//		QSharedPointer<MaterialInstance>(new MaterialInstance(QSharedPointer<Material>(new Material(ShaderFactory::DebugShader())))))));
-		//m_scene->add(cube);
 	}
 
 	void App3DLayer::render(QSharedPointer<Renderer3D>& renderer)
@@ -65,14 +56,14 @@ namespace CGFF
 
 	void App3DLayer::loadFromResource()
 	{
-		foreach(QSharedPointer<Entity> entity, ResourceManger::getSceneResource("Scene1")->getObjects())
+		foreach(QSharedPointer<Entity> entity, ResourceManger::getSceneResource(ResourceManger::getScene3DName())->getObjects())
 		{
 			m_scene->add(entity);
 		}
 
 		QSharedPointer<LightSetup> lights = QSharedPointer<LightSetup>(new LightSetup());
 
-		foreach(QSharedPointer<Light> light, ResourceManger::getSceneResource("Scene1")->getLights())
+		foreach(QSharedPointer<Light> light, ResourceManger::getSceneResource(ResourceManger::getScene3DName())->getLights())
 		{
 			lights->add(light);
 		}

@@ -48,7 +48,7 @@ namespace CGFF {
 		m_scene->add(m_lineY);
 		m_scene->add(m_lineZ);
 
-		ResourceManger::getSceneResource("Scene1")->addLight("Light1", QSharedPointer<Light>(new Light(QVector3D(0.8f, 0.8f, 0.8f))));
+		ResourceManger::getSceneResource(ResourceManger::getScene3DName())->addLight("Light1", QSharedPointer<Light>(new Light(QVector3D(0.8f, 0.8f, 0.8f))));
 	}
 
 	void DebugLayer3D::render(QSharedPointer<Renderer3D>& renderer)
@@ -95,25 +95,8 @@ namespace CGFF {
 		m_scene->add(entity);
 	}
 
-	void DebugLayer3D::addCube()
+	void DebugLayer3D::addEntity(const QString& name)
 	{
-		ResourceManger::getSceneResource("Scene1")->addObject("cube1", QSharedPointer<Entity>(
-			new Entity(MeshFactory::CreateDebugCube(5, QVector4D(0.6, 0.6, 0.6, 1.0),
-				QSharedPointer<MaterialInstance>(new MaterialInstance(m_debugMaterial))))));
-
-		addEntity(ResourceManger::getSceneResource("Scene1")->getObjects()["cube1"]);
-	}
-
-	void DebugLayer3D::addPlane()
-	{
-		ResourceManger::getSceneResource("Scene1")->addObject("plane1", QSharedPointer<Entity>(new Entity(MeshFactory::CreateDebugPlane(64, 64, QVector3D(0, 1, 0), QVector4D(0.6, 0.6, 0.6, 1.0), QSharedPointer<MaterialInstance>(new MaterialInstance(m_debugMaterial))))));
-
-		addEntity(ResourceManger::getSceneResource("Scene1")->getObjects()["plane1"]);
-	}
-
-	void DebugLayer3D::addSphere()
-	{
-		//QSharedPointer<Material> sphereMaterial = QSharedPointer<Material>(new Material(m_debugShader));
-
+		addEntity(ResourceManger::getSceneResource(ResourceManger::getScene3DName())->getObjects()[name]);
 	}
 }

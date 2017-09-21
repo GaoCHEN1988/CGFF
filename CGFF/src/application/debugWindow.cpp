@@ -1,4 +1,5 @@
 #include "debugWindow.h"
+#include "resource/resourceManager.h"
 
 namespace CGFF {
 
@@ -16,26 +17,9 @@ namespace CGFF {
 	{
 	}
 
-	void DebugWindow::onAddEntity(EntityType type)
+	void DebugWindow::onAddEntity(const QString& name)
 	{
-		switch (type)
-		{
-		case EntityType::CUBE:
-		{
-			m_debug3DLayer->addCube();
-			break;
-		}		
-		case EntityType::PLANE:
-		{
-			m_debug3DLayer->addPlane();
-			break;
-		}
-		case EntityType::SPHERE:
-		{
-			break;
-		}
-		}
-
+		m_debug3DLayer->addEntity(name);
 	}
 
 	void DebugWindow::setupLayers()

@@ -171,13 +171,16 @@
     <Filter Include="Source Files\resource">
       <UniqueIdentifier>{399dea59-ab0a-4b8f-85d5-0017c4655ec3}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Source Files\qtUI\model">
+      <UniqueIdentifier>{f4090a7f-a250-4cf7-8e9e-5b868359f11d}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\qtUI\model">
+      <UniqueIdentifier>{6f047ffb-8062-4f07-bbac-376692559738}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <CustomBuild Include="src\mainWindow.h">
       <Filter>Header Files</Filter>
-    </CustomBuild>
-    <CustomBuild Include="src\qtUI\explorerView.h">
-      <Filter>Header Files\qtUI</Filter>
     </CustomBuild>
     <CustomBuild Include="src\qtUI\view\objectInfoView.h">
       <Filter>Header Files\qtUI\view</Filter>
@@ -187,6 +190,15 @@
     </CustomBuild>
     <CustomBuild Include="src\application\debugWindow.h">
       <Filter>Header Files\application</Filter>
+    </CustomBuild>
+    <CustomBuild Include="src\qtUI\view\explorerView.h">
+      <Filter>Header Files\qtUI\view</Filter>
+    </CustomBuild>
+    <CustomBuild Include="src\qtUI\view\objectListView.h">
+      <Filter>Header Files\qtUI\view</Filter>
+    </CustomBuild>
+    <CustomBuild Include="src\qtUI\model\resourceModel.h">
+      <Filter>Header Files\qtUI\model</Filter>
     </CustomBuild>
   </ItemGroup>
   <ItemGroup>
@@ -418,9 +430,6 @@
     <ClCompile Include="GeneratedFiles\Debug\moc_explorerView.cpp">
       <Filter>Generated Files\Debug</Filter>
     </ClCompile>
-    <ClCompile Include="src\qtUI\explorerView.cpp">
-      <Filter>Source Files\qtUI</Filter>
-    </ClCompile>
     <ClCompile Include="GeneratedFiles\Debug\moc_objectInfoView.cpp">
       <Filter>Generated Files\Debug</Filter>
     </ClCompile>
@@ -465,6 +474,27 @@
     </ClCompile>
     <ClCompile Include="src\resource\sceneResource.cpp">
       <Filter>Source Files\resource</Filter>
+    </ClCompile>
+    <ClCompile Include="src\qtUI\view\explorerView.cpp">
+      <Filter>Source Files\qtUI\view</Filter>
+    </ClCompile>
+    <ClCompile Include="src\qtUI\view\objectListView.cpp">
+      <Filter>Source Files\qtUI\view</Filter>
+    </ClCompile>
+    <ClCompile Include="GeneratedFiles\Debug\moc_objectListView.cpp">
+      <Filter>Generated Files\Debug</Filter>
+    </ClCompile>
+    <ClCompile Include="GeneratedFiles\Release\moc_objectListView.cpp">
+      <Filter>Generated Files\Release</Filter>
+    </ClCompile>
+    <ClCompile Include="GeneratedFiles\Debug\moc_resourceModel.cpp">
+      <Filter>Generated Files\Debug</Filter>
+    </ClCompile>
+    <ClCompile Include="GeneratedFiles\Release\moc_resourceModel.cpp">
+      <Filter>Generated Files\Release</Filter>
+    </ClCompile>
+    <ClCompile Include="src\qtUI\model\resourceModel.cpp">
+      <Filter>Source Files\qtUI\model</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
