@@ -200,6 +200,18 @@
     <CustomBuild Include="src\qtUI\model\resourceModel.h">
       <Filter>Header Files\qtUI\model</Filter>
     </CustomBuild>
+    <CustomBuild Include="src\qtUI\view\lightView.h">
+      <Filter>Header Files\qtUI\view</Filter>
+    </CustomBuild>
+    <CustomBuild Include="src\qtUI\view\transformView.h">
+      <Filter>Header Files\qtUI\view</Filter>
+    </CustomBuild>
+    <CustomBuild Include="src\qtUI\view\materialView.h">
+      <Filter>Header Files\qtUI\view</Filter>
+    </CustomBuild>
+    <CustomBuild Include="src\qtUI\view\baseView.h">
+      <Filter>Header Files\qtUI\view</Filter>
+    </CustomBuild>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="GeneratedFiles\Debug\moc_mainWindow.cpp">
@@ -495,6 +507,42 @@
     </ClCompile>
     <ClCompile Include="src\qtUI\model\resourceModel.cpp">
       <Filter>Source Files\qtUI\model</Filter>
+    </ClCompile>
+    <ClCompile Include="src\qtUI\view\lightView.cpp">
+      <Filter>Source Files\qtUI\view</Filter>
+    </ClCompile>
+    <ClCompile Include="src\qtUI\view\materialView.cpp">
+      <Filter>Source Files\qtUI\view</Filter>
+    </ClCompile>
+    <ClCompile Include="GeneratedFiles\Debug\moc_transformView.cpp">
+      <Filter>Generated Files\Debug</Filter>
+    </ClCompile>
+    <ClCompile Include="GeneratedFiles\Release\moc_transformView.cpp">
+      <Filter>Generated Files\Release</Filter>
+    </ClCompile>
+    <ClCompile Include="GeneratedFiles\Debug\moc_lightView.cpp">
+      <Filter>Generated Files\Debug</Filter>
+    </ClCompile>
+    <ClCompile Include="GeneratedFiles\Release\moc_lightView.cpp">
+      <Filter>Generated Files\Release</Filter>
+    </ClCompile>
+    <ClCompile Include="src\qtUI\view\transformView.cpp">
+      <Filter>Source Files\qtUI\view</Filter>
+    </ClCompile>
+    <ClCompile Include="GeneratedFiles\Debug\moc_materialView.cpp">
+      <Filter>Generated Files\Debug</Filter>
+    </ClCompile>
+    <ClCompile Include="GeneratedFiles\Release\moc_materialView.cpp">
+      <Filter>Generated Files\Release</Filter>
+    </ClCompile>
+    <ClCompile Include="GeneratedFiles\Debug\moc_baseView.cpp">
+      <Filter>Generated Files\Debug</Filter>
+    </ClCompile>
+    <ClCompile Include="GeneratedFiles\Release\moc_baseView.cpp">
+      <Filter>Generated Files\Release</Filter>
+    </ClCompile>
+    <ClCompile Include="src\qtUI\view\baseView.cpp">
+      <Filter>Source Files\qtUI\view</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

@@ -74,6 +74,8 @@ private:
 
 	QTUI::ObjectListView* m_objectList;
 	QDockWidget * m_objectListDockWidget;
+
+	QTUI::ResourceModel * m_resourceModel;
 };
 
 #endif

@@ -21,11 +21,17 @@ namespace QTUI {
 		QString addSphere();
 		void addScene();
 
+		public slots:
+
+		//void onEntityTranform(const QString& name);
 	signals:
 		void entityAdded(const QString& name);
 
 	private:
 		QStandardItem* m_itemScene;
+		QStandardItem* m_itemEntity;
+		QStandardItem* m_itemLight;
+		QStandardItem* m_itemSkybox;
 		static int m_cubeCount;
 		static int m_planeCount;
 		static int m_sphereCount;

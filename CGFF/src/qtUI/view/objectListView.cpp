@@ -4,12 +4,17 @@
 namespace QTUI {
 
 	ObjectListView::ObjectListView(QWidget *parent)
-		: QWidget(parent)
+		: BaseView(parent)
 		, m_treeView(nullptr)
 	{
 		init();
 	}
 
+	void ObjectListView::setModel(ResourceModel * model)
+	{
+		m_model = model;
+		m_treeView->setModel(m_model);
+	}
 
 	void ObjectListView::onAddEntity(CGFF::EntityType type)
 	{
@@ -37,9 +42,9 @@ namespace QTUI {
 	{
 		m_treeView = new QTreeView(this);
 
-		m_model = new ResourceModel(this);
+		//m_model = new ResourceModel(this);
 
-		m_treeView->setModel(m_model);
+		//m_treeView->setModel(m_model);
 
 		QHBoxLayout *layout = new QHBoxLayout(this);
 

@@ -30,6 +30,7 @@ MainWindow::MainWindow(QWidget *parent)
 	, m_toolBarActionStatus(true)
 	, m_objectList(nullptr)
 	, m_objectListDockWidget(nullptr)
+	, m_resourceModel(nullptr)
 {
     setupUi();
 }
@@ -62,6 +63,8 @@ void MainWindow::setupUi()
     m_statusBar->setObjectName(QStringLiteral("m_statusBar"));
     this->setStatusBar(m_statusBar);
 
+	m_resourceModel = new QTUI::ResourceModel(this);
+
 	setupDockWidgets();
 
 	setupMenuBar();
@@ -85,12 +88,14 @@ void MainWindow::setupDockWidgets()
 
 	m_objectListDockWidget = new QDockWidget("Hierarchy", this);
 	m_objectList = new QTUI::ObjectListView(this);
+	m_objectList->setModel(m_resourceModel);
 	m_objectListDockWidget->setWidget(m_objectList);
 
 	addDockWidget(Qt::RightDockWidgetArea, m_objectListDockWidget);
 
 	m_propertiesDockWidget = new QDockWidget("Properties", this);
 	m_objectInfo = new QTUI::ObjectInfoView(this);
+	m_objectInfo->setModel(m_resourceModel);
 	m_propertiesDockWidget->setWidget(m_objectInfo);
 
 	addDockWidget(Qt::RightDockWidgetArea, m_propertiesDockWidget);

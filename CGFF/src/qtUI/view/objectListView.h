@@ -1,15 +1,14 @@
 #ifndef QTUI_OBJECT_LIST_VIEW_H
 #define QTUI_OBJECT_LIST_VIEW_H
 
-#include "qtUI/model/resourceModel.h"
-
+#include "baseView.h"
 #include <QWidget>
 #include <QTreeView>
 #include <QStandardItemModel>
 
 namespace QTUI {
 
-	class ObjectListView : public QWidget
+	class ObjectListView : public BaseView
 	{
 		Q_OBJECT
 
@@ -18,8 +17,9 @@ namespace QTUI {
 		ObjectListView(QWidget *parent = Q_NULLPTR);
 		virtual ~ObjectListView() {};
 
-		public slots:
+		void setModel(ResourceModel * model) override;
 
+		public slots:
 		void onAddEntity(CGFF::EntityType type);
 
 	signals:
@@ -30,7 +30,6 @@ namespace QTUI {
 
 	private:
 		QTreeView * m_treeView;
-		ResourceModel * m_model;
 	};
 
 }
