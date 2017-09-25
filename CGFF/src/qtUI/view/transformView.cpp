@@ -5,7 +5,6 @@ namespace QTUI {
 
 	TransformView::TransformView(QWidget *parent)
 		: BaseView(parent)
-
 		, m_position(nullptr)
 		, m_x_label(nullptr)
 		, m_y_label(nullptr)
@@ -29,96 +28,187 @@ namespace QTUI {
 		, m_z_scale_spin_box(nullptr)
 	{
 		init();
+
+        setupConnections();
 	}
 
-	void TransformView::init()
-	{
-		QGridLayout * layout = new QGridLayout(this);
+    void TransformView::onPositionChanged(double value)
+    {
+        QVector3D tanslate = QVector3D(static_cast<float>(m_x_spin_box->value()),
+            static_cast<float>(m_y_spin_box->value()),
+            static_cast<float>(m_z_spin_box->value()));
+        if(m_model)
+            m_model->translateCurrentEntity(tanslate);
+    }
 
-		//Position
-		m_position = new QLabel("position: ", this);
-		layout->addWidget(m_position, 0, 0, 1, 2);
+    void TransformView::onRotationXChanged(double value)
+    {
+        QVector3D axis = QVector3D(1.0, 0.0, 0.0);
+        if (m_model)
+           m_model->rotateCurrentEntity(static_cast<float>(value), axis);
+    }
 
-		m_x_label = new QLabel("x", this);
-		layout->addWidget(m_x_label, 0, 3, 1, 1);
+    void TransformView::onRotationYChanged(double value)
+    {
+        QVector3D axis = QVector3D(0.0, 1.0, 0.0);
+        if (m_model)
+            m_model->rotateCurrentEntity(static_cast<float>(value), axis);
+    }
 
-		m_x_spin_box = new QDoubleSpinBox(this);
-		m_x_spin_box->setValue(0);
-		m_x_spin_box->setMinimum(-100.0);
-		layout->addWidget(m_x_spin_box, 0, 4, 1, 2);
+    void TransformView::onRotationZChanged(double value)
+    {
+        QVector3D axis = QVector3D(0.0, 0.0, 1.0);
 
-		m_y_label = new QLabel("y", this);
-		layout->addWidget(m_y_label, 0, 6, 1, 1);
+        if (m_model)
+            m_model->rotateCurrentEntity(static_cast<float>(value), axis);
+    }
 
-		m_y_spin_box = new QDoubleSpinBox(this);
-		m_y_spin_box->setValue(0);
-		m_y_spin_box->setMinimum(-100.0);
-		layout->addWidget(m_y_spin_box, 0, 7, 1, 2);
+    void TransformView::onScaleChanged(double value)
+    {
+        QVector3D scale = QVector3D(static_cast<float>(m_x_scale_spin_box->value()),
+            static_cast<float>(m_y_scale_spin_box->value()),
+            static_cast<float>(m_z_scale_spin_box->value()));
 
-		m_z_label = new QLabel("z", this);
-		layout->addWidget(m_z_label, 0, 9, 1, 1);
+        if (m_model)
+            m_model->scaleCurrentEntity(scale);
+    }
 
-		m_z_spin_box = new QDoubleSpinBox(this);
-		m_z_spin_box->setValue(0);
-		m_z_spin_box->setMinimum(-100.0);
-		layout->addWidget(m_z_spin_box, 0, 10, 1, 2);
+    void TransformView::onCurrentEntityChanged(const QString& name, const EntityTransformVec& transform)
+    {
+        updateView(transform);
+    }
 
-		//Rotation
-		m_rotation = new QLabel("rotatiom: ", this);
-		layout->addWidget(m_rotation, 1, 0, 1, 2);
+    void TransformView::init()
+    {
+        QGridLayout * layout = new QGridLayout(this);
 
-		m_x_rotation_label = new QLabel("x", this);
-		layout->addWidget(m_x_rotation_label, 1, 3, 1, 1);
+        //Position
+        m_position = new QLabel("position: ", this);
+        layout->addWidget(m_position, 0, 0, 1, 2);
 
-		m_x_rotation_spin_box = new QDoubleSpinBox(this);
-		m_x_rotation_spin_box->setValue(0);
-		m_x_rotation_spin_box->setMinimum(-100.0);
-		layout->addWidget(m_x_rotation_spin_box, 1, 4, 1, 2);
+        m_x_label = new QLabel("x", this);
+        layout->addWidget(m_x_label, 0, 3, 1, 1);
 
-		m_y_rotation_label = new QLabel("y", this);
-		layout->addWidget(m_y_rotation_label, 1, 6, 1, 1);
+        m_x_spin_box = new QDoubleSpinBox(this);
+        m_x_spin_box->setValue(0);
+        m_x_spin_box->setMinimum(-100.0);
+        layout->addWidget(m_x_spin_box, 0, 4, 1, 2);
 
-		m_y_rotation_spin_box = new QDoubleSpinBox(this);
-		m_y_rotation_spin_box->setValue(0);
-		m_y_rotation_spin_box->setMinimum(-100.0);
-		layout->addWidget(m_y_rotation_spin_box, 1, 7, 1, 2);
+        m_y_label = new QLabel("y", this);
+        layout->addWidget(m_y_label, 0, 6, 1, 1);
 
-		m_z_rotation_label = new QLabel("z", this);
-		layout->addWidget(m_z_rotation_label, 1, 9, 1, 1);
+        m_y_spin_box = new QDoubleSpinBox(this);
+        m_y_spin_box->setValue(0);
+        m_y_spin_box->setMinimum(-100.0);
+        layout->addWidget(m_y_spin_box, 0, 7, 1, 2);
 
-		m_z_rotation_spin_box = new QDoubleSpinBox(this);
-		m_z_rotation_spin_box->setValue(0);
-		m_z_rotation_spin_box->setMinimum(-100.0);
-		layout->addWidget(m_z_rotation_spin_box, 1, 10, 1, 2);
+        m_z_label = new QLabel("z", this);
+        layout->addWidget(m_z_label, 0, 9, 1, 1);
 
-		//Scale
-		m_scale = new QLabel("scale: ", this);
-		layout->addWidget(m_scale, 2, 0, 1, 2);
+        m_z_spin_box = new QDoubleSpinBox(this);
+        m_z_spin_box->setValue(0);
+        m_z_spin_box->setMinimum(-100.0);
+        layout->addWidget(m_z_spin_box, 0, 10, 1, 2);
 
-		m_x_scale_label = new QLabel("x", this);
-		layout->addWidget(m_x_scale_label, 2, 3, 1, 1);
+        //Rotation
+        m_rotation = new QLabel("rotatiom: ", this);
+        layout->addWidget(m_rotation, 1, 0, 1, 2);
 
-		m_x_scale_spin_box = new QDoubleSpinBox(this);
-		m_x_scale_spin_box->setValue(0);
-		m_x_scale_spin_box->setMinimum(-100.0);
-		layout->addWidget(m_x_scale_spin_box, 2, 4, 1, 2);
+        m_x_rotation_label = new QLabel("x", this);
+        layout->addWidget(m_x_rotation_label, 1, 3, 1, 1);
 
-		m_y_scale_label = new QLabel("y", this);
-		layout->addWidget(m_y_scale_label, 2, 6, 1, 1);
+        m_x_rotation_spin_box = new QDoubleSpinBox(this);
+        m_x_rotation_spin_box->setValue(0);
+        m_x_rotation_spin_box->setMinimum(-100.0);
+        layout->addWidget(m_x_rotation_spin_box, 1, 4, 1, 2);
 
-		m_y_scale_spin_box = new QDoubleSpinBox(this);
-		m_y_scale_spin_box->setValue(0);
-		layout->addWidget(m_y_scale_spin_box, 2, 7, 1, 2);
+        m_y_rotation_label = new QLabel("y", this);
+        layout->addWidget(m_y_rotation_label, 1, 6, 1, 1);
 
-		m_z_scale_label = new QLabel("z", this);
-		layout->addWidget(m_z_scale_label, 2, 9, 1, 1);
+        m_y_rotation_spin_box = new QDoubleSpinBox(this);
+        m_y_rotation_spin_box->setValue(0);
+        m_y_rotation_spin_box->setMinimum(-100.0);
+        layout->addWidget(m_y_rotation_spin_box, 1, 7, 1, 2);
 
-		m_z_scale_spin_box = new QDoubleSpinBox(this);
-		m_z_scale_spin_box->setValue(0);
-		layout->addWidget(m_z_scale_spin_box, 2, 10, 1, 2);
-	}
+        m_z_rotation_label = new QLabel("z", this);
+        layout->addWidget(m_z_rotation_label, 1, 9, 1, 1);
 
-	void TransformView::setupConnections()
-	{
-	}
+        m_z_rotation_spin_box = new QDoubleSpinBox(this);
+        m_z_rotation_spin_box->setValue(0);
+        m_z_rotation_spin_box->setMinimum(-100.0);
+        layout->addWidget(m_z_rotation_spin_box, 1, 10, 1, 2);
+
+        //Scale
+        m_scale = new QLabel("scale: ", this);
+        layout->addWidget(m_scale, 2, 0, 1, 2);
+
+        m_x_scale_label = new QLabel("x", this);
+        layout->addWidget(m_x_scale_label, 2, 3, 1, 1);
+
+        m_x_scale_spin_box = new QDoubleSpinBox(this);
+        m_x_scale_spin_box->setValue(1.0);
+        m_x_scale_spin_box->setMinimum(0.01);
+        layout->addWidget(m_x_scale_spin_box, 2, 4, 1, 2);
+
+        m_y_scale_label = new QLabel("y", this);
+        layout->addWidget(m_y_scale_label, 2, 6, 1, 1);
+
+        m_y_scale_spin_box = new QDoubleSpinBox(this);
+        m_y_scale_spin_box->setValue(1.0);
+        m_y_scale_spin_box->setMinimum(0.01);
+        layout->addWidget(m_y_scale_spin_box, 2, 7, 1, 2);
+
+        m_z_scale_label = new QLabel("z", this);
+        layout->addWidget(m_z_scale_label, 2, 9, 1, 1);
+
+        m_z_scale_spin_box = new QDoubleSpinBox(this);
+        m_z_scale_spin_box->setValue(1.0);
+        m_z_scale_spin_box->setMinimum(0.01);
+        layout->addWidget(m_z_scale_spin_box, 2, 10, 1, 2);
+    }
+
+    void TransformView::setupConnections()
+    {
+        connect(m_x_spin_box, static_cast<void(QDoubleSpinBox::*)(double)>(&QDoubleSpinBox::valueChanged),
+            this, &TransformView::onPositionChanged);
+
+        connect(m_y_spin_box, static_cast<void(QDoubleSpinBox::*)(double)>(&QDoubleSpinBox::valueChanged),
+            this, &TransformView::onPositionChanged);
+
+        connect(m_z_spin_box, static_cast<void(QDoubleSpinBox::*)(double)>(&QDoubleSpinBox::valueChanged),
+            this, &TransformView::onPositionChanged);
+
+        connect(m_x_rotation_spin_box, static_cast<void(QDoubleSpinBox::*)(double)>(&QDoubleSpinBox::valueChanged),
+            this, &TransformView::onRotationXChanged);
+
+        connect(m_y_rotation_spin_box, static_cast<void(QDoubleSpinBox::*)(double)>(&QDoubleSpinBox::valueChanged),
+            this, &TransformView::onRotationYChanged);
+
+        connect(m_z_rotation_spin_box, static_cast<void(QDoubleSpinBox::*)(double)>(&QDoubleSpinBox::valueChanged),
+            this, &TransformView::onRotationZChanged);
+
+        connect(m_x_scale_spin_box, static_cast<void(QDoubleSpinBox::*)(double)>(&QDoubleSpinBox::valueChanged),
+            this, &TransformView::onScaleChanged);
+
+        connect(m_y_scale_spin_box, static_cast<void(QDoubleSpinBox::*)(double)>(&QDoubleSpinBox::valueChanged),
+            this, &TransformView::onScaleChanged);
+
+        connect(m_z_scale_spin_box, static_cast<void(QDoubleSpinBox::*)(double)>(&QDoubleSpinBox::valueChanged),
+            this, &TransformView::onScaleChanged);
+    }
+
+    void TransformView::updateView(const EntityTransformVec& transform)
+    {
+        m_x_spin_box->setValue(static_cast<double>(transform.translateVec.x()));
+        m_y_spin_box->setValue(static_cast<double>(transform.translateVec.y()));
+        m_z_spin_box->setValue(static_cast<double>(transform.translateVec.z()));
+
+        m_x_rotation_spin_box->setValue(static_cast<double>(transform.rotateVec.x()));
+        m_y_rotation_spin_box->setValue(static_cast<double>(transform.rotateVec.y()));
+        m_z_rotation_spin_box->setValue(static_cast<double>(transform.rotateVec.z()));
+
+        m_x_scale_spin_box->setValue(static_cast<double>(transform.scaleVec.x()));
+        m_y_scale_spin_box->setValue(static_cast<double>(transform.scaleVec.y()));
+        m_z_scale_spin_box->setValue(static_cast<double>(transform.scaleVec.z()));
+    }
 }

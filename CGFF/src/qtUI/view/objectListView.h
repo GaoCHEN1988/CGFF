@@ -20,13 +20,13 @@ namespace QTUI {
 		void setModel(ResourceModel * model) override;
 
 		public slots:
-		void onAddEntity(CGFF::EntityType type);
-
-	signals:
-		void entityAdded(const QString& name);
-
+        void onElementChanged(const QModelIndex &index);
+        
 	private:
 		void init();
+        void setupConnections();
+        QModelIndex getTopParent(QModelIndex itemIndex);
+ 
 
 	private:
 		QTreeView * m_treeView;

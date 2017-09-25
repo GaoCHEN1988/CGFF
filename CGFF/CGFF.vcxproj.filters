@@ -544,6 +544,9 @@
     <ClCompile Include="src\qtUI\view\baseView.cpp">
       <Filter>Source Files\qtUI\view</Filter>
     </ClCompile>
+    <ClCompile Include="src\resource\textureManager.cpp">
+      <Filter>Source Files\resource</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <None Include="ClassDiagram.cd" />
@@ -832,6 +835,9 @@
       <Filter>Header Files\examples</Filter>
     </ClInclude>
     <ClInclude Include="src\resource\sceneResource.h">
+      <Filter>Header Files\resource</Filter>
+    </ClInclude>
+    <ClInclude Include="src\resource\textureManager.h">
       <Filter>Header Files\resource</Filter>
     </ClInclude>
   </ItemGroup>

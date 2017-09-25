@@ -1,36 +1,36 @@
 #include "resourceManager.h"
-#include "graphic/api/texture2D.h"
-#include "graphic/api/textureCube.h"
-#include "graphic/api/textureDepth.h"
 
 namespace CGFF {
 
-	QMap<QString, QSharedPointer<SceneResource>> ResourceManger::m_sceneResources;
-	QMap<QString, QSharedPointer<Texture>> ResourceManger::m_textureResources;
+	QMap<QString, QSharedPointer<SceneResource>> ResourceManager::m_sceneResources;
 
-	QString ResourceManger::m_scene3DName = "Scene3D";
-	QString ResourceManger::m_scene2DName = "Scene2D";
+	QString ResourceManager::m_scene3DName = "Scene3D";
+	QString ResourceManager::m_scene2DName = "Scene2D";
 
-	QSharedPointer<SceneResource> ResourceManger::m_currentScene2D = nullptr;
-	QSharedPointer<SceneResource> ResourceManger::m_currentScene3D = nullptr;
+    QString ResourceManager::m_entityHierarchyName = "Entities";
+    QString ResourceManager::m_lightHierarchyName = "Lights";
+    QString ResourceManager::m_skyBoxHierarchyName = "SkyBox";
 
-	QSharedPointer<SceneResource> ResourceManger::getSceneResource(const QString& name)
+	//QSharedPointer<SceneResource> ResourceManager::m_currentScene2D = nullptr;
+	//QSharedPointer<SceneResource> ResourceManager::m_currentScene3D = nullptr;
+
+	QSharedPointer<SceneResource> ResourceManager::getSceneResource(const QString& name)
 	{
 		auto lookup = m_sceneResources.find(name);
 		if (lookup != m_sceneResources.end())
 		{
-			m_currentScene3D = lookup.value();
+			//m_currentScene3D = lookup.value();
 			return lookup.value();
 		}
 		else
 		{
 			m_sceneResources.insert(name, QSharedPointer<SceneResource>(new SceneResource));
-			m_currentScene3D = m_sceneResources[name];
+			//m_currentScene3D = m_sceneResources[name];
 			return m_sceneResources[name];
 		}
 	}
 
-	void ResourceManger::removeSceneResource(const QString& name)
+	void ResourceManager::removeSceneResource(const QString& name)
 	{
 		auto lookup = m_sceneResources.find(name);
 		if (lookup != m_sceneResources.end())
@@ -39,26 +39,40 @@ namespace CGFF {
 		}
 	}
 
-	QSharedPointer<Texture> ResourceManger::getTexture2D(const QString& path)
-	{
-		auto lookup = m_textureResources.find(path);
-		if (lookup != m_textureResources.end())
-		{
-			return lookup.value();
-		}
-		else
-		{
-			m_textureResources.insert(path, Texture2D::createFromFile(path));
-			return m_textureResources[path];
-		}
-	}
+   
+    QSharedPointer<Entity> ResourceManager::getEntity(const QString& sceneName, const QString& entityName)
+    {
+        auto lookup = m_sceneResources.find(sceneName);
+        if (lookup != m_sceneResources.end())
+        {
+            auto entityLookup = lookup.value()->getObjects().find(entityName);
 
-	void ResourceManger::removeTexture2D(const QString& path)
-	{
-		auto lookup = m_textureResources.find(path);
-		if (lookup != m_textureResources.end())
-		{
-			m_textureResources.remove(path);
-		}
-	}
+            if (entityLookup != lookup.value()->getObjects().end())
+            {
+                return entityLookup.value();
+            }
+
+            return nullptr;
+        }
+
+        return nullptr;
+    }
+
+    QSharedPointer<Light> ResourceManager::getLight(const QString& sceneName, const QString& lightName)
+    {
+        auto lookup = m_sceneResources.find(sceneName);
+        if (lookup != m_sceneResources.end())
+        {
+            auto lightLookup = lookup.value()->getLights().find(lightName);
+
+            if (lightLookup != lookup.value()->getLights().end())
+            {
+                return lightLookup.value();
+            }
+
+            return nullptr;
+        }
+
+        return nullptr;
+    }
 }

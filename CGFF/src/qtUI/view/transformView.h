@@ -16,9 +16,20 @@ namespace QTUI {
 		TransformView(QWidget *parent = Q_NULLPTR);
 		virtual ~TransformView() {};
 
-		void init();
-		void setupConnections();
+        public slots:
 
+        void onPositionChanged(double value);
+        void onRotationXChanged(double value);
+        void onRotationYChanged(double value);
+        void onRotationZChanged(double value);
+        void onScaleChanged(double value);
+
+        void onCurrentEntityChanged(const QString& name, const EntityTransformVec& transform);
+
+    private:
+        void init();
+        void setupConnections();
+        void updateView(const EntityTransformVec& transform);
 	private:
 		QLabel* m_position;
 		QLabel* m_x_label;

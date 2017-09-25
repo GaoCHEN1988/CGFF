@@ -162,7 +162,7 @@ namespace CGFF {
 
 		//DEBUG_MENU("Light Direction", &lights->getLights()[0]->direction, -1.0f, 1.0f);
 		//DEBUG_MENU("Light Intensity", &lights->getLights()[0]->intensity, 0, 100);
-		//DEBUG_MENU("Dagger", &g_DaggerTransform, 0, 100);
+		DEBUG_MENU("Dagger", &g_DaggerTransform, 0, 100);
     }
 
     void Test3DLayer::render(QSharedPointer<Renderer3D>& renderer)

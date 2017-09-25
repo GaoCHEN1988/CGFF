@@ -7,6 +7,7 @@
 #include <QDoubleSpinBox>
 #include "baseView.h"
 #include "transformView.h"
+#include "materialView.h"
 
 namespace QTUI {
 
@@ -19,14 +20,21 @@ namespace QTUI {
 		ObjectInfoView(QWidget *parent = Q_NULLPTR);
 		virtual ~ObjectInfoView() {};
 
+        void setModel(ResourceModel * model) override;
+
+        public slots:
+        void onCurrentEntityChanged(const QString& name, const EntityTransformVec& transform);
+
 	private:
 		void init();
+        void setupConnections();
 
 	private:
 		QGroupBox * m_transform_groupBox;
         QGroupBox * m_material_groupBox;
 		QLabel* m_object_name_label;
 		TransformView* m_transformView;
+        MaterialView* m_materialView;
 	};
 }
 

@@ -56,14 +56,14 @@ namespace CGFF
 
 	void App3DLayer::loadFromResource()
 	{
-		foreach(QSharedPointer<Entity> entity, ResourceManger::getSceneResource(ResourceManger::getScene3DName())->getObjects())
+		foreach(QSharedPointer<Entity> entity, ResourceManager::getSceneResource(ResourceManager::getScene3DName())->getObjects())
 		{
 			m_scene->add(entity);
 		}
 
 		QSharedPointer<LightSetup> lights = QSharedPointer<LightSetup>(new LightSetup());
 
-		foreach(QSharedPointer<Light> light, ResourceManger::getSceneResource(ResourceManger::getScene3DName())->getLights())
+		foreach(QSharedPointer<Light> light, ResourceManager::getSceneResource(ResourceManager::getScene3DName())->getLights())
 		{
 			lights->add(light);
 		}

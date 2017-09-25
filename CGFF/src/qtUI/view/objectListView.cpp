@@ -16,39 +16,57 @@ namespace QTUI {
 		m_treeView->setModel(m_model);
 	}
 
-	void ObjectListView::onAddEntity(CGFF::EntityType type)
-	{
-		switch (type)
-		{
-		case CGFF::EntityType::CUBE:
-		{
-			emit entityAdded(m_model->addCube());
-			break;
-		}
-		case CGFF::EntityType::PLANE:
-		{
-			emit entityAdded(m_model->addPlane());
-			break;
-		}
-		case CGFF::EntityType::SPHERE:
-		{
-			emit entityAdded(m_model->addSphere());
-			break;
-		}
-		}
-	}
+    void ObjectListView::onElementChanged(const QModelIndex &index)
+    {
+        QString currentName = index.data(Qt::DisplayRole).toString();
+        QString parentName =index.parent().data(Qt::DisplayRole).toString();
+        QString topParent = getTopParent(index).data().toString();
+
+        if (parentName == CGFF::ResourceManager::getEntityHierarchyName())
+        {
+            m_model->onSetCurrentEntity(currentName);
+        }
+
+        if (parentName == CGFF::ResourceManager::getLightHierarchyName())
+        {
+            m_model->onSetCurrentLight(currentName);
+        }
+
+        if (parentName == CGFF::ResourceManager::getSkyBoxHierarchyName())
+        {
+            m_model->onSetCurrentSkyBox(currentName);
+        }
+    }
 
 	void ObjectListView::init()
 	{
 		m_treeView = new QTreeView(this);
 
-		//m_model = new ResourceModel(this);
-
-		//m_treeView->setModel(m_model);
-
 		QHBoxLayout *layout = new QHBoxLayout(this);
 
 		layout->addWidget(m_treeView);
+
+        setupConnections();
 	}
 
+    void ObjectListView::setupConnections()
+    {
+        //QObject::connect(m_treeView->selectionModel(), &QItemSelectionModel::selectionChanged, this, &ObjectListView::onElementChanged, Qt::DirectConnection);
+        QObject::connect(m_treeView, &QTreeView::clicked, this, &ObjectListView::onElementChanged);
+    }
+
+    QModelIndex ObjectListView::getTopParent(QModelIndex itemIndex)
+    {
+        QModelIndex secondItem = itemIndex;
+        while (itemIndex.parent().isValid())
+        {
+            secondItem = itemIndex.parent();
+            itemIndex = secondItem;
+        }
+        if (secondItem.column() != 0)
+        {
+            secondItem = secondItem.sibling(secondItem.row(), 0);
+        }
+        return secondItem;
+    }
 }

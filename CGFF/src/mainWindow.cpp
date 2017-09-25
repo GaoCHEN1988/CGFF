@@ -181,10 +181,11 @@ void MainWindow::createConnections()
 	connect(m_stopAction, &QAction::triggered,
 		m_debugWindow, &CGFF::BaseWindow::onActivate);
 
-	connect(m_cubeAction, &QAction::triggered, [=]() { m_objectList->onAddEntity(CGFF::EntityType::CUBE); });
-	connect(m_sphereAction, &QAction::triggered, [=]() { m_objectList->onAddEntity(CGFF::EntityType::SPHERE); });
-	connect(m_planeAction, &QAction::triggered, [=]() { m_objectList->onAddEntity(CGFF::EntityType::PLANE); });
-	connect(m_objectList, &QTUI::ObjectListView::entityAdded, m_debugWindow, &CGFF::DebugWindow::onAddEntity);
+	connect(m_cubeAction, &QAction::triggered, [=]() { m_resourceModel->onAddEntity(CGFF::EntityType::CUBE); });
+	connect(m_sphereAction, &QAction::triggered, [=]() { m_resourceModel->onAddEntity(CGFF::EntityType::SPHERE); });
+	connect(m_planeAction, &QAction::triggered, [=]() { m_resourceModel->onAddEntity(CGFF::EntityType::PLANE); });
+    //connect(m_objectList, &QTUI::ObjectListView::entityAdded, m_debugWindow, &CGFF::DebugWindow::onAddEntity);
+    connect(m_resourceModel, &QTUI::ResourceModel::entityAdded, m_debugWindow, &CGFF::DebugWindow::onAddEntity);
 
 	connect(m_playAction, &QAction::triggered,
 		this, &MainWindow::onSetStatus);
