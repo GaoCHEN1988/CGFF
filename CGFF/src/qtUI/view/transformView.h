@@ -24,12 +24,13 @@ namespace QTUI {
         void onRotationZChanged(double value);
         void onScaleChanged(double value);
 
-        void onCurrentEntityChanged(const QString& name, const EntityTransformVec& transform);
+		void onCurrentEntityChanged(const QString& name, const CGFF::EntityTransformVec& transform);
 
     private:
         void init();
         void setupConnections();
-        void updateView(const EntityTransformVec& transform);
+		void disconnections();
+        void updateView(const CGFF::EntityTransformVec& transform);
 	private:
 		QLabel* m_position;
 		QLabel* m_x_label;

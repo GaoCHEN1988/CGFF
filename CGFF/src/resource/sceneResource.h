@@ -13,76 +13,50 @@ namespace CGFF
 	class SceneResource
 	{
 	public:
-		SceneResource()
-			: m_camera(nullptr)
-			, m_entities()
-			, m_lights()
-			, m_skyBox(nullptr)
-		{}
+		SceneResource();
 
-		const QSharedPointer<Camera>& getCamera() const
+		inline const QSharedPointer<Camera>& getCamera() const
 		{
 			return m_camera;
 		}
 
-		void setCamera(const QSharedPointer<Camera>& cam)
+		inline void setCamera(const QSharedPointer<Camera>& cam)
 		{
 			m_camera = cam;
 		}
 
-		const QMap<QString, QSharedPointer<Entity>>& getObjects() const
+		inline const QMap<QString, QSharedPointer<Entity>>& getObjects() const
 		{
 			return m_entities;
 		}
 
-		void addObject(const QString& name, const QSharedPointer<Entity>& object)
-		{
-			auto lookup = m_entities.find(name);
-			if (lookup == m_entities.end())
-			{
-				m_entities.insert(name, QSharedPointer<Entity>(object));
-				m_objectNameList.append(name);
-			}
-			else
-			{
-				//TO DO: use message box
-				qWarning("Object with name is existed, use another name.");
-			}
-		}
-
-		const QMap<QString, QSharedPointer<Light>>& getLights() const
+		inline const QMap<QString, QSharedPointer<Light>>& getLights() const
 		{
 			return m_lights;
 		}
 
-		void addLight(const QString& name, const QSharedPointer<Light>& light)
+		inline const QMap<QString, QSharedPointer<Material>>& getSkyBox() const
 		{
-			auto lookup = m_lights.find(name);
-			if (lookup == m_lights.end())
-			{
-				m_lights.insert(name, QSharedPointer<Light>(light));
-				m_lightNameList.append(name);
-			}
+			return m_skyBoxes;
 		}
 
-		const QSharedPointer<Material>& getSkyBox() const
-		{
-			return m_skyBox;
-		}
+		void addLight(const QString& name, const QSharedPointer<Light>& light);
 
-		void addSkyBox(const QSharedPointer<Material>& skybox)
-		{
-			m_skyBox = skybox;
-		}
+		void addObject(const QString& name, const QSharedPointer<Entity>& object);
+
+		void addSkyBox(const QString& name, const QSharedPointer<Material>& skybox);
+
+		void changeObjectName(const QString& preName, const QString& newName);
+
+		void changeLightName(const QString& preName, const QString& newName);
+
+		void changeSkyBoxName(const QString& preName, const QString& newName);
 
 	private:
 		QSharedPointer<Camera> m_camera;
 		QMap<QString, QSharedPointer<Entity>> m_entities;
-		QList<QString> m_objectNameList;
 		QMap<QString, QSharedPointer<Light>> m_lights;
-		QList<QString> m_lightNameList;
-		QSharedPointer<Material> m_skyBox;
-
+		QMap<QString, QSharedPointer<Material>> m_skyBoxes;
 	};
 }
 

@@ -44,7 +44,5 @@ void main()
     vec3 specular = light.specular * spec * fs_in.color.rgb;  
         
     vec3 result = ambient + diffuse;
-    color = vec4(result, 1.0);
-
-	//color = fs_in.color;
+    color = vec4(result, fs_in.color.a);
 };

@@ -21,7 +21,7 @@ namespace QTUI {
 
 		public slots:
         void onElementChanged(const QModelIndex &index);
-        
+
 	private:
 		void init();
         void setupConnections();

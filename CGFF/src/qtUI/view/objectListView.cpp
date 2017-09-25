@@ -52,7 +52,7 @@ namespace QTUI {
     void ObjectListView::setupConnections()
     {
         //QObject::connect(m_treeView->selectionModel(), &QItemSelectionModel::selectionChanged, this, &ObjectListView::onElementChanged, Qt::DirectConnection);
-        QObject::connect(m_treeView, &QTreeView::clicked, this, &ObjectListView::onElementChanged);
+		QObject::connect(m_treeView, &QTreeView::clicked, this, &ObjectListView::onElementChanged);
     }
 
     QModelIndex ObjectListView::getTopParent(QModelIndex itemIndex)

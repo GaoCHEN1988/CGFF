@@ -14,6 +14,9 @@ namespace CGFF {
 	//QSharedPointer<SceneResource> ResourceManager::m_currentScene2D = nullptr;
 	//QSharedPointer<SceneResource> ResourceManager::m_currentScene3D = nullptr;
 
+	QMap<QString, EntityTransformMat> ResourceManager::EntityTransformMats;
+	QMap<QString, EntityTransformVec> ResourceManager::EntityTransformVecs;
+
 	QSharedPointer<SceneResource> ResourceManager::getSceneResource(const QString& name)
 	{
 		auto lookup = m_sceneResources.find(name);

@@ -5,33 +5,9 @@
 #include "utils/types.h"
 
 #include <QStandardItemModel>
+#include <QSet>
 
 namespace QTUI {
-
-    struct EntityTransformMat
-    {
-        QMatrix4x4 translateMat;
-        QMatrix4x4 rotateMat;
-        QMatrix4x4 scaleMat;
-
-        QMatrix4x4 getTransform()
-        {
-            return translateMat*rotateMat*scaleMat;
-        }
-    };
-
-    struct EntityTransformVec
-    {
-        QVector3D translateVec;
-        QVector3D rotateVec;
-        QVector3D scaleVec;
-
-        EntityTransformVec()
-            : translateVec()
-            , rotateVec()
-            , scaleVec(1.0, 1.0, 1.0)
-        {}
-    };
 
 	class ResourceModel : public QStandardItemModel
 	{
@@ -46,7 +22,6 @@ namespace QTUI {
 		QString addPlane();
 		QString addSphere();
 		void addScene();
-
         void translateCurrentEntity(const QVector3D& tanslate);
         void rotateCurrentEntity(float angle, const QVector3D& rotate);
         void scaleCurrentEntity(const QVector3D& scale);
@@ -58,29 +33,44 @@ namespace QTUI {
         void onSetCurrentEntity(const QString& name);
         void onSetCurrentLight(const QString& name);
         void onSetCurrentSkyBox(const QString& name);
+		void onItemChanged(QStandardItem *item);
 
 	signals:
         void entityAdded(const QString& name);
-        void currentEntitySet(const QString& name, const EntityTransformVec& transform);
-        void currentLightSet(const QString& name, const EntityTransformVec& transform);
-        void currentSkyBoxSet(const QString& name, const EntityTransformVec& transform);
+        void currentEntitySet(const QString& name, const CGFF::EntityTransformVec& transform);
+        void currentLightSet(const QString& name, const CGFF::EntityTransformVec& transform);
+        void currentSkyBoxSet(const QString& name, const CGFF::EntityTransformVec& transform);
+		void currentItemNameChanged(const QString& name);
+
+	private:
+		void setupConnections();
+		bool addNameInSet(const QString& name, QSet<QString>& set);
+		QString changeNameInSet(const QString& preName, const QString& newName, QSet<QString>& set);
+
 
 	private:
 		QStandardItem* m_itemScene;
 		QStandardItem* m_itemEntity;
 		QStandardItem* m_itemLight;
 		QStandardItem* m_itemSkybox;
-		static int m_cubeCount;
-		static int m_planeCount;
-		static int m_sphereCount;
 
         QString m_currentScene;
         QString m_currentEntity;
         QString m_currentLight;
         QString m_currentSkybox;
 
-        QMap<QString, EntityTransformMat> m_entityTransformMats;
-        QMap<QString, EntityTransformVec> m_entityTransformVecs;
+		QSet<QString> m_sceneNames;
+		QSet<QString> m_entityNames;
+		QSet<QString> m_lightNames;
+		QSet<QString> m_skyboxNames;
+        //QMap<QString, EntityTransformMat> m_entityTransformMats;
+        //QMap<QString, EntityTransformVec> m_entityTransformVecs;
+
+		static int m_cubeCount;
+		static int m_planeCount;
+		static int m_sphereCount;
+
+		static QVector4D m_defaultColor;
 	};
 }
 

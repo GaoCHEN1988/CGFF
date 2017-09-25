@@ -5,6 +5,31 @@
 
 namespace CGFF {
 
+	struct EntityTransformMat
+	{
+		QMatrix4x4 translateMat;
+		QMatrix4x4 rotateMat;
+		QMatrix4x4 scaleMat;
+
+		QMatrix4x4 getTransform()
+		{
+			return translateMat*rotateMat*scaleMat;
+		}
+	};
+
+	struct EntityTransformVec
+	{
+		QVector3D translateVec;
+		QVector3D rotateVec;
+		QVector3D scaleVec;
+
+		EntityTransformVec()
+			: translateVec()
+			, rotateVec()
+			, scaleVec(1.0, 1.0, 1.0)
+		{}
+	};
+
 	class ResourceManager
 	{
 	public:
@@ -41,6 +66,10 @@ namespace CGFF {
 
         static QSharedPointer<Entity> getEntity(const QString& sceneName, const QString& entityName);
         static QSharedPointer<Light> getLight(const QString& sceneName, const QString& lightName);
+
+	public:
+		static QMap<QString, EntityTransformMat> EntityTransformMats;
+		static QMap<QString, EntityTransformVec> EntityTransformVecs;
 
 	private:
 		static QMap<QString, QSharedPointer<SceneResource>> m_sceneResources;

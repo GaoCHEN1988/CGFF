@@ -73,7 +73,7 @@ namespace QTUI {
             m_model->scaleCurrentEntity(scale);
     }
 
-    void TransformView::onCurrentEntityChanged(const QString& name, const EntityTransformVec& transform)
+    void TransformView::onCurrentEntityChanged(const QString& name, const CGFF::EntityTransformVec& transform)
     {
         updateView(transform);
     }
@@ -197,8 +197,39 @@ namespace QTUI {
             this, &TransformView::onScaleChanged);
     }
 
-    void TransformView::updateView(const EntityTransformVec& transform)
+	void TransformView::disconnections()
+	{
+		disconnect(m_x_spin_box, static_cast<void(QDoubleSpinBox::*)(double)>(&QDoubleSpinBox::valueChanged),
+			this, &TransformView::onPositionChanged);
+
+		disconnect(m_y_spin_box, static_cast<void(QDoubleSpinBox::*)(double)>(&QDoubleSpinBox::valueChanged),
+			this, &TransformView::onPositionChanged);
+
+		disconnect(m_z_spin_box, static_cast<void(QDoubleSpinBox::*)(double)>(&QDoubleSpinBox::valueChanged),
+			this, &TransformView::onPositionChanged);
+
+		disconnect(m_x_rotation_spin_box, static_cast<void(QDoubleSpinBox::*)(double)>(&QDoubleSpinBox::valueChanged),
+			this, &TransformView::onRotationXChanged);
+
+		disconnect(m_y_rotation_spin_box, static_cast<void(QDoubleSpinBox::*)(double)>(&QDoubleSpinBox::valueChanged),
+			this, &TransformView::onRotationYChanged);
+
+		disconnect(m_z_rotation_spin_box, static_cast<void(QDoubleSpinBox::*)(double)>(&QDoubleSpinBox::valueChanged),
+			this, &TransformView::onRotationZChanged);
+
+		disconnect(m_x_scale_spin_box, static_cast<void(QDoubleSpinBox::*)(double)>(&QDoubleSpinBox::valueChanged),
+			this, &TransformView::onScaleChanged);
+
+		disconnect(m_y_scale_spin_box, static_cast<void(QDoubleSpinBox::*)(double)>(&QDoubleSpinBox::valueChanged),
+			this, &TransformView::onScaleChanged);
+
+		disconnect(m_z_scale_spin_box, static_cast<void(QDoubleSpinBox::*)(double)>(&QDoubleSpinBox::valueChanged),
+			this, &TransformView::onScaleChanged);
+	}
+
+    void TransformView::updateView(const CGFF::EntityTransformVec& transform)
     {
+		disconnections();
         m_x_spin_box->setValue(static_cast<double>(transform.translateVec.x()));
         m_y_spin_box->setValue(static_cast<double>(transform.translateVec.y()));
         m_z_spin_box->setValue(static_cast<double>(transform.translateVec.z()));
@@ -210,5 +241,7 @@ namespace QTUI {
         m_x_scale_spin_box->setValue(static_cast<double>(transform.scaleVec.x()));
         m_y_scale_spin_box->setValue(static_cast<double>(transform.scaleVec.y()));
         m_z_scale_spin_box->setValue(static_cast<double>(transform.scaleVec.z()));
+
+		setupConnections();
     }
 }

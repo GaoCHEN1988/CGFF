@@ -23,11 +23,16 @@ namespace QTUI {
         setupConnections();
     }
 
-    void ObjectInfoView::onCurrentEntityChanged(const QString& name, const EntityTransformVec& transform)
+    void ObjectInfoView::onCurrentEntityChanged(const QString& name, const CGFF::EntityTransformVec& transform)
     {
         m_object_name_label->setText(name);
         m_transformView->onCurrentEntityChanged(name, transform);
     }
+
+	void ObjectInfoView::onCurrentItemNameChanged(const QString& name)
+	{
+		m_object_name_label->setText(name);
+	}
 
     void ObjectInfoView::init()
     {
@@ -55,6 +60,7 @@ namespace QTUI {
 
     void ObjectInfoView::setupConnections()
     {
-        connect(m_model, &ResourceModel::currentEntitySet, this, &ObjectInfoView::onCurrentEntityChanged);
+		connect(m_model, &ResourceModel::currentEntitySet, this, &ObjectInfoView::onCurrentEntityChanged);
+		connect(m_model, &ResourceModel::currentItemNameChanged, this, &ObjectInfoView::onCurrentItemNameChanged);
     }
 }
