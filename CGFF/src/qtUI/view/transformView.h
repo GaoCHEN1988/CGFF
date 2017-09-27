@@ -24,7 +24,7 @@ namespace QTUI {
         void onRotationZChanged(double value);
         void onScaleChanged(double value);
 
-		void onCurrentEntityChanged(const QString& name, const CGFF::EntityTransformVec& transform);
+		void onCurrentEntitySet(const QString& name, const CGFF::EntityTransformVec& transform);
 
     private:
         void init();

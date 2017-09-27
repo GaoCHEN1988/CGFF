@@ -45,6 +45,7 @@ namespace CGFF {
         QMatrix4x2,
         QMatrix4x3,
         QMatrix4x4,
+		STRUCT
     };
 
     struct UniformData

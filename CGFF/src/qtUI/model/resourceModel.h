@@ -26,6 +26,9 @@ namespace QTUI {
         void rotateCurrentEntity(float angle, const QVector3D& rotate);
         void scaleCurrentEntity(const QVector3D& scale);
 
+		QString getShaderName(const QString& entityName);
+		QList<CGFF::UniformInfo> getShaderUniforms(const QString& entityName);
+
 		public slots:
 
 		//void onEntityTranform(const QString& name);
@@ -63,6 +66,7 @@ namespace QTUI {
 		QSet<QString> m_entityNames;
 		QSet<QString> m_lightNames;
 		QSet<QString> m_skyboxNames;
+		QSet<QString> m_shaderNames;
         //QMap<QString, EntityTransformMat> m_entityTransformMats;
         //QMap<QString, EntityTransformVec> m_entityTransformVecs;
 

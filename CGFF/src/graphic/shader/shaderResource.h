@@ -7,10 +7,20 @@ namespace CGFF {
 
     class ShaderResourceDeclaration
     {
+	public:
+		enum class Type
+		{
+			NONE,
+			TEXTURE2D,
+			TEXTURECUBE,
+			TEXTURESHADOW
+		};
+
     public:
         virtual QString getName() const = 0;
         virtual uint getRegister() const = 0;
         virtual uint getCount() const = 0;
+		virtual Type getType() const = 0;
     };
 
     typedef QVector<QSharedPointer<ShaderResourceDeclaration>> ShaderResourceList;

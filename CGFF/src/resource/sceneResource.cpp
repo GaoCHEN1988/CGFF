@@ -79,4 +79,15 @@ namespace CGFF
 			m_skyBoxes.remove(preName);
 		}
 	}
+
+	QSharedPointer<Shader> SceneResource::getEntityShader(const QString& entityName)
+	{
+		auto lookup = m_entities.find(entityName);
+		if (lookup != m_entities.end())
+		{
+			return lookup.value()->getComponent<MeshComponent>()->mesh->getMaterialInstance()->getMaterial()->getShader();
+		}
+
+		return nullptr;
+	}
 }

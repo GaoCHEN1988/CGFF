@@ -176,6 +176,33 @@ namespace QTUI {
         }
     }
 
+	QString ResourceModel::getShaderName(const QString& entityName)
+	{
+		QSharedPointer<Shader> shader = ResourceManager::getSceneResource(m_currentScene)->getEntityShader(entityName);
+
+		if (shader.isNull())
+			return "";
+
+		return shader->getName();
+	}
+
+	QList<UniformInfo> ResourceModel::getShaderUniforms(const QString& entityName)
+	{
+		QSharedPointer<Shader> shader = ResourceManager::getSceneResource(m_currentScene)->getEntityShader(entityName);
+		QList<UniformInfo> result;
+
+		const ShaderUniformList& uniforms = shader->getPSUserUniformBuffer()->getUniformDeclarations();
+
+		for (uint i = 0; i < uniforms.size(); i++)
+		{
+			UniformInfo uniformInfo = { uniforms[i]->getName(),  uniforms[i]->getType() };
+
+			result.append(uniformInfo);
+		}
+
+		return result;
+	}
+
     void ResourceModel::onAddEntity(CGFF::EntityType type)
     {
         switch (type)

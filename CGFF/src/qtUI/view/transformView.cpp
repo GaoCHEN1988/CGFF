@@ -73,7 +73,7 @@ namespace QTUI {
             m_model->scaleCurrentEntity(scale);
     }
 
-    void TransformView::onCurrentEntityChanged(const QString& name, const CGFF::EntityTransformVec& transform)
+    void TransformView::onCurrentEntitySet(const QString& name, const CGFF::EntityTransformVec& transform)
     {
         updateView(transform);
     }

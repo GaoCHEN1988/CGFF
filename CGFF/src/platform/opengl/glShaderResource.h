@@ -8,22 +8,13 @@ namespace CGFF {
 	class GLShaderResourceDeclaration : public ShaderResourceDeclaration
 	{
 	public:
-		enum class Type
-		{
-			NONE, 
-			TEXTURE2D, 
-			TEXTURECUBE, 
-			TEXTURESHADOW
-		};
-
-	public:
 		GLShaderResourceDeclaration(Type type, const QString& name, uint count);
 
 		inline QString getName() const override { return m_name; }
 		inline uint getRegister() const override { return m_register; }
 		inline uint getCount() const override { return m_count; }
 
-		inline Type getType() const { return m_type; }
+		inline Type getType() const override { return m_type; }
 	public:
 		static GLShaderResourceDeclaration::Type stringToType(const QString& type);
 		static QString typeToString(GLShaderResourceDeclaration::Type type);

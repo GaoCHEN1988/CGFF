@@ -30,6 +30,12 @@ namespace CGFF {
 		{}
 	};
 
+	struct UniformInfo
+	{
+		QString uniformName;
+		UniformType uniformType;
+	};
+
 	class ResourceManager
 	{
 	public:

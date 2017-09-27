@@ -23,7 +23,7 @@ namespace QTUI {
         void setModel(ResourceModel * model) override;
 
         public slots:
-        void onCurrentEntityChanged(const QString& name, const CGFF::EntityTransformVec& transform);
+        void onCurrentEntitySet(const QString& name, const CGFF::EntityTransformVec& transform);
 		void onCurrentItemNameChanged(const QString& name);
 
 	private:

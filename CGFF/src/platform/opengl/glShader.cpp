@@ -119,47 +119,47 @@ namespace CGFF {
 	{
         switch (field->getType())
         {
-        case GLShaderUniformDeclaration::Type::GLfloat:
+        case UniformType::GLfloat:
         {
 			m_glShaderProgram.setUniformValue(field->getLocation(), *(GLfloat *)&data[offset]);
             break;
         }
-        case GLShaderUniformDeclaration::Type::GLint:
+        case UniformType::GLint:
         {
             m_glShaderProgram.setUniformValue(field->getLocation(), *(GLint *)&data[offset]);
 	        break;
         }
-        case GLShaderUniformDeclaration::Type::GLuint:
+        case UniformType::GLuint:
         {
             m_glShaderProgram.setUniformValue(field->getLocation(), *(GLuint *)&data[offset]);
             break;
         }
-        case GLShaderUniformDeclaration::Type::QVector2D:
+        case UniformType::QVector2D:
         {
 			m_glShaderProgram.setUniformValue(field->getLocation(), *(QVector2D *)&data[offset]);
             break;
         }
-        case GLShaderUniformDeclaration::Type::QVector3D:
+        case UniformType::QVector3D:
         {
 			m_glShaderProgram.setUniformValue(field->getLocation(), *(QVector3D *)&data[offset]);
             break;
         }
-        case GLShaderUniformDeclaration::Type::QVector4D:
+        case UniformType::QVector4D:
         {
 			m_glShaderProgram.setUniformValue(field->getLocation(), *(QVector4D *)&data[offset]);
             break;
         }
-        case GLShaderUniformDeclaration::Type::QMatrix2x2:
+        case UniformType::QMatrix2x2:
         {
 			m_glShaderProgram.setUniformValue(field->getLocation(), *(QMatrix2x2 *)&data[offset]);
             break;
         }
-        case GLShaderUniformDeclaration::Type::QMatrix3x3:
+        case UniformType::QMatrix3x3:
         {
 			m_glShaderProgram.setUniformValue(field->getLocation(), *(QMatrix3x3 *)&data[offset]);
             break;
         }
-        case GLShaderUniformDeclaration::Type::QMatrix4x4:
+        case UniformType::QMatrix4x4:
         {
 			m_glShaderProgram.setUniformValue(field->getLocation(), *(QMatrix4x4 *)&data[offset]);
             break;
@@ -237,52 +237,52 @@ namespace CGFF {
 
 		switch (uniform->getType())
 		{
-		case GLShaderUniformDeclaration::Type::GLfloat:
+		case UniformType::GLfloat:
 		{
 			m_glShaderProgram.setUniformValue(uniform->getLocation(), *(GLfloat *)&data[offset]);
 			break;
 		}
-		case GLShaderUniformDeclaration::Type::GLint:
+		case UniformType::GLint:
 		{
 			m_glShaderProgram.setUniformValue(uniform->getLocation(), *(GLint *)&data[offset]);
 			break;
 		}
-		case GLShaderUniformDeclaration::Type::GLuint:
+		case UniformType::GLuint:
 		{
 			m_glShaderProgram.setUniformValue(uniform->getLocation(), *(GLuint *)&data[offset]);
 			break;
 		}
-		case GLShaderUniformDeclaration::Type::QVector2D:
+		case UniformType::QVector2D:
 		{
 			m_glShaderProgram.setUniformValue(uniform->getLocation(), *(QVector2D *)&data[offset]);
 			break;
 		}
-		case GLShaderUniformDeclaration::Type::QVector3D:
+		case UniformType::QVector3D:
 		{
 			m_glShaderProgram.setUniformValue(uniform->getLocation(), *(QVector3D *)&data[offset]);
 			break;
 		}
-		case GLShaderUniformDeclaration::Type::QVector4D:
+		case UniformType::QVector4D:
 		{
 			m_glShaderProgram.setUniformValue(uniform->getLocation(), *(QVector4D *)&data[offset]);
 			break;
 		}
-		case GLShaderUniformDeclaration::Type::QMatrix2x2:
+		case UniformType::QMatrix2x2:
 		{
 			m_glShaderProgram.setUniformValue(uniform->getLocation(), *(QMatrix2x2 *)&data[offset]);
 			break;
 		}
-		case GLShaderUniformDeclaration::Type::QMatrix3x3:
+		case UniformType::QMatrix3x3:
 		{
 			m_glShaderProgram.setUniformValue(uniform->getLocation(), *(QMatrix3x3 *)&data[offset]);
 			break;
 		}
-		case GLShaderUniformDeclaration::Type::QMatrix4x4:
+		case UniformType::QMatrix4x4:
 		{
 			m_glShaderProgram.setUniformValue(uniform->getLocation(), *(QMatrix4x4 *)&data[offset]);
 			break;
 		}
-		case GLShaderUniformDeclaration::Type::STRUCT:
+		case UniformType::STRUCT:
         {
 			//Test
 			setUniformStruct(uniform, data, offset);
@@ -355,10 +355,10 @@ namespace CGFF {
 		}
 		else
 		{
-			GLShaderUniformDeclaration::Type t = GLShaderUniformDeclaration::stringToType(typeString);
+			UniformType t = GLShaderUniformDeclaration::stringToType(typeString);
 			QSharedPointer<GLShaderUniformDeclaration> declaration = nullptr;
 
-			if (t == GLShaderUniformDeclaration::Type::NONE)
+			if (t == UniformType::NONE)
 			{
 				// Find struct
 				QSharedPointer<ShaderStruct> s = findStruct(typeString);
@@ -450,7 +450,7 @@ namespace CGFF {
 			for (uint j = 0; j < uniforms.size(); j++)
 			{
 				QSharedPointer<GLShaderUniformDeclaration> uniform = qSharedPointerCast<GLShaderUniformDeclaration>(uniforms[j]);
-				if (uniform->getType() == GLShaderUniformDeclaration::Type::STRUCT)
+				if (uniform->getType() == UniformType::STRUCT)
 				{
 					const ShaderStruct& s = uniform->getShaderUniformStruct();
 					const auto& fields = s.getFields();
@@ -473,7 +473,7 @@ namespace CGFF {
 				for (uint j = 0; j < uniforms.size(); j++)
 				{
 					QSharedPointer<GLShaderUniformDeclaration> uniform = qSharedPointerCast<GLShaderUniformDeclaration>(uniforms[j]);
-					if (uniform->getType() == GLShaderUniformDeclaration::Type::STRUCT)
+					if (uniform->getType() == UniformType::STRUCT)
 					{
 						const ShaderStruct& s = uniform->getShaderUniformStruct();
 						const auto& fields = s.getFields();
@@ -497,7 +497,7 @@ namespace CGFF {
 					for (uint j = 0; j < uniforms.size(); j++)
 					{
 						QSharedPointer<GLShaderUniformDeclaration> uniform = qSharedPointerCast<GLShaderUniformDeclaration>(uniforms[j]);
-						if (uniform->getType() == GLShaderUniformDeclaration::Type::STRUCT)
+						if (uniform->getType() == UniformType::STRUCT)
 						{
 							const ShaderStruct& s = uniform->getShaderUniformStruct();
 							const auto& fields = s.getFields();
@@ -523,7 +523,7 @@ namespace CGFF {
 					for (uint j = 0; j < uniforms.size(); j++)
 					{
 						QSharedPointer<GLShaderUniformDeclaration> uniform = qSharedPointerCast<GLShaderUniformDeclaration>(uniforms[j]);
-						if (uniform->getType() == GLShaderUniformDeclaration::Type::STRUCT)
+						if (uniform->getType() == UniformType::STRUCT)
 						{
 							const ShaderStruct& s = uniform->getShaderUniformStruct();
 							const auto& fields = s.getFields();

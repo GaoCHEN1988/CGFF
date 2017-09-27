@@ -8,23 +8,8 @@ namespace CGFF {
 	class GLShaderUniformDeclaration : public ShaderUniformDeclaration
 	{
 	public:
-		enum class Type
-		{
-			NONE,
-			GLfloat,
-			GLint,
-			GLuint,
-			QVector2D,
-			QVector3D,
-			QVector4D,
-			QMatrix2x2,
-			QMatrix3x3,
-			QMatrix4x4,
-			STRUCT
-		};
-
 	public:
-		GLShaderUniformDeclaration(GLShaderUniformDeclaration::Type type, const QString& name, uint count = 1);
+		GLShaderUniformDeclaration(UniformType type, const QString& name, uint count = 1);
 		GLShaderUniformDeclaration(QSharedPointer<ShaderStruct> uniformStruct, const QString& name, uint count = 1);
 
 		inline QString getName() const override { return m_name; }
@@ -34,16 +19,16 @@ namespace CGFF {
 		inline uint getAbsoluteOffset() const { return m_struct ? m_struct->getOffset() + m_offset : m_offset; }
 
 		int getLocation() const { return m_location; }
-		inline GLShaderUniformDeclaration::Type getType() const { return m_type; }
+		inline UniformType getType() const override { return m_type; }
 		inline const ShaderStruct& getShaderUniformStruct() const { Q_ASSERT(m_struct); return *m_struct; }
 
 	protected:
 		void setOffset(uint offset) override;
 
 	public:
-		static uint sizeOfUniformType(GLShaderUniformDeclaration::Type type);
-		static GLShaderUniformDeclaration::Type stringToType(const QString& type);
-		static QString typeToString(GLShaderUniformDeclaration::Type type);
+		static uint sizeOfUniformType(UniformType type);
+		static UniformType stringToType(const QString& type);
+		static QString typeToString(UniformType type);
 
 	private:
 		friend class GLShader;
@@ -54,14 +39,14 @@ namespace CGFF {
 		uint m_size;
 		uint m_count;
 		uint m_offset;
-		GLShaderUniformDeclaration::Type m_type;
+		UniformType m_type;
 		QSharedPointer<ShaderStruct> m_struct;
 		mutable int m_location;
 	};
 
 	struct GLShaderUniformField
 	{
-		GLShaderUniformDeclaration::Type type;
+		UniformType type;
 		QString name;
 		uint count;
 		mutable uint size;

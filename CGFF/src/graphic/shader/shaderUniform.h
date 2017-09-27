@@ -2,6 +2,7 @@
 #define CGFF_SHADER_UNIFORM_H
 
 #include "shaderProgram.h"
+#include "utils/types.h"
 
 namespace CGFF {
 
@@ -20,6 +21,7 @@ namespace CGFF {
 		virtual uint getSize() const = 0;
 		virtual uint getCount() const = 0;
 		virtual uint getOffset() const = 0;
+		virtual UniformType getType() const = 0;
 
 	private:
 		friend class ShaderProgram;
