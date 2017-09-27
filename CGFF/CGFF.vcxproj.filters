@@ -177,6 +177,12 @@
     <Filter Include="Header Files\qtUI\model">
       <UniqueIdentifier>{6f047ffb-8062-4f07-bbac-376692559738}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Source Files\examples\learnOpenGL">
+      <UniqueIdentifier>{78aae4a7-a042-4abc-8fa9-3a2b6c61e41b}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\examples\learnOpenGL">
+      <UniqueIdentifier>{a26ec43b-f416-4953-8cdc-fbb560295b2c}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <CustomBuild Include="src\mainWindow.h">
@@ -547,6 +553,12 @@
     <ClCompile Include="src\resource\textureManager.cpp">
       <Filter>Source Files\resource</Filter>
     </ClCompile>
+    <ClCompile Include="src\examples\learnOpengl\learnGLMeshFactory.cpp">
+      <Filter>Source Files\examples\learnOpenGL</Filter>
+    </ClCompile>
+    <ClCompile Include="src\examples\learnOpengl\shadowMappingDepth.cpp">
+      <Filter>Source Files\examples\learnOpenGL</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <None Include="ClassDiagram.cd" />
@@ -839,6 +851,15 @@
     </ClInclude>
     <ClInclude Include="src\resource\textureManager.h">
       <Filter>Header Files\resource</Filter>
+    </ClInclude>
+    <ClInclude Include="src\examples\learnOpengl\shadowMappingDepth.h">
+      <Filter>Header Files\examples\learnOpenGL</Filter>
+    </ClInclude>
+    <ClInclude Include="src\examples\learnOpengl\learnGLMeshFactory.h">
+      <Filter>Header Files\examples\learnOpenGL</Filter>
+    </ClInclude>
+    <ClInclude Include="src\examples\learnOpengl\learnOpenglHeader.h">
+      <Filter>Header Files\examples\learnOpenGL</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

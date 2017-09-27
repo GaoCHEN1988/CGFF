@@ -22,7 +22,7 @@ namespace LearnGL {
         QSharedPointer<CGFF::MaterialInstance> m_skyboxMaterial;
         QSharedPointer<CGFF::LightSetup> m_lights;
 
-        QSharedPointer<FramebufferDepth> m_depthmap;
+        QSharedPointer<CGFF::FramebufferDepth> m_depthmap;
     };
 
 }

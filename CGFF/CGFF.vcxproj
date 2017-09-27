@@ -168,6 +168,8 @@
     <ClCompile Include="src\entity\component\transformComponent.cpp" />
     <ClCompile Include="src\entity\entity.cpp" />
     <ClCompile Include="src\examples\app3DLayer.cpp" />
+    <ClCompile Include="src\examples\learnOpengl\learnGLMeshFactory.cpp" />
+    <ClCompile Include="src\examples\learnOpengl\shadowMappingDepth.cpp" />
     <ClCompile Include="src\examples\test2DLayer.cpp" />
     <ClCompile Include="src\examples\test3DLayer.cpp" />
     <ClCompile Include="src\graphic\API\context.cpp" />
@@ -300,6 +302,9 @@
     <ClInclude Include="src\entity\component\transformComponent.h" />
     <ClInclude Include="src\entity\entity.h" />
     <ClInclude Include="src\examples\app3DLayer.h" />
+    <ClInclude Include="src\examples\learnOpengl\learnGLMeshFactory.h" />
+    <ClInclude Include="src\examples\learnOpengl\learnOpenglHeader.h" />
+    <ClInclude Include="src\examples\learnOpengl\shadowMappingDepth.h" />
     <ClInclude Include="src\examples\test2DLayer.h" />
     <ClInclude Include="src\examples\test3DLayer.h" />
     <ClInclude Include="src\graphic\API\context.h" />
