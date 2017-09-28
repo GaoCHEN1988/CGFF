@@ -28,6 +28,7 @@ namespace QTUI {
 
 		QString getShaderName(const QString& entityName);
 		QList<CGFF::UniformInfo> getShaderUniforms(const QString& entityName);
+		QList<CGFF::ShaderResourceUniformInfo> getShaderResources(const QString& entityName);
 
 		public slots:
 

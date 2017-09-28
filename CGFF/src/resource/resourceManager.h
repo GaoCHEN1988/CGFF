@@ -36,6 +36,13 @@ namespace CGFF {
 		UniformType uniformType;
 	};
 
+	struct ShaderResourceUniformInfo
+	{
+		QString resourceName;
+		ShaderResourceType resourceType;
+	};
+
+
 	class ResourceManager
 	{
 	public:

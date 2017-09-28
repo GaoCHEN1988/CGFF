@@ -32,11 +32,13 @@ namespace QTUI {
 		void init();
 		void setupConnections();
 		void generalizeShaderUniformView(const QList<CGFF::UniformInfo>& uniformList);
+		void generalizeShaderResourceView(const QList<CGFF::ShaderResourceUniformInfo>& resourceList);
 
 	private:
 
 		QGridLayout * m_layout;
 		QGridLayout * m_uniformLayout;
+		QGridLayout * m_resourceLayout;
 		QLabel * m_shader_label;
 		QLabel * m_albedoMap_label;
 		QLabel * m_specularMap_label;

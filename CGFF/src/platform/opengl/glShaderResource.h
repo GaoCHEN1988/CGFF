@@ -8,16 +8,16 @@ namespace CGFF {
 	class GLShaderResourceDeclaration : public ShaderResourceDeclaration
 	{
 	public:
-		GLShaderResourceDeclaration(Type type, const QString& name, uint count);
+		GLShaderResourceDeclaration(ShaderResourceType type, const QString& name, uint count);
 
 		inline QString getName() const override { return m_name; }
 		inline uint getRegister() const override { return m_register; }
 		inline uint getCount() const override { return m_count; }
 
-		inline Type getType() const override { return m_type; }
+		inline ShaderResourceType getType() const override { return m_type; }
 	public:
-		static GLShaderResourceDeclaration::Type stringToType(const QString& type);
-		static QString typeToString(GLShaderResourceDeclaration::Type type);
+		static ShaderResourceType stringToType(const QString& type);
+		static QString typeToString(ShaderResourceType type);
 
 	private:
 		friend class GLShader;
@@ -25,7 +25,7 @@ namespace CGFF {
 		QString m_name;
 		uint m_register;
 		uint m_count;
-		Type m_type;
+		ShaderResourceType m_type;
 	};
 
 }

@@ -48,6 +48,14 @@ namespace CGFF {
 		STRUCT
     };
 
+	enum class ShaderResourceType
+	{
+		NONE,
+		TEXTURE2D,
+		TEXTURECUBE,
+		TEXTURESHADOW
+	};
+
     struct UniformData
     {
         QSharedPointer<char> data_pointer;

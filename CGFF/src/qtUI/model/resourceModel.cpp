@@ -203,6 +203,23 @@ namespace QTUI {
 		return result;
 	}
 
+	QList<CGFF::ShaderResourceUniformInfo> ResourceModel::getShaderResources(const QString& entityName)
+	{
+		QSharedPointer<Shader> shader = ResourceManager::getSceneResource(m_currentScene)->getEntityShader(entityName);
+		QList<ShaderResourceUniformInfo> result;
+
+		const ShaderResourceList& resources = shader->getResources();
+
+		for (uint i = 0; i < resources.size(); i++)
+		{
+			ShaderResourceUniformInfo resource = { resources[i]->getName(),  resources[i]->getType() };
+
+			result.append(resource);
+		}
+
+		return result;
+	}
+
     void ResourceModel::onAddEntity(CGFF::EntityType type)
     {
         switch (type)
