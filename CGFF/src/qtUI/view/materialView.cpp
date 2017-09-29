@@ -1,6 +1,8 @@
 #include "materialView.h"
 #include <QSpinBox>
 #include <QDoubleSpinBox>
+#include <QLineEdit>
+#include <QPushButton>
 
 namespace QTUI {
 
@@ -85,27 +87,33 @@ namespace QTUI {
 			}
 			case CGFF::UniformType::GLint:
 			{
-
+				QSpinBox * spinbox = new QSpinBox(this);
 				break;
 			}
 			case CGFF::UniformType::GLuint:
 			{
-
+				QSpinBox * spinbox = new QSpinBox(this);
 				break;
 			}
 			case CGFF::UniformType::QVector2D:
 			{
-
+				QSpinBox * spinbox_x = new QSpinBox(this);
+				QSpinBox * spinbox_y = new QSpinBox(this);
 				break;
 			}
 			case CGFF::UniformType::QVector3D:
 			{
-
+				QSpinBox * spinbox_x = new QSpinBox(this);
+				QSpinBox * spinbox_y = new QSpinBox(this);
+				QSpinBox * spinbox_z = new QSpinBox(this);
 				break;
 			}
 			case CGFF::UniformType::QVector4D:
 			{
-
+				QSpinBox * spinbox_x = new QSpinBox(this);
+				QSpinBox * spinbox_y = new QSpinBox(this);
+				QSpinBox * spinbox_z = new QSpinBox(this);
+				QSpinBox * spinbox_w = new QSpinBox(this);
 				break;
 			}
 			case CGFF::UniformType::QMatrix2x2:
@@ -162,19 +170,27 @@ namespace QTUI {
 			{
 			case CGFF::ShaderResourceType::TEXTURE2D:
 			{
-
+				QLineEdit* line = new QLineEdit(this);
+				QPushButton  *button = new QPushButton(this);
 				break;
 			}
 
 			case CGFF::ShaderResourceType::TEXTURECUBE:
 			{
-
+				QLineEdit* line1 = new QLineEdit(this);
+				QLineEdit* line2 = new QLineEdit(this);
+				QLineEdit* line3 = new QLineEdit(this);
+				QLineEdit* line4 = new QLineEdit(this);
+				QLineEdit* line5 = new QLineEdit(this);
+				QLineEdit* line6 = new QLineEdit(this);
+				QPushButton  *button = new QPushButton(this);
 				break;
 			}
 
 			case CGFF::ShaderResourceType::TEXTURESHADOW:
 			{
-
+				QLineEdit* line = new QLineEdit(this);
+				QPushButton  *button = new QPushButton(this);
 				break;
 			}
 			}

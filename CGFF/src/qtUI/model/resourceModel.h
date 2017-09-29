@@ -38,6 +38,8 @@ namespace QTUI {
         void onSetCurrentLight(const QString& name);
         void onSetCurrentSkyBox(const QString& name);
 		void onItemChanged(QStandardItem *item);
+		void onShaderUniformChanged(const QString& name, const UniformType& type);
+		void onShaderResourceChanged(const QString& name, const ShaderResourceType& type);
 
 	signals:
         void entityAdded(const QString& name);

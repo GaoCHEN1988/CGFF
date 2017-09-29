@@ -294,6 +294,16 @@ namespace QTUI {
 
 	}
 
+	void ResourceModel::onShaderUniformChanged(const QString& name, const UniformType& type)
+	{
+		QSharedPointer<Shader> shader = ResourceManager::getSceneResource(m_currentScene)->getEntityShader(name);
+	}
+
+	void ResourceModel::onShaderResourceChanged(const QString& name, const ShaderResourceType& type)
+	{
+		QSharedPointer<Shader> shader = ResourceManager::getSceneResource(m_currentScene)->getEntityShader(name);
+	}
+
 	void ResourceModel::setupConnections()
 	{
 		connect(this, &ResourceModel::itemChanged, this, &ResourceModel::onItemChanged);
