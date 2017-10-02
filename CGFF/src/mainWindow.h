@@ -17,6 +17,7 @@
 
 //#include "application/applicationWindow.h"
 #include "application/debugWindow.h"
+#include "application/learnGLWindow.h"
 #include "qtUI/view/explorerView.h"
 #include "qtUI/view/objectInfoView.h"
 #include "qtUI/view/objectListView.h"
@@ -45,6 +46,7 @@ private:
 private:
 	//ApplicationWindow * m_applicationWindow;
 	CGFF::DebugWindow * m_debugWindow;
+    CGFF::LearnGLWindow * m_learnGLWindow;
     //QWidget *m_centralWidget;
     QMenuBar *m_menuBar;
     QToolBar *m_mainToolBar;

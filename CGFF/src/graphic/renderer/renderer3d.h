@@ -32,13 +32,19 @@ namespace CGFF {
         virtual void end() = 0;
         virtual void flush() = 0;
 		virtual void close() {};
-		virtual void setScreenBufferSize(int width, int height) { m_screenBufferWidth = width; m_screenBufferHeight = height; }
+		virtual void setScreenBufferSize(int width, int height) 
+        { 
+            m_screenBufferWidth = width; 
+            m_screenBufferHeight = height; 
+            m_screenSize = QSize(width, height);
+        }
 
     protected:
         CommandQueue m_commandQueue;
         SystemUniformList m_systemUniforms;
 		int m_screenBufferWidth; 
 		int m_screenBufferHeight;
+        QSize m_screenSize;
     };
 }
 

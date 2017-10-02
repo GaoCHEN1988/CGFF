@@ -3,6 +3,10 @@
 
 #include "renderer3d.h"
 
+#include "graphic/api/framebufferDepth.h"
+
+#define TEST_DEPTH_MAP
+
 namespace CGFF {
 
     class ForwardRenderer : public Renderer3D
@@ -36,6 +40,10 @@ namespace CGFF {
 
 		QVector<uint> m_VSSystemUniformBufferOffsets;
 		QVector<uint> m_PSSystemUniformBufferOffsets;
+
+        QSharedPointer<FramebufferDepth> m_depthBuffer;
+        QSharedPointer<Mesh> m_screenQuad;
+        QSharedPointer<Material> m_screenMaterial;
     };
 }
 

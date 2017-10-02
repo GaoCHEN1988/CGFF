@@ -1,5 +1,6 @@
 #include "forwardRenderer.h"
 #include "renderer.h"
+#include "graphic/meshFactory.h"
 
 namespace CGFF {
 
@@ -18,13 +19,30 @@ namespace CGFF {
 		PSSystemUniformIndex_Size = 1
 	};
 
+    QSharedPointer<Shader>  debugDepthQuadShader;
+    float near_plane = 1.0f, far_plane = 7.5f;
+
     ForwardRenderer::ForwardRenderer(const QSize& size)
+        : m_VSSystemUniformBuffer(nullptr)
+        , m_VSSystemUniformBufferSize(0)
+        , m_PSSystemUniformBuffer(nullptr)
+        , m_PSSystemUniformBufferSize(0)
+        , m_VSSystemUniformBufferOffsets()
+        , m_PSSystemUniformBufferOffsets()
+        , m_depthBuffer(nullptr)
     {
 		setScreenBufferSize(size.width(), size.height());
 		init();
 	}
 
 	ForwardRenderer::ForwardRenderer(int width, int height)
+        : m_VSSystemUniformBuffer(nullptr)
+        , m_VSSystemUniformBufferSize(0)
+        , m_PSSystemUniformBuffer(nullptr)
+        , m_PSSystemUniformBufferSize(0)
+        , m_VSSystemUniformBufferOffsets()
+        , m_PSSystemUniformBufferOffsets()
+        , m_depthBuffer(nullptr)
 	{
 		setScreenBufferSize(width, height);
 		init();
@@ -62,6 +80,23 @@ namespace CGFF {
 		// Per Scene System Uniforms
 		m_PSSystemUniformBufferOffsets[PSSystemUniformIndex_Lights] = 0;
 
+#ifdef TEST_DEPTH_MAP
+
+        debugDepthQuadShader = Shader::createFromFile("DebugDepthShader ",
+            "/shaders/advanced_lighting/3.1.2.debug_quad.vs",
+            "/shaders/advanced_lighting/3.1.2.debug_quad_depth.fs");
+
+        m_depthBuffer = FramebufferDepth::create(m_screenBufferWidth, m_screenBufferHeight);
+
+        m_screenMaterial = QSharedPointer<Material>(new Material(debugDepthQuadShader));
+
+        m_screenQuad = MeshFactory::CreateQuad(-1, -1, m_screenBufferWidth, m_screenBufferHeight,
+            QSharedPointer<MaterialInstance>(new MaterialInstance(m_screenMaterial)));
+
+        
+
+#endif
+
 	}
     void ForwardRenderer::begin() 
     {
@@ -69,6 +104,19 @@ namespace CGFF {
 
         m_commandQueue.clear();
         m_systemUniforms.clear();
+
+#ifdef TEST_DEPTH_MAP
+
+        if (m_screenSize != m_depthBuffer->getSize())
+        {
+            m_depthBuffer.clear();
+            m_depthBuffer = FramebufferDepth::create(m_screenBufferWidth, m_screenBufferHeight);
+        }
+
+        m_depthBuffer->bind();
+
+        Renderer::setDepthTesting(true);
+#endif
     }
 
 	void ForwardRenderer::beginScene(QSharedPointer<Camera> camera)
@@ -113,6 +161,10 @@ namespace CGFF {
     }
     void ForwardRenderer::flush() 
     {
+#ifdef TEST_DEPTH_MAP
+        //m_depthBuffer->bind();
+        //m_depthBuffer->clear();
+#endif
 		for (uint i = 0; i < m_commandQueue.size(); i++)
 		{
 			const RenderCommand& command = m_commandQueue[i];
@@ -123,7 +175,21 @@ namespace CGFF {
 			setSystemUniforms(command.shader);
 			command.mesh->render(*this);
 		}
+#ifdef TEST_DEPTH_MAP
+        m_depthBuffer->unBind();
 
+        m_depthBuffer->getTexture()->bind();
+        m_screenMaterial->setUniform("near_plane", near_plane);
+        m_screenMaterial->setUniform("far_plane", far_plane);
+        m_screenMaterial->setTexture("depthMap", m_depthBuffer->getTexture());
+
+        m_screenMaterial->bind();
+        m_screenQuad->bind();
+
+        m_screenQuad->draw();
+        m_screenQuad->unBind();
+        m_screenMaterial->unbind();
+#endif
     }
 
 	void ForwardRenderer::close()

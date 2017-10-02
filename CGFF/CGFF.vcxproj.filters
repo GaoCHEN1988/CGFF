@@ -218,6 +218,9 @@
     <CustomBuild Include="src\qtUI\view\baseView.h">
       <Filter>Header Files\qtUI\view</Filter>
     </CustomBuild>
+    <CustomBuild Include="src\application\learnGLWindow.h">
+      <Filter>Header Files\application</Filter>
+    </CustomBuild>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="GeneratedFiles\Debug\moc_mainWindow.cpp">
@@ -559,6 +562,15 @@
     <ClCompile Include="src\examples\learnOpengl\shadowMappingDepth.cpp">
       <Filter>Source Files\examples\learnOpenGL</Filter>
     </ClCompile>
+    <ClCompile Include="GeneratedFiles\Debug\moc_learnGLWindow.cpp">
+      <Filter>Generated Files\Debug</Filter>
+    </ClCompile>
+    <ClCompile Include="GeneratedFiles\Release\moc_learnGLWindow.cpp">
+      <Filter>Generated Files\Release</Filter>
+    </ClCompile>
+    <ClCompile Include="src\application\learnGLWindow.cpp">
+      <Filter>Source Files\application</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <None Include="ClassDiagram.cd" />
@@ -859,6 +871,9 @@
       <Filter>Header Files\examples\learnOpenGL</Filter>
     </ClInclude>
     <ClInclude Include="src\examples\learnOpengl\learnOpenglHeader.h">
+      <Filter>Header Files\examples\learnOpenGL</Filter>
+    </ClInclude>
+    <ClInclude Include="src\examples\learnOpengl\learnGL.h">
       <Filter>Header Files\examples\learnOpenGL</Filter>
     </ClInclude>
   </ItemGroup>

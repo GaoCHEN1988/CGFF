@@ -1,13 +1,8 @@
 #ifndef APP_3D_LAYER_H
 #define APP_3D_LAYER_H
 
-#include "graphic/api/framebufferDepth.h"
-#include "graphic/api/textureDepth.h"
 #include "graphic/layer/layer3D.h"
-#include "graphic/meshFactory.h"
-#include "graphic/model.h"
-#include "entity/entity.h"
-#include "graphic/pbrMaterial.h"
+#include "examples/learnOpengl/learnGL.h"
 
 namespace CGFF {
 
@@ -26,14 +21,7 @@ namespace CGFF {
 		void closeEvent(QCloseEvent *event) override;
 
 	private:
-		void loadFromResource();
-
-	private:
-
-		QSharedPointer<Camera> m_camera;
-		QVector<QSharedPointer<Entity>> m_entities;
-		QSharedPointer<LightSetup> m_lights;
-		QSharedPointer<MaterialInstance> m_skyboxMaterial;
+        QSharedPointer<LearnGL::ShadowMappingDepth> m_shadowMapping;
 	};
 }
 
