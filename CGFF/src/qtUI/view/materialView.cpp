@@ -76,44 +76,122 @@ namespace QTUI {
 		{
 			QLabel * uniformLabel = new QLabel(uniform.uniformName, this);
 
-			m_uniformLayout->addWidget(uniformLabel, 0, row, 1, 1);
+			m_uniformLayout->addWidget(uniformLabel, row, 0, 1, 1);
 
 			switch (uniform.uniformType)
 			{
 			case CGFF::UniformType::GLfloat:
 			{
-				QDoubleSpinBox * spinbox = new QDoubleSpinBox(this);
+                m_uniformFloat_spinbox_x = new QDoubleSpinBox(this);
+                m_uniformFloat_spinbox_x->setMaximum(1000.0);
+                m_uniformLayout->addWidget(m_uniformFloat_spinbox_x, row, 1, 1, 1);
+
+                connect(m_uniformFloat_spinbox_x, static_cast<void(QDoubleSpinBox::*)(double)>(&QDoubleSpinBox::valueChanged),
+                    [=]() { changeUniformValue(uniform); });
 				break;
 			}
 			case CGFF::UniformType::GLint:
 			{
-				QSpinBox * spinbox = new QSpinBox(this);
+                m_uniformInt_spinbox_x = new QSpinBox(this);
+                m_uniformInt_spinbox_x->setMaximum(1000);
+                m_uniformLayout->addWidget(m_uniformInt_spinbox_x, row, 1, 1, 1);
+
+                connect(m_uniformInt_spinbox_x, static_cast<void(QSpinBox::*)(int)>(&QSpinBox::valueChanged),
+                    [=]() { changeUniformValue(uniform); });
 				break;
 			}
 			case CGFF::UniformType::GLuint:
 			{
-				QSpinBox * spinbox = new QSpinBox(this);
+                m_uniformInt_spinbox_x = new QSpinBox(this);
+                m_uniformInt_spinbox_x->setMaximum(1000);
+                m_uniformLayout->addWidget(m_uniformInt_spinbox_x, row, 1, 1, 1);
+
+                connect(m_uniformInt_spinbox_x, static_cast<void(QSpinBox::*)(int)>(&QSpinBox::valueChanged),
+                    [=]() { changeUniformValue(uniform); });
 				break;
 			}
 			case CGFF::UniformType::QVector2D:
 			{
-				QSpinBox * spinbox_x = new QSpinBox(this);
-				QSpinBox * spinbox_y = new QSpinBox(this);
+                m_uniformFloat_spinbox_x = new QDoubleSpinBox(this);
+                m_uniformFloat_spinbox_x->setMaximum(1000.0);
+                m_uniformFloat_spinbox_x->setMinimum(-1000.0);
+                m_uniformFloat_spinbox_y = new QDoubleSpinBox(this);
+                m_uniformFloat_spinbox_y->setMaximum(1000.0);
+                m_uniformFloat_spinbox_y->setMinimum(-1000.0);
+                m_uniformLayout->addWidget(m_uniformFloat_spinbox_x, row, 1, 1, 1);
+                m_uniformLayout->addWidget(m_uniformFloat_spinbox_y, row, 2, 1, 1);
+
+                connect(m_uniformFloat_spinbox_x, static_cast<void(QDoubleSpinBox::*)(double)>(&QDoubleSpinBox::valueChanged),
+                    [=]() { changeUniformValue(uniform); });
+
+                connect(m_uniformFloat_spinbox_y, static_cast<void(QDoubleSpinBox::*)(double)>(&QDoubleSpinBox::valueChanged),
+                    [=]() { changeUniformValue(uniform); });
 				break;
 			}
 			case CGFF::UniformType::QVector3D:
 			{
-				QSpinBox * spinbox_x = new QSpinBox(this);
-				QSpinBox * spinbox_y = new QSpinBox(this);
-				QSpinBox * spinbox_z = new QSpinBox(this);
+                m_uniformFloat_spinbox_x = new QDoubleSpinBox(this);
+                m_uniformFloat_spinbox_x->setMaximum(1000.0);
+                m_uniformFloat_spinbox_x->setMinimum(-1000.0);
+
+                m_uniformFloat_spinbox_y = new QDoubleSpinBox(this);
+                m_uniformFloat_spinbox_y->setMaximum(1000.0);
+                m_uniformFloat_spinbox_y->setMinimum(-1000.0);
+
+                m_uniformFloat_spinbox_z = new QDoubleSpinBox(this);
+                m_uniformFloat_spinbox_z->setMaximum(1000.0);
+                m_uniformFloat_spinbox_z->setMinimum(-1000.0);
+
+                m_uniformLayout->addWidget(m_uniformFloat_spinbox_x, row, 1, 1, 1);
+                m_uniformLayout->addWidget(m_uniformFloat_spinbox_y, row, 2, 1, 1);
+                m_uniformLayout->addWidget(m_uniformFloat_spinbox_z, row, 3,  1, 1);
+
+                connect(m_uniformFloat_spinbox_x, static_cast<void(QDoubleSpinBox::*)(double)>(&QDoubleSpinBox::valueChanged),
+                    [=]() { changeUniformValue(uniform); });
+
+                connect(m_uniformFloat_spinbox_y, static_cast<void(QDoubleSpinBox::*)(double)>(&QDoubleSpinBox::valueChanged),
+                    [=]() { changeUniformValue(uniform); });
+
+                connect(m_uniformFloat_spinbox_z, static_cast<void(QDoubleSpinBox::*)(double)>(&QDoubleSpinBox::valueChanged),
+                    [=]() { changeUniformValue(uniform); });
+
 				break;
 			}
 			case CGFF::UniformType::QVector4D:
 			{
-				QSpinBox * spinbox_x = new QSpinBox(this);
-				QSpinBox * spinbox_y = new QSpinBox(this);
-				QSpinBox * spinbox_z = new QSpinBox(this);
-				QSpinBox * spinbox_w = new QSpinBox(this);
+                m_uniformFloat_spinbox_x = new QDoubleSpinBox(this);
+                m_uniformFloat_spinbox_x->setMaximum(1000.0);
+                m_uniformFloat_spinbox_x->setMinimum(-1000.0);
+
+                m_uniformFloat_spinbox_y = new QDoubleSpinBox(this);
+                m_uniformFloat_spinbox_y->setMaximum(1000.0);
+                m_uniformFloat_spinbox_y->setMinimum(-1000.0);
+
+                m_uniformFloat_spinbox_z = new QDoubleSpinBox(this);
+                m_uniformFloat_spinbox_z->setMaximum(1000.0);
+                m_uniformFloat_spinbox_z->setMinimum(-1000.0);
+
+                m_uniformFloat_spinbox_w = new QDoubleSpinBox(this);
+                m_uniformFloat_spinbox_w->setMaximum(1000.0);
+                m_uniformFloat_spinbox_w->setMinimum(-1000.0);
+
+                m_uniformLayout->addWidget(m_uniformFloat_spinbox_x, row, 1, 1, 1);
+                m_uniformLayout->addWidget(m_uniformFloat_spinbox_y, row, 2, 1, 1);
+                m_uniformLayout->addWidget(m_uniformFloat_spinbox_z, row, 3, 1, 1);
+                m_uniformLayout->addWidget(m_uniformFloat_spinbox_w, row, 4, 1, 1);
+
+                connect(m_uniformFloat_spinbox_x, static_cast<void(QDoubleSpinBox::*)(double)>(&QDoubleSpinBox::valueChanged),
+                    [=]() { changeUniformValue(uniform); });
+
+                connect(m_uniformFloat_spinbox_y, static_cast<void(QDoubleSpinBox::*)(double)>(&QDoubleSpinBox::valueChanged),
+                    [=]() { changeUniformValue(uniform); });
+
+                connect(m_uniformFloat_spinbox_z, static_cast<void(QDoubleSpinBox::*)(double)>(&QDoubleSpinBox::valueChanged),
+                    [=]() { changeUniformValue(uniform); });
+
+                connect(m_uniformFloat_spinbox_w, static_cast<void(QDoubleSpinBox::*)(double)>(&QDoubleSpinBox::valueChanged),
+                    [=]() { changeUniformValue(uniform); });
+
 				break;
 			}
 			case CGFF::UniformType::QMatrix2x2:
@@ -187,12 +265,12 @@ namespace QTUI {
 				break;
 			}
 
-			case CGFF::ShaderResourceType::TEXTURESHADOW:
-			{
-				QLineEdit* line = new QLineEdit(this);
-				QPushButton  *button = new QPushButton(this);
-				break;
-			}
+			//case CGFF::ShaderResourceType::TEXTURESHADOW:
+			//{
+			//	QLineEdit* line = new QLineEdit(this);
+			//	QPushButton  *button = new QPushButton(this);
+			//	break;
+			//}
 			}
 
 			row++;
@@ -200,4 +278,55 @@ namespace QTUI {
 
 		m_layout->addLayout(m_resourceLayout, 2, 0, row, 3);
 	}
+
+    void MaterialView::changeUniformValue(const CGFF::UniformInfo& uniformInfo)
+    {
+        switch (uniformInfo.uniformType)
+        {
+        case CGFF::UniformType::GLfloat:
+        {
+            m_model->changeCurrentEntityUniformValue(uniformInfo.uniformName, static_cast<float>(m_uniformFloat_spinbox_x->value()));
+            break;
+        }
+        case CGFF::UniformType::GLint:
+        {
+            m_model->changeCurrentEntityUniformValue(uniformInfo.uniformName, m_uniformInt_spinbox_x->value());
+            break;
+        }
+        case CGFF::UniformType::GLuint:
+        {
+            m_model->changeCurrentEntityUniformValue(uniformInfo.uniformName, static_cast<GLuint>(m_uniformInt_spinbox_x->value()));
+            break;
+        }
+        case CGFF::UniformType::QVector2D:
+        {
+            QVector2D tempVector(m_uniformFloat_spinbox_x->value(), m_uniformFloat_spinbox_y->value());
+
+            m_model->changeCurrentEntityUniformValue(uniformInfo.uniformName, tempVector);
+            break;
+        }
+        case CGFF::UniformType::QVector3D:
+        {
+            QVector3D tempVector(m_uniformFloat_spinbox_x->value(),
+                m_uniformFloat_spinbox_y->value(),
+                m_uniformFloat_spinbox_z->value());
+
+            m_model->changeCurrentEntityUniformValue(uniformInfo.uniformName, tempVector);
+
+            break;
+        }
+        case CGFF::UniformType::QVector4D:
+        {
+            QVector4D tempVector(m_uniformFloat_spinbox_x->value(),
+                m_uniformFloat_spinbox_y->value(),
+                m_uniformFloat_spinbox_z->value(),
+                m_uniformFloat_spinbox_w->value());
+
+            m_model->changeCurrentEntityUniformValue(uniformInfo.uniformName, tempVector);
+
+            break;
+        }
+
+        }
+    }
 }

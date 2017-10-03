@@ -30,6 +30,13 @@ namespace QTUI {
 		QList<CGFF::UniformInfo> getShaderUniforms(const QString& entityName);
 		QList<CGFF::ShaderResourceUniformInfo> getShaderResources(const QString& entityName);
 
+        template<typename T>
+        void changeCurrentEntityUniformValue(const QString& uniformName, const T& data)
+        {
+            QSharedPointer<CGFF::MaterialInstance> materialInstance = CGFF::ResourceManager::getSceneResource(m_currentScene)->getEntityMaterialInstance(m_currentEntity);
+            materialInstance->setUniform(uniformName, data);
+        }
+
 		public slots:
 
 		//void onEntityTranform(const QString& name);
@@ -38,8 +45,8 @@ namespace QTUI {
         void onSetCurrentLight(const QString& name);
         void onSetCurrentSkyBox(const QString& name);
 		void onItemChanged(QStandardItem *item);
-		void onShaderUniformChanged(const QString& name, const UniformType& type);
-		void onShaderResourceChanged(const QString& name, const ShaderResourceType& type);
+		void onShaderUniformChanged(const QString& name, const CGFF::UniformType& type);
+		void onShaderResourceChanged(const QString& name, const CGFF::ShaderResourceType& type);
 
 	signals:
         void entityAdded(const QString& name);

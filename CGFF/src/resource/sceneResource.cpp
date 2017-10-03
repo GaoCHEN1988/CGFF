@@ -90,4 +90,15 @@ namespace CGFF
 
 		return nullptr;
 	}
+
+    QSharedPointer<MaterialInstance> SceneResource::getEntityMaterialInstance(const QString& entityName)
+    {
+        auto lookup = m_entities.find(entityName);
+        if (lookup != m_entities.end())
+        {
+            return lookup.value()->getComponent<MeshComponent>()->mesh->getMaterialInstance();
+        }
+
+        return nullptr;
+    }
 }

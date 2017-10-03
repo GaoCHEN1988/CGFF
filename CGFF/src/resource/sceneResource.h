@@ -52,7 +52,9 @@ namespace CGFF
 
 		void changeSkyBoxName(const QString& preName, const QString& newName);
 
-		QSharedPointer<Shader> getEntityShader(const QString& entityName);
+        QSharedPointer<Shader> getEntityShader(const QString& entityName);
+
+        QSharedPointer<MaterialInstance> getEntityMaterialInstance(const QString& entityName);
 
 	private:
 		QSharedPointer<Camera> m_camera;

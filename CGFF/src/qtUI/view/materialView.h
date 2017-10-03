@@ -27,12 +27,13 @@ namespace QTUI {
 		public slots:
 
 		void onCurrentEntitySet(const QString& name);
-
 	private:
 		void init();
 		void setupConnections();
 		void generalizeShaderUniformView(const QList<CGFF::UniformInfo>& uniformList);
 		void generalizeShaderResourceView(const QList<CGFF::ShaderResourceUniformInfo>& resourceList);
+
+        void changeUniformValue(const CGFF::UniformInfo& uniformInfo);
 
 	private:
 
@@ -50,6 +51,15 @@ namespace QTUI {
 		QComboBox * m_specularMap_comboBox;
 		QComboBox * m_glossMap_comboBox;
 		QComboBox * m_normalMap_comboBox;
+
+        QSpinBox * m_uniformInt_spinbox_x;
+        QSpinBox * m_uniformInt_spinbox_y;
+        QSpinBox * m_uniformInt_spinbox_z;
+        QSpinBox * m_uniformInt_spinbox_w;
+        QDoubleSpinBox * m_uniformFloat_spinbox_x;
+        QDoubleSpinBox * m_uniformFloat_spinbox_y;
+        QDoubleSpinBox * m_uniformFloat_spinbox_z;
+        QDoubleSpinBox * m_uniformFloat_spinbox_w;
 
 	};
 }
