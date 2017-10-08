@@ -7,15 +7,13 @@ namespace LearnGL {
     QSharedPointer<FramebufferDepth> g_DepthBuffer;
     QSharedPointer<TextureDepth> g_ShadowMap;
 
-    QSharedPointer<Shader>  simpleDepthShader;
     QSharedPointer<Shader>  shadowShader;
     QSharedPointer<Shader>  debugDepthQuadShader;
 
     QSharedPointer<Texture2D> woodTexture;
 
-    QVector3D g_CubeTransform(40, 10, 0);
-
-    GLfloat near_plane = 1.0f, far_plane = 7.5f;
+    QVector3D g_CubeTransform(0, 10.0, 0);
+    QVector3D g_LightPos(10.0, 40.0, 10.0);
 
     QMatrix4x4 lightSpaceMatrix;
 
@@ -41,50 +39,41 @@ namespace LearnGL {
             "/resource/skybox/sky_zn.jpg"
         };
 
-        //simpleDepthShader = Shader::createFromFile("SimpleDepthShader ",
-        //    "/shaders/advanced_lighting/3.1.1.shadow_mapping_depth.vs",
-        //    "/shaders/advanced_lighting/3.1.1.shadow_mapping_depth.fs");
-
         shadowShader = Shader::createFromFile("shadowShader ",
-            "/shaders/advanced_lighting/3.1.2.shadow_mapping.vs",
-            "/shaders/advanced_lighting/3.1.2.shadow_mapping.fs");
+            "/shaders/advanced_lighting/3.1.3.shadow_mapping.vs",
+            "/shaders/advanced_lighting/3.1.3.shadow_mapping.fs");
 
-        simpleDepthShader = Shader::createFromFile("SimpleDepthShader ",
-            "/shaders/advanced_lighting/3.1.2.shadow_mapping_depth.vs",
-            "/shaders/advanced_lighting/3.1.2.shadow_mapping_depth.fs");
+        woodTexture = Texture2D::createFromFile("Wood", "/resource/LearnOpenGL/textures/wood.png");
 
-        woodTexture = Texture2D::createFromFile("/resource/LearnOpenGL/textures/wood.png");
+        m_objectMaterialInstance = QSharedPointer<MaterialInstance>(new MaterialInstance(QSharedPointer<CGFF::Material>(new Material(shadowShader))));
+        m_objectMaterialInstance->setTexture("diffuseTexture", woodTexture);
+        //m_objectMaterialInstance->setTexture("shadowMap", woodTexture);
 
-        m_lights = QSharedPointer<LightSetup>(new LightSetup());
-        QSharedPointer<Light> light = QSharedPointer<Light>(new Light(QVector3D(0.8f, 0.8f, 0.8f)));
-        light->position = QVector3D(-2.0f, 4.0f, -1.0f);
-        light->projection.ortho(0, (float)m_scene->getSize().width(), 0, (float)m_scene->getSize().height(), near_plane, far_plane);
-        light->view.lookAt(light->position, QVector3D(0.0f, 0.0f, 0.0f), QVector3D(0.0, 1.0, 0.0));
-        lightSpaceMatrix = light->projection * light->view;
-        m_lights->add(light);
-
-        m_scene->pushLightSetup(m_lights);
-
-        m_depthMaterial = QSharedPointer<CGFF::Material>(new Material(simpleDepthShader));
-
-        m_plane = QSharedPointer<Entity>(new Entity(LearnGL::CreatePlane(128, 128, QVector3D(0, 1, 0),
-            QSharedPointer<MaterialInstance>(new MaterialInstance(m_depthMaterial)))));
+        m_plane = QSharedPointer<Entity>(new Entity(LearnGL::CreatePlane(
+            128, 128, QVector3D(0, 1, 0),
+            m_objectMaterialInstance)));
 
         m_scene->add(m_plane);
 
         QMatrix4x4 trans_cube;
         trans_cube.translate(g_CubeTransform);
         m_cube = QSharedPointer<Entity>(new Entity(LearnGL::CreateCube(5,
-            QSharedPointer<MaterialInstance>(new MaterialInstance(m_depthMaterial))), trans_cube)) ;
+            m_objectMaterialInstance), trans_cube)) ;
 
         m_scene->add(m_cube);
+
+        trans_cube.setToIdentity();
+        trans_cube.translate(QVector3D(10.0, 20.0, 0));
+        m_cube2 = QSharedPointer<Entity>(new Entity(LearnGL::CreateCube(5,
+            m_objectMaterialInstance), trans_cube));
+
+        m_scene->add(m_cube2);
     }
 
     void ShadowMappingDepth::render()
     {
-        CGFF::Renderer::clear(RENDERER_BUFFER_DEPTH | RENDERER_BUFFER_COLOR);
-
-        m_depthMaterial->setUniform("lightSpaceMatrix", lightSpaceMatrix);
+        m_objectMaterialInstance->setUniform("lightPos", g_LightPos);
+        m_objectMaterialInstance->setUniform("viewPos", m_scene->getCamera()->getPosition());
     }
 
 }

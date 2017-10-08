@@ -52,7 +52,8 @@ namespace CGFF {
 	private:
 		QSharedPointer<VertexArray> m_vertexArray;
 		QSharedPointer<IndexBuffer> m_indexBuffer;
-		QSharedPointer<MaterialInstance> m_materialInstance;
+        QSharedPointer<MaterialInstance> m_materialInstance;
+        QSharedPointer<MaterialInstance> m_depthMappingMaterialInstance;
 		DrawMode m_drawMode;
     };
 }

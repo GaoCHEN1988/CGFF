@@ -18,9 +18,10 @@ namespace LearnGL {
     private:
         QVector<QSharedPointer<CGFF::Entity>> m_Spheres;
         QSharedPointer<CGFF::Entity> m_plane;
-        QSharedPointer<CGFF::Entity> m_dagger;
         QSharedPointer<CGFF::Entity> m_cube;
-        QSharedPointer<CGFF::Material> m_depthMaterial;
+        QSharedPointer<CGFF::Entity> m_cube2;
+        QSharedPointer<CGFF::MaterialInstance> m_objectMaterialInstance;
+        QSharedPointer<CGFF::MaterialInstance> m_depthMaterialInstance;
         QSharedPointer<CGFF::MaterialInstance> m_skyboxMaterial;
         QSharedPointer<CGFF::LightSetup> m_lights;
 

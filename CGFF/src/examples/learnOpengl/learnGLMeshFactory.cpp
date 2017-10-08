@@ -8,6 +8,8 @@ namespace LearnGL {
         struct CubeVertex
         {
             QVector3D position;
+            QVector3D normal;
+            QVector2D uv;
         };
 
         CubeVertex data[8];
@@ -20,6 +22,26 @@ namespace LearnGL {
         data[5].position = QVector3D(size / 2.0f, 0, -size / 2.0f);
         data[6].position = QVector3D(size / 2.0f, size, -size / 2.0f);
         data[7].position = QVector3D(-size / 2.0f, size, -size / 2.0f);
+
+        data[0].normal = QVector3D(-1.0f, -1.0f, 1.0f);
+        data[1].normal = QVector3D(1.0f, -1.0f, 1.0f);
+        data[2].normal = QVector3D(1.0f, 1.0f, 1.0f);
+        data[3].normal = QVector3D(-1.0f, 1.0f, 1.0f);
+        data[4].normal = QVector3D(-1.0f, -1.0f, -1.0f);
+        data[5].normal = QVector3D(1.0f, -1.0f, -1.0f);
+        data[6].normal = QVector3D(1.0f, 1.0f, -1.0f);
+        data[7].normal = QVector3D(-1.0f, 1.0f, -1.0f);
+
+        data[0].uv = QVector2D(0.0f, 0.0f);
+        data[1].uv = QVector2D(0.0f, 1.0f);
+        data[2].uv = QVector2D(1.0f, 1.0f);
+        data[3].uv = QVector2D(1.0f, 0.0f);
+        data[4].uv = QVector2D(0.0f, 0.0f);
+        data[5].uv = QVector2D(0.0f, 1.0f);
+        data[6].uv = QVector2D(1.0f, 1.0f);
+        data[7].uv = QVector2D(1.0f, 0.0f);
+
+
         QSharedPointer<VertexArray> va = VertexArray::create();
         va->bind();
         QSharedPointer<VertexBuffer> buffer = VertexBuffer::create(BufferUsage::STATIC);
@@ -27,6 +49,8 @@ namespace LearnGL {
         LayoutBuffer layout;
 
         layout.push<QVector3D>("position");
+        layout.push<QVector3D>("normal");
+        layout.push<QVector2D>("uv");
         buffer->setLayout(layout);
 
         va->pushBuffer(buffer);

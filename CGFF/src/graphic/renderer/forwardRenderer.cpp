@@ -19,8 +19,16 @@ namespace CGFF {
 		PSSystemUniformIndex_Size = 1
 	};
 
-    QSharedPointer<Shader>  debugDepthQuadShader;
-    float near_plane = 1.0f, far_plane = 7.5f;
+#ifdef TEST_DEPTH_MAP
+
+    QSharedPointer<Shader>  screenQuadShader;
+    QSharedPointer<Shader>  depthMappingShader;
+    QVector3D g_LightPos(10.0, 40.0, 10.0);
+    float near_plane = -1.0f, far_plane = 100.0f;
+    static const int SHADOW_WIDTH = 4096;
+    static const int SHADOW_HEIGHT = 4096;
+
+#endif
 
     ForwardRenderer::ForwardRenderer(const QSize& size)
         : m_VSSystemUniformBuffer(nullptr)
@@ -82,19 +90,23 @@ namespace CGFF {
 
 #ifdef TEST_DEPTH_MAP
 
-        debugDepthQuadShader = Shader::createFromFile("DebugDepthShader ",
-            "/shaders/advanced_lighting/3.1.2.debug_quad.vs",
-            "/shaders/advanced_lighting/3.1.2.debug_quad_depth.fs");
+        screenQuadShader = Shader::createFromFile("DebugDepthShader ",
+            "/shaders/advanced_lighting/3.1.3.debug_quad.vs",
+            "/shaders/advanced_lighting/3.1.3.debug_quad_depth.fs");
 
-        m_depthBuffer = FramebufferDepth::create(m_screenBufferWidth, m_screenBufferHeight);
+        depthMappingShader = Shader::createFromFile("DebugDepthShader ",
+            "/shaders/advanced_lighting/3.1.3.shadow_mapping_depth.vs",
+            "/shaders/advanced_lighting/3.1.3.shadow_mapping_depth.fs");
 
-        m_screenMaterial = QSharedPointer<Material>(new Material(debugDepthQuadShader));
+        m_depthBuffer = FramebufferDepth::create(SHADOW_WIDTH, SHADOW_HEIGHT);
 
-        m_screenQuad = MeshFactory::CreateQuad(-1, -1, m_screenBufferWidth, m_screenBufferHeight,
-            QSharedPointer<MaterialInstance>(new MaterialInstance(m_screenMaterial)));
+        m_screenQuadMaterial = QSharedPointer<MaterialInstance>(new MaterialInstance(QSharedPointer<Material>(new Material(screenQuadShader))));
 
-        
+        m_screenQuad = MeshFactory::CreateQuad(-1, -1, m_screenBufferWidth, m_screenBufferHeight, m_screenQuadMaterial);
 
+        m_depthMappingMaterial = QSharedPointer<MaterialInstance>(new MaterialInstance(QSharedPointer<Material>(new Material(depthMappingShader))));
+
+        m_screenQuadMaterial->setTexture("depthMap", m_depthBuffer->getTexture());
 #endif
 
 	}
@@ -107,15 +119,16 @@ namespace CGFF {
 
 #ifdef TEST_DEPTH_MAP
 
-        if (m_screenSize != m_depthBuffer->getSize())
-        {
-            m_depthBuffer.clear();
-            m_depthBuffer = FramebufferDepth::create(m_screenBufferWidth, m_screenBufferHeight);
-        }
+        //if (m_screenSize != m_depthBuffer->getSize())
+        //{
+        //    m_depthBuffer.clear();
+        //    m_depthBuffer = FramebufferDepth::create(m_screenBufferWidth, m_screenBufferHeight);
+        //}
 
-        m_depthBuffer->bind();
+        //m_depthBuffer->bind();
 
-        Renderer::setDepthTesting(true);
+        //Renderer::setDepthTesting(true);
+        //Renderer::clear(RENDERER_BUFFER_DEPTH | RENDERER_BUFFER_COLOR);
 #endif
     }
 
@@ -162,33 +175,64 @@ namespace CGFF {
     void ForwardRenderer::flush() 
     {
 #ifdef TEST_DEPTH_MAP
-        //m_depthBuffer->bind();
-        //m_depthBuffer->clear();
+        m_depthBuffer->bind();    
+        m_depthBuffer->clear();
+        Renderer::setViewport(0, 0, SHADOW_WIDTH, SHADOW_HEIGHT);
+
+        QMatrix4x4 light_projection;
+        light_projection.ortho(-100.0f, 100.0f, -100.0f, 100.0f, near_plane, far_plane);
+        QMatrix4x4 light_view;
+        light_view.lookAt(g_LightPos, QVector3D(0.0f, 0.0f, 0.0f), QVector3D(0.0, 1.0, 0.0));
+        QMatrix4x4 lightSpaceMatrix = light_projection * light_view;
+        m_depthMappingMaterial->setUniform("lightSpaceMatrix", lightSpaceMatrix);
+
+        for (uint i = 0; i < m_commandQueue.size(); i++)
+        {
+            RenderCommand command;
+            command.mesh = QSharedPointer<Mesh>(new Mesh(m_commandQueue[i].mesh));
+            command.mesh->setMaterial(m_depthMappingMaterial);
+            command.transform = m_commandQueue[i].transform;
+            command.shader = m_depthMappingMaterial->getMaterial()->getShader();
+            
+            Renderer::setDepthTesting(true);
+            memcpy(m_VSSystemUniformBuffer.data() + m_VSSystemUniformBufferOffsets[VSSystemUniformIndex_ModelMatrix], &command.transform, sizeof(QMatrix4x4));
+            setSystemUniforms(command.shader);
+            command.mesh->render(*this);
+        }
+
+        m_depthBuffer->unBind();
+
+        Renderer::setViewport(0, 0, m_screenBufferWidth, m_screenBufferHeight);
+        //Renderer::clear(RENDERER_BUFFER_DEPTH | RENDERER_BUFFER_COLOR);
 #endif
+
+        m_depthBuffer->getTexture()->bind();
+
 		for (uint i = 0; i < m_commandQueue.size(); i++)
 		{
 			const RenderCommand& command = m_commandQueue[i];
 			QSharedPointer<MaterialInstance> material = command.mesh->getMaterialInstance();
 			int materialRenderFlags = material->getRenderFlags();
+            material->setTexture("shadowMap", m_depthBuffer->getTexture());
+            material->setUniform("lightSpaceMatrix", lightSpaceMatrix);
 			Renderer::setDepthTesting((materialRenderFlags & (int)Material::RenderFlags::DISABLE_DEPTH_TEST) == 0);
 			memcpy(m_VSSystemUniformBuffer.data() + m_VSSystemUniformBufferOffsets[VSSystemUniformIndex_ModelMatrix], &command.transform, sizeof(QMatrix4x4));
 			setSystemUniforms(command.shader);
 			command.mesh->render(*this);
 		}
 #ifdef TEST_DEPTH_MAP
-        m_depthBuffer->unBind();
+       
+        //m_depthBuffer->getTexture()->bind();
+        //m_screenQuadMaterial->setUniform("near_plane", near_plane);
+        //m_screenQuadMaterial->setUniform("far_plane", far_plane);
+        //m_screenQuadMaterial->setTexture("depthMap", m_depthBuffer->getTexture());
 
-        m_depthBuffer->getTexture()->bind();
-        m_screenMaterial->setUniform("near_plane", near_plane);
-        m_screenMaterial->setUniform("far_plane", far_plane);
-        m_screenMaterial->setTexture("depthMap", m_depthBuffer->getTexture());
+        //m_screenQuadMaterial->bind();
+        //m_screenQuad->bind();
 
-        m_screenMaterial->bind();
-        m_screenQuad->bind();
-
-        m_screenQuad->draw();
-        m_screenQuad->unBind();
-        m_screenMaterial->unbind();
+        //m_screenQuad->draw();
+        //m_screenQuad->unBind();
+        //m_screenQuadMaterial->unbind();
 #endif
     }
 

@@ -10,8 +10,6 @@ namespace CGFF
 		, p1(0.0f)
 		, position()
 		, lightVector()
-        , projection()
-        , view()
 	{
 	}
 }

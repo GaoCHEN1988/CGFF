@@ -571,6 +571,36 @@
     <ClCompile Include="src\application\learnGLWindow.cpp">
       <Filter>Source Files\application</Filter>
     </ClCompile>
+    <ClCompile Include="src\examples\learnOpengl\bloom.cpp">
+      <Filter>Source Files\examples\learnOpenGL</Filter>
+    </ClCompile>
+    <ClCompile Include="src\examples\learnOpengl\deferredShading.cpp">
+      <Filter>Source Files\examples\learnOpenGL</Filter>
+    </ClCompile>
+    <ClCompile Include="src\examples\learnOpengl\hdr.cpp">
+      <Filter>Source Files\examples\learnOpenGL</Filter>
+    </ClCompile>
+    <ClCompile Include="src\examples\learnOpengl\normalMapping.cpp">
+      <Filter>Source Files\examples\learnOpenGL</Filter>
+    </ClCompile>
+    <ClCompile Include="src\examples\learnOpengl\parallaxMapping.cpp">
+      <Filter>Source Files\examples\learnOpenGL</Filter>
+    </ClCompile>
+    <ClCompile Include="src\examples\learnOpengl\pbr.cpp">
+      <Filter>Source Files\examples\learnOpenGL</Filter>
+    </ClCompile>
+    <ClCompile Include="src\examples\learnOpengl\pointShadows.cpp">
+      <Filter>Source Files\examples\learnOpenGL</Filter>
+    </ClCompile>
+    <ClCompile Include="src\examples\learnOpengl\ssao.cpp">
+      <Filter>Source Files\examples\learnOpenGL</Filter>
+    </ClCompile>
+    <ClCompile Include="src\platform\opengl\glTextureDepthCube.cpp">
+      <Filter>Source Files\platform\opengl</Filter>
+    </ClCompile>
+    <ClCompile Include="src\graphic\api\textureDepthCube.cpp">
+      <Filter>Source Files\graphic\api</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <None Include="ClassDiagram.cd" />
@@ -875,6 +905,36 @@
     </ClInclude>
     <ClInclude Include="src\examples\learnOpengl\learnGL.h">
       <Filter>Header Files\examples\learnOpenGL</Filter>
+    </ClInclude>
+    <ClInclude Include="src\examples\learnOpengl\deferredShading.h">
+      <Filter>Header Files\examples\learnOpenGL</Filter>
+    </ClInclude>
+    <ClInclude Include="src\examples\learnOpengl\bloom.h">
+      <Filter>Header Files\examples\learnOpenGL</Filter>
+    </ClInclude>
+    <ClInclude Include="src\examples\learnOpengl\hdr.h">
+      <Filter>Header Files\examples\learnOpenGL</Filter>
+    </ClInclude>
+    <ClInclude Include="src\examples\learnOpengl\normalMapping.h">
+      <Filter>Header Files\examples\learnOpenGL</Filter>
+    </ClInclude>
+    <ClInclude Include="src\examples\learnOpengl\parallaxMapping.h">
+      <Filter>Header Files\examples\learnOpenGL</Filter>
+    </ClInclude>
+    <ClInclude Include="src\examples\learnOpengl\pbr.h">
+      <Filter>Header Files\examples\learnOpenGL</Filter>
+    </ClInclude>
+    <ClInclude Include="src\examples\learnOpengl\pointShadows.h">
+      <Filter>Header Files\examples\learnOpenGL</Filter>
+    </ClInclude>
+    <ClInclude Include="src\examples\learnOpengl\ssao.h">
+      <Filter>Header Files\examples\learnOpenGL</Filter>
+    </ClInclude>
+    <ClInclude Include="src\platform\opengl\glTextureDepthCube.h">
+      <Filter>Header Files\platform\opengl</Filter>
+    </ClInclude>
+    <ClInclude Include="src\graphic\api\textureDepthCube.h">
+      <Filter>Header Files\graphic\api</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

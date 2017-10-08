@@ -175,8 +175,16 @@
     <ClCompile Include="src\entity\component\transformComponent.cpp" />
     <ClCompile Include="src\entity\entity.cpp" />
     <ClCompile Include="src\examples\app3DLayer.cpp" />
+    <ClCompile Include="src\examples\learnOpengl\bloom.cpp" />
+    <ClCompile Include="src\examples\learnOpengl\deferredShading.cpp" />
+    <ClCompile Include="src\examples\learnOpengl\hdr.cpp" />
     <ClCompile Include="src\examples\learnOpengl\learnGLMeshFactory.cpp" />
+    <ClCompile Include="src\examples\learnOpengl\normalMapping.cpp" />
+    <ClCompile Include="src\examples\learnOpengl\parallaxMapping.cpp" />
+    <ClCompile Include="src\examples\learnOpengl\pbr.cpp" />
+    <ClCompile Include="src\examples\learnOpengl\pointShadows.cpp" />
     <ClCompile Include="src\examples\learnOpengl\shadowMappingDepth.cpp" />
+    <ClCompile Include="src\examples\learnOpengl\ssao.cpp" />
     <ClCompile Include="src\examples\test2DLayer.cpp" />
     <ClCompile Include="src\examples\test3DLayer.cpp" />
     <ClCompile Include="src\graphic\API\context.cpp" />
@@ -188,6 +196,7 @@
     <ClCompile Include="src\graphic\API\texture2D.cpp" />
     <ClCompile Include="src\graphic\api\textureCube.cpp" />
     <ClCompile Include="src\graphic\api\textureDepth.cpp" />
+    <ClCompile Include="src\graphic\api\textureDepthCube.cpp" />
     <ClCompile Include="src\graphic\api\vertexArray.cpp" />
     <ClCompile Include="src\graphic\api\vertexBuffer.cpp" />
     <ClCompile Include="src\graphic\renderer\batchRenderer2d.cpp" />
@@ -238,6 +247,7 @@
     <ClCompile Include="src\platform\opengl\glTexture2D.cpp" />
     <ClCompile Include="src\platform\opengl\glTextureCube.cpp" />
     <ClCompile Include="src\platform\opengl\glTextureDepth.cpp" />
+    <ClCompile Include="src\platform\opengl\glTextureDepthCube.cpp" />
     <ClCompile Include="src\platform\opengl\glVertexArray.cpp" />
     <ClCompile Include="src\platform\opengl\glVertexBuffer.cpp" />
     <ClCompile Include="src\qtUI\model\resourceModel.cpp" />
@@ -319,10 +329,18 @@
     <ClInclude Include="src\entity\component\transformComponent.h" />
     <ClInclude Include="src\entity\entity.h" />
     <ClInclude Include="src\examples\app3DLayer.h" />
+    <ClInclude Include="src\examples\learnOpengl\bloom.h" />
+    <ClInclude Include="src\examples\learnOpengl\deferredShading.h" />
+    <ClInclude Include="src\examples\learnOpengl\hdr.h" />
     <ClInclude Include="src\examples\learnOpengl\learnGL.h" />
     <ClInclude Include="src\examples\learnOpengl\learnGLMeshFactory.h" />
     <ClInclude Include="src\examples\learnOpengl\learnOpenglHeader.h" />
+    <ClInclude Include="src\examples\learnOpengl\normalMapping.h" />
+    <ClInclude Include="src\examples\learnOpengl\parallaxMapping.h" />
+    <ClInclude Include="src\examples\learnOpengl\pbr.h" />
+    <ClInclude Include="src\examples\learnOpengl\pointShadows.h" />
     <ClInclude Include="src\examples\learnOpengl\shadowMappingDepth.h" />
+    <ClInclude Include="src\examples\learnOpengl\ssao.h" />
     <ClInclude Include="src\examples\test2DLayer.h" />
     <ClInclude Include="src\examples\test3DLayer.h" />
     <ClInclude Include="src\graphic\API\context.h" />
@@ -335,6 +353,7 @@
     <ClInclude Include="src\graphic\API\texture2D.h" />
     <ClInclude Include="src\graphic\api\textureCube.h" />
     <ClInclude Include="src\graphic\api\textureDepth.h" />
+    <ClInclude Include="src\graphic\api\textureDepthCube.h" />
     <ClInclude Include="src\graphic\api\vertexArray.h" />
     <ClInclude Include="src\graphic\api\vertexBuffer.h" />
     <ClInclude Include="src\graphic\renderer\batchRenderer2d.h" />
@@ -392,6 +411,7 @@
     <ClInclude Include="src\platform\opengl\glTexture2D.h" />
     <ClInclude Include="src\platform\opengl\glTextureCube.h" />
     <ClInclude Include="src\platform\opengl\glTextureDepth.h" />
+    <ClInclude Include="src\platform\opengl\glTextureDepthCube.h" />
     <ClInclude Include="src\platform\opengl\glVertexArray.h" />
     <ClInclude Include="src\platform\opengl\glVertexBuffer.h" />
     <CustomBuild Include="src\qtUI\view\explorerView.h">

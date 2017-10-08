@@ -43,7 +43,8 @@ namespace CGFF {
 
         QSharedPointer<FramebufferDepth> m_depthBuffer;
         QSharedPointer<Mesh> m_screenQuad;
-        QSharedPointer<Material> m_screenMaterial;
+        QSharedPointer<MaterialInstance> m_screenQuadMaterial;
+        QSharedPointer<MaterialInstance> m_depthMappingMaterial;
     };
 }
 
