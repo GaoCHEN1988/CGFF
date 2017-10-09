@@ -11,7 +11,6 @@
 namespace CGFF
 {
     extern QOpenGLFunctions_4_4_Core *GL;
-	//extern QSize g_openglWidgetSize;
 
 #ifdef DEBUG
 #define GLCall(x) {\

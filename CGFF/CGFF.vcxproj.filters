@@ -601,6 +601,12 @@
     <ClCompile Include="src\graphic\api\textureDepthCube.cpp">
       <Filter>Source Files\graphic\api</Filter>
     </ClCompile>
+    <ClCompile Include="src\graphic\api\framebufferDepthCube.cpp">
+      <Filter>Source Files\graphic\api</Filter>
+    </ClCompile>
+    <ClCompile Include="src\platform\opengl\glFramebufferDepthCube.cpp">
+      <Filter>Source Files\platform\opengl</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <None Include="ClassDiagram.cd" />
@@ -935,6 +941,12 @@
     </ClInclude>
     <ClInclude Include="src\graphic\api\textureDepthCube.h">
       <Filter>Header Files\graphic\api</Filter>
+    </ClInclude>
+    <ClInclude Include="src\graphic\api\framebufferDepthCube.h">
+      <Filter>Header Files\graphic\api</Filter>
+    </ClInclude>
+    <ClInclude Include="src\platform\opengl\glFramebufferDepthCube.h">
+      <Filter>Header Files\platform\opengl</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

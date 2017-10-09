@@ -4,8 +4,10 @@
 #include "renderer3d.h"
 
 #include "graphic/api/framebufferDepth.h"
+#include "graphic/api/framebufferDepthCube.h"
 
-#define TEST_DEPTH_MAP
+//#define TEST_DEPTH_MAP
+#define TEST_DEPTH_MAP_CUBE
 
 namespace CGFF {
 
@@ -32,6 +34,8 @@ namespace CGFF {
         //void setSystemUniforms(QSharedPointer<QOpenGLShaderProgram> shader);
 		void setSystemUniforms(QSharedPointer<Shader> shader);
 	
+        void renderToDepthMap();
+        void renderToDepthMapCube();
 	private:
 		QSharedPointer<uchar> m_VSSystemUniformBuffer;
 		uint m_VSSystemUniformBufferSize;
@@ -42,9 +46,10 @@ namespace CGFF {
 		QVector<uint> m_PSSystemUniformBufferOffsets;
 
         QSharedPointer<FramebufferDepth> m_depthBuffer;
-        QSharedPointer<Mesh> m_screenQuad;
-        QSharedPointer<MaterialInstance> m_screenQuadMaterial;
         QSharedPointer<MaterialInstance> m_depthMappingMaterial;
+
+        QSharedPointer<FramebufferDepthCube> m_depthCubeBuffer;
+        QSharedPointer<MaterialInstance> m_depthMappingCubeMaterial;
     };
 }
 

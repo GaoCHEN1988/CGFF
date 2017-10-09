@@ -48,6 +48,7 @@ namespace CGFF {
 
 	GLShaderUniformDeclaration::Type GLShaderUniformDeclaration::stringToType(const QString& type)
 	{
+        if (type == "bool")		return GLShaderUniformDeclaration::Type::GLboolean;
 		if (type == "int")		return GLShaderUniformDeclaration::Type::GLint;
 		if (type == "uint")		return GLShaderUniformDeclaration::Type::GLuint;
 		if (type == "float")	return GLShaderUniformDeclaration::Type::GLfloat;

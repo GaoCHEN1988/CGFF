@@ -2,7 +2,6 @@
 
 namespace CGFF {
 
-
 	GLFramebufferDepth::GLFramebufferDepth(int width, int height)
 		: m_width(width)
 		, m_height(height)
@@ -65,5 +64,4 @@ namespace CGFF {
 
 		GL->glBindFramebuffer(GL_FRAMEBUFFER, 0);
 	}
-
 }

@@ -52,8 +52,8 @@ namespace CGFF {
 
 		// bool HasUniform(const String& name) const = 0;
 	public:
-		static QSharedPointer<Shader> createFromFile(const QString& name, const QString& vertexFile, const QString& fragmentFile);
-		static QSharedPointer<Shader> createFromSource(const QString& name, const QString& vertexSource, const QString& fragmentSource);
+		static QSharedPointer<Shader> createFromFile(const QString& name, const QString& vertexFile, const QString& fragmentFile, const QString& geometryFile = "");
+		static QSharedPointer<Shader> createFromSource(const QString& name, const QString& vertexSource, const QString& fragmentSource, const QString& geometrySource = "");
 
 	public:
 		static const Shader* s_currentlyBound;

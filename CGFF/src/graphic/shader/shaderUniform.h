@@ -9,7 +9,8 @@ namespace CGFF {
 	{
 		UNKNOWN,
 		VERTEX,
-		FRAGMENT
+		FRAGMENT, 
+        GEOMETRY
 	};
 
 	class ShaderUniformDeclaration

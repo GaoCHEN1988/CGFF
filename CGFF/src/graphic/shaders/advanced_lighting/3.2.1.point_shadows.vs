@@ -11,19 +11,20 @@ out VS_OUT {
     vec2 TexCoords;
 } vs_out;
 
-uniform mat4 projection;
-uniform mat4 view;
-uniform mat4 model;
+uniform mat4 sys_ProjectionMatrix;
+uniform mat4 sys_ViewMatrix;
+uniform mat4 sys_ModelMatrix;
+uniform vec3 sys_CameraPosition;
 
 uniform bool reverse_normals;
 
 void main()
 {
-    vs_out.FragPos = vec3(model * vec4(aPos, 1.0));
+    vs_out.FragPos = vec3(sys_ModelMatrix * vec4(aPos, 1.0));
     if(reverse_normals) // a slight hack to make sure the outer large cube displays lighting from the 'inside' instead of the default 'outside'.
-        vs_out.Normal = transpose(inverse(mat3(model))) * (-1.0 * aNormal);
+        vs_out.Normal = transpose(inverse(mat3(sys_ModelMatrix))) * (-1.0 * aNormal);
     else
-        vs_out.Normal = transpose(inverse(mat3(model))) * aNormal;
+        vs_out.Normal = transpose(inverse(mat3(sys_ModelMatrix))) * aNormal;
     vs_out.TexCoords = aTexCoords;
-    gl_Position = projection * view * model * vec4(aPos, 1.0);
+    gl_Position = sys_ProjectionMatrix * sys_ViewMatrix * sys_ModelMatrix * vec4(aPos, 1.0);
 }

@@ -12,11 +12,11 @@ namespace CGFF {
 	class GLShader : public Shader
 	{
 	public:
-		GLShader(QString name);
+		GLShader(const QString& name);
 		virtual ~GLShader();
 
-		void createFromFile(QString vertexFile, QString fragmentFile);
-		void createFromSource(QString vertexSource, QString fragmentSource);
+		void createFromFile(const QString& vertexFile, const QString& fragmentFile, const QString& geometryFile = "");
+		void createFromSource(const QString& vertexSource, const QString& fragmentSource, const QString& geometrySource = "");
 
 		void init();
 		void close() override;
@@ -66,7 +66,7 @@ namespace CGFF {
 		void resolveAndSetUniform(QSharedPointer<GLShaderUniformDeclaration> uniform, uchar* data);
 		void setUniformStruct(QSharedPointer<GLShaderUniformDeclaration> uniform, uchar* data, int offset);
 
-		void parse(const QString& vertexSource, const QString& fragmentSource);
+		void parse(const QString& vertexSource, const QString& fragmentSource, const QString& geometrySource = "");
 		void parseUniform(const QString& statement, ShaderType shaderType);
 		void parseUniformStruct(const QString& block, ShaderType shaderType);
 
@@ -82,6 +82,8 @@ namespace CGFF {
 		QString m_vertexSource;
 		QString m_fragmentFile;
 		QString m_fragmentSource;
+        QString m_geometryFile;
+        QString m_geometrySource;
 
 		ShaderUniformBufferList m_VSUniformBuffers;
 		ShaderUniformBufferList m_PSUniformBuffers;

@@ -11,6 +11,7 @@ namespace CGFF {
 		enum class Type
 		{
 			NONE,
+            GLboolean,
 			GLfloat,
 			GLint,
 			GLuint,

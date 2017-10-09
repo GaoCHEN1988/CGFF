@@ -6,6 +6,19 @@
 
 namespace CGFF {
 
+    enum class AppType
+    {
+        bloom,
+        deferredShading,
+        hdr,
+        normalMapping,
+        parallaxMapping,
+        pbr,
+        pointShadows,
+        shadowMappingDepth,
+        ssao
+    };
+
 	class App3DLayer : public Layer3D
 	{
 	public:
@@ -22,6 +35,7 @@ namespace CGFF {
 
 	private:
         QSharedPointer<LearnGL::ShadowMappingDepth> m_shadowMapping;
+        QSharedPointer<LearnGL::PointShadows> m_pointShadows;
 	};
 }
 

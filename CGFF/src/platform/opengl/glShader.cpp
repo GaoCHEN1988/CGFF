@@ -4,12 +4,14 @@
 #include "system/fileSystem/vfs.h"
 namespace CGFF {
 
-	GLShader::GLShader(QString name)
+	GLShader::GLShader(const QString& name)
 		: m_name(name)
 		, m_vertexFile("")
 		, m_fragmentFile("")
 		, m_vertexSource("")
 		, m_fragmentSource("")
+        , m_geometryFile("")
+        , m_geometrySource("")
         , m_glShaderProgram()
 	{
 	}
@@ -17,11 +19,12 @@ namespace CGFF {
 	{
 	}
 
-	void GLShader::createFromFile(QString vertexFile, QString fragmentFile)
+	void GLShader::createFromFile(const QString& vertexFile, const QString& fragmentFile, const QString& geometryFile)
 	{
 		m_glShaderProgram.removeAllShaders();
 		m_vertexFile = vertexFile;
 		m_fragmentFile = fragmentFile;
+        m_geometryFile = geometryFile;
 
 		m_vertexSource.clear();
 		m_vertexSource = VFS::get()->readTextFile(vertexFile);
@@ -29,15 +32,23 @@ namespace CGFF {
 		m_fragmentSource.clear();
 		m_fragmentSource = VFS::get()->readTextFile(fragmentFile);
 
+        if (!m_geometryFile.isEmpty())
+        {
+            m_geometrySource.clear();
+            m_geometrySource = VFS::get()->readTextFile(m_geometryFile);
+        }
+
 		load();
 		init();
 	}
 
-	void GLShader::createFromSource(QString vertexSource, QString fragmentSource)
+	void GLShader::createFromSource(const QString& vertexSource, const QString& fragmentSource, const QString& geometrySource)
 	{
 		m_glShaderProgram.removeAllShaders();
 		m_vertexSource = vertexSource;
 		m_fragmentSource = fragmentSource;
+        m_geometrySource = geometrySource;
+
 		load();
 		init();
 	}
@@ -47,7 +58,7 @@ namespace CGFF {
 		m_VSUserUniformBuffer = nullptr;
 		m_PSUserUniformBuffer = nullptr;
 
-		parse(m_vertexSource, m_fragmentSource);
+		parse(m_vertexSource, m_fragmentSource, m_geometrySource);
 		resolveUniforms();
 	}
 
@@ -55,9 +66,11 @@ namespace CGFF {
 	{
 		m_glShaderProgram.removeAllShaders();
 		m_vertexFile = "";
-		m_fragmentFile = "";
+        m_fragmentFile = "";
+        m_geometryFile = "";
 		m_vertexSource = "";
-		m_fragmentSource = "";
+        m_fragmentSource = "";
+        m_geometrySource = "";
 	}
 
 	void GLShader::bind()
@@ -119,49 +132,83 @@ namespace CGFF {
 	{
         switch (field->getType())
         {
+        case GLShaderUniformDeclaration::Type::GLboolean:
+        {
+            m_glShaderProgram.setUniformValue(field->getLocation(), *(GLboolean *)&data[offset]);
+            break;
+        }
         case GLShaderUniformDeclaration::Type::GLfloat:
         {
-			m_glShaderProgram.setUniformValue(field->getLocation(), *(GLfloat *)&data[offset]);
+            if (field->getCount() > 1)
+                m_glShaderProgram.setUniformValueArray(field->getLocation(), (GLfloat *)&data[offset], field->getCount(), 4);
+            else
+			    m_glShaderProgram.setUniformValue(field->getLocation(), *(GLfloat *)&data[offset]);
             break;
         }
         case GLShaderUniformDeclaration::Type::GLint:
         {
-            m_glShaderProgram.setUniformValue(field->getLocation(), *(GLint *)&data[offset]);
+            if (field->getCount() > 1)
+                m_glShaderProgram.setUniformValueArray(field->getLocation(), (GLint *)&data[offset], field->getCount());
+            else
+                m_glShaderProgram.setUniformValue(field->getLocation(), *(GLint *)&data[offset]);
 	        break;
         }
         case GLShaderUniformDeclaration::Type::GLuint:
         {
-            m_glShaderProgram.setUniformValue(field->getLocation(), *(GLuint *)&data[offset]);
+            if (field->getCount() > 1)
+                m_glShaderProgram.setUniformValueArray(field->getLocation(), (GLuint *)&data[offset], field->getCount());
+            else
+                m_glShaderProgram.setUniformValue(field->getLocation(), *(GLuint *)&data[offset]);
             break;
         }
         case GLShaderUniformDeclaration::Type::QVector2D:
         {
-			m_glShaderProgram.setUniformValue(field->getLocation(), *(QVector2D *)&data[offset]);
+            if (field->getCount() > 1)
+                m_glShaderProgram.setUniformValueArray(field->getLocation(), (QVector2D *)&data[offset], field->getCount());
+            else
+			    m_glShaderProgram.setUniformValue(field->getLocation(), *(QVector2D *)&data[offset]);
             break;
         }
         case GLShaderUniformDeclaration::Type::QVector3D:
         {
-			m_glShaderProgram.setUniformValue(field->getLocation(), *(QVector3D *)&data[offset]);
+            if (field->getCount() > 1)
+                m_glShaderProgram.setUniformValueArray(field->getLocation(), (QVector3D *)&data[offset], field->getCount());
+            else
+			    m_glShaderProgram.setUniformValue(field->getLocation(), *(QVector3D *)&data[offset]);
             break;
         }
         case GLShaderUniformDeclaration::Type::QVector4D:
         {
-			m_glShaderProgram.setUniformValue(field->getLocation(), *(QVector4D *)&data[offset]);
+            if (field->getCount() > 1)
+                m_glShaderProgram.setUniformValueArray(field->getLocation(), (QVector4D *)&data[offset], field->getCount());
+            else
+			    m_glShaderProgram.setUniformValue(field->getLocation(), *(QVector4D *)&data[offset]);
             break;
         }
         case GLShaderUniformDeclaration::Type::QMatrix2x2:
         {
-			m_glShaderProgram.setUniformValue(field->getLocation(), *(QMatrix2x2 *)&data[offset]);
+            if (field->getCount() > 1)
+                m_glShaderProgram.setUniformValueArray(field->getLocation(), (QMatrix2x2 *)&data[offset], field->getCount());
+            else
+			    m_glShaderProgram.setUniformValue(field->getLocation(), *(QMatrix2x2 *)&data[offset]);
+
             break;
         }
         case GLShaderUniformDeclaration::Type::QMatrix3x3:
         {
-			m_glShaderProgram.setUniformValue(field->getLocation(), *(QMatrix3x3 *)&data[offset]);
+            if (field->getCount() > 1)
+                m_glShaderProgram.setUniformValueArray(field->getLocation(), (QMatrix3x3 *)&data[offset], field->getCount());
+            else
+			    m_glShaderProgram.setUniformValue(field->getLocation(), *(QMatrix3x3 *)&data[offset]);
             break;
         }
         case GLShaderUniformDeclaration::Type::QMatrix4x4:
         {
-			m_glShaderProgram.setUniformValue(field->getLocation(), *(QMatrix4x4 *)&data[offset]);
+            if (field->getCount() > 1)
+                m_glShaderProgram.setUniformValueArray(field->getLocation(), (QMatrix4x4 *)&data[offset], field->getCount());
+            else
+			    m_glShaderProgram.setUniformValue(field->getLocation(), *(QMatrix4x4 *)&data[offset]);
+
             break;
         }
         default:
@@ -175,6 +222,12 @@ namespace CGFF {
 			qFatal(QString("Error:Can't compile vertex shader:\n" + m_glShaderProgram.log()).toStdString().c_str());
 		if (!m_glShaderProgram.addShaderFromSourceCode(QOpenGLShader::Fragment, m_fragmentSource))
 			qFatal(QString("Error:Can't compile fragment shader:\n" + m_glShaderProgram.log()).toStdString().c_str());
+        if (!m_geometrySource.isEmpty())
+        {
+            if (!m_glShaderProgram.addShaderFromSourceCode(QOpenGLShader::Geometry, m_geometrySource))
+                qFatal(QString("Error:Can't compile geometry shader:\n" + m_glShaderProgram.log()).toStdString().c_str());
+        }
+
 		if (!m_glShaderProgram.link())
 			qFatal(QString("Error:Can't link shaders:\n" + m_glShaderProgram.log()).toStdString().c_str());
 	}
@@ -237,49 +290,89 @@ namespace CGFF {
 
 		switch (uniform->getType())
 		{
+        case GLShaderUniformDeclaration::Type::GLboolean:
+        {
+            m_glShaderProgram.setUniformValue(uniform->getLocation(), *(GLboolean *)&data[offset]);
+            break;
+        }
 		case GLShaderUniformDeclaration::Type::GLfloat:
 		{
-			m_glShaderProgram.setUniformValue(uniform->getLocation(), *(GLfloat *)&data[offset]);
+            if (uniform->getCount() > 1)
+                m_glShaderProgram.setUniformValueArray(uniform->getLocation(), (GLfloat *)&data[offset], uniform->getCount(), 4);
+            else
+			    m_glShaderProgram.setUniformValue(uniform->getLocation(), *(GLfloat *)&data[offset]);
+
 			break;
 		}
 		case GLShaderUniformDeclaration::Type::GLint:
 		{
-			m_glShaderProgram.setUniformValue(uniform->getLocation(), *(GLint *)&data[offset]);
-			break;
+            if (uniform->getCount() > 1)
+                m_glShaderProgram.setUniformValueArray(uniform->getLocation(), (GLint *)&data[offset], uniform->getCount());
+            else
+			    m_glShaderProgram.setUniformValue(uniform->getLocation(), *(GLint *)&data[offset]);
+			
+            break;
 		}
 		case GLShaderUniformDeclaration::Type::GLuint:
 		{
-			m_glShaderProgram.setUniformValue(uniform->getLocation(), *(GLuint *)&data[offset]);
+            if (uniform->getCount() > 1)
+                m_glShaderProgram.setUniformValueArray(uniform->getLocation(), (GLuint *)&data[offset], uniform->getCount());
+            else
+			    m_glShaderProgram.setUniformValue(uniform->getLocation(), *(GLuint *)&data[offset]);
+
 			break;
 		}
 		case GLShaderUniformDeclaration::Type::QVector2D:
 		{
-			m_glShaderProgram.setUniformValue(uniform->getLocation(), *(QVector2D *)&data[offset]);
+            if (uniform->getCount() > 1)
+                m_glShaderProgram.setUniformValueArray(uniform->getLocation(), (QVector2D *)&data[offset], uniform->getCount());
+            else
+			    m_glShaderProgram.setUniformValue(uniform->getLocation(), *(QVector2D *)&data[offset]);
+
 			break;
 		}
 		case GLShaderUniformDeclaration::Type::QVector3D:
 		{
-			m_glShaderProgram.setUniformValue(uniform->getLocation(), *(QVector3D *)&data[offset]);
+            if (uniform->getCount() > 1)
+                m_glShaderProgram.setUniformValueArray(uniform->getLocation(), (QVector3D *)&data[offset], uniform->getCount());
+            else
+			    m_glShaderProgram.setUniformValue(uniform->getLocation(), *(QVector3D *)&data[offset]);
+
 			break;
 		}
 		case GLShaderUniformDeclaration::Type::QVector4D:
 		{
-			m_glShaderProgram.setUniformValue(uniform->getLocation(), *(QVector4D *)&data[offset]);
+            if (uniform->getCount() > 1)
+                m_glShaderProgram.setUniformValueArray(uniform->getLocation(), (QVector4D *)&data[offset], uniform->getCount());
+            else
+			    m_glShaderProgram.setUniformValue(uniform->getLocation(), *(QVector4D *)&data[offset]);
 			break;
 		}
 		case GLShaderUniformDeclaration::Type::QMatrix2x2:
 		{
-			m_glShaderProgram.setUniformValue(uniform->getLocation(), *(QMatrix2x2 *)&data[offset]);
+            if (uniform->getCount() > 1)
+                m_glShaderProgram.setUniformValueArray(uniform->getLocation(), (QMatrix2x2 *)&data[offset], uniform->getCount());
+            else
+			    m_glShaderProgram.setUniformValue(uniform->getLocation(), *(QMatrix2x2 *)&data[offset]);
+
 			break;
 		}
 		case GLShaderUniformDeclaration::Type::QMatrix3x3:
 		{
-			m_glShaderProgram.setUniformValue(uniform->getLocation(), *(QMatrix3x3 *)&data[offset]);
+            if (uniform->getCount() > 1)
+                m_glShaderProgram.setUniformValueArray(uniform->getLocation(), (QMatrix3x3 *)&data[offset], uniform->getCount());
+            else
+			    m_glShaderProgram.setUniformValue(uniform->getLocation(), *(QMatrix3x3 *)&data[offset]);
+
 			break;
 		}
 		case GLShaderUniformDeclaration::Type::QMatrix4x4:
 		{
-			m_glShaderProgram.setUniformValue(uniform->getLocation(), *(QMatrix4x4 *)&data[offset]);
+            if (uniform->getCount() > 1)
+                m_glShaderProgram.setUniformValueArray(uniform->getLocation(), (QMatrix4x4 *)&data[offset], uniform->getCount());
+            else
+			    m_glShaderProgram.setUniformValue(uniform->getLocation(), *(QMatrix4x4 *)&data[offset]);
+
 			break;
 		}
 		case GLShaderUniformDeclaration::Type::STRUCT:
@@ -305,7 +398,7 @@ namespace CGFF {
 		}
 	}
 
-	void GLShader::parse(const QString& vertexSource, const QString& fragmentSource)
+	void GLShader::parse(const QString& vertexSource, const QString& fragmentSource, const QString& geometrySource)
 	{
 		m_VSUniformBuffers.push_back(QSharedPointer<GLShaderUniformBufferDeclaration>(new GLShaderUniformBufferDeclaration("Global", ShaderType::VERTEX)));
 		m_PSUniformBuffers.push_back(QSharedPointer<GLShaderUniformBufferDeclaration>(new GLShaderUniformBufferDeclaration("Global", ShaderType::FRAGMENT)));
@@ -337,6 +430,16 @@ namespace CGFF {
 		{
 			parseUniform(s, ShaderType::FRAGMENT);
 		}
+
+        //Geometry Shader
+        if (!geometrySource.isEmpty())
+        {
+            tokens = GLShaderParser::findUniforms(geometrySource);
+            for (QString s : tokens)
+            {
+                parseUniform(s, ShaderType::GEOMETRY);
+            }
+        }
 	}
 
 	void GLShader::parseUniform(const QString& statement, ShaderType shaderType)
@@ -393,6 +496,13 @@ namespace CGFF {
 
 					m_PSUserUniformBuffer->pushUniform(declaration);
 				}
+                else if (shaderType == ShaderType::GEOMETRY)
+                {
+                    if (m_PSUserUniformBuffer == nullptr)
+                        m_PSUserUniformBuffer = QSharedPointer<GLShaderUniformBufferDeclaration>(new GLShaderUniformBufferDeclaration("", ShaderType::FRAGMENT));
+
+                    m_PSUserUniformBuffer->pushUniform(declaration);
+                }
 			}
 		}
 	}
