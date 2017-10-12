@@ -174,12 +174,8 @@ namespace CGFF {
             if (field->getCount() > 1)
                 m_glShaderProgram.setUniformValueArray(field->getLocation(), (QVector3D *)&data[offset], field->getCount());
             else
-            {
-                //Test
-                int test = field->getOffset();
-                QVector3D testv = *(QVector3D *)&data[offset];
                 m_glShaderProgram.setUniformValue(field->getLocation(), *(QVector3D *)&data[offset]);
-            }
+
             break;
         }
         case GLShaderUniformDeclaration::Type::QVector4D:
@@ -375,8 +371,6 @@ namespace CGFF {
         {
             if (uniform->getCount() > 1)
             {
-                //Test
-                int test = uniform->getLocation();
                 m_glShaderProgram.setUniformValueArray(uniform->getLocation(), (QMatrix4x4 *)&data[offset], uniform->getCount());
             }
 
@@ -387,13 +381,8 @@ namespace CGFF {
         }
         case GLShaderUniformDeclaration::Type::STRUCT:
         {
-            //Test
             if (uniform->getCount() > 1)
-            {
-                //Test
-                int test = uniform->getLocation();
                 setUniformStructList(uniform, data, offset);
-            }
             else
                 setUniformStruct(uniform, data, offset);
 
@@ -606,7 +595,6 @@ namespace CGFF {
                         for (uint k = 0; k < fields.size(); k++)
                         {
                             QSharedPointer<GLShaderUniformDeclaration> field = qSharedPointerCast<GLShaderUniformDeclaration>(fields[k]);
-                            QString test =uniform->m_name + "[" + QString::number(c) + "]." + field->m_name;
                             field->m_location = m_glShaderProgram.uniformLocation(uniform->m_name+ "[" + QString::number(c) + "]." + field->m_name);
                         }
                     }
@@ -631,59 +619,9 @@ namespace CGFF {
 
     void GLShader::resolveUniforms()
     {
-        //Test
-
         bind();
 
-        /*for (uint i = 0; i < m_VSUniformBuffers.size(); i++)
-        {
-            QSharedPointer<GLShaderUniformBufferDeclaration> decl = qSharedPointerCast<GLShaderUniformBufferDeclaration>(m_VSUniformBuffers[i]);
-            const ShaderUniformList& uniforms = decl->getUniformDeclarations();
-            for (uint j = 0; j < uniforms.size(); j++)
-            {
-                QSharedPointer<GLShaderUniformDeclaration> uniform = qSharedPointerCast<GLShaderUniformDeclaration>(uniforms[j]);
-                if (uniform->getType() == GLShaderUniformDeclaration::Type::STRUCT)
-                {
-                    const ShaderStruct& s = uniform->getShaderUniformStruct();
-                    const auto& fields = s.getFields();
-                    for (uint k = 0; k < fields.size(); k++)
-                    {
-                        QSharedPointer<GLShaderUniformDeclaration> field = qSharedPointerCast<GLShaderUniformDeclaration>(fields[k]);
-                        field->m_location = m_glShaderProgram.uniformLocation(uniform->m_name + "." + field->m_name);
-                    }
-                }
-                else
-                {
-                    uniform->m_location = m_glShaderProgram.uniformLocation(uniform->m_name);
-                }
-            }
-        }*/
-
         resolveUniformBufferLists(m_VSUniformBuffers);
-
-        /*for (uint i = 0; i < m_PSUniformBuffers.size(); i++)
-        {
-            QSharedPointer<GLShaderUniformBufferDeclaration> decl = qSharedPointerCast<GLShaderUniformBufferDeclaration>(m_PSUniformBuffers[i]);
-            const ShaderUniformList& uniforms = decl->getUniformDeclarations();
-            for (uint j = 0; j < uniforms.size(); j++)
-            {
-                QSharedPointer<GLShaderUniformDeclaration> uniform = qSharedPointerCast<GLShaderUniformDeclaration>(uniforms[j]);
-                if (uniform->getType() == GLShaderUniformDeclaration::Type::STRUCT)
-                {
-                    const ShaderStruct& s = uniform->getShaderUniformStruct();
-                    const auto& fields = s.getFields();
-                    for (uint k = 0; k < fields.size(); k++)
-                    {
-                        QSharedPointer<GLShaderUniformDeclaration> field = qSharedPointerCast<GLShaderUniformDeclaration>(fields[k]);
-                        field->m_location = m_glShaderProgram.uniformLocation(uniform->m_name + "." + field->m_name);
-                    }
-                }
-                else
-                {
-                    uniform->m_location = m_glShaderProgram.uniformLocation(uniform->m_name);
-                }
-            }
-        }*/
 
         resolveUniformBufferLists(m_PSUniformBuffers);
 
@@ -693,24 +631,6 @@ namespace CGFF {
             {
                 const ShaderUniformList& uniforms = decl->getUniformDeclarations();
                 resolveUniformLists(uniforms);
-                //for (uint j = 0; j < uniforms.size(); j++)
-                //{
-                //    QSharedPointer<GLShaderUniformDeclaration> uniform = qSharedPointerCast<GLShaderUniformDeclaration>(uniforms[j]);
-                //    if (uniform->getType() == GLShaderUniformDeclaration::Type::STRUCT)
-                //    {
-                //        const ShaderStruct& s = uniform->getShaderUniformStruct();
-                //        const auto& fields = s.getFields();
-                //        for (uint k = 0; k < fields.size(); k++)
-                //        {
-                //            QSharedPointer<GLShaderUniformDeclaration> field = qSharedPointerCast<GLShaderUniformDeclaration>(fields[k]);
-                //            field->m_location = m_glShaderProgram.uniformLocation(uniform->m_name + "." + field->m_name);
-                //        }
-                //    }
-                //    else
-                //    {
-                //        uniform->m_location = m_glShaderProgram.uniformLocation(uniform->m_name);
-                //    }
-                //}
             }
         }
 

@@ -52,6 +52,7 @@ namespace LearnGL {
     void HDR::render()
     {
         m_objectMaterialInstance->setUniform("viewPos", m_scene->getCamera()->getPosition());
+        //Use setUniformData function for vector
         m_objectMaterialInstance->setUniformData("lights", (uchar*)g_lights.data());
         m_objectMaterialInstance->setUniform("inverse_normals", true);
     }
