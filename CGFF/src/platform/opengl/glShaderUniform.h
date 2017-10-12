@@ -26,17 +26,18 @@ namespace CGFF {
 
 	public:
 		GLShaderUniformDeclaration(GLShaderUniformDeclaration::Type type, const QString& name, uint count = 1);
-		GLShaderUniformDeclaration(QSharedPointer<ShaderStruct> uniformStruct, const QString& name, uint count = 1);
+        GLShaderUniformDeclaration(QSharedPointer<ShaderStruct> uniformStruct, const QString& name, uint count = 1);
 
 		inline QString getName() const override { return m_name; }
 		inline uint getSize() const override { return m_size; }
 		inline uint getCount() const override { return m_count; }
 		inline uint getOffset() const override { return m_offset; }
-		inline uint getAbsoluteOffset() const { return m_struct ? m_struct->getOffset() + m_offset : m_offset; }
+		//inline uint getAbsoluteOffset() const { return m_struct ? m_struct->getOffset() + m_offset : m_offset; }
 
 		int getLocation() const { return m_location; }
 		inline GLShaderUniformDeclaration::Type getType() const { return m_type; }
-		inline const ShaderStruct& getShaderUniformStruct() const { Q_ASSERT(m_struct); return *m_struct; }
+		inline const QSharedPointer<ShaderStruct>& getShaderUniformStruct(uint i = 0) const { Q_ASSERT(!m_structList.isEmpty()); return m_structList[i]; }
+        QSharedPointer<ShaderUniformDeclaration> deepCopy() override;
 
 	protected:
 		void setOffset(uint offset) override;
@@ -56,7 +57,8 @@ namespace CGFF {
 		uint m_count;
 		uint m_offset;
 		GLShaderUniformDeclaration::Type m_type;
-		QSharedPointer<ShaderStruct> m_struct;
+        //QSharedPointer<ShaderStruct> m_struct;
+        QVector<QSharedPointer<ShaderStruct>> m_structList;
 		mutable int m_location;
 	};
 

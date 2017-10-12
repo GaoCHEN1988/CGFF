@@ -3,6 +3,8 @@
 
 #include "baseWindow.h"
 #include "examples/app3DLayer.h"
+#include "examples/test2DLayer.h"
+#include "examples/test3DLayer.h"
 
 namespace CGFF {
 
@@ -23,6 +25,8 @@ namespace CGFF {
         static LearnGLWindow * m_instance;
 
         QSharedPointer<CGFF::App3DLayer> m_appDLayer;
+        QSharedPointer<CGFF::Test2DLayer> m_test2DLayer;
+        QSharedPointer<CGFF::Test3DLayer> m_test3DLayer;
     };
 }
 

@@ -12,22 +12,34 @@ namespace CGFF {
 	}
 
 	GLShaderUniformDeclaration::GLShaderUniformDeclaration(QSharedPointer<ShaderStruct> uniformStruct, const QString& name, uint count)
-		: m_struct(uniformStruct)
-		, m_name(name)
+		: m_name(name)
 		, m_count(count)
 		, m_type(GLShaderUniformDeclaration::Type::STRUCT)
 	{
-		m_size = m_struct->getSize() * count;
+        m_structList.resize(m_count);
+        for (uint i = 0; i < m_count; i++)
+        {
+            m_structList[i] = QSharedPointer<ShaderStruct>(new ShaderStruct(*uniformStruct));
+            m_structList[i]->setOffset(uniformStruct->getOffset() + i * uniformStruct->getSize());
+        }
+		m_size = uniformStruct->getSize() * count;
 	}
 
 	void GLShaderUniformDeclaration::setOffset(uint offset)
 	{
 		if (m_type == GLShaderUniformDeclaration::Type::STRUCT)
-			m_struct->setOffset(offset);
+			m_structList[0]->setOffset(offset);
 
 		m_offset = offset;
 	}
 
+    QSharedPointer<ShaderUniformDeclaration> GLShaderUniformDeclaration::deepCopy()
+    {
+        QSharedPointer<ShaderUniformDeclaration> result = QSharedPointer<ShaderUniformDeclaration>(
+            new GLShaderUniformDeclaration(m_type, m_name, m_count));
+
+        return result;
+    }
 
 	uint GLShaderUniformDeclaration::sizeOfUniformType(GLShaderUniformDeclaration::Type type)
 	{

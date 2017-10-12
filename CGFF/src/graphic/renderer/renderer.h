@@ -31,6 +31,12 @@ namespace CGFF {
         SUBTRACT
     };
 
+    enum class Render3DTarget
+    {
+        SCREEN = 0,
+        BUFFER = 1
+    };
+
     class Renderer
     {
     protected:
@@ -59,12 +65,16 @@ namespace CGFF {
         inline static void setBlendEquation(RendererBlendFunction blendEquation) { s_instance->setBlendEquationInternal(blendEquation); }
 
         inline static QString getTitle() { return s_instance->getTitleInternal(); }
+
+        inline static Render3DTarget getRenderTarget() { return s_renderTarget; }
+        inline static void setRenderTarget(Render3DTarget target) { s_renderTarget = target; }
     public:
         static void init();
         inline static QSharedPointer<Renderer> getRenderer() { return s_instance; }
 
     private:
         static QSharedPointer<Renderer> s_instance;
+        static Render3DTarget s_renderTarget;
     };
 
 }

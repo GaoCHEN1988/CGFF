@@ -12,9 +12,6 @@ in VS_OUT {
 uniform sampler2D diffuseMap;
 uniform sampler2D normalMap;
 
-uniform vec3 lightPos;
-uniform vec3 viewPos;
-
 void main()
 {           
      // obtain normal from normal map in range [0,1]
@@ -25,7 +22,7 @@ void main()
     // get diffuse color
     vec3 color = texture(diffuseMap, fs_in.TexCoords).rgb;
     // ambient
-    vec3 ambient = 0.1 * color;
+    vec3 ambient = 0.2 * color;
     // diffuse
     vec3 lightDir = normalize(fs_in.TangentLightPos - fs_in.TangentFragPos);
     float diff = max(dot(lightDir, normal), 0.0);

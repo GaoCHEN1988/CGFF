@@ -12,6 +12,8 @@ namespace CGFF
             , parent)
         , m_shadowMapping(nullptr)
         , m_pointShadows(nullptr)
+        , m_normalMapping(nullptr)
+        , m_parallaxMapping(nullptr)
     {
     }
 
@@ -22,7 +24,7 @@ namespace CGFF
 
     void App3DLayer::init()
     {
-        testType = AppType::pointShadows;
+        testType = AppType::hdr;
 
         switch (testType)
         {
@@ -36,14 +38,22 @@ namespace CGFF
         }
         case AppType::hdr:
         {
+            m_hdr = QSharedPointer<LearnGL::HDR>(new LearnGL::HDR(m_scene));
+            m_hdr->init();
+
             break;
         }
         case AppType::normalMapping:
         {
+            m_normalMapping = QSharedPointer<LearnGL::NormalMapping>(new LearnGL::NormalMapping(m_scene));
+            m_normalMapping->init();
+
             break;
         }
         case AppType::parallaxMapping:
         {
+            m_parallaxMapping = QSharedPointer<LearnGL::ParallaxMapping>(new LearnGL::ParallaxMapping(m_scene));
+            m_parallaxMapping->init();
             break;
         }
         case AppType::pbr:
@@ -84,14 +94,17 @@ namespace CGFF
         }
         case AppType::hdr:
         {
+            m_hdr->render();
             break;
         }
         case AppType::normalMapping:
         {
+            m_normalMapping->render();
             break;
         }
         case AppType::parallaxMapping:
         {
+            m_parallaxMapping->render();
             break;
         }
         case AppType::pbr:
@@ -131,6 +144,24 @@ namespace CGFF
     void App3DLayer::mouseReleaseEvent(QMouseEvent *event)
     {
         Layer3D::getScene()->getCamera()->mousePressEvent(event);
+    }
+
+    void App3DLayer::keyPressEvent(QKeyEvent *event)
+    {
+        switch (event->key())
+        {
+        case (Qt::Key_1) :
+        {
+            Renderer::setRenderTarget(CGFF::Render3DTarget::SCREEN);
+            break;
+        }
+
+        case (Qt::Key_2) :
+        {
+            Renderer::setRenderTarget(CGFF::Render3DTarget::BUFFER);
+            break;
+        }
+        }
     }
 
     void App3DLayer::closeEvent(QCloseEvent *event)

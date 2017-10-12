@@ -5,6 +5,7 @@
 namespace CGFF {
 
     QSharedPointer<Renderer> Renderer::s_instance = nullptr;
+    Render3DTarget Renderer::s_renderTarget = Render3DTarget::BUFFER;
 
     void Renderer::init()
     {

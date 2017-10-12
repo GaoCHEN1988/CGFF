@@ -237,6 +237,7 @@
     <ClCompile Include="src\graphic\sprite.cpp" />
     <ClCompile Include="src\maths\aabb.cpp" />
     <ClCompile Include="src\platform\opengl\glContext.cpp" />
+    <ClCompile Include="src\platform\opengl\glFbTexture.cpp" />
     <ClCompile Include="src\platform\opengl\glFramebuffer2D.cpp" />
     <ClCompile Include="src\platform\opengl\glFramebufferDepth.cpp" />
     <ClCompile Include="src\platform\opengl\glFramebufferDepthCube.cpp" />
@@ -403,6 +404,7 @@
     <ClInclude Include="src\maths\aabb.h" />
     <ClInclude Include="src\maths\qtmaths.h" />
     <ClInclude Include="src\platform\opengl\glContext.h" />
+    <ClInclude Include="src\platform\opengl\glFbTexture.h" />
     <ClInclude Include="src\platform\opengl\glFramebuffer2D.h" />
     <ClInclude Include="src\platform\opengl\glFramebufferDepth.h" />
     <ClInclude Include="src\platform\opengl\glFramebufferDepthCube.h" />

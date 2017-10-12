@@ -5,9 +5,11 @@
 
 #include "graphic/api/framebufferDepth.h"
 #include "graphic/api/framebufferDepthCube.h"
+#include "graphic/api/framebuffer2D.h"
 
 //#define TEST_DEPTH_MAP
-#define TEST_DEPTH_MAP_CUBE
+//#define TEST_DEPTH_MAP_CUBE
+#define TEST_FRAME_BUFFER
 
 namespace CGFF {
 
@@ -34,6 +36,7 @@ namespace CGFF {
         //void setSystemUniforms(QSharedPointer<QOpenGLShaderProgram> shader);
 		void setSystemUniforms(QSharedPointer<Shader> shader);
 	
+        void renderToFrameBuffer();
         void renderToDepthMap();
         void renderToDepthMapCube();
 	private:
@@ -50,6 +53,12 @@ namespace CGFF {
 
         QSharedPointer<FramebufferDepthCube> m_depthCubeBuffer;
         QSharedPointer<MaterialInstance> m_depthMappingCubeMaterial;
+
+        QSharedPointer<Framebuffer2D> m_frameBuffer;
+
+        QSharedPointer<Mesh> m_screenQuad;
+        QSharedPointer<MaterialInstance> m_screenQuadMaterial;
+
     };
 }
 

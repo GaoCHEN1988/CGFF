@@ -130,13 +130,15 @@ namespace CGFF {
 #ifdef FRAMEBUFFER_TEST
 
         m_frameBuffer = Framebuffer2D::create(m_viewportSize.width(), m_viewportSize.height());
-        m_screenMaterial = QSharedPointer<Material>(new Material(ShaderFactory::FramebufferShader()));
+        m_screenMaterial = QSharedPointer<MaterialInstance>(new MaterialInstance(QSharedPointer<Material>(new Material(ShaderFactory::FramebufferShader()))));
 
-        QMatrix4x4 proj = QMatrix4x4();
-        proj.ortho(0, (float)m_screenSize.width(), (float)m_screenSize.height(), 0, -1.0f, 100.0f);
-        m_screenMaterial->setUniform("projectionMatrix", proj);
-        m_screenQuad = MeshFactory::CreateQuad(0, 0, (float)m_screenSize.width(), (float)m_screenSize.height(),
-            QSharedPointer<MaterialInstance>(new MaterialInstance(m_screenMaterial)));
+        //QMatrix4x4 proj = QMatrix4x4();
+        //proj.ortho(0, (float)m_screenSize.width(), (float)m_screenSize.height(), 0, -1.0f, 100.0f);
+        //m_screenMaterial->setUniform("projectionMatrix", proj);
+        //m_screenQuad = MeshFactory::CreateQuad(0, 0, (float)m_screenSize.width(), (float)m_screenSize.height(),
+        //    m_screenMaterial);
+
+        m_screenQuad = MeshFactory::CreateScreenQuad(m_screenMaterial);
 
         m_postEffects = QSharedPointer<PostEffects>(new PostEffects);
         m_postEffectsBuffer = Framebuffer2D::create(m_viewportSize.width(), m_viewportSize.height());
@@ -185,6 +187,9 @@ namespace CGFF {
                 m_frameBuffer = Framebuffer2D::create(m_viewportSize.width(), m_viewportSize.height());
                 m_postEffectsBuffer.clear();               
                 m_postEffectsBuffer = Framebuffer2D::create(m_viewportSize.width(), m_viewportSize.height());
+                //m_screenQuad.clear();
+                //m_screenQuad = MeshFactory::CreateQuad(0, 0, (float)m_screenSize.width(), (float)m_screenSize.height(),
+                //    m_screenMaterial);
             }
 
             if (m_postEffectsEnabled)
@@ -197,12 +202,17 @@ namespace CGFF {
             //Test
             Renderer::clear(RENDERER_BUFFER_DEPTH | RENDERER_BUFFER_COLOR);
             Renderer::setBlendFunction(RendererBlendFunction::ONE, RendererBlendFunction::ZERO);
-            Renderer::setViewport(0, 0, m_screenSize.width(), m_screenSize.height());
             if (!m_camera.isNull())
             {
                 m_camera->resize(m_screenSize.width(), m_screenSize.height());
                 memcpy(m_systemUniforms[sys_ProjectionMatrixIndex].buffer.buffer_pointer.data() + m_systemUniforms[sys_ProjectionMatrixIndex].offset, &m_camera->getProjectionMatrix(), sizeof(QMatrix4x4));
             }
+
+            //QMatrix4x4 proj = QMatrix4x4();
+            //proj.ortho(0, (float)m_screenSize.width(), (float)m_screenSize.height(), 0, -1.0f, 100.0f);
+            //m_screenMaterial->setUniform("projectionMatrix", proj);
+            //Renderer::setViewport(0, 0, m_screenSize.width(), m_screenSize.height());
+
 #endif
         }
         else
@@ -354,7 +364,7 @@ namespace CGFF {
 	
     void BatchRenderer2D::flush() 
 	{
-		Renderer::setDepthTesting(false);
+		//Renderer::setDepthTesting(false);
 
 		m_shader->bind();
 
@@ -401,11 +411,11 @@ namespace CGFF {
             }
 
 
-            m_screenQuad->getMaterialInstance()->getMaterial()->bind();
+            m_screenMaterial->bind();
             m_screenQuad->bind();
             m_screenQuad->draw();
             m_screenQuad->unBind();
-            m_screenQuad->getMaterialInstance()->getMaterial()->unbind();
+            m_screenMaterial->unbind();
         }
 #else
         Renderer::setViewport(0, 0, m_screenSize.width(), m_screenSize.height());

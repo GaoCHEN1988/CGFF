@@ -7,7 +7,7 @@ namespace LearnGL {
     static QSharedPointer<Shader>  debugDepthQuadShader;
     static QSharedPointer<Texture2D> woodTexture;
     static QVector3D g_CubeTransform(0, 10.0, 0);
-    static QVector3D g_LightPos(10.0, 40.0, 10.0);
+    static QVector3D g_LightPos(50.0, 50.0, 50.0);
 
     ShadowMappingDepth::ShadowMappingDepth(const QSharedPointer<Scene>& scene)
         : m_scene(scene)
@@ -63,7 +63,7 @@ namespace LearnGL {
 
     void ShadowMappingDepth::render()
     {
-        m_objectMaterialInstance->setUniform("lightPos", g_LightPos);
+        //m_objectMaterialInstance->setUniform("lightPos", g_LightPos);
         m_objectMaterialInstance->setUniform("viewPos", m_scene->getCamera()->getPosition());
     }
 

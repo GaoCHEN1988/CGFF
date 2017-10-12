@@ -607,6 +607,9 @@
     <ClCompile Include="src\platform\opengl\glFramebufferDepthCube.cpp">
       <Filter>Source Files\platform\opengl</Filter>
     </ClCompile>
+    <ClCompile Include="src\platform\opengl\glFbTexture.cpp">
+      <Filter>Source Files\platform\opengl</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <None Include="ClassDiagram.cd" />
@@ -946,6 +949,9 @@
       <Filter>Header Files\graphic\api</Filter>
     </ClInclude>
     <ClInclude Include="src\platform\opengl\glFramebufferDepthCube.h">
+      <Filter>Header Files\platform\opengl</Filter>
+    </ClInclude>
+    <ClInclude Include="src\platform\opengl\glFbTexture.h">
       <Filter>Header Files\platform\opengl</Filter>
     </ClInclude>
   </ItemGroup>

@@ -14,7 +14,7 @@
 #include <cstddef>
 #include <QPainter>
 
-//#define FRAMEBUFFER_TEST
+#define FRAMEBUFFER_TEST
 
 namespace CGFF {
 
@@ -76,14 +76,10 @@ namespace CGFF {
      
 	private:
 		void init();
-        //float submitTexture(uint textureID);
         float submitTexture(const QSharedPointer<Texture>& texture);
        
 	private:
 
-		//QOpenGLVertexArrayObject m_vao;
-		//QOpenGLBuffer* m_vboBuffer;
-		//QOpenGLBuffer* m_iboBuffer;
 		QSharedPointer<Shader> m_shader;
 		QVector<BR2DSystemUniform> m_systemUniforms;
 		QVector<UniformBuffer> m_systemUniformBuffers;
@@ -94,21 +90,15 @@ namespace CGFF {
 
 		VertexData* m_buffer;
         QSharedPointer<Framebuffer2D> m_frameBuffer;
-        //QSharedPointer<QOpenGLShaderProgram> m_framebufferShader;
         QSharedPointer<Framebuffer2D> m_postEffectsBuffer;
-        QSharedPointer<Material> m_postEffectsMaterial;
-        QSharedPointer<Material> m_screenMaterial;
+        QSharedPointer<MaterialInstance> m_postEffectsMaterial;
+        QSharedPointer<MaterialInstance> m_screenMaterial;
 
 		GLsizei m_indexCount;
-		//QVector<GLuint> m_textureSlots;
         QSize m_viewportSize;
         QSize m_screenSize;
-        //int m_screenBuffer;
-        //QOpenGLFramebufferObjectFormat m_format;
-        //QSharedPointer<QOpenGLTexture> m_strTexture;
 		QVector<QSharedPointer<Texture>> m_strTextures;
 		QVector<QSharedPointer<Texture>> m_textures;
-		//QSharedPointer<VertexArray> m_ScreenQuad;
 		QSharedPointer<Camera> m_camera;
         QSharedPointer<Mesh> m_screenQuad;
 		uint* m_indices;

@@ -8,14 +8,10 @@ namespace CGFF {
 	};
 
     PostEffectsPass::PostEffectsPass(const QSharedPointer<Shader>& shader, QSize& size)
-        : m_material(QSharedPointer<Material>(new Material(shader)))
+        : m_material(nullptr)
         , m_size(size)
     {
-        m_material->bind();
-        QMatrix4x4 proj;
-        proj.ortho(0, (float)m_size.width(), (float)m_size.height(), 0, -1.0f, 100.0f);
-        m_material->setUniform("projectionMatrix", proj);
-        m_material->unbind();
+        m_material = QSharedPointer<MaterialInstance>(new MaterialInstance(QSharedPointer<Material>(new Material(shader))));
     }
     PostEffectsPass::~PostEffectsPass()
     {
@@ -29,14 +25,6 @@ namespace CGFF {
     {
         m_material->unbind();
     }
-
-    void PostEffectsPass::setSize(QSize size)
-    {
-        QMatrix4x4 proj;
-        proj.ortho(0, (float)m_size.width(), (float)m_size.height(), 0, -1.0f, 100.0f);
-        m_material->setUniform("projectionMatrix", proj);
-    }
-
 
     void PostEffectsPass::renderPass(const QSharedPointer<Framebuffer>& source, const QSharedPointer<Mesh>& mesh)
     {

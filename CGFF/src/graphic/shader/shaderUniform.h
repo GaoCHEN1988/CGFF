@@ -21,7 +21,7 @@ namespace CGFF {
 		virtual uint getSize() const = 0;
 		virtual uint getCount() const = 0;
 		virtual uint getOffset() const = 0;
-
+        virtual QSharedPointer<ShaderUniformDeclaration> deepCopy() = 0;
 	private:
 		friend class ShaderProgram;
 		friend class ShaderStruct;
@@ -49,7 +49,8 @@ namespace CGFF {
 	class ShaderStruct
 	{
 	public:
-		ShaderStruct(const QString& name);
+        explicit ShaderStruct(const QString& name);
+        explicit ShaderStruct(const ShaderStruct& shaderStruct);
 
 		void addField(QSharedPointer<ShaderUniformDeclaration> field);
 
