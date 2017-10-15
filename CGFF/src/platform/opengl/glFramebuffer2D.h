@@ -12,7 +12,7 @@ namespace CGFF {
 	{
 
 	public:
-		GLFramebuffer2D(int width, int height);
+		GLFramebuffer2D(int width, int height, const TextureParameters& params = TextureParameters());
 		~GLFramebuffer2D();
 
 		void bind() override;
@@ -35,7 +35,7 @@ namespace CGFF {
 		GLuint m_depthbufferHandle;
 
         QSharedPointer<GLFbTexture> m_glTexture;
-        //QSharedPointer<GLTexture2D> m_glTexture;
+        TextureParameters m_textureParams;
 
 		int m_width, m_height;
 		QVector4D m_clearColor;

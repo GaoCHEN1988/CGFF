@@ -2,18 +2,18 @@
 
 namespace CGFF {
 
-	GLFramebuffer2D::GLFramebuffer2D(int width, int height)
+	GLFramebuffer2D::GLFramebuffer2D(int width, int height, const TextureParameters& params)
 		: m_glTexture(nullptr)
 		, m_width(width)
 		, m_height(height)
         , m_clearColor(0, 0, 0, 0)
+        , m_textureParams(params)
 	{
 		init();
 	}
 
 	GLFramebuffer2D::~GLFramebuffer2D()
 	{
-		//GL->glDeleteFramebuffers(1, &m_framebufferHandle);
 	}
 
 	void GLFramebuffer2D::bind()
@@ -60,11 +60,8 @@ namespace CGFF {
 	}
 
 	void GLFramebuffer2D::init()
-	{
-		
-        m_glTexture = QSharedPointer<GLFbTexture>(new GLFbTexture(m_width, m_height));
-
-        //m_glTexture = QSharedPointer<GLTexture2D>(new GLTexture2D(m_width, m_height, TextureParameters()));
+	{	
+        m_glTexture = QSharedPointer<GLFbTexture>(new GLFbTexture(m_width, m_height, m_textureParams));
 
 		GL->glGenFramebuffers(1, &m_framebufferHandle);
 		GL->glGenRenderbuffers(1, &m_depthbufferHandle);

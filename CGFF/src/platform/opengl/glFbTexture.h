@@ -6,28 +6,10 @@
 
 namespace CGFF {
 
-    struct GLTextureParameters
-    {
-        GLuint InternalFormat;
-        GLenum Format;
-        GLenum Type;
-        GLenum MinTexParameter;
-        GLenum MaxTexParameter;
-
-        GLTextureParameters()
-            : InternalFormat(GL_RGBA16F)
-            , Format(GL_RGBA)
-            , Type(GL_FLOAT)
-            , MinTexParameter(GL_LINEAR)
-            , MaxTexParameter(GL_LINEAR)
-        {
-        }
-    };
-
     class GLFbTexture : public Texture2D
     {
     public:
-        GLFbTexture(int width, int height, GLTextureParameters parameters = GLTextureParameters(), const QString& name = "FramebufferTexture");
+        GLFbTexture(int width, int height, const TextureParameters& parameters = TextureParameters(), const QString& name = "FramebufferTexture");
      
         virtual ~GLFbTexture();
 
@@ -40,6 +22,12 @@ namespace CGFF {
         inline int getWidth() const override { return m_width; }
         inline int getHeight() const override { return m_height; }
 
+        static GLenum toOpenGlPixelFormat(QOpenGLTexture::PixelFormat format);
+        static GLuint toOpenGlTextureFormat(QOpenGLTexture::TextureFormat format);
+        static GLenum toOpenGlPixelType(QOpenGLTexture::PixelType type);
+        static GLenum toOpenGlFilter(QOpenGLTexture::Filter filter);
+        static GLenum toOpenGlWrap(QOpenGLTexture::WrapMode wrap);
+
     private:
         void init();
 
@@ -48,7 +36,7 @@ namespace CGFF {
         int m_width;
         int m_height;
         GLuint m_glTextureId;
-        GLTextureParameters m_textureParams;
+        TextureParameters m_textureParams;
     };
 }
 

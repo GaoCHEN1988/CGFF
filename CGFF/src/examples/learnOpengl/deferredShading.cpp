@@ -44,9 +44,7 @@ namespace LearnGL {
                 QSharedPointer<CGFF::Entity> objectEntity =
                     QSharedPointer<Entity>(new Entity(mesh, trans));
                 m_scene->add(objectEntity);
-
             }
-
         }
 
         g_shaderLightBox = Shader::createFromFile("LightBoxShader",

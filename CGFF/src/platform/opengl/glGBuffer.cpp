@@ -62,19 +62,12 @@ namespace CGFF {
         GL->glGenFramebuffers(1, &m_framebufferHandle);
         GL->glBindFramebuffer(GL_FRAMEBUFFER, m_framebufferHandle);
 
-        GLTextureParameters param;
-        param.InternalFormat = GL_RGB32F;
-        param.Format = GL_RGB;
-        param.Type = GL_FLOAT;
-        param.MinTexParameter = GL_NEAREST;
-        param.MaxTexParameter = GL_NEAREST;
-
-        //param.InternalFormat = GL_RGBA;
-        //param.Format = GL_RGBA;
-        //param.Type = GL_UNSIGNED_BYTE;
-        //param.MinTexParameter = GL_NEAREST;
-        //param.MaxTexParameter = GL_NEAREST;
-
+        TextureParameters param;
+        param.gl_textureFormat = QOpenGLTexture::RGB32F;
+        param.gl_pixelFormat = QOpenGLTexture::PixelFormat::RGB;
+        param.gl_pixelType = QOpenGLTexture::PixelType::Float32;
+        param.gl_filter = QOpenGLTexture::Filter::Nearest;
+ 
         m_textures[0] = QSharedPointer<GLFbTexture>(new GLFbTexture(m_width, m_height, param));
         GL->glFramebufferTexture2D(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT0, GL_TEXTURE_2D, m_textures[0]->getID(), 0);
 
@@ -83,11 +76,11 @@ namespace CGFF {
         GL->glFramebufferTexture2D(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT1, GL_TEXTURE_2D, m_textures[1]->getID(), 0);
 
         // color + specular color buffer
-        param.InternalFormat = GL_RGBA;
-        param.Format = GL_RGBA;
-        param.Type = GL_UNSIGNED_BYTE;
-        param.MinTexParameter = GL_NEAREST;
-        param.MaxTexParameter = GL_NEAREST;
+        param.gl_textureFormat = QOpenGLTexture::RGBAFormat;
+        param.gl_pixelFormat = QOpenGLTexture::PixelFormat::RGBA;
+        param.gl_pixelType = QOpenGLTexture::PixelType::UInt8;
+        param.gl_filter = QOpenGLTexture::Filter::Nearest;
+
         m_textures[2] = QSharedPointer<GLFbTexture>(new GLFbTexture(m_width, m_height, param));
         GL->glFramebufferTexture2D(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT2, GL_TEXTURE_2D, m_textures[2]->getID(), 0);
 
