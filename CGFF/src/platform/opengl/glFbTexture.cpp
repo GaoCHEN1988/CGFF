@@ -3,7 +3,7 @@
 
 namespace CGFF {
 
-    GLFbTexture::GLFbTexture(int width, int height, TextureParameters parameters, const QString& name)
+    GLFbTexture::GLFbTexture(int width, int height, GLTextureParameters parameters, const QString& name)
         : m_name(name)
         , m_width(width)
         , m_height(height)
@@ -15,7 +15,7 @@ namespace CGFF {
 
     GLFbTexture::~GLFbTexture()
     {
-
+        GL->glBindTexture(GL_TEXTURE_2D, 0);
     }
 
     void GLFbTexture::bind(uint slot)
@@ -34,8 +34,8 @@ namespace CGFF {
     {
         GL->glGenTextures(1, &m_glTextureId);
         GL->glBindTexture(GL_TEXTURE_2D, m_glTextureId);
-        GL->glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA16F, m_width, m_height, 0, GL_RGBA, GL_FLOAT, NULL);
-        GL->glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
-        GL->glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+        GL->glTexImage2D(GL_TEXTURE_2D, 0, m_textureParams.InternalFormat, m_width, m_height, 0, m_textureParams.Format, m_textureParams.Type, NULL);
+        GL->glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, m_textureParams.MinTexParameter);
+        GL->glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, m_textureParams.MaxTexParameter);
     }
 }

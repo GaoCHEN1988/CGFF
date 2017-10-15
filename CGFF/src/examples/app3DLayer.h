@@ -40,6 +40,7 @@ namespace CGFF {
         QSharedPointer<LearnGL::NormalMapping> m_normalMapping;
         QSharedPointer<LearnGL::ParallaxMapping> m_parallaxMapping;
         QSharedPointer<LearnGL::HDR> m_hdr;
+        QSharedPointer<LearnGL::DeferredShading> m_deferredShading;
 	};
 }
 

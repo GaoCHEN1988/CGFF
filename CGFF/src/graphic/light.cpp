@@ -2,6 +2,7 @@
 
 namespace CGFF 
 {
+#if 0
 	Light::Light(const QVector3D& direction, float intensity , const QVector4D& color)
 		: direction(direction)
 		, intensity(intensity)
@@ -12,4 +13,6 @@ namespace CGFF
 		, lightVector()
 	{
 	}
+
+#endif
 }

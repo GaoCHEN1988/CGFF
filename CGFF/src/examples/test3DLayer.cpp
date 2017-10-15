@@ -126,8 +126,15 @@ namespace CGFF {
 		trans_dagger.translate(g_DaggerTransform);
 		trans_dagger.scale(0.2);
 
-		m_dagger = QSharedPointer<Entity>(new Entity(daggerModel->getMesh(), trans_dagger));
-		m_scene->add(m_dagger);
+		//m_dagger = QSharedPointer<Entity>(new Entity(daggerModel->getMesh(), trans_dagger));
+		//m_scene->add(m_dagger);
+
+        for (const QSharedPointer<Mesh>& mesh : daggerModel->getMeshes())
+        {
+            QSharedPointer<CGFF::Entity> objectEntity =
+                QSharedPointer<Entity>(new Entity(mesh, trans_dagger));
+            m_scene->add(objectEntity);
+        }
 
 		QMatrix4x4 trans_cube;
 		trans_cube.translate(g_CubeTransform);
@@ -135,8 +142,15 @@ namespace CGFF {
 		QSharedPointer<PBRMaterial> cubeMaterial = QSharedPointer<PBRMaterial>(new PBRMaterial(pbrShader));
 		cubeMaterial->setEnviromentMap(environment);
 		QSharedPointer<Model> cubeModel = QSharedPointer<Model>(new Model("/resource/RoundedCube.obj", QSharedPointer<MaterialInstance>(new MaterialInstance(cubeMaterial))));
-		m_cube = QSharedPointer<Entity>(new Entity(cubeModel->getMesh(), trans_cube));
-		m_scene->add(m_cube);
+		//m_cube = QSharedPointer<Entity>(new Entity(cubeModel->getMesh(), trans_cube));
+		//m_scene->add(m_cube);
+
+        for (const QSharedPointer<Mesh>& mesh : cubeModel->getMeshes())
+        {
+            QSharedPointer<CGFF::Entity> objectEntity =
+                QSharedPointer<Entity>(new Entity(mesh, trans_cube));
+            m_scene->add(objectEntity);
+        }
 
 		//test
 		QSharedPointer<PBRMaterial> planeMaterial = QSharedPointer<PBRMaterial>(new PBRMaterial(pbrShader));
@@ -154,10 +168,10 @@ namespace CGFF {
 
 		m_scene->add(m_plane);
 
-		QSharedPointer<LightSetup> lights = QSharedPointer<LightSetup>(new LightSetup());
-		m_light = QSharedPointer<Light>(new Light(QVector3D(0.8f, 0.8f, 0.8f)));
-		lights->add(m_light);
-		m_scene->pushLightSetup(lights);
+		//QSharedPointer<LightSetup> lights = QSharedPointer<LightSetup>(new LightSetup());
+		//m_light = QSharedPointer<Light>(new Light(QVector3D(0.8f, 0.8f, 0.8f)));
+		//lights->add(m_light);
+		//m_scene->pushLightSetup(lights);
 
 
 		//DEBUG_MENU("Light Direction", &lights->getLights()[0]->direction, -1.0f, 1.0f);

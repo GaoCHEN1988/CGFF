@@ -5,6 +5,7 @@
 #include "graphic/scene.h"
 #include "graphic/renderer/renderer3d.h"
 #include "graphic/renderer/forwardRenderer.h"
+#include "graphic/renderer/deferredRenderer.h"
 
 namespace CGFF {
 
@@ -21,7 +22,10 @@ namespace CGFF {
 		virtual void closeEvent(QCloseEvent *event) override;
 
         inline QSharedPointer<Scene>& getScene() { return m_scene; }
-
+        inline void setRenderer(const QSharedPointer<Renderer3D>& renderer)
+        {
+            m_renderer = renderer;
+        }
     protected:
         QSharedPointer<Scene> m_scene;
         QSharedPointer<Renderer3D> m_renderer;

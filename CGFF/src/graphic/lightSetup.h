@@ -2,6 +2,7 @@
 #define CGFF_LIGHT_SETUP_H
 
 #include "light.h"
+#include "entity/entity.h"
 
 namespace CGFF {
 
@@ -11,13 +12,15 @@ namespace CGFF {
         LightSetup();
         ~LightSetup();
 
-        QSharedPointer<Light> add(QSharedPointer<Light> light);
-        void remove(QSharedPointer<Light> light);
+        Light add(const Light& light, const QSharedPointer<Entity>& lightEntity = nullptr);
+        void remove(int i);
 
-        inline const QVector<QSharedPointer<Light>>& getLights() const { return m_lights; }
+        inline const QVector<Light>& getLights() const { return m_lights; }
+        inline const QVector<QSharedPointer<Entity>>& getLightEntities() const { return m_lightEntities; }
 
     private:
-        QVector<QSharedPointer<Light>> m_lights;
+        QVector<Light> m_lights;
+        QVector<QSharedPointer<Entity>> m_lightEntities;
     };
 }
 

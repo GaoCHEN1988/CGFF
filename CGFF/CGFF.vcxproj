@@ -192,6 +192,7 @@
     <ClCompile Include="src\graphic\api\framebuffer2D.cpp" />
     <ClCompile Include="src\graphic\api\framebufferDepth.cpp" />
     <ClCompile Include="src\graphic\api\framebufferDepthCube.cpp" />
+    <ClCompile Include="src\graphic\api\gBuffer.cpp" />
     <ClCompile Include="src\graphic\api\indexBuffer.cpp" />
     <ClCompile Include="src\graphic\api\layoutBuffer.cpp" />
     <ClCompile Include="src\graphic\API\texture2D.cpp" />
@@ -205,6 +206,7 @@
     <ClCompile Include="src\graphic\camera\fpsCamea.cpp" />
     <ClCompile Include="src\graphic\camera\mayaCamera.cpp" />
     <ClCompile Include="src\graphic\camera\orthographicCamera.cpp" />
+    <ClCompile Include="src\graphic\renderer\deferredRenderer.cpp" />
     <ClCompile Include="src\graphic\renderer\forwardRenderer.cpp" />
     <ClCompile Include="src\graphic\label.cpp" />
     <ClCompile Include="src\graphic\layer\group.cpp" />
@@ -241,6 +243,7 @@
     <ClCompile Include="src\platform\opengl\glFramebuffer2D.cpp" />
     <ClCompile Include="src\platform\opengl\glFramebufferDepth.cpp" />
     <ClCompile Include="src\platform\opengl\glFramebufferDepthCube.cpp" />
+    <ClCompile Include="src\platform\opengl\glGBuffer.cpp" />
     <ClCompile Include="src\platform\opengl\glIndexBuffer.cpp" />
     <ClCompile Include="src\platform\opengl\glRenderer.cpp" />
     <ClCompile Include="src\platform\opengl\glShader.cpp" />
@@ -351,6 +354,7 @@
     <ClInclude Include="src\graphic\api\framebuffer2D.h" />
     <ClInclude Include="src\graphic\api\framebufferDepth.h" />
     <ClInclude Include="src\graphic\api\framebufferDepthCube.h" />
+    <ClInclude Include="src\graphic\api\gBuffer.h" />
     <ClInclude Include="src\graphic\api\indexBuffer.h" />
     <ClInclude Include="src\graphic\api\layoutBuffer.h" />
     <ClInclude Include="src\graphic\api\texture.h" />
@@ -365,6 +369,7 @@
     <ClInclude Include="src\graphic\camera\fpsCamera.h" />
     <ClInclude Include="src\graphic\camera\mayaCamera.h" />
     <ClInclude Include="src\graphic\camera\orthographicCamera.h" />
+    <ClInclude Include="src\graphic\renderer\deferredRenderer.h" />
     <ClInclude Include="src\graphic\renderer\forwardRenderer.h" />
     <ClInclude Include="src\graphic\irenderable.h" />
     <ClInclude Include="src\graphic\label.h" />
@@ -408,6 +413,7 @@
     <ClInclude Include="src\platform\opengl\glFramebuffer2D.h" />
     <ClInclude Include="src\platform\opengl\glFramebufferDepth.h" />
     <ClInclude Include="src\platform\opengl\glFramebufferDepthCube.h" />
+    <ClInclude Include="src\platform\opengl\glGBuffer.h" />
     <ClInclude Include="src\platform\opengl\glIndexBuffer.h" />
     <ClInclude Include="src\platform\opengl\glRenderer.h" />
     <ClInclude Include="src\platform\opengl\glShader.h" />

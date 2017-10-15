@@ -2,7 +2,7 @@
 
 namespace CGFF {
 
-    MeshComponent::MeshComponent(QSharedPointer<Mesh> mesh)
+    MeshComponent::MeshComponent(const QSharedPointer<Mesh>&  mesh)
         : mesh(mesh)
     {
     }

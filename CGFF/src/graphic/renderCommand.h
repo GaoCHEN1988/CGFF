@@ -11,7 +11,8 @@ namespace CGFF {
     struct RenderCommand
     {
         QSharedPointer<Mesh> mesh;
-		QMatrix4x4 transform;
+        QMatrix4x4 transform;
+        QVector4D color;
 		QSharedPointer<Shader> shader;
     };
 

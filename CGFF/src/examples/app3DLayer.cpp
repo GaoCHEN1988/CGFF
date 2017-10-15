@@ -24,7 +24,7 @@ namespace CGFF
 
     void App3DLayer::init()
     {
-        testType = AppType::hdr;
+        testType = AppType::deferredShading;
 
         switch (testType)
         {
@@ -34,6 +34,10 @@ namespace CGFF
         }
         case AppType::deferredShading:
         {
+            setRenderer(QSharedPointer<DeferredRenderer>(new DeferredRenderer(m_scene->getSize())));
+            m_deferredShading = QSharedPointer<LearnGL::DeferredShading>(new LearnGL::DeferredShading(m_scene));
+            m_deferredShading->init();
+
             break;
         }
         case AppType::hdr:
@@ -90,6 +94,7 @@ namespace CGFF
         }
         case AppType::deferredShading:
         {
+            m_deferredShading->render();
             break;
         }
         case AppType::hdr:

@@ -24,7 +24,7 @@ namespace CGFF {
         void begin() override;
 		void beginScene(QSharedPointer<Camera> camera) override;
         void submit(const RenderCommand& command) override;
-        void submitMesh(QSharedPointer<Mesh> mesh, const QMatrix4x4& transform) override;
+        void submitMesh(const QSharedPointer<Mesh>& mesh, const QMatrix4x4& transform) override;
         void submitLightSetup(const QSharedPointer<LightSetup>& lightSetup) override;
 		void endScene() override;
 		void end() override;

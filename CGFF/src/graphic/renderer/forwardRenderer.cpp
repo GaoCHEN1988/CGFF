@@ -5,21 +5,6 @@
 
 namespace CGFF {
 
-	enum VSSystemUniformIndices : int
-	{
-		VSSystemUniformIndex_ProjectionMatrix = 0,
-		VSSystemUniformIndex_ViewMatrix = 1,
-		VSSystemUniformIndex_ModelMatrix = 2,
-		VSSystemUniformIndex_CameraPosition = 3,
-		VSSystemUniformIndex_Size = 4
-	};
-
-	enum PSSystemUniformIndices : int
-	{
-		PSSystemUniformIndex_Lights = 0,
-		PSSystemUniformIndex_Size = 1
-	};
-
     //Using for LearnOpenGL tutorial, should not be here
     static QSharedPointer<Shader>  depthMappingShader;
     static QSharedPointer<Shader>  depthMappingCubeShader;
@@ -163,7 +148,7 @@ namespace CGFF {
         m_commandQueue.push_back(command);
     }
 
-    void ForwardRenderer::submitMesh(QSharedPointer<Mesh> mesh, const QMatrix4x4& transform)
+    void ForwardRenderer::submitMesh(const QSharedPointer<Mesh>& mesh, const QMatrix4x4& transform)
     {
         RenderCommand command;
         command.mesh = mesh;
@@ -174,12 +159,30 @@ namespace CGFF {
 
     void ForwardRenderer::submitLightSetup(const QSharedPointer<LightSetup>& lightSetup)
     {
-        auto lights = lightSetup->getLights();
-        Q_ASSERT(lights.size() <= 1);//To do: support multiple lights
-        for (int i = 0; i < lights.size(); i++)
-        {
-			memcpy(m_PSSystemUniformBuffer.data() + m_PSSystemUniformBufferOffsets[PSSystemUniformIndex_Lights], lights[i].data(), sizeof(Light));
-        }
+        //auto lights = lightSetup->getLights();
+
+        //if (lights.size()> 0)
+        //    m_lightPassPassMaterial->setUniformData("lights", (uchar*)lights.data());
+
+        //auto lightEntities = lightSetup->getLightEntities();
+
+        //if (lightEntities.size() > 0)
+        //{
+        //    for (QSharedPointer<Entity> lightEntity : lightEntities)
+        //    {
+        //        if (lightEntity.isNull())
+        //            continue;
+
+        //        MeshComponent* mesh = lightEntity->getComponent<MeshComponent>();
+        //        if (mesh)
+        //        {
+        //            TransformComponent* tc = lightEntity->getComponent<TransformComponent>();
+        //            if (!tc)
+        //                qFatal("Mesh does not have transform!"); // Meshes MUST have transforms
+        //            submitLightEntity(mesh->mesh, tc->transform);
+        //        }
+        //    }
+        //}
     }
 
 	void ForwardRenderer::endScene()
@@ -308,6 +311,7 @@ namespace CGFF {
 
         Renderer::setViewport(0, 0, m_screenBufferWidth, m_screenBufferHeight);
     }
+
     void ForwardRenderer::renderToDepthMapCube()
     {
         QMatrix4x4 shadowProj;

@@ -48,7 +48,7 @@ namespace CGFF {
 		m_scene->add(m_lineY);
 		m_scene->add(m_lineZ);
 
-		ResourceManager::getSceneResource(ResourceManager::getScene3DName())->addLight("Light1", QSharedPointer<Light>(new Light(QVector3D(0.8f, 0.8f, 0.8f))));
+		//ResourceManager::getSceneResource(ResourceManager::getScene3DName())->addLight("Light1", QSharedPointer<Light>(new Light(QVector3D(0.8f, 0.8f, 0.8f))));
 	}
 
 	void DebugLayer3D::render(QSharedPointer<Renderer3D>& renderer)

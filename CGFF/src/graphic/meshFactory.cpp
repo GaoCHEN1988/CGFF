@@ -385,7 +385,7 @@ namespace CGFF {
 
 			va->unBind();
 
-			return QSharedPointer<Mesh>(new Mesh(va, ib, material, DrawMode::LINES));
+			return QSharedPointer<Mesh>(new Mesh(va, ib, material, QVector<MeshTexture>(), DrawMode::LINES));
 		}
     }
 }

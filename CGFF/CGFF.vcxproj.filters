@@ -183,6 +183,12 @@
     <Filter Include="Header Files\examples\learnOpenGL">
       <UniqueIdentifier>{a26ec43b-f416-4953-8cdc-fbb560295b2c}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Header Files\graphic\renderer">
+      <UniqueIdentifier>{3f26eb97-6711-4602-af28-4baa34ce1294}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\graphic\renderer">
+      <UniqueIdentifier>{c5c23677-48af-4f40-8ee8-bf2f4b133f8b}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <CustomBuild Include="src\mainWindow.h">
@@ -433,15 +439,6 @@
     <ClCompile Include="src\maths\aabb.cpp">
       <Filter>Source Files\maths</Filter>
     </ClCompile>
-    <ClCompile Include="src\graphic\renderer\forwardRenderer.cpp">
-      <Filter>Source Files\graphic</Filter>
-    </ClCompile>
-    <ClCompile Include="src\graphic\renderer\batchRenderer2d.cpp">
-      <Filter>Source Files\graphic</Filter>
-    </ClCompile>
-    <ClCompile Include="src\graphic\renderer\renderer.cpp">
-      <Filter>Source Files\graphic</Filter>
-    </ClCompile>
     <ClCompile Include="src\debug\debugLayer3D.cpp">
       <Filter>Source Files\debug</Filter>
     </ClCompile>
@@ -609,6 +606,24 @@
     </ClCompile>
     <ClCompile Include="src\platform\opengl\glFbTexture.cpp">
       <Filter>Source Files\platform\opengl</Filter>
+    </ClCompile>
+    <ClCompile Include="src\platform\opengl\glGBuffer.cpp">
+      <Filter>Source Files\platform\opengl</Filter>
+    </ClCompile>
+    <ClCompile Include="src\graphic\api\gBuffer.cpp">
+      <Filter>Source Files\graphic\api</Filter>
+    </ClCompile>
+    <ClCompile Include="src\graphic\renderer\forwardRenderer.cpp">
+      <Filter>Source Files\graphic\renderer</Filter>
+    </ClCompile>
+    <ClCompile Include="src\graphic\renderer\batchRenderer2d.cpp">
+      <Filter>Source Files\graphic\renderer</Filter>
+    </ClCompile>
+    <ClCompile Include="src\graphic\renderer\deferredRenderer.cpp">
+      <Filter>Source Files\graphic\renderer</Filter>
+    </ClCompile>
+    <ClCompile Include="src\graphic\renderer\renderer.cpp">
+      <Filter>Source Files\graphic\renderer</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -870,21 +885,6 @@
     <ClInclude Include="src\maths\aabb.h">
       <Filter>Header Files\maths</Filter>
     </ClInclude>
-    <ClInclude Include="src\graphic\renderer\forwardRenderer.h">
-      <Filter>Header Files\graphic</Filter>
-    </ClInclude>
-    <ClInclude Include="src\graphic\renderer\batchRenderer2d.h">
-      <Filter>Header Files\graphic</Filter>
-    </ClInclude>
-    <ClInclude Include="src\graphic\renderer\renderer3d.h">
-      <Filter>Header Files\graphic</Filter>
-    </ClInclude>
-    <ClInclude Include="src\graphic\renderer\renderer2d.h">
-      <Filter>Header Files\graphic</Filter>
-    </ClInclude>
-    <ClInclude Include="src\graphic\renderer\renderer.h">
-      <Filter>Header Files\graphic</Filter>
-    </ClInclude>
     <ClInclude Include="src\debug\debugLayer3D.h">
       <Filter>Header Files\debug</Filter>
     </ClInclude>
@@ -953,6 +953,30 @@
     </ClInclude>
     <ClInclude Include="src\platform\opengl\glFbTexture.h">
       <Filter>Header Files\platform\opengl</Filter>
+    </ClInclude>
+    <ClInclude Include="src\platform\opengl\glGBuffer.h">
+      <Filter>Header Files\platform\opengl</Filter>
+    </ClInclude>
+    <ClInclude Include="src\graphic\api\gBuffer.h">
+      <Filter>Header Files\graphic\api</Filter>
+    </ClInclude>
+    <ClInclude Include="src\graphic\renderer\deferredRenderer.h">
+      <Filter>Header Files\graphic\renderer</Filter>
+    </ClInclude>
+    <ClInclude Include="src\graphic\renderer\forwardRenderer.h">
+      <Filter>Header Files\graphic\renderer</Filter>
+    </ClInclude>
+    <ClInclude Include="src\graphic\renderer\batchRenderer2d.h">
+      <Filter>Header Files\graphic\renderer</Filter>
+    </ClInclude>
+    <ClInclude Include="src\graphic\renderer\renderer3d.h">
+      <Filter>Header Files\graphic\renderer</Filter>
+    </ClInclude>
+    <ClInclude Include="src\graphic\renderer\renderer2d.h">
+      <Filter>Header Files\graphic\renderer</Filter>
+    </ClInclude>
+    <ClInclude Include="src\graphic\renderer\renderer.h">
+      <Filter>Header Files\graphic\renderer</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

@@ -2,6 +2,7 @@
 #define CGFF_MODEL_H
 
 #include "mesh.h"
+#include "resource/textureManager.h"
 #include <QHash>
 
 #include <assimp/Importer.hpp>
@@ -20,33 +21,26 @@ namespace CGFF {
     public:
 
         // This eventually needs to be replaced by a global Asset Server.
-        Model(const QString& path, QSharedPointer<MaterialInstance> materialInstance = nullptr);
+        Model(const QString& path, const QSharedPointer<MaterialInstance>& materialInstance = nullptr);
         virtual ~Model();
 
         void render(Renderer3D& renderer) override;
 
-		inline QSharedPointer<Mesh> getMesh() const { return m_mesh; }
-		//inline const QVector<QSharedPointer<Mesh>>& getMeshes() const { return m_meshes; }
+		inline const QVector<QSharedPointer<Mesh>>& getMeshes() const { return m_meshes; }
     private:
-        struct VertexSet
-        {
-            QVector<QVector3D> positions, normals;
-            QVector<QVector2D> uvs;
-        };
-   
 
-        void insertVertex(const QVector3D& position, const QVector3D& normal, const QVector2D& uv, const QVector3D& binormal, const QVector3D& tangent);
+        //void insertVertex(const QVector3D& position, const QVector3D& normal, const QVector2D& uv, const QVector3D& binormal, const QVector3D& tangent);
 		void processNode(aiNode *node, const aiScene *scene);
 		void processMesh(aiMesh *mesh, const aiScene *scene);
 
 		bool load(const QString& path);
-
+        void loadMaterialTextures(aiMaterial *mat, aiTextureType type, QString typeName, QVector<MeshTexture>& outMeshTextureVector);
     private:
-		//QVector<QSharedPointer<Mesh>> m_meshes;
-		QSharedPointer<Mesh> m_mesh;
-		QVector<Vertex> m_vertices;
-		QVector<int> m_indices;
+
+        QVector<QSharedPointer<Mesh>> m_meshes;
 		QHash<Vertex, int> m_indexMapping;
+        QString m_directoryPath;
+        QSharedPointer<MaterialInstance> m_materialInstance;
     };
 
 }
