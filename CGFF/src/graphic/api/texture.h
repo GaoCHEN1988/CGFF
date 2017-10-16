@@ -11,10 +11,10 @@ namespace CGFF {
 		//Paramters for opengl
 		QOpenGLTexture::PixelFormat gl_pixelFormat;
 		QOpenGLTexture::TextureFormat gl_textureFormat;
-		QImage::Format imageFormat;
 		QOpenGLTexture::PixelType gl_pixelType;
         QOpenGLTexture::Filter gl_filter;
         QOpenGLTexture::WrapMode gl_wrap;
+        QImage::Format imageFormat;
 
 		//To implement: parameters for directX
 		//to do
@@ -23,10 +23,11 @@ namespace CGFF {
         {
 			gl_pixelFormat = QOpenGLTexture::PixelFormat::RGBA;
 			gl_textureFormat = QOpenGLTexture::RGBA8_UNorm;
-			imageFormat = QImage::Format_RGBA8888;
 			gl_pixelType = QOpenGLTexture::UInt8;
             gl_filter = QOpenGLTexture::Filter::Linear;
             gl_wrap = QOpenGLTexture::WrapMode::ClampToEdge;
+            imageFormat = QImage::Format_RGBA8888;
+
         }
 
         TextureParameters(QOpenGLTexture::PixelFormat gl_pixelFormat
@@ -89,7 +90,7 @@ namespace CGFF {
 		virtual void unBind(uint slot = 0) = 0;
 
 		virtual QString getName() const = 0;
-		virtual QString getFilepath() const = 0;
+        virtual QString getFilepath() const = 0;
 		virtual int getWidth() const = 0;
 		virtual int getHeight() const = 0;
         virtual GLuint getID() const = 0;

@@ -3,6 +3,7 @@
 
 #include "utils/qtopengl.h"
 #include "graphic/api/framebuffer2D.h"
+#include "glFbTexture.h"
 #include "glTexture2D.h"
 
 namespace CGFF {
@@ -11,7 +12,7 @@ namespace CGFF {
 	{
 
 	public:
-		GLFramebuffer2D(int width, int height);
+		GLFramebuffer2D(int width, int height, const TextureParameters& params = TextureParameters());
 		~GLFramebuffer2D();
 
 		void bind() override;
@@ -33,7 +34,8 @@ namespace CGFF {
 		GLuint m_framebufferHandle;
 		GLuint m_depthbufferHandle;
 
-		QSharedPointer<GLTexture2D> m_glTexture;
+        QSharedPointer<GLFbTexture> m_glTexture;
+        TextureParameters m_textureParams;
 
 		int m_width, m_height;
 		QVector4D m_clearColor;

@@ -17,8 +17,8 @@ namespace CGFF {
 		inline GLuint getID() const { return m_glTexture.textureId(); }
 		inline QString getName() const override { return m_name; }
 		inline QString getFilepath() const override { return m_fileName; }
-		inline int getWidth() const override { return m_glTexture.width(); }
-		inline int getHeight() const override { return m_glTexture.height(); }
+		inline int getWidth() const override { return m_width; }
+		inline int getHeight() const override { return m_height; }
 
 	private:
 		void init();
@@ -28,8 +28,8 @@ namespace CGFF {
 		QString m_fileName;
 		int m_width;
 		int m_height;
-		TextureParameters m_parameters;
 		QOpenGLTexture m_glTexture;
+        //GLuint m_handle;
 	};
 
 }

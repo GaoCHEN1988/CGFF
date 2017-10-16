@@ -30,6 +30,7 @@ namespace CGFF {
     enum class UniformType
     {
         NONE,
+        GLboolean,
         GLfloat,
         GLint,
         GLuint,

@@ -15,12 +15,10 @@ namespace CGFF {
         virtual ~PostEffectsPass();
         void bind();
         void unBind();
-        void setSize(QSize size);
-
         void renderPass(const QSharedPointer<Framebuffer>& source, const QSharedPointer<Mesh>& mesh);
 
     private:
-        QSharedPointer<Material> m_material;
+        QSharedPointer<MaterialInstance> m_material;
         QSize m_size;
     };
 }

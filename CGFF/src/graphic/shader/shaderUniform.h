@@ -10,7 +10,8 @@ namespace CGFF {
 	{
 		UNKNOWN,
 		VERTEX,
-		FRAGMENT
+		FRAGMENT, 
+        GEOMETRY
 	};
 
 	class ShaderUniformDeclaration
@@ -23,6 +24,7 @@ namespace CGFF {
 		virtual uint getOffset() const = 0;
 		virtual UniformType getType() const = 0;
 
+        virtual QSharedPointer<ShaderUniformDeclaration> deepCopy() = 0;
 	private:
 		friend class ShaderProgram;
 		friend class ShaderStruct;
@@ -50,7 +52,8 @@ namespace CGFF {
 	class ShaderStruct
 	{
 	public:
-		ShaderStruct(const QString& name);
+        explicit ShaderStruct(const QString& name);
+        explicit ShaderStruct(const ShaderStruct& shaderStruct);
 
 		void addField(QSharedPointer<ShaderUniformDeclaration> field);
 

@@ -15,7 +15,9 @@ namespace CGFF {
 
 		QSharedPointer<Mesh> CreateQuad(const QVector2D& position, const QVector2D& size, QSharedPointer<MaterialInstance> material);
 
-		QSharedPointer<Mesh> CreateCube(float size, QSharedPointer<MaterialInstance> material);
+        QSharedPointer<Mesh> CreateScreenQuad(QSharedPointer<CGFF::MaterialInstance> material);
+		
+        QSharedPointer<Mesh> CreateCube(float size, QSharedPointer<MaterialInstance> material);
 
 		QSharedPointer<Mesh> CreateDebugCube(float size, const QVector4D& color, QSharedPointer<MaterialInstance> material);
 

@@ -10,10 +10,10 @@ namespace CGFF {
     {
     public:
         Entity();
-		Entity(QSharedPointer<Mesh> mesh, const QMatrix4x4& transform = QMatrix4x4());
-		Entity(QSharedPointer<Sprite> sprite, const QMatrix4x4& transform = QMatrix4x4());
+		Entity(const QSharedPointer<Mesh>& mesh, const QMatrix4x4& transform = QMatrix4x4());
+		Entity(const QSharedPointer<Sprite>& sprite, const QMatrix4x4& transform = QMatrix4x4());
 
-        void addComponent(QSharedPointer<Component> component);
+        void addComponent(const QSharedPointer<Component>& component);
 
         template <typename T>
         const T* getComponent() const

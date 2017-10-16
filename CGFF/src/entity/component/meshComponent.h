@@ -8,7 +8,7 @@ namespace CGFF {
     class MeshComponent : public Component
     {
     public:
-        MeshComponent(QSharedPointer<Mesh> mesh);
+        MeshComponent(const QSharedPointer<Mesh>& mesh);
 
         static ComponentType* getStaticType()
         {

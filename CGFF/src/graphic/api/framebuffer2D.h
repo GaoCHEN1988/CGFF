@@ -10,7 +10,7 @@ namespace CGFF {
 	public:
 		virtual void setClearColor(const QVector4D& color) = 0;
 	public:
-		static QSharedPointer<Framebuffer2D> create(int width, int height);
+		static QSharedPointer<Framebuffer2D> create(int width, int height, const TextureParameters& params = TextureParameters());
 	};
 }
 

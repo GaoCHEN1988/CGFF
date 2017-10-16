@@ -49,6 +49,45 @@ namespace CGFF {
 			return CreateQuad(position.x(), position.y(), size.x(), size.y(), material);
 		}
 
+        QSharedPointer<Mesh> CreateScreenQuad(QSharedPointer<CGFF::MaterialInstance> material)
+        {
+            struct QuadVertex
+            {
+                QVector3D position;
+                QVector2D uv;
+            };
+
+            QuadVertex data[4];
+
+            data[0].position = QVector3D(-1.0, 1.0, 0.0f);
+            data[0].uv = QVector2D(0.0f, 1.0f);
+
+            data[1].position = QVector3D(-1.0f, -1.0f, 0.0f);
+            data[1].uv = QVector2D(0.0f, 0.0f);
+
+            data[2].position = QVector3D(1.0f, 1.0f, 0.0f);
+            data[2].uv = QVector2D(1.0f, 1.0f);
+
+            data[3].position = QVector3D(1.0f, -1.0f, 0.0f);
+            data[3].uv = QVector2D(1.0f, 0.0f);
+
+            QSharedPointer<VertexArray> va = VertexArray::create();
+            va->bind();
+            QSharedPointer<VertexBuffer> buffer = VertexBuffer::create(BufferUsage::STATIC);
+            buffer->setData(sizeof(QuadVertex) * 4, data);
+            LayoutBuffer layout;
+            layout.push<QVector3D>("POSITION");
+            layout.push<QVector2D>("TEXCOORD");
+            buffer->setLayout(layout);
+
+            va->pushBuffer(buffer);
+            uint indices[6] = { 0, 1, 2, 2, 3, 1, };
+            QSharedPointer<IndexBuffer> ib = IndexBuffer::create(indices, 6);
+
+            va->unBind();
+            return QSharedPointer<Mesh>(new Mesh(va, ib, material));
+        }
+
 		QSharedPointer<Mesh> CreateCube(float size, QSharedPointer<MaterialInstance> material)
 		{
 			struct CubeVertex
@@ -346,7 +385,7 @@ namespace CGFF {
 
 			va->unBind();
 
-			return QSharedPointer<Mesh>(new Mesh(va, ib, material, DrawMode::LINES));
+			return QSharedPointer<Mesh>(new Mesh(va, ib, material, QVector<MeshTexture>(), DrawMode::LINES));
 		}
     }
 }

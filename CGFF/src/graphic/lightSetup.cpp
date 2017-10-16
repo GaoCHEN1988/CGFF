@@ -9,24 +9,25 @@ namespace CGFF {
 
     LightSetup::~LightSetup()
     {
+        m_lights.clear();
+        m_lightEntities.clear();
     }
 
-    QSharedPointer<Light> LightSetup::add(QSharedPointer<Light> light)
+    Light LightSetup::add(const Light& light, const QSharedPointer<Entity>& lightEntity)
     {
         m_lights.append(light);
+        m_lightEntities.append(lightEntity);
+
         return light;
     }
 
-    void LightSetup::remove(QSharedPointer<Light> light)
+    void LightSetup::remove(int i)
     {
-        for (uint i = 0; i < m_lights.size(); i++)
-        {
-            if (m_lights[i] == light)
-            {
-                m_lights.remove(i);
-                break;
-            }
-        }
+        if(!m_lights.empty())
+            m_lights.remove(i);
+
+        if (!m_lightEntities.empty())
+            m_lightEntities.remove(i);
     }
 
 }

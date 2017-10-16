@@ -11,7 +11,7 @@ namespace CGFF {
 	{
 
 	public:
-		SpriteComponent(QSharedPointer<Sprite> sprite);
+		SpriteComponent(const QSharedPointer<Sprite>& sprite);
 
 		static ComponentType* getStaticType()
 		{

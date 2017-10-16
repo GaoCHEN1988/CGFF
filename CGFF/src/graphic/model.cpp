@@ -4,36 +4,17 @@
 
 namespace CGFF {
 
-    Model::Model(const QString& path, QSharedPointer<MaterialInstance> materialInstance)
+    Model::Model(const QString& path, const QSharedPointer<MaterialInstance>& materialInstance)
+        : m_materialInstance(materialInstance)
+        , m_directoryPath("")
     {
-		if (load(path))
-		{
-			m_mesh->setMaterial(materialInstance);
-		}
-        else
+		if (!load(path))
             qFatal("Can't load model from ", path);
     }
 
     Model::~Model()
     {
     }
-
-	void Model::insertVertex(const QVector3D& position, const QVector3D& normal, const QVector2D& uv, const QVector3D& binormal, const QVector3D& tangent)
-	{
-		Vertex vertex = { position, normal, uv, binormal, tangent };
-		auto lookup = m_indexMapping.find(vertex);
-		if (lookup != m_indexMapping.end())
-		{
-			m_indices.push_back(lookup.value());
-		}
-		else
-		{
-			int index = m_vertices.size();
-			m_indexMapping[vertex] = index;
-			m_indices.push_back(index);
-			m_vertices.push_back(vertex);
-		}
-	}
 
 	// processes a node in a recursive fashion. Processes each individual mesh located at the node and repeats this process on its children nodes (if any).
 	void Model::processNode(aiNode *node, const aiScene *scene)
@@ -57,6 +38,9 @@ namespace CGFF {
 	{
 		if (!(mesh->mNumVertices > 0))
 			qFatal("No meshes loaded");
+
+        QVector<Vertex> vertices;
+        QVector<int> indices;
 
 		// Walk through each of the mesh's vertices
 		for (unsigned int i = 0; i < mesh->mNumVertices; i++)
@@ -82,8 +66,64 @@ namespace CGFF {
 			QVector3D tangent = QVector3D(mesh->mTangents[i].x, mesh->mTangents[i].y, mesh->mTangents[i].z);
 			// bitangent
 			QVector3D binormal = QVector3D(mesh->mBitangents[i].x, mesh->mBitangents[i].y, mesh->mBitangents[i].z);
-			insertVertex(position, normal, uv, binormal, tangent);
+			//insertVertex(position, normal, uv, binormal, tangent);
+
+            vertices.push_back({ position, normal, uv, binormal, tangent });
 		}
+
+        // now wak through each of the mesh's faces (a face is a mesh its triangle) and retrieve the corresponding vertex indices.
+        for (unsigned int i = 0; i < mesh->mNumFaces; i++)
+        {
+            aiFace face = mesh->mFaces[i];
+            // retrieve all indices of the face and store them in the indices vector
+            for (unsigned int j = 0; j < face.mNumIndices; j++)
+                indices.push_back(face.mIndices[j]);
+        }
+
+        aiMaterial* material = scene->mMaterials[mesh->mMaterialIndex];
+        // we assume a convention for sampler names in the shaders. Each diffuse texture should be named
+        // as 'texture_diffuseN' where N is a sequential number ranging from 1 to MAX_SAMPLER_NUMBER. 
+        // Same applies to other texture as the following list summarizes:
+        // diffuse: texture_diffuseN
+        // specular: texture_specularN
+        // normal: texture_normalN
+
+        QVector<MeshTexture> textures;
+
+        // 1. diffuse maps
+        loadMaterialTextures(material, aiTextureType_DIFFUSE, pbr_diffuseMap, textures);
+
+        // 2. specular maps
+        loadMaterialTextures(material, aiTextureType_SPECULAR, pbr_specularMap, textures);
+       
+        // 3. normal maps
+        loadMaterialTextures(material, aiTextureType_HEIGHT, pbr_normalMap, textures);
+
+        // 4. height maps
+        loadMaterialTextures(material, aiTextureType_AMBIENT, pbr_heightMap, textures);
+
+        //Add new mesh to mesh vector
+        QSharedPointer<VertexArray> va = VertexArray::create();
+        va->bind();
+        QSharedPointer<VertexBuffer> buffer = VertexBuffer::create(BufferUsage::STATIC);
+        buffer->setData(vertices.size()* sizeof(Vertex), (void*)vertices.data());
+
+        LayoutBuffer layout;
+        layout.push<QVector3D>("POSITION");
+        layout.push<QVector3D>("NORMAL");
+        layout.push<QVector2D>("TEXCOORD");
+        layout.push<QVector3D>("BINORMAL");
+        layout.push<QVector3D>("TANGENT");
+
+        buffer->setLayout(layout);
+
+        va->pushBuffer(buffer);
+
+        QSharedPointer<IndexBuffer> ib = IndexBuffer::create((uint*)indices.data(), indices.size());
+
+        va->unBind();
+
+        m_meshes.append(QSharedPointer<Mesh>(new Mesh(va, ib, m_materialInstance, textures)));
 	}
 
 	uchar* ReadBytes(FILE* file, uchar* buffer, uint size)
@@ -98,7 +138,9 @@ namespace CGFF {
 		if (!VFS::get()->resolvePhysicalPath(path, filename))
 			qFatal("Can't load file: ", path);
 
-		//// read file via ASSIMP
+        m_directoryPath = path.left(path.lastIndexOf('/')+1);
+
+		// read file via ASSIMP
 		Assimp::Importer importer;
 		const aiScene* scene = importer.ReadFile(filename.toStdString(), aiProcess_Triangulate | aiProcess_FlipUVs | aiProcess_CalcTangentSpace);
 		// check for errors
@@ -108,39 +150,31 @@ namespace CGFF {
 			return false;
 		}
 
-		m_vertices.clear();
-		m_indices.clear();
-
 		// process ASSIMP's root node recursively
 		processNode(scene->mRootNode, scene);
 
-		ShaderManager::get("AdvancedLighting")->bind();
-		QSharedPointer<VertexArray> va = VertexArray::create();
-		va->bind();
-		QSharedPointer<VertexBuffer> buffer = VertexBuffer::create(BufferUsage::STATIC);
-		buffer->setData(m_vertices.size()* sizeof(Vertex), (void*)m_vertices.data());
-
-		LayoutBuffer layout;
-		layout.push<QVector3D>("POSITION");
-		layout.push<QVector3D>("NORMAL");
-		layout.push<QVector2D>("TEXCOORD");
-		layout.push<QVector3D>("BINORMAL");
-		layout.push<QVector3D>("TANGENT");
-
-		buffer->setLayout(layout);
-
-		va->pushBuffer(buffer);
-
-		QSharedPointer<IndexBuffer> ib = IndexBuffer::create((uint*)m_indices.data(), m_indices.size());
-
-		va->unBind();
-		m_mesh = QSharedPointer<Mesh>(new Mesh(va, ib, nullptr));
-        
         return true;
+    }
+
+    void Model::loadMaterialTextures(aiMaterial *mat, aiTextureType type, QString typeName, QVector<MeshTexture>& outMeshTextureVector)
+    {
+        for (unsigned int i = 0; i < mat->GetTextureCount(type); i++)
+        {
+            aiString str;
+            mat->GetTexture(type, i, &str);
+            QString path(str.C_Str());
+            QSharedPointer<Texture> texture = TextureManager::getTexture2D(m_directoryPath+path);
+            outMeshTextureVector.push_back({ texture, typeName });
+        }
     }
 
     void Model::render(Renderer3D& renderer)
     {
-		m_mesh->render(renderer);
+		//m_mesh->render(renderer);
+
+        for (QSharedPointer<Mesh>& mesh : m_meshes)
+        {
+            mesh->render(renderer);
+        }
     }
 }

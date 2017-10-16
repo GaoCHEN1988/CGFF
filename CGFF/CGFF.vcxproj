@@ -96,6 +96,9 @@
     <ClCompile Include="GeneratedFiles\Debug\moc_explorerView.cpp">
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|x64'">true</ExcludedFromBuild>
     </ClCompile>
+    <ClCompile Include="GeneratedFiles\Debug\moc_learnGLWindow.cpp">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|x64'">true</ExcludedFromBuild>
+    </ClCompile>
     <ClCompile Include="GeneratedFiles\Debug\moc_lightView.cpp">
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|x64'">true</ExcludedFromBuild>
     </ClCompile>
@@ -132,6 +135,9 @@
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|x64'">false</ExcludedFromBuild>
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</ExcludedFromBuild>
     </ClCompile>
+    <ClCompile Include="GeneratedFiles\Release\moc_learnGLWindow.cpp">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</ExcludedFromBuild>
+    </ClCompile>
     <ClCompile Include="GeneratedFiles\Release\moc_lightView.cpp">
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</ExcludedFromBuild>
     </ClCompile>
@@ -157,6 +163,7 @@
     </ClCompile>
     <ClCompile Include="src\application\baseWindow.cpp" />
     <ClCompile Include="src\application\debugWindow.cpp" />
+    <ClCompile Include="src\application\learnGLWindow.cpp" />
     <ClCompile Include="src\debug\debugLayer.cpp" />
     <ClCompile Include="src\debug\debugLayer3D.cpp" />
     <ClCompile Include="src\debug\debugMenu.cpp" />
@@ -168,17 +175,30 @@
     <ClCompile Include="src\entity\component\transformComponent.cpp" />
     <ClCompile Include="src\entity\entity.cpp" />
     <ClCompile Include="src\examples\app3DLayer.cpp" />
+    <ClCompile Include="src\examples\learnOpengl\bloom.cpp" />
+    <ClCompile Include="src\examples\learnOpengl\deferredShading.cpp" />
+    <ClCompile Include="src\examples\learnOpengl\hdr.cpp" />
+    <ClCompile Include="src\examples\learnOpengl\learnGLMeshFactory.cpp" />
+    <ClCompile Include="src\examples\learnOpengl\normalMapping.cpp" />
+    <ClCompile Include="src\examples\learnOpengl\parallaxMapping.cpp" />
+    <ClCompile Include="src\examples\learnOpengl\pbr.cpp" />
+    <ClCompile Include="src\examples\learnOpengl\pointShadows.cpp" />
+    <ClCompile Include="src\examples\learnOpengl\shadowMappingDepth.cpp" />
+    <ClCompile Include="src\examples\learnOpengl\ssao.cpp" />
     <ClCompile Include="src\examples\test2DLayer.cpp" />
     <ClCompile Include="src\examples\test3DLayer.cpp" />
     <ClCompile Include="src\graphic\API\context.cpp" />
     <ClCompile Include="src\graphic\api\framebuffer.cpp" />
     <ClCompile Include="src\graphic\api\framebuffer2D.cpp" />
     <ClCompile Include="src\graphic\api\framebufferDepth.cpp" />
+    <ClCompile Include="src\graphic\api\framebufferDepthCube.cpp" />
+    <ClCompile Include="src\graphic\api\gBuffer.cpp" />
     <ClCompile Include="src\graphic\api\indexBuffer.cpp" />
     <ClCompile Include="src\graphic\api\layoutBuffer.cpp" />
     <ClCompile Include="src\graphic\API\texture2D.cpp" />
     <ClCompile Include="src\graphic\api\textureCube.cpp" />
     <ClCompile Include="src\graphic\api\textureDepth.cpp" />
+    <ClCompile Include="src\graphic\api\textureDepthCube.cpp" />
     <ClCompile Include="src\graphic\api\vertexArray.cpp" />
     <ClCompile Include="src\graphic\api\vertexBuffer.cpp" />
     <ClCompile Include="src\graphic\renderer\batchRenderer2d.cpp" />
@@ -186,6 +206,7 @@
     <ClCompile Include="src\graphic\camera\fpsCamea.cpp" />
     <ClCompile Include="src\graphic\camera\mayaCamera.cpp" />
     <ClCompile Include="src\graphic\camera\orthographicCamera.cpp" />
+    <ClCompile Include="src\graphic\renderer\deferredRenderer.cpp" />
     <ClCompile Include="src\graphic\renderer\forwardRenderer.cpp" />
     <ClCompile Include="src\graphic\label.cpp" />
     <ClCompile Include="src\graphic\layer\group.cpp" />
@@ -218,8 +239,11 @@
     <ClCompile Include="src\graphic\sprite.cpp" />
     <ClCompile Include="src\maths\aabb.cpp" />
     <ClCompile Include="src\platform\opengl\glContext.cpp" />
+    <ClCompile Include="src\platform\opengl\glFbTexture.cpp" />
     <ClCompile Include="src\platform\opengl\glFramebuffer2D.cpp" />
     <ClCompile Include="src\platform\opengl\glFramebufferDepth.cpp" />
+    <ClCompile Include="src\platform\opengl\glFramebufferDepthCube.cpp" />
+    <ClCompile Include="src\platform\opengl\glGBuffer.cpp" />
     <ClCompile Include="src\platform\opengl\glIndexBuffer.cpp" />
     <ClCompile Include="src\platform\opengl\glRenderer.cpp" />
     <ClCompile Include="src\platform\opengl\glShader.cpp" />
@@ -229,6 +253,7 @@
     <ClCompile Include="src\platform\opengl\glTexture2D.cpp" />
     <ClCompile Include="src\platform\opengl\glTextureCube.cpp" />
     <ClCompile Include="src\platform\opengl\glTextureDepth.cpp" />
+    <ClCompile Include="src\platform\opengl\glTextureDepthCube.cpp" />
     <ClCompile Include="src\platform\opengl\glVertexArray.cpp" />
     <ClCompile Include="src\platform\opengl\glVertexBuffer.cpp" />
     <ClCompile Include="src\qtUI\model\resourceModel.cpp" />
@@ -285,6 +310,16 @@
       <Outputs Condition="'$(Configuration)|$(Platform)'=='Release|x64'">.\GeneratedFiles\$(ConfigurationName)\moc_%(Filename).cpp</Outputs>
       <Command Condition="'$(Configuration)|$(Platform)'=='Release|x64'">"$(QTDIR)\bin\moc.exe"  "%(FullPath)" -o ".\GeneratedFiles\$(ConfigurationName)\moc_%(Filename).cpp"  -DUNICODE -DWIN32 -DWIN64 -DQT_NO_DEBUG -DNDEBUG -DQT_CORE_LIB -DQT_GUI_LIB -DQT_OPENGL_LIB -DQT_WIDGETS_LIB -DFT2_BUILD_LIBRARY  "-I.\GeneratedFiles" "-I." "-I$(QTDIR)\include" "-I.\GeneratedFiles\$(ConfigurationName)\." "-I$(QTDIR)\include\QtCore" "-I$(QTDIR)\include\QtGui" "-I$(QTDIR)\include\QtOpenGL" "-I$(QTDIR)\include\QtWidgets" "-I.\src\application" "-I.\src" "-I$(SolutionDir)Dependencies\Assimp\include"</Command>
     </CustomBuild>
+    <CustomBuild Include="src\application\learnGLWindow.h">
+      <AdditionalInputs Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">$(QTDIR)\bin\moc.exe;%(FullPath)</AdditionalInputs>
+      <Message Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Moc%27ing learnGLWindow.h...</Message>
+      <Outputs Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">.\GeneratedFiles\$(ConfigurationName)\moc_%(Filename).cpp</Outputs>
+      <Command Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">"$(QTDIR)\bin\moc.exe"  "%(FullPath)" -o ".\GeneratedFiles\$(ConfigurationName)\moc_%(Filename).cpp"  -DUNICODE -DWIN32 -DWIN64 -DQT_CORE_LIB -DQT_GUI_LIB -DQT_OPENGL_LIB -DQT_WIDGETS_LIB -DFT2_BUILD_LIBRARY -DDEBUG "-I.\GeneratedFiles" "-I." "-I$(QTDIR)\include" "-I.\GeneratedFiles\$(ConfigurationName)\." "-I$(QTDIR)\include\QtCore" "-I$(QTDIR)\include\QtGui" "-I$(QTDIR)\include\QtOpenGL" "-I$(QTDIR)\include\QtWidgets" "-I.\src\application" "-I.\src" "-I$(SolutionDir)Dependencies\Assimp\include"</Command>
+      <AdditionalInputs Condition="'$(Configuration)|$(Platform)'=='Release|x64'">$(QTDIR)\bin\moc.exe;%(FullPath)</AdditionalInputs>
+      <Message Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Moc%27ing learnGLWindow.h...</Message>
+      <Outputs Condition="'$(Configuration)|$(Platform)'=='Release|x64'">.\GeneratedFiles\$(ConfigurationName)\moc_%(Filename).cpp</Outputs>
+      <Command Condition="'$(Configuration)|$(Platform)'=='Release|x64'">"$(QTDIR)\bin\moc.exe"  "%(FullPath)" -o ".\GeneratedFiles\$(ConfigurationName)\moc_%(Filename).cpp"  -DUNICODE -DWIN32 -DWIN64 -DQT_NO_DEBUG -DNDEBUG -DQT_CORE_LIB -DQT_GUI_LIB -DQT_OPENGL_LIB -DQT_WIDGETS_LIB -DFT2_BUILD_LIBRARY "-I.\GeneratedFiles" "-I." "-I$(QTDIR)\include" "-I.\GeneratedFiles\$(ConfigurationName)\." "-I$(QTDIR)\include\QtCore" "-I$(QTDIR)\include\QtGui" "-I$(QTDIR)\include\QtOpenGL" "-I$(QTDIR)\include\QtWidgets" "-I.\src\application" "-I.\src" "-I$(SolutionDir)Dependencies\Assimp\include"</Command>
+    </CustomBuild>
     <ClInclude Include="src\cgff.h" />
     <ClInclude Include="src\common.h" />
     <ClInclude Include="src\debug\debugLayer.h" />
@@ -300,18 +335,33 @@
     <ClInclude Include="src\entity\component\transformComponent.h" />
     <ClInclude Include="src\entity\entity.h" />
     <ClInclude Include="src\examples\app3DLayer.h" />
+    <ClInclude Include="src\examples\learnOpengl\bloom.h" />
+    <ClInclude Include="src\examples\learnOpengl\deferredShading.h" />
+    <ClInclude Include="src\examples\learnOpengl\hdr.h" />
+    <ClInclude Include="src\examples\learnOpengl\learnGL.h" />
+    <ClInclude Include="src\examples\learnOpengl\learnGLMeshFactory.h" />
+    <ClInclude Include="src\examples\learnOpengl\learnOpenglHeader.h" />
+    <ClInclude Include="src\examples\learnOpengl\normalMapping.h" />
+    <ClInclude Include="src\examples\learnOpengl\parallaxMapping.h" />
+    <ClInclude Include="src\examples\learnOpengl\pbr.h" />
+    <ClInclude Include="src\examples\learnOpengl\pointShadows.h" />
+    <ClInclude Include="src\examples\learnOpengl\shadowMappingDepth.h" />
+    <ClInclude Include="src\examples\learnOpengl\ssao.h" />
     <ClInclude Include="src\examples\test2DLayer.h" />
     <ClInclude Include="src\examples\test3DLayer.h" />
     <ClInclude Include="src\graphic\API\context.h" />
     <ClInclude Include="src\graphic\api\framebuffer.h" />
     <ClInclude Include="src\graphic\api\framebuffer2D.h" />
     <ClInclude Include="src\graphic\api\framebufferDepth.h" />
+    <ClInclude Include="src\graphic\api\framebufferDepthCube.h" />
+    <ClInclude Include="src\graphic\api\gBuffer.h" />
     <ClInclude Include="src\graphic\api\indexBuffer.h" />
     <ClInclude Include="src\graphic\api\layoutBuffer.h" />
     <ClInclude Include="src\graphic\api\texture.h" />
     <ClInclude Include="src\graphic\API\texture2D.h" />
     <ClInclude Include="src\graphic\api\textureCube.h" />
     <ClInclude Include="src\graphic\api\textureDepth.h" />
+    <ClInclude Include="src\graphic\api\textureDepthCube.h" />
     <ClInclude Include="src\graphic\api\vertexArray.h" />
     <ClInclude Include="src\graphic\api\vertexBuffer.h" />
     <ClInclude Include="src\graphic\renderer\batchRenderer2d.h" />
@@ -319,6 +369,7 @@
     <ClInclude Include="src\graphic\camera\fpsCamera.h" />
     <ClInclude Include="src\graphic\camera\mayaCamera.h" />
     <ClInclude Include="src\graphic\camera\orthographicCamera.h" />
+    <ClInclude Include="src\graphic\renderer\deferredRenderer.h" />
     <ClInclude Include="src\graphic\renderer\forwardRenderer.h" />
     <ClInclude Include="src\graphic\irenderable.h" />
     <ClInclude Include="src\graphic\label.h" />
@@ -358,8 +409,11 @@
     <ClInclude Include="src\maths\aabb.h" />
     <ClInclude Include="src\maths\qtmaths.h" />
     <ClInclude Include="src\platform\opengl\glContext.h" />
+    <ClInclude Include="src\platform\opengl\glFbTexture.h" />
     <ClInclude Include="src\platform\opengl\glFramebuffer2D.h" />
     <ClInclude Include="src\platform\opengl\glFramebufferDepth.h" />
+    <ClInclude Include="src\platform\opengl\glFramebufferDepthCube.h" />
+    <ClInclude Include="src\platform\opengl\glGBuffer.h" />
     <ClInclude Include="src\platform\opengl\glIndexBuffer.h" />
     <ClInclude Include="src\platform\opengl\glRenderer.h" />
     <ClInclude Include="src\platform\opengl\glShader.h" />
@@ -369,6 +423,7 @@
     <ClInclude Include="src\platform\opengl\glTexture2D.h" />
     <ClInclude Include="src\platform\opengl\glTextureCube.h" />
     <ClInclude Include="src\platform\opengl\glTextureDepth.h" />
+    <ClInclude Include="src\platform\opengl\glTextureDepthCube.h" />
     <ClInclude Include="src\platform\opengl\glVertexArray.h" />
     <ClInclude Include="src\platform\opengl\glVertexBuffer.h" />
     <CustomBuild Include="src\qtUI\view\explorerView.h">

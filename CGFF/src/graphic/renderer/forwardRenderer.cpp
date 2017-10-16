@@ -1,30 +1,45 @@
 #include "forwardRenderer.h"
 #include "renderer.h"
+#include "graphic/meshFactory.h"
+#include "examples/learnOpengl/learnGLMeshFactory.h"
 
 namespace CGFF {
 
-	enum VSSystemUniformIndices : int
-	{
-		VSSystemUniformIndex_ProjectionMatrix = 0,
-		VSSystemUniformIndex_ViewMatrix = 1,
-		VSSystemUniformIndex_ModelMatrix = 2,
-		VSSystemUniformIndex_CameraPosition = 3,
-		VSSystemUniformIndex_Size = 4
-	};
-
-	enum PSSystemUniformIndices : int
-	{
-		PSSystemUniformIndex_Lights = 0,
-		PSSystemUniformIndex_Size = 1
-	};
+    //Using for LearnOpenGL tutorial, should not be here
+    static QSharedPointer<Shader>  depthMappingShader;
+    static QSharedPointer<Shader>  depthMappingCubeShader;
+    static float near_plane = -1.0f;
+    static float far_plane = 200.0f;
+    static const int SHADOW_WIDTH = 2048;
+    static const int SHADOW_HEIGHT = 2048;
+    static QVector3D g_LightPos(50.0, 50.0, 50.0);
+    static QMatrix4x4 lightSpaceMatrix;
+    static QSharedPointer<Shader>  hdrShader;
+    static float exposure = 0.1f;
 
     ForwardRenderer::ForwardRenderer(const QSize& size)
+        : m_VSSystemUniformBuffer(nullptr)
+        , m_VSSystemUniformBufferSize(0)
+        , m_PSSystemUniformBuffer(nullptr)
+        , m_PSSystemUniformBufferSize(0)
+        , m_VSSystemUniformBufferOffsets()
+        , m_PSSystemUniformBufferOffsets()
+        , m_depthBuffer(nullptr)
+        , m_frameBuffer(nullptr)
     {
 		setScreenBufferSize(size.width(), size.height());
 		init();
 	}
 
 	ForwardRenderer::ForwardRenderer(int width, int height)
+        : m_VSSystemUniformBuffer(nullptr)
+        , m_VSSystemUniformBufferSize(0)
+        , m_PSSystemUniformBuffer(nullptr)
+        , m_PSSystemUniformBufferSize(0)
+        , m_VSSystemUniformBufferOffsets()
+        , m_PSSystemUniformBufferOffsets()
+        , m_depthBuffer(nullptr)
+        , m_frameBuffer(nullptr)
 	{
 		setScreenBufferSize(width, height);
 		init();
@@ -62,13 +77,63 @@ namespace CGFF {
 		// Per Scene System Uniforms
 		m_PSSystemUniformBufferOffsets[PSSystemUniformIndex_Lights] = 0;
 
+#ifdef TEST_DEPTH_MAP
+
+        depthMappingShader = Shader::createFromFile("DebugDepthShader",
+            "/shaders/advanced_lighting/3.1.3.shadow_mapping_depth.vs",
+            "/shaders/advanced_lighting/3.1.3.shadow_mapping_depth.fs");
+
+        m_depthBuffer = FramebufferDepth::create(SHADOW_WIDTH, SHADOW_HEIGHT);
+
+        m_depthMappingMaterial = QSharedPointer<MaterialInstance>(new MaterialInstance(QSharedPointer<Material>(new Material(depthMappingShader))));
+
+#endif
+
+#ifdef TEST_DEPTH_MAP_CUBE
+
+        depthMappingCubeShader = Shader::createFromFile("DebugDepthCubeShader",
+            "/shaders/advanced_lighting/3.2.1.point_shadows_depth.vs",
+            "/shaders/advanced_lighting/3.2.1.point_shadows_depth.fs", 
+            "/shaders/advanced_lighting/3.2.1.point_shadows_depth.gs");
+
+        m_depthCubeBuffer = FramebufferDepthCube::create(SHADOW_WIDTH);
+
+        m_depthMappingCubeMaterial = QSharedPointer<MaterialInstance>(new MaterialInstance(QSharedPointer<Material>(new Material(depthMappingCubeShader))));
+
+#endif
+
+#ifdef TEST_FRAME_BUFFER
+
+        m_frameBuffer = Framebuffer2D::create(m_screenBufferWidth, m_screenBufferHeight);
+
+        hdrShader = Shader::createFromFile("HdrShader ",
+            "/shaders/advanced_lighting/6.hdr.vs",
+            "/shaders/advanced_lighting/6.hdr.fs");
+
+        m_screenQuadMaterial = QSharedPointer<MaterialInstance>(new MaterialInstance(QSharedPointer<Material>(new Material(hdrShader))));
+
+        //QMatrix4x4 proj = QMatrix4x4();
+        //proj.ortho(0, (float)m_screenSize.width(), (float)m_screenSize.height(), 0, -1.0f, 100.0f);
+        //m_screenQuadMaterial->setUniform("projectionMatrix", proj);
+
+        m_screenQuad = LearnGL::CreateScreenQuad(m_screenQuadMaterial);
+
+        m_screenQuadMaterial->setTexture("hdrBuffer", m_frameBuffer->getTexture());
+#endif
 	}
     void ForwardRenderer::begin() 
     {
 		Renderer::setViewport(0, 0, m_screenBufferWidth, m_screenBufferHeight);
-
         m_commandQueue.clear();
         m_systemUniforms.clear();
+#ifdef TEST_FRAME_BUFFER
+        if (m_screenSize != m_frameBuffer->getSize())
+        {
+            m_frameBuffer.clear();
+            m_frameBuffer = Framebuffer2D::create(m_screenSize.width(), m_screenSize.height());
+        }
+
+#endif
     }
 
 	void ForwardRenderer::beginScene(QSharedPointer<Camera> camera)
@@ -83,7 +148,7 @@ namespace CGFF {
         m_commandQueue.push_back(command);
     }
 
-    void ForwardRenderer::submitMesh(QSharedPointer<Mesh> mesh, const QMatrix4x4& transform)
+    void ForwardRenderer::submitMesh(const QSharedPointer<Mesh>& mesh, const QMatrix4x4& transform)
     {
         RenderCommand command;
         command.mesh = mesh;
@@ -94,12 +159,7 @@ namespace CGFF {
 
     void ForwardRenderer::submitLightSetup(const QSharedPointer<LightSetup>& lightSetup)
     {
-        auto lights = lightSetup->getLights();
-        Q_ASSERT(lights.size() <= 1);//To do: support multiple lights
-        for (int i = 0; i < lights.size(); i++)
-        {
-			memcpy(m_PSSystemUniformBuffer.data() + m_PSSystemUniformBufferOffsets[PSSystemUniformIndex_Lights], lights[i].data(), sizeof(Light));
-        }
+        //To do
     }
 
 	void ForwardRenderer::endScene()
@@ -113,17 +173,71 @@ namespace CGFF {
     }
     void ForwardRenderer::flush() 
     {
+#ifdef TEST_DEPTH_MAP
+        
+        renderToDepthMap();
+        m_depthBuffer->getTexture()->bind();
+#endif
+
+#ifdef TEST_DEPTH_MAP_CUBE
+
+        renderToDepthMapCube();
+        m_depthCubeBuffer->getTexture()->bind();
+
+#endif
+
+#ifdef TEST_FRAME_BUFFER
+        if (Renderer::getRenderTarget() == Render3DTarget::BUFFER)
+        {
+            m_frameBuffer->bind();
+            m_frameBuffer->clear();
+            m_screenQuadMaterial->setTexture("hdrBuffer", m_frameBuffer->getTexture());
+            Renderer::setViewport(0, 0, m_screenBufferWidth, m_screenBufferHeight);
+        }
+#endif
 		for (uint i = 0; i < m_commandQueue.size(); i++)
 		{
 			const RenderCommand& command = m_commandQueue[i];
 			QSharedPointer<MaterialInstance> material = command.mesh->getMaterialInstance();
 			int materialRenderFlags = material->getRenderFlags();
-			Renderer::setDepthTesting((materialRenderFlags & (int)Material::RenderFlags::DISABLE_DEPTH_TEST) == 0);
+#ifdef TEST_DEPTH_MAP
+            material->setTexture("shadowMap", m_depthBuffer->getTexture());
+            material->setUniform("lightSpaceMatrix", lightSpaceMatrix);
+            material->setUniform("lightPos", g_LightPos);
+#endif
+#ifdef TEST_DEPTH_MAP_CUBE
+            material->setTexture("depthMap", m_depthCubeBuffer->getTexture());
+            material->setUniform("far_plane", far_plane);
+            material->setUniform("lightPos", g_LightPos);
+
+            if (i == m_commandQueue.size() - 1)
+            {
+                material->setUniform("reverse_normals", 1);
+            }
+            else
+            {
+                material->setUniform("reverse_normals", 0);
+            }
+#endif
+            Renderer::setDepthTesting((materialRenderFlags & (int)Material::RenderFlags::DISABLE_DEPTH_TEST) == 0);
 			memcpy(m_VSSystemUniformBuffer.data() + m_VSSystemUniformBufferOffsets[VSSystemUniformIndex_ModelMatrix], &command.transform, sizeof(QMatrix4x4));
 			setSystemUniforms(command.shader);
 			command.mesh->render(*this);
 		}
 
+#ifdef TEST_FRAME_BUFFER
+        if (Renderer::getRenderTarget() == Render3DTarget::BUFFER)
+        {      
+
+            m_frameBuffer->unBind();
+            m_frameBuffer->clear();
+            m_screenQuadMaterial->setUniform("hdr", true);
+            m_screenQuadMaterial->setUniform("exposure", exposure);
+            m_screenQuad->render(*this);
+
+        }
+
+#endif
     }
 
 	void ForwardRenderer::close()
@@ -137,4 +251,98 @@ namespace CGFF {
 		shader->setVSSystemUniformBuffer(m_VSSystemUniformBuffer.data(), m_VSSystemUniformBufferSize, 0);
 		shader->setPSSystemUniformBuffer(m_PSSystemUniformBuffer.data(), m_PSSystemUniformBufferSize, 0);
 	}
+
+    void ForwardRenderer::renderToFrameBuffer()
+    {
+
+    }
+
+    void ForwardRenderer::renderToDepthMap()
+    {
+        m_depthBuffer->bind();
+        m_depthBuffer->clear();
+        Renderer::setViewport(0, 0, SHADOW_WIDTH, SHADOW_HEIGHT);
+
+        QMatrix4x4 light_projection;
+        light_projection.ortho(-100.0f, 100.0f, -100.0f, 100.0f, near_plane, far_plane);
+        QMatrix4x4 light_view;
+        light_view.lookAt(g_LightPos, QVector3D(0.0f, 0.0f, 0.0f), QVector3D(0.0, 1.0, 0.0));
+        lightSpaceMatrix = light_projection * light_view;
+        m_depthMappingMaterial->setUniform("lightSpaceMatrix", lightSpaceMatrix);
+
+        for (uint i = 0; i < m_commandQueue.size(); i++)
+        {
+            RenderCommand command;
+            command.mesh = QSharedPointer<Mesh>(new Mesh(m_commandQueue[i].mesh));
+            command.mesh->setMaterial(m_depthMappingMaterial);
+            command.transform = m_commandQueue[i].transform;
+            command.shader = m_depthMappingMaterial->getMaterial()->getShader();
+
+            Renderer::setDepthTesting(true);
+            memcpy(m_VSSystemUniformBuffer.data() + m_VSSystemUniformBufferOffsets[VSSystemUniformIndex_ModelMatrix], &command.transform, sizeof(QMatrix4x4));
+            setSystemUniforms(command.shader);
+            command.mesh->render(*this);
+        }
+
+        m_depthBuffer->unBind();
+
+        Renderer::setViewport(0, 0, m_screenBufferWidth, m_screenBufferHeight);
+    }
+
+    void ForwardRenderer::renderToDepthMapCube()
+    {
+        QMatrix4x4 shadowProj;
+        shadowProj.perspective(90.0f, static_cast<float>(SHADOW_WIDTH) / static_cast<float>(SHADOW_WIDTH), near_plane, far_plane);
+        QVector<QMatrix4x4> shadowTransforms;
+
+        QMatrix4x4 light_view;
+        light_view.lookAt(g_LightPos, g_LightPos + QVector3D(1.0f, 0.0f, 0.0f), QVector3D(0.0f, -1.0f, 0.0f));
+        shadowTransforms.push_back(shadowProj * light_view);
+
+        light_view.setToIdentity();
+        light_view.lookAt(g_LightPos, g_LightPos + QVector3D(-1.0f, 0.0f, 0.0f), QVector3D(0.0f, -1.0f, 0.0f));
+        shadowTransforms.push_back(shadowProj * light_view);
+
+        light_view.setToIdentity();
+        light_view.lookAt(g_LightPos, g_LightPos + QVector3D(0.0f, 1.0f, 0.0f), QVector3D(0.0f, 0.0f, 1.0f));
+        shadowTransforms.push_back(shadowProj * light_view);
+
+        light_view.setToIdentity();
+        light_view.lookAt(g_LightPos, g_LightPos + QVector3D(0.0f, -1.0f, 0.0f), QVector3D(0.0f, 0.0f, -1.0f));
+        shadowTransforms.push_back(shadowProj * light_view);
+
+        light_view.setToIdentity();
+        light_view.lookAt(g_LightPos, g_LightPos + QVector3D(0.0f, 0.0f, 1.0f), QVector3D(0.0f, -1.0f, 0.0f));
+        shadowTransforms.push_back(shadowProj * light_view);
+
+        light_view.setToIdentity();
+        light_view.lookAt(g_LightPos, g_LightPos+QVector3D(0.0f, 0.0f, -1.0f), QVector3D(0.0f, -1.0f, 0.0f));
+        shadowTransforms.push_back(shadowProj * light_view);
+
+        m_depthCubeBuffer->bind();
+        m_depthCubeBuffer->clear();
+        Renderer::setViewport(0, 0, SHADOW_WIDTH, SHADOW_HEIGHT);
+
+        m_depthMappingCubeMaterial->setUniform("shadowMatrices", shadowTransforms);
+        m_depthMappingCubeMaterial->setUniform("far_plane", far_plane);
+        m_depthMappingCubeMaterial->setUniform("lightPos", g_LightPos);
+
+        for (uint i = 0; i < m_commandQueue.size(); i++)
+        {
+            RenderCommand command;
+            command.mesh = QSharedPointer<Mesh>(new Mesh(m_commandQueue[i].mesh));
+            command.mesh->setMaterial(m_depthMappingCubeMaterial);
+            command.transform = m_commandQueue[i].transform;
+            command.shader = m_depthMappingCubeMaterial->getMaterial()->getShader();
+
+            Renderer::setDepthTesting(true);
+            memcpy(m_VSSystemUniformBuffer.data() + m_VSSystemUniformBufferOffsets[VSSystemUniformIndex_ModelMatrix], &command.transform, sizeof(QMatrix4x4));
+            setSystemUniforms(command.shader);
+            command.mesh->render(*this);
+        }
+
+        m_depthCubeBuffer->unBind();
+
+        Renderer::setViewport(0, 0, m_screenBufferWidth, m_screenBufferHeight);
+    }
 }

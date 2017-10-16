@@ -3,9 +3,8 @@
 
 MainWindow::MainWindow(QWidget *parent)
 	: QMainWindow(parent)
-	//, m_applicationWindow(nullptr)
+	, m_learnGLWindow(nullptr)
 	, m_debugWindow(nullptr)
-	//, m_centralWidget(nullptr)
 	, m_menuBar(nullptr)
 	, m_mainToolBar(nullptr)
 	, m_statusBar(nullptr)
@@ -37,12 +36,6 @@ MainWindow::MainWindow(QWidget *parent)
 
 MainWindow::~MainWindow()
 {
-	//delete m_applicationWindow;
-
-	//if(m_debugWindow)
-	//	delete m_debugWindow;
-
-	m_debugWindow = nullptr;
 }
 void MainWindow::setupUi()
 {
@@ -53,12 +46,13 @@ void MainWindow::setupUi()
     this->setDocumentMode(false);
 	this->setWindowTitle(QApplication::translate("this", "CGFF", Q_NULLPTR));
 
-	m_debugWindow = new CGFF::DebugWindow(this);
-	m_debugWindow->setActive(true);
-	QWidget * debugWidget = QWidget::createWindowContainer(m_debugWindow, this);
+	//m_debugWindow = new CGFF::DebugWindow(this);
+	//m_debugWindow->setActive(true);
+    m_learnGLWindow = new CGFF::LearnGLWindow(this);
+    m_learnGLWindow->setActive(true);
+	QWidget * debugWidget = QWidget::createWindowContainer(m_learnGLWindow, this);
 	setCentralWidget(debugWidget);
 	
-    
     m_statusBar = new QStatusBar(this);
     m_statusBar->setObjectName(QStringLiteral("m_statusBar"));
     this->setStatusBar(m_statusBar);
@@ -83,6 +77,7 @@ void MainWindow::setupDockWidgets()
 	m_explorerDockWidget = new QDockWidget("Explorer",this);
 	m_explorer = new QTUI::ExplorerView(this);
 	m_explorerDockWidget->setWidget(m_explorer);
+    m_explorerDockWidget->hide();
 
 	addDockWidget(Qt::LeftDockWidgetArea, m_explorerDockWidget);
 
@@ -90,6 +85,7 @@ void MainWindow::setupDockWidgets()
 	m_objectList = new QTUI::ObjectListView(this);
 	m_objectList->setModel(m_resourceModel);
 	m_objectListDockWidget->setWidget(m_objectList);
+    m_objectListDockWidget->hide();
 
 	addDockWidget(Qt::RightDockWidgetArea, m_objectListDockWidget);
 
@@ -97,6 +93,7 @@ void MainWindow::setupDockWidgets()
 	m_objectInfo = new QTUI::ObjectInfoView(this);
 	m_objectInfo->setModel(m_resourceModel);
 	m_propertiesDockWidget->setWidget(m_objectInfo);
+    m_propertiesDockWidget->hide();
 
 	addDockWidget(Qt::RightDockWidgetArea, m_propertiesDockWidget);
 }
@@ -109,7 +106,8 @@ void MainWindow::setupMenuBar()
 	//view menu
 	m_menuView = new QMenu("View", m_menuBar);
 	m_menuView->addAction(m_explorerDockWidget->toggleViewAction());
-	m_menuView->addAction(m_propertiesDockWidget->toggleViewAction());
+    m_menuView->addAction(m_propertiesDockWidget->toggleViewAction());
+    m_menuView->addAction(m_objectListDockWidget->toggleViewAction());
 
 	//project menu
 	m_menuProject = new QMenu("Project", m_menuBar);
@@ -175,17 +173,16 @@ void MainWindow::createConnections()
 	connect(m_saveProjectAction, &QAction::triggered,
 		this, &MainWindow::onSaveProject);
 
-	connect(m_playAction, &QAction::triggered,
-		m_debugWindow, &CGFF::BaseWindow::onDisactivate);
+	//connect(m_playAction, &QAction::triggered,
+	//	m_debugWindow, &CGFF::BaseWindow::onDisactivate);
 
-	connect(m_stopAction, &QAction::triggered,
-		m_debugWindow, &CGFF::BaseWindow::onActivate);
+	//connect(m_stopAction, &QAction::triggered,
+	//	m_debugWindow, &CGFF::BaseWindow::onActivate);
 
 	connect(m_cubeAction, &QAction::triggered, [=]() { m_resourceModel->onAddEntity(CGFF::EntityType::CUBE); });
 	connect(m_sphereAction, &QAction::triggered, [=]() { m_resourceModel->onAddEntity(CGFF::EntityType::SPHERE); });
 	connect(m_planeAction, &QAction::triggered, [=]() { m_resourceModel->onAddEntity(CGFF::EntityType::PLANE); });
-    //connect(m_objectList, &QTUI::ObjectListView::entityAdded, m_debugWindow, &CGFF::DebugWindow::onAddEntity);
-    connect(m_resourceModel, &QTUI::ResourceModel::entityAdded, m_debugWindow, &CGFF::DebugWindow::onAddEntity);
+    //connect(m_resourceModel, &QTUI::ResourceModel::entityAdded, m_debugWindow, &CGFF::DebugWindow::onAddEntity);
 
 	connect(m_playAction, &QAction::triggered,
 		this, &MainWindow::onSetStatus);

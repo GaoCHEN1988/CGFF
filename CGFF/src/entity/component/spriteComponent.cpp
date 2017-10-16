@@ -2,7 +2,7 @@
 
 namespace CGFF {
 
-	SpriteComponent::SpriteComponent(QSharedPointer<Sprite> sprite)
+	SpriteComponent::SpriteComponent(const QSharedPointer<Sprite>& sprite)
 		: sprite(sprite)
 	{
 	}

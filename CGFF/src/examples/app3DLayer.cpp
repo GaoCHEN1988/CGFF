@@ -4,70 +4,179 @@
 
 namespace CGFF
 {
-	App3DLayer::App3DLayer(QSize size, QWidget *parent) 
-		: Layer3D(QSharedPointer<Scene>(new Scene(size))
-			, QSharedPointer<ForwardRenderer>(new ForwardRenderer(size))
-			, parent)
-		, m_camera(nullptr)
-		, m_entities()
-		, m_lights(nullptr)
-		, m_skyboxMaterial(nullptr)
-	{
-	}
+    AppType testType;
 
-	App3DLayer::~App3DLayer()
-	{
-	}
+    App3DLayer::App3DLayer(QSize size, QWidget *parent)
+        : Layer3D(QSharedPointer<Scene>(new Scene(size))
+            , QSharedPointer<ForwardRenderer>(new ForwardRenderer(size))
+            , parent)
+        , m_shadowMapping(nullptr)
+        , m_pointShadows(nullptr)
+        , m_normalMapping(nullptr)
+        , m_parallaxMapping(nullptr)
+    {
+    }
+
+    App3DLayer::~App3DLayer()
+    {
+    }
 
 
-	void App3DLayer::init()
-	{
-		loadFromResource();
-	}
+    void App3DLayer::init()
+    {
+        testType = AppType::pbr;
 
-	void App3DLayer::render(QSharedPointer<Renderer3D>& renderer)
-	{
-		// Remove the translation part for skybox
-        if (m_skyboxMaterial)
+        switch (testType)
         {
-            QMatrix4x4 vm = m_scene->getCamera()->getViewMatrix();
-            m_skyboxMaterial->setUniform("u_ViewMatrix", QMatrix4x4(QMatrix3x3(vm.toGenericMatrix<3, 3>())));
+        case AppType::bloom:
+        {
+            break;
         }
-	}
+        case AppType::deferredShading:
+        {
+            setRenderer(QSharedPointer<DeferredRenderer>(new DeferredRenderer(m_scene->getSize())));
+            m_deferredShading = QSharedPointer<LearnGL::DeferredShading>(new LearnGL::DeferredShading(m_scene));
+            m_deferredShading->init();
 
-	void App3DLayer::mousePressEvent(QMouseEvent *event)
-	{
-		Layer3D::getScene()->getCamera()->mousePressEvent(event);
-	}
+            break;
+        }
+        case AppType::hdr:
+        {
+            m_hdr = QSharedPointer<LearnGL::HDR>(new LearnGL::HDR(m_scene));
+            m_hdr->init();
 
-	void App3DLayer::mouseMoveEvent(QMouseEvent *event)
-	{
-		Layer3D::getScene()->getCamera()->mouseMoveEvent(event);
-	}
+            break;
+        }
+        case AppType::normalMapping:
+        {
+            m_normalMapping = QSharedPointer<LearnGL::NormalMapping>(new LearnGL::NormalMapping(m_scene));
+            m_normalMapping->init();
 
-	void App3DLayer::mouseReleaseEvent(QMouseEvent *event)
-	{
-		Layer3D::getScene()->getCamera()->mousePressEvent(event);
-	}
+            break;
+        }
+        case AppType::parallaxMapping:
+        {
+            m_parallaxMapping = QSharedPointer<LearnGL::ParallaxMapping>(new LearnGL::ParallaxMapping(m_scene));
+            m_parallaxMapping->init();
+            break;
+        }
+        case AppType::pbr:
+        {
+            m_pbr = QSharedPointer<LearnGL::PBR>(new LearnGL::PBR(m_scene));
+            m_pbr->init();
+            break;
+        }
+        case AppType::pointShadows:
+        {
+            m_pointShadows = QSharedPointer<LearnGL::PointShadows>(new LearnGL::PointShadows(m_scene));
+            m_pointShadows->init();
+            break;
+        }
+        case AppType::shadowMappingDepth:
+        {
+            m_shadowMapping = QSharedPointer<LearnGL::ShadowMappingDepth>(new LearnGL::ShadowMappingDepth(m_scene));
+            m_shadowMapping->init();
 
-	void App3DLayer::closeEvent(QCloseEvent *event)
-	{
-	}
+            break;
+        }
+        case AppType::ssao:
+        {
+            setRenderer(QSharedPointer<DeferredRenderer>(new DeferredRenderer(m_scene->getSize())));
+            m_ssao = QSharedPointer<LearnGL::SSAO>(new LearnGL::SSAO(m_scene));
+            m_ssao->init();
+            break;
+        }
+        }
+    }
 
-	void App3DLayer::loadFromResource()
-	{
-		foreach(QSharedPointer<Entity> entity, ResourceManager::getSceneResource(ResourceManager::getScene3DName())->getObjects())
-		{
-			m_scene->add(entity);
-		}
+    void App3DLayer::render(QSharedPointer<Renderer3D>& renderer)
+    {
+        switch (testType)
+        {
+        case AppType::bloom:
+        {
+            break;
+        }
+        case AppType::deferredShading:
+        {
+            m_deferredShading->render();
+            break;
+        }
+        case AppType::hdr:
+        {
+            m_hdr->render();
+            break;
+        }
+        case AppType::normalMapping:
+        {
+            m_normalMapping->render();
+            break;
+        }
+        case AppType::parallaxMapping:
+        {
+            m_parallaxMapping->render();
+            break;
+        }
+        case AppType::pbr:
+        {
+            m_pbr->render();
+            break;
+        }
+        case AppType::pointShadows:
+        {
+            m_pointShadows->render();
 
-		QSharedPointer<LightSetup> lights = QSharedPointer<LightSetup>(new LightSetup());
+            break;
+        }
+        case AppType::shadowMappingDepth:
+        {
+            m_shadowMapping->render();
 
-		foreach(QSharedPointer<Light> light, ResourceManager::getSceneResource(ResourceManager::getScene3DName())->getLights())
-		{
-			lights->add(light);
-		}
+            break;
+        }
+        case AppType::ssao:
+        {
+            m_ssao->render();
+            break;
+        }
+        }
+        
+    }
 
-		m_scene->pushLightSetup(lights);
-	}
+    void App3DLayer::mousePressEvent(QMouseEvent *event)
+    {
+        Layer3D::getScene()->getCamera()->mousePressEvent(event);
+    }
+
+    void App3DLayer::mouseMoveEvent(QMouseEvent *event)
+    {
+        Layer3D::getScene()->getCamera()->mouseMoveEvent(event);
+    }
+
+    void App3DLayer::mouseReleaseEvent(QMouseEvent *event)
+    {
+        Layer3D::getScene()->getCamera()->mousePressEvent(event);
+    }
+
+    void App3DLayer::keyPressEvent(QKeyEvent *event)
+    {
+        switch (event->key())
+        {
+        case (Qt::Key_1) :
+        {
+            Renderer::setRenderTarget(CGFF::Render3DTarget::SCREEN);
+            break;
+        }
+
+        case (Qt::Key_2) :
+        {
+            Renderer::setRenderTarget(CGFF::Render3DTarget::BUFFER);
+            break;
+        }
+        }
+    }
+
+    void App3DLayer::closeEvent(QCloseEvent *event)
+    {
+    }
 }

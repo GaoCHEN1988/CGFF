@@ -11,7 +11,9 @@ namespace CGFF {
 	class Renderable2D : public QEnableSharedFromThis<Renderable2D>
 	{
 	protected:
-		Renderable2D() : m_texture(nullptr)
+		Renderable2D() 
+            : m_texture(nullptr)
+            , m_isVisible(true)
 		{
 			setDefaultUV();
 		}
@@ -21,6 +23,7 @@ namespace CGFF {
 			, m_size(size)
 			, m_color(color)
 			, m_texture(nullptr)
+            , m_isVisible(true)
 		{
 			setDefaultUV();
 		}

@@ -12,11 +12,11 @@ namespace CGFF {
 	class GLShader : public Shader
 	{
 	public:
-		GLShader(QString name);
+		GLShader(const QString& name);
 		virtual ~GLShader();
 
-		void createFromFile(QString vertexFile, QString fragmentFile);
-		void createFromSource(QString vertexSource, QString fragmentSource);
+		void createFromFile(const QString& vertexFile, const QString& fragmentFile, const QString& geometryFile = "");
+		void createFromSource(const QString& vertexSource, const QString& fragmentSource, const QString& geometrySource = "");
 
 		void init();
 		void close() override;
@@ -62,18 +62,21 @@ namespace CGFF {
 		void load();
 		QSharedPointer<ShaderUniformDeclaration> findUniformDeclaration(const QString& name, QSharedPointer<ShaderUniformBufferDeclaration> buffer);
 		QSharedPointer<ShaderUniformDeclaration> findUniformDeclaration(const QString& name);
-		void resolveAndSetUniforms(QSharedPointer<ShaderUniformBufferDeclaration> buffer, uchar* data);
-		void resolveAndSetUniform(QSharedPointer<GLShaderUniformDeclaration> uniform, uchar* data);
-		void setUniformStruct(QSharedPointer<GLShaderUniformDeclaration> uniform, uchar* data, int offset);
+		void resolveAndSetUniforms(const QSharedPointer<ShaderUniformBufferDeclaration>& buffer, uchar* data);
+		void resolveAndSetUniform(const QSharedPointer<GLShaderUniformDeclaration>& uniform, uchar* data);
+        void setUniformStruct(const QSharedPointer<GLShaderUniformDeclaration>& uniform, uchar* data, int offset);
+        void setUniformStructList(const QSharedPointer<GLShaderUniformDeclaration>& uniform, uchar* data, int offset);
 
-		void parse(const QString& vertexSource, const QString& fragmentSource);
+		void parse(const QString& vertexSource, const QString& fragmentSource, const QString& geometrySource = "");
 		void parseUniform(const QString& statement, ShaderType shaderType);
 		void parseUniformStruct(const QString& block, ShaderType shaderType);
 
 		bool isTypeStringResource(const QString& type);
 		QSharedPointer<ShaderStruct> findStruct(const QString& name);
 
-		void resolveUniforms();
+        void resolveUniformLists(const ShaderUniformList& uniformBufferList);
+        void resolveUniformBufferLists(const ShaderUniformBufferList& uniformBufferList);
+        void resolveUniforms();
 
 	private:
 		QOpenGLShaderProgram m_glShaderProgram;
@@ -82,6 +85,8 @@ namespace CGFF {
 		QString m_vertexSource;
 		QString m_fragmentFile;
 		QString m_fragmentSource;
+        QString m_geometryFile;
+        QString m_geometrySource;
 
 		ShaderUniformBufferList m_VSUniformBuffers;
 		ShaderUniformBufferList m_PSUniformBuffers;

@@ -1,4 +1,4 @@
-#version 330 core
+#version 440 core
 out vec4 FragColor;
 
 in VS_OUT {
@@ -12,7 +12,7 @@ struct Light {
     vec3 Color;
 };
 
-uniform Light lights[16];
+uniform Light lights[4];
 uniform sampler2D diffuseTexture;
 uniform vec3 viewPos;
 
@@ -24,11 +24,11 @@ void main()
     vec3 ambient = 0.0 * color;
     // lighting
     vec3 lighting = vec3(0.0);
-    for(int i = 0; i < 16; i++)
+    for(int i = 0; i < 4; i++)
     {
         // diffuse
         vec3 lightDir = normalize(lights[i].Position - fs_in.FragPos);
-        float diff = max(dot(lightDir, normal), 0.0);
+        float diff = max(dot(lightDir, normal), 0.5);
         vec3 diffuse = lights[i].Color * diff * color;      
         vec3 result = diffuse;        
         // attenuation (use quadratic as we have gamma correction)

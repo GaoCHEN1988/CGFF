@@ -2,7 +2,6 @@
 
 namespace CGFF {
 
-
 	GLFramebufferDepth::GLFramebufferDepth(int width, int height)
 		: m_width(width)
 		, m_height(height)
@@ -58,11 +57,11 @@ namespace CGFF {
 		GL->glGenFramebuffers(1, &m_framebufferID);
 		GL->glBindFramebuffer(GL_FRAMEBUFFER, m_framebufferID);
 
-		GL->glFramebufferTexture(GL_FRAMEBUFFER, GL_DEPTH_ATTACHMENT, m_glTexture->getID(), 0);
-		GL->glDrawBuffer(GL_NONE);
+		GL->glFramebufferTexture2D(GL_FRAMEBUFFER, GL_DEPTH_ATTACHMENT, GL_TEXTURE_2D, m_glTexture->getID(), 0);
+        GL->glDrawBuffer(GL_NONE);
+        GL->glReadBuffer(GL_NONE);
 		Q_ASSERT(GL->glCheckFramebufferStatus(GL_FRAMEBUFFER) == GL_FRAMEBUFFER_COMPLETE);
 
 		GL->glBindFramebuffer(GL_FRAMEBUFFER, 0);
 	}
-
 }

@@ -19,17 +19,17 @@ namespace CGFF {
     {
 		m_shader->bind();
 		// TODO: Don't do this if a MaterialInstance is being used
-		if (!m_VSUserUniformBuffer.isNull())
-			m_shader->setVSUserUniformBuffer(m_VSUserUniformBuffer.data(), m_VSUserUniformBufferSize);
-		if (!m_PSUserUniformBuffer.isNull())
-			m_shader->setPSUserUniformBuffer(m_PSUserUniformBuffer.data(), m_PSUserUniformBufferSize);
+		//if (!m_VSUserUniformBuffer.isNull())
+		//	m_shader->setVSUserUniformBuffer(m_VSUserUniformBuffer.data(), m_VSUserUniformBufferSize);
+		//if (!m_PSUserUniformBuffer.isNull())
+		//	m_shader->setPSUserUniformBuffer(m_PSUserUniformBuffer.data(), m_PSUserUniformBufferSize);
 
-		for (uint i = 0; i < m_textures.size(); i++)
-		{
-			QSharedPointer<Texture> texture = m_textures[i];
-			if (!texture.isNull())
-				texture->bind(i);
-		}
+		//for (uint i = 0; i < m_textures.size(); i++)
+		//{
+		//	QSharedPointer<Texture> texture = m_textures[i];
+		//	if (!texture.isNull())
+		//		texture->bind(i);
+		//}
 
     }
     void Material::unbind() const
@@ -53,12 +53,16 @@ namespace CGFF {
 	{
 		QSharedPointer<uchar> buffer;
 		QSharedPointer<ShaderUniformDeclaration> declaration = findUniformDeclaration(uniform, buffer);
+        if (declaration.isNull())
+            return;
 		memcpy(buffer.data() + declaration->getOffset(), data, declaration->getSize());
 	}
 
 	void Material::setTexture(const QString& name, QSharedPointer<Texture> texture)
 	{
 		QSharedPointer<ShaderResourceDeclaration> declaration = findResourceDeclaration(name);
+        if (declaration.isNull())
+            return;
 		Q_ASSERT(!declaration.isNull());
 		uint slot = declaration->getRegister();
 
@@ -190,6 +194,9 @@ namespace CGFF {
 	{
 		QSharedPointer<uchar> buffer;
 		QSharedPointer<ShaderUniformDeclaration> declaration = findUniformDeclaration(uniform, buffer);
+        if (declaration.isNull())
+            return;
+
 		Q_ASSERT(!buffer.isNull());
 		memcpy(buffer.data() + declaration->getOffset(), data, declaration->getSize());
 	}
@@ -197,6 +204,9 @@ namespace CGFF {
 	void MaterialInstance::setTexture(const QString& name, QSharedPointer<Texture> texture)
 	{
 		QSharedPointer<ShaderResourceDeclaration> declaration = findResourceDeclaration(name);
+        if (declaration.isNull())
+            return;
+
 		uint slot = declaration->getRegister();
 
 		if (m_textures.size() <= slot)

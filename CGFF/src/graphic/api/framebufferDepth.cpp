@@ -1,5 +1,6 @@
 #include "framebufferDepth.h"
 #include "context.h"
+#include "platform/opengl/glFramebufferDepth.h"
 
 namespace CGFF {
 
@@ -8,7 +9,7 @@ namespace CGFF {
 		switch (Context::getRenderAPI())
 		{
 		case RenderAPI::OPENGL:
-			return nullptr;
+            return QSharedPointer<GLFramebufferDepth>(new GLFramebufferDepth(width, height));
 		case RenderAPI::DIRECT3D:
 			return nullptr;
 		}

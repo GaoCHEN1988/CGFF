@@ -24,6 +24,7 @@ namespace CGFF {
    
         inline const QSharedPointer<Camera>& getCamera() const { return m_camera; }
         inline const QVector<QSharedPointer<Entity>>& getEntities() const { return m_entities; }
+        inline QSize getSize() const { return m_size; }
 
     private:
         QVector<QSharedPointer<Entity>> m_entities;
