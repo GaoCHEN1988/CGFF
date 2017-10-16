@@ -210,9 +210,6 @@ namespace CGFF {
         RenderCommand command;
         command.mesh = mesh;
         command.mesh->setMaterial(m_geometryPassMaterial);
-        
-        m_geometryPassMaterial->setUniform("invertedNormals", command.mesh->isInvertedNormal());
-
         command.transform = transform;
         command.shader = mesh->getMaterialInstance()->getMaterial()->getShader();
         m_commandQueue.push_back(command);
@@ -263,7 +260,7 @@ namespace CGFF {
 
         m_ssaoFB->bind();
         Renderer::clear(RendererBufferType::RENDERER_BUFFER_COLOR);
-        m_shaderSSAOMaterial->setUniform("samples", m_ssaoKernel);
+        m_shaderSSAOMaterial->setUniformData("samples", (uchar*)m_ssaoKernel.data());
         m_shaderSSAOMaterial->setTexture("gPosition", m_GBuffer->getTexture(TextureType::Position));
         m_shaderSSAOMaterial->setTexture("gNormal", m_GBuffer->getTexture(TextureType::Normal));
         m_shaderSSAOMaterial->setTexture("texNoise", m_noiseTexture);
@@ -323,19 +320,6 @@ namespace CGFF {
         // 1. geometry pass
         m_GBuffer->bind();
         m_GBuffer->clear();
-
-        //for (uint i = 0; i < m_commandQueue.size(); i++)
-        //{
-        //    RenderCommand command;
-        //    command.mesh = QSharedPointer<Mesh>(new Mesh(m_commandQueue[i].mesh));
-        //    command.mesh->setMaterial(m_geometryPassMaterial);
-        //    command.transform = m_commandQueue[i].transform;
-        //    command.shader = m_geometryPassMaterial->getMaterial()->getShader();
-        //    Renderer::setDepthTesting(true);
-        //    memcpy(m_VSSystemUniformBuffer.data() + m_VSSystemUniformBufferOffsets[VSSystemUniformIndex_ModelMatrix], &command.transform, sizeof(QMatrix4x4));
-        //    setSystemUniforms(command.shader);
-        //    command.mesh->render(*this);
-        //}
 
         for (uint i = 0; i < m_commandQueue.size(); i++)
         {

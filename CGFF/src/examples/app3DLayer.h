@@ -42,6 +42,7 @@ namespace CGFF {
         QSharedPointer<LearnGL::HDR> m_hdr;
         QSharedPointer<LearnGL::DeferredShading> m_deferredShading;
         QSharedPointer<LearnGL::SSAO> m_ssao;
+        QSharedPointer<LearnGL::PBR> m_pbr;
 	};
 }
 

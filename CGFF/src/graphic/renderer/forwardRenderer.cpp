@@ -159,30 +159,7 @@ namespace CGFF {
 
     void ForwardRenderer::submitLightSetup(const QSharedPointer<LightSetup>& lightSetup)
     {
-        //auto lights = lightSetup->getLights();
-
-        //if (lights.size()> 0)
-        //    m_lightPassPassMaterial->setUniformData("lights", (uchar*)lights.data());
-
-        //auto lightEntities = lightSetup->getLightEntities();
-
-        //if (lightEntities.size() > 0)
-        //{
-        //    for (QSharedPointer<Entity> lightEntity : lightEntities)
-        //    {
-        //        if (lightEntity.isNull())
-        //            continue;
-
-        //        MeshComponent* mesh = lightEntity->getComponent<MeshComponent>();
-        //        if (mesh)
-        //        {
-        //            TransformComponent* tc = lightEntity->getComponent<TransformComponent>();
-        //            if (!tc)
-        //                qFatal("Mesh does not have transform!"); // Meshes MUST have transforms
-        //            submitLightEntity(mesh->mesh, tc->transform);
-        //        }
-        //    }
-        //}
+        //To do
     }
 
 	void ForwardRenderer::endScene()

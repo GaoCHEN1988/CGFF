@@ -24,7 +24,7 @@ namespace CGFF
 
     void App3DLayer::init()
     {
-        testType = AppType::ssao;
+        testType = AppType::pbr;
 
         switch (testType)
         {
@@ -62,6 +62,8 @@ namespace CGFF
         }
         case AppType::pbr:
         {
+            m_pbr = QSharedPointer<LearnGL::PBR>(new LearnGL::PBR(m_scene));
+            m_pbr->init();
             break;
         }
         case AppType::pointShadows:
@@ -117,6 +119,7 @@ namespace CGFF
         }
         case AppType::pbr:
         {
+            m_pbr->render();
             break;
         }
         case AppType::pointShadows:

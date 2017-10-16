@@ -231,4 +231,71 @@ namespace LearnGL {
         va->unBind();
         return QSharedPointer<Mesh>(new Mesh(va, ib, material));
     }
+
+    QSharedPointer<CGFF::Mesh> CreateSphere(int xSegments, int ySegments, QSharedPointer<CGFF::MaterialInstance> material)
+    {
+        struct SphereVertex
+        {
+            QVector3D position;
+            QVector3D normal;
+            QVector2D uv;
+        };
+
+        QVector<SphereVertex> vertices;
+
+        for (unsigned int y = 0; y <= ySegments; ++y)
+        {
+            for (unsigned int x = 0; x <= xSegments; ++x)
+            {
+                float xSegment = (float)x / (float)xSegments;
+                float ySegment = (float)y / (float)ySegments;
+                float xPos = std::cos(xSegment * 2.0f * M_PI) * std::sin(ySegment * M_PI);
+                float yPos = std::cos(ySegment * M_PI);
+                float zPos = std::sin(xSegment * 2.0f * M_PI) * std::sin(ySegment * M_PI);
+
+                vertices.push_back({ QVector3D(xPos, yPos, zPos), QVector3D(xPos, yPos, zPos), QVector2D(xSegment, ySegment)});
+            }
+        }
+
+        QSharedPointer<VertexArray> va = VertexArray::create();
+        va->bind();
+        QSharedPointer<VertexBuffer> buffer = VertexBuffer::create(BufferUsage::STATIC);
+        buffer->setData(vertices.size() * sizeof(SphereVertex), vertices.data());
+        LayoutBuffer layout;
+        layout.push<QVector3D>("position");
+        layout.push<QVector3D>("normal");
+        layout.push<QVector2D>("uv");
+        buffer->setLayout(layout);
+        va->pushBuffer(buffer);
+
+        QVector<uint> indices;
+        bool oddRow = false;
+        for (int y = 0; y < ySegments; ++y)
+        {
+            if (!oddRow) // even rows: y == 0, y == 2; and so on
+            {
+                for (int x = 0; x <= xSegments; ++x)
+                {
+                    indices.push_back(y       * (xSegments + 1) + x);
+                    indices.push_back((y + 1) * (xSegments + 1) + x);
+                }
+            }
+            else
+            {
+                for (int x = xSegments; x >= 0; --x)
+                {
+                    indices.push_back((y + 1) * (xSegments + 1) + x);
+                    indices.push_back(y       * (xSegments + 1) + x);
+                }
+            }
+            oddRow = !oddRow;
+        }
+
+        QSharedPointer<IndexBuffer> ib = IndexBuffer::create(indices.data(), indices.size());
+
+        va->unBind();
+
+        return QSharedPointer<Mesh>(new Mesh(va, ib, material));
+    }
+
 }

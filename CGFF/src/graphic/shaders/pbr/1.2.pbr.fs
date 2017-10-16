@@ -1,8 +1,13 @@
-#version 330 core
+#version 440 core
 out vec4 FragColor;
 in vec2 TexCoords;
 in vec3 WorldPos;
 in vec3 Normal;
+
+struct Light {
+    vec3 Position;
+    vec3 Color;
+};
 
 // material parameters
 uniform sampler2D albedoMap;
@@ -12,10 +17,9 @@ uniform sampler2D roughnessMap;
 uniform sampler2D aoMap;
 
 // lights
-uniform vec3 lightPositions[4];
-uniform vec3 lightColors[4];
+uniform Light lights[4];
 
-uniform vec3 camPos;
+uniform vec3 sys_CameraPosition;
 
 const float PI = 3.14159265359;
 // ----------------------------------------------------------------------------
@@ -88,7 +92,7 @@ void main()
     float ao        = texture(aoMap, TexCoords).r;
 
     vec3 N = getNormalFromMap();
-    vec3 V = normalize(camPos - WorldPos);
+    vec3 V = normalize(sys_CameraPosition - WorldPos);
 
     // calculate reflectance at normal incidence; if dia-electric (like plastic) use F0 
     // of 0.04 and if it's a metal, use the albedo color as F0 (metallic workflow)    
@@ -100,11 +104,11 @@ void main()
     for(int i = 0; i < 4; ++i) 
     {
         // calculate per-light radiance
-        vec3 L = normalize(lightPositions[i] - WorldPos);
+        vec3 L = normalize(lights[i].Position - WorldPos);
         vec3 H = normalize(V + L);
-        float distance = length(lightPositions[i] - WorldPos);
+        float distance = length(lights[i].Position - WorldPos);
         float attenuation = 1.0 / (distance * distance);
-        vec3 radiance = lightColors[i] * attenuation;
+        vec3 radiance = lights[i].Color * attenuation;
 
         // Cook-Torrance BRDF
         float NDF = DistributionGGX(N, H, roughness);   

@@ -9,7 +9,7 @@
 
 //#define TEST_DEPTH_MAP
 //#define TEST_DEPTH_MAP_CUBE
-#define TEST_FRAME_BUFFER
+//#define TEST_FRAME_BUFFER
 
 namespace CGFF {
 

@@ -14,7 +14,7 @@ namespace LearnGL {
         QVector3D Color;
     };
 
-    QVector<HdrLight> g_lights;
+    static QVector<HdrLight> g_lights;
 
     HDR::HDR(const QSharedPointer<CGFF::Scene>& scene)
         :m_scene(scene)

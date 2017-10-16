@@ -53,12 +53,16 @@ namespace CGFF {
 	{
 		QSharedPointer<uchar> buffer;
 		QSharedPointer<ShaderUniformDeclaration> declaration = findUniformDeclaration(uniform, buffer);
+        if (declaration.isNull())
+            return;
 		memcpy(buffer.data() + declaration->getOffset(), data, declaration->getSize());
 	}
 
 	void Material::setTexture(const QString& name, QSharedPointer<Texture> texture)
 	{
 		QSharedPointer<ShaderResourceDeclaration> declaration = findResourceDeclaration(name);
+        if (declaration.isNull())
+            return;
 		Q_ASSERT(!declaration.isNull());
 		uint slot = declaration->getRegister();
 

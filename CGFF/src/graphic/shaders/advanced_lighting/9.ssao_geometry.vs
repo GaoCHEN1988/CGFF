@@ -21,7 +21,7 @@ void main()
     TexCoords = aTexCoords;
     
     mat3 normalMatrix = transpose(inverse(mat3(sys_ViewMatrix * sys_ModelMatrix)));
-    Normal = normalMatrix * (invertedNormals ? -aNormal : aNormal);
+    Normal = normalMatrix * aNormal;
     
     gl_Position = sys_ProjectionMatrix * viewPos;
 }

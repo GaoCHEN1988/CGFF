@@ -23,6 +23,7 @@ void main()
     vec3 FragPos = texture(gPosition, TexCoords).rgb;
     vec3 Normal = texture(gNormal, TexCoords).rgb;
     vec3 Diffuse = texture(gAlbedo, TexCoords).rgb;
+    //vec3 Diffuse = vec3(0.95);
     float AmbientOcclusion = texture(ssao, TexCoords).r;
     
     // then calculate lighting as usual
@@ -38,7 +39,8 @@ void main()
     vec3 specular = lights.Color * spec;
     // attenuation
     float distance = length(lights.Position - FragPos);
-    float attenuation = 1.0 / (1.0 + lights.Linear * distance + lights.Quadratic * distance * distance);
+    //float attenuation = 1.0 / (1.0 + lights.Linear * distance + lights.Quadratic * distance * distance);
+    float attenuation = 1.0 ;
     diffuse *= attenuation;
     specular *= attenuation;
     lighting += diffuse + specular;
