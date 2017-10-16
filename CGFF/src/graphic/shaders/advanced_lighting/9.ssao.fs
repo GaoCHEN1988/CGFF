@@ -1,4 +1,4 @@
-#version 330 core
+#version 440 core
 out float FragColor;
 
 in vec2 TexCoords;
@@ -33,22 +33,19 @@ void main()
     float occlusion = 0.0;
     for(int i = 0; i < kernelSize; ++i)
     {
-        // get sample position
-        vec3 sample = TBN * samples[i]; // from tangent to view-space
-        sample = fragPos + sample * radius; 
+        vec3 sample1 = TBN * samples[i]; // from tangent to view-space
+        sample1 = fragPos + sample1 * radius; 
         
-        // project sample position (to sample texture) (to get position on screen/texture)
-        vec4 offset = vec4(sample, 1.0);
+        vec4 offset = vec4(sample1, 1.0);
         offset = projection * offset; // from view to clip-space
         offset.xyz /= offset.w; // perspective divide
         offset.xyz = offset.xyz * 0.5 + 0.5; // transform to range 0.0 - 1.0
-        
-        // get sample depth
+
         float sampleDepth = texture(gPosition, offset.xy).z; // get depth value of kernel sample
         
         // range check & accumulate
         float rangeCheck = smoothstep(0.0, 1.0, radius / abs(fragPos.z - sampleDepth));
-        occlusion += (sampleDepth >= sample.z + bias ? 1.0 : 0.0) * rangeCheck;           
+        occlusion += (sampleDepth >= sample1.z + bias ? 1.0 : 0.0) * rangeCheck;           
     }
     occlusion = 1.0 - (occlusion / kernelSize);
     

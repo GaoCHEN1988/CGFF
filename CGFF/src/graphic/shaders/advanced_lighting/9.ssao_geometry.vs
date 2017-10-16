@@ -20,7 +20,7 @@ void main()
     FragPos = viewPos.xyz; 
     TexCoords = aTexCoords;
     
-    mat3 normalMatrix = transpose(inverse(mat3(view * sys_ModelMatrix)));
+    mat3 normalMatrix = transpose(inverse(mat3(sys_ViewMatrix * sys_ModelMatrix)));
     Normal = normalMatrix * (invertedNormals ? -aNormal : aNormal);
     
     gl_Position = sys_ProjectionMatrix * viewPos;

@@ -13,6 +13,7 @@ namespace CGFF {
 		GLTexture2D(int width, int height, int color, TextureParameters parameters = TextureParameters(), TextureLoadOptions loadOptions = TextureLoadOptions());
 		GLTexture2D(const QString& name, const QString& filename, TextureParameters parameters = TextureParameters(), TextureLoadOptions loadOptions = TextureLoadOptions());
 		GLTexture2D(const QString& name, const QImage& image, TextureParameters parameters = TextureParameters(), TextureLoadOptions loadOptions = TextureLoadOptions());
+        GLTexture2D(int width, int height, const void* data, TextureParameters parameters = TextureParameters());
 
 		virtual ~GLTexture2D();
 
@@ -30,7 +31,8 @@ namespace CGFF {
 	private:
 		void load();
 		void load(QColor color);
-		void load(QImage image);
+        void load(QImage image);
+        void load(const void* data);
 
 	private:
 		QString m_name;

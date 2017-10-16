@@ -59,7 +59,14 @@ namespace CGFF {
 
         inline void setMaterial(const QSharedPointer<MaterialInstance>& materialInstance) { m_materialInstance = materialInstance; }
         inline QSharedPointer<MaterialInstance>& getMaterialInstance() { return m_materialInstance; }
-
+        inline void setInvertedNormal(bool inverted)
+        {
+            m_isInvertedNormal = inverted;
+        }
+        inline bool isInvertedNormal()
+        {
+            return m_isInvertedNormal;
+        }
         void render(Renderer3D& renderer) override;
         void bind();
         void unBind();
@@ -71,6 +78,7 @@ namespace CGFF {
         QSharedPointer<MaterialInstance> m_materialInstance;
         QVector<MeshTexture> m_textures;
 		DrawMode m_drawMode;
+        bool m_isInvertedNormal;
     };
 }
 

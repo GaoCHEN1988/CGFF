@@ -9,7 +9,7 @@ namespace LearnGL {
     static QVector<QVector3D> g_objectPositions;
     const unsigned int NR_LIGHTS = 32;
 
-    QSharedPointer<LightSetup> g_lights;
+    static QSharedPointer<LightSetup> g_lights;
 
     DeferredShading::DeferredShading(const QSharedPointer<CGFF::Scene>& scene)
         :m_scene(scene)
@@ -82,12 +82,12 @@ namespace LearnGL {
 
             QSharedPointer<Entity> lightEntity = QSharedPointer<Entity>(new Entity(cubeMesh, tmpTrans));
 
-            g_lights->add({ QVector3D(xPos, yPos, zPos), QVector3D(rColor, gColor, bColor), linear, quadratic, radius }
-            , lightEntity);
+            //g_lights->add({ QVector3D(xPos, yPos, zPos), QVector3D(rColor, gColor, bColor), linear, quadratic, radius }
+            //, lightEntity);
 
         }
 
-        m_scene->pushLightSetup(g_lights);
+        //m_scene->pushLightSetup(g_lights);
     }
 
     void DeferredShading::render()

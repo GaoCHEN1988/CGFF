@@ -12,6 +12,7 @@ namespace CGFF {
         , m_materialInstance(materialInstance)
         , m_textures(textures)
 		, m_drawMode(mode)
+        , m_isInvertedNormal(false)
     {
     }
 
@@ -21,6 +22,7 @@ namespace CGFF {
 		, m_materialInstance(mesh->m_materialInstance)
         , m_textures(mesh->m_textures)
 		, m_drawMode(mode)
+        , m_isInvertedNormal(false)
 	{
 	}
 

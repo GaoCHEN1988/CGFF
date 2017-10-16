@@ -24,7 +24,7 @@ namespace CGFF
 
     void App3DLayer::init()
     {
-        testType = AppType::deferredShading;
+        testType = AppType::ssao;
 
         switch (testType)
         {
@@ -79,6 +79,9 @@ namespace CGFF
         }
         case AppType::ssao:
         {
+            setRenderer(QSharedPointer<DeferredRenderer>(new DeferredRenderer(m_scene->getSize())));
+            m_ssao = QSharedPointer<LearnGL::SSAO>(new LearnGL::SSAO(m_scene));
+            m_ssao->init();
             break;
         }
         }
@@ -130,6 +133,7 @@ namespace CGFF
         }
         case AppType::ssao:
         {
+            m_ssao->render();
             break;
         }
         }

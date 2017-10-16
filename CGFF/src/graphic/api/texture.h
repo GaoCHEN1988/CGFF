@@ -90,7 +90,7 @@ namespace CGFF {
 		virtual void unBind(uint slot = 0) = 0;
 
 		virtual QString getName() const = 0;
-		virtual QString getFilepath() const = 0;
+        virtual QString getFilepath() const = 0;
 		virtual int getWidth() const = 0;
 		virtual int getHeight() const = 0;
         virtual GLuint getID() const = 0;

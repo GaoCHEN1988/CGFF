@@ -1,4 +1,4 @@
-#version 330 core
+#version 440 core
 out vec4 color;
 
 float LinearizeDepth(float depth) // Note that this ranges from [0,1] instead of up to 'far plane distance' since we divide by 'far'

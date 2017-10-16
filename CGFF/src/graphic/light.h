@@ -24,7 +24,6 @@ namespace CGFF {
         QVector3D Color;
         float Linear;
         float Quadratic;
-        float Radius;
     };
 }
 

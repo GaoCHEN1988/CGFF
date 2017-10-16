@@ -220,13 +220,13 @@ namespace CGFF {
     void GLShader::load()
     {
         if (!m_glShaderProgram.addShaderFromSourceCode(QOpenGLShader::Vertex, m_vertexSource))
-            qFatal(QString("Error:Can't compile vertex shader:\n" + m_glShaderProgram.log()).toStdString().c_str());
+            qFatal(QString("Error:Can't compile vertex shader:\n" + m_vertexFile + "\n" + m_glShaderProgram.log()).toStdString().c_str());
         if (!m_glShaderProgram.addShaderFromSourceCode(QOpenGLShader::Fragment, m_fragmentSource))
-            qFatal(QString("Error:Can't compile fragment shader:\n" + m_glShaderProgram.log()).toStdString().c_str());
+            qFatal(QString("Error:Can't compile fragment shader:\n" + m_fragmentFile + "\n" + m_glShaderProgram.log()).toStdString().c_str());
         if (!m_geometrySource.isEmpty())
         {
             if (!m_glShaderProgram.addShaderFromSourceCode(QOpenGLShader::Geometry, m_geometrySource))
-                qFatal(QString("Error:Can't compile geometry shader:\n" + m_glShaderProgram.log()).toStdString().c_str());
+                qFatal(QString("Error:Can't compile geometry shader:\n"+ m_geometryFile + "\n" + m_glShaderProgram.log()).toStdString().c_str());
         }
 
         if (!m_glShaderProgram.link())

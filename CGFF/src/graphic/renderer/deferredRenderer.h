@@ -3,6 +3,10 @@
 
 #include "renderer3d.h"
 #include "graphic/api/gBuffer.h"
+#include "graphic/api/framebufferDepth.h"
+#include "graphic/api/framebuffer2D.h"
+
+#define TEST_SSAO
 
 namespace CGFF {
 
@@ -46,6 +50,14 @@ namespace CGFF {
         QSharedPointer<MaterialInstance> m_geometryPassMaterial;
         QSharedPointer<MaterialInstance> m_lightPassPassMaterial;
         QSharedPointer<Mesh> m_screenQuad;
+
+        QSharedPointer<Framebuffer2D> m_ssaoFB;
+        QSharedPointer<Framebuffer2D> m_ssaoBlurFB;
+        QVector<QVector3D> m_ssaoKernel;
+        QVector<QVector3D> m_ssaoNoise;
+        QSharedPointer<MaterialInstance> m_shaderSSAOMaterial;
+        QSharedPointer<MaterialInstance> m_shaderSSAOBlurMaterial;
+        QSharedPointer<Texture> m_noiseTexture;
     };
 
 }

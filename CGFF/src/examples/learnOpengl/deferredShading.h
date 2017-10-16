@@ -18,7 +18,6 @@ namespace LearnGL {
     private:
         QSharedPointer<CGFF::Scene> m_scene;
         QSharedPointer<CGFF::Model> m_objectModel;
-        QVector<QSharedPointer<CGFF::Entity>> m_objects;
         QSharedPointer<CGFF::MaterialInstance> m_lightBoxMaterial;
     };
 
