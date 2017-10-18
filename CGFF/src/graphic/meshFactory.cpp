@@ -133,33 +133,24 @@ namespace CGFF {
 			return QSharedPointer<Mesh>(new Mesh(va, ib, material));
 		}
 
-		QSharedPointer<Mesh> CreateDebugCube(float size, const QVector4D& color, QSharedPointer<MaterialInstance> material)
+		QSharedPointer<Mesh> CreateDebugCube(float size, QSharedPointer<MaterialInstance> material)
 		{
 			struct CubeDebugVertex
 			{
 				QVector3D position;
-				QVector4D color;
 				QVector3D normal;
 			};
 
 			CubeDebugVertex data[8];
 
 			data[0].position = QVector3D(-size / 2.0f, 0, size / 2.0f);
-			data[0].color = color;
 			data[1].position = QVector3D(size / 2.0f, 0, size / 2.0f);
-			data[1].color = color;
 			data[2].position = QVector3D(size / 2.0f, size , size / 2.0f);
-			data[2].color = color;
 			data[3].position = QVector3D(-size / 2.0f, size, size / 2.0f);
-			data[3].color = color;
 			data[4].position = QVector3D(-size / 2.0f, 0, -size / 2.0f);
-			data[4].color = color;
 			data[5].position = QVector3D(size / 2.0f, 0, -size / 2.0f);
-			data[5].color = color;
 			data[6].position = QVector3D(size / 2.0f, size, -size / 2.0f);
-			data[6].color = color;
 			data[7].position = QVector3D(-size / 2.0f, size, -size / 2.0f);
-			data[7].color = color;
 
 			data[0].normal = QVector3D(-1.0f, -1.0f, 1.0f);
 			data[1].normal = QVector3D(1.0f, -1.0f, 1.0f);
@@ -176,7 +167,6 @@ namespace CGFF {
 			buffer->setData(8 * sizeof(CubeDebugVertex), data);
 			LayoutBuffer layout;
 			layout.push<QVector3D>("position");
-			layout.push<QVector4D>("color");
 			layout.push<QVector3D>("normal");
 			buffer->setLayout(layout);
 
@@ -288,12 +278,11 @@ namespace CGFF {
 			return QSharedPointer<Mesh>(new Mesh(va, ib, material));
 		}
 
-		QSharedPointer<Mesh> CreateDebugPlane(float width, float height, const QVector3D& normal, const QVector4D& color, QSharedPointer<MaterialInstance> material)
+		QSharedPointer<Mesh> CreateDebugPlane(float width, float height, const QVector3D& normal, QSharedPointer<MaterialInstance> material)
 		{
 			struct PlaneVertex
 			{
 				QVector3D position;
-				QVector4D color;
 				QVector3D normal;
 			};
 
@@ -310,19 +299,15 @@ namespace CGFF {
 			QMatrix4x4 tmpRotate;
 			//
 			data[0].position = rotation * QVector3D(-width / 2.0f, 0.0f, -height / 2.0f);
-			data[0].color = color;
 			data[0].normal = normal;
 
 			data[1].position = rotation * QVector3D(-width / 2.0f, 0.0f, height / 2.0f);
-			data[1].color = color;
 			data[1].normal = normal;
 
 			data[2].position = rotation * QVector3D(width / 2.0f, 0.0f, height / 2.0f);
-			data[2].color = color;
 			data[2].normal = normal;
 
 			data[3].position = rotation * QVector3D(width / 2.0f, 0.0f, -height / 2.0f);
-			data[3].color = color;
 			data[3].normal = normal;
 
 			QSharedPointer<VertexArray> va = VertexArray::create();
@@ -331,7 +316,6 @@ namespace CGFF {
 			buffer->setData(4 * sizeof(PlaneVertex), data);
 			LayoutBuffer layout;
 			layout.push<QVector3D>("POSITION");
-			layout.push<QVector4D>("COLOR");
 			layout.push<QVector3D>("NORMAL");
 			buffer->setLayout(layout);
 

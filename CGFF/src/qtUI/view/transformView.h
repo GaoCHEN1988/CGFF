@@ -24,13 +24,13 @@ namespace QTUI {
         void onRotationZChanged(double value);
         void onScaleChanged(double value);
 
-		void onCurrentEntitySet(const QString& name, const CGFF::EntityTransformVec& transform);
-
+		void onCurrentEntitySet(const QString& name, const CGFF::TransformVec& transform);
+        void onCurrentModelObjectSet(const QString& name, const CGFF::TransformVec& transform);
     private:
         void init();
         void setupConnections();
 		void disconnections();
-        void updateView(const CGFF::EntityTransformVec& transform);
+        void updateView(const CGFF::TransformVec& transform);
 	private:
 		QLabel* m_position;
 		QLabel* m_x_label;

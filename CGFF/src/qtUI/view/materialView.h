@@ -26,7 +26,8 @@ namespace QTUI {
 
 		public slots:
 
-		void onCurrentEntitySet(const QString& name);
+        void onCurrentEntitySet(const QString& name);
+        void onCurrentModelSet(const QString& name);
 	private:
 		void init();
 		void setupConnections();

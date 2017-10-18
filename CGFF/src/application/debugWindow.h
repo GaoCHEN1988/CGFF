@@ -19,7 +19,8 @@ namespace CGFF {
 		inline static DebugWindow* getApplication() { return m_instance; }
 
 		public slots:
-		void onAddEntity(const QString& name);
+        void onAddEntity(const QString& name);
+        void onAddModelObject(const QString& name);
 
 	private:
 		void setupLayers() override;

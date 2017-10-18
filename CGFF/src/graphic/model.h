@@ -41,6 +41,8 @@ namespace CGFF {
 		QHash<Vertex, int> m_indexMapping;
         QString m_directoryPath;
         QSharedPointer<MaterialInstance> m_materialInstance;
+
+        QVector<MeshTexture> m_textures;
     };
 
 }

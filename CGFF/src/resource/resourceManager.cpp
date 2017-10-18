@@ -7,15 +7,16 @@ namespace CGFF {
 	QString ResourceManager::m_scene3DName = "Scene3D";
 	QString ResourceManager::m_scene2DName = "Scene2D";
 
-    QString ResourceManager::m_entityHierarchyName = "Entities";
-    QString ResourceManager::m_lightHierarchyName = "Lights";
-    QString ResourceManager::m_skyBoxHierarchyName = "SkyBox";
+    QString ResourceManager::EntityHierarchyName = "Entities";
+    QString ResourceManager::LightHierarchyName = "Lights";
+    QString ResourceManager::SkyBoxHierarchyName = "SkyBox";
+    QString ResourceManager::ModelHierarchyName = "Models";
 
 	//QSharedPointer<SceneResource> ResourceManager::m_currentScene2D = nullptr;
 	//QSharedPointer<SceneResource> ResourceManager::m_currentScene3D = nullptr;
 
-	QMap<QString, EntityTransformMat> ResourceManager::EntityTransformMats;
-	QMap<QString, EntityTransformVec> ResourceManager::EntityTransformVecs;
+	QMap<QString, TransformMat> ResourceManager::TransformMats;
+	QMap<QString, TransformVec> ResourceManager::TransformVecs;
 
 	QSharedPointer<SceneResource> ResourceManager::getSceneResource(const QString& name)
 	{
@@ -48,9 +49,9 @@ namespace CGFF {
         auto lookup = m_sceneResources.find(sceneName);
         if (lookup != m_sceneResources.end())
         {
-            auto entityLookup = lookup.value()->getObjects().find(entityName);
+            auto entityLookup = lookup.value()->getEntities().find(entityName);
 
-            if (entityLookup != lookup.value()->getObjects().end())
+            if (entityLookup != lookup.value()->getEntities().end())
             {
                 return entityLookup.value();
             }
@@ -69,6 +70,24 @@ namespace CGFF {
             auto lightLookup = lookup.value()->getLights().find(lightName);
 
             if (lightLookup != lookup.value()->getLights().end())
+            {
+                return lightLookup.value();
+            }
+
+            return nullptr;
+        }
+
+        return nullptr;
+    }
+
+    QSharedPointer<ModelObject> ResourceManager::getModelObject(const QString& sceneName, const QString& modelObjName)
+    {
+        auto lookup = m_sceneResources.find(sceneName);
+        if (lookup != m_sceneResources.end())
+        {
+            auto lightLookup = lookup.value()->getModelObject().find(modelObjName);
+
+            if (lightLookup != lookup.value()->getModelObject().end())
             {
                 return lightLookup.value();
             }

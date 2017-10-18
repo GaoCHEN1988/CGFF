@@ -88,19 +88,17 @@ namespace CGFF {
         // specular: texture_specularN
         // normal: texture_normalN
 
-        QVector<MeshTexture> textures;
-
         // 1. diffuse maps
-        loadMaterialTextures(material, aiTextureType_DIFFUSE, pbr_diffuseMap, textures);
+        loadMaterialTextures(material, aiTextureType_DIFFUSE, pbr_diffuseMap, m_textures);
 
         // 2. specular maps
-        loadMaterialTextures(material, aiTextureType_SPECULAR, pbr_specularMap, textures);
+        loadMaterialTextures(material, aiTextureType_SPECULAR, pbr_specularMap, m_textures);
        
         // 3. normal maps
-        loadMaterialTextures(material, aiTextureType_HEIGHT, pbr_normalMap, textures);
+        loadMaterialTextures(material, aiTextureType_HEIGHT, pbr_normalMap, m_textures);
 
         // 4. height maps
-        loadMaterialTextures(material, aiTextureType_AMBIENT, pbr_heightMap, textures);
+        loadMaterialTextures(material, aiTextureType_AMBIENT, pbr_heightMap, m_textures);
 
         //Add new mesh to mesh vector
         QSharedPointer<VertexArray> va = VertexArray::create();
@@ -123,7 +121,7 @@ namespace CGFF {
 
         va->unBind();
 
-        m_meshes.append(QSharedPointer<Mesh>(new Mesh(va, ib, m_materialInstance, textures)));
+        m_meshes.append(QSharedPointer<Mesh>(new Mesh(va, ib, m_materialInstance, m_textures)));
 	}
 
 	uchar* ReadBytes(FILE* file, uchar* buffer, uint size)

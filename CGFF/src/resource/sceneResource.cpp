@@ -18,7 +18,7 @@ namespace CGFF
 		}
 	}
 
-	void SceneResource::addObject(const QString& name, const QSharedPointer<Entity>& object)
+	void SceneResource::addEntity(const QString& name, const QSharedPointer<Entity>& object)
 	{
 		auto lookup = m_entities.find(name);
 		if (lookup == m_entities.end())
@@ -32,12 +32,26 @@ namespace CGFF
 		}
 	}
 
-	void SceneResource::addSkyBox(const QString& name, const QSharedPointer<Material>& skybox)
+    void SceneResource::addModelObject(const QString& name, const QSharedPointer<ModelObject>& object)
+    {
+        auto lookup = m_modelObjects.find(name);
+        if (lookup == m_modelObjects.end())
+        {
+            m_modelObjects.insert(name, QSharedPointer<ModelObject>(object));
+        }
+        else
+        {
+            //TO DO: use message box
+            qWarning("Object with name is existed, use another name.");
+        }
+    }
+
+	void SceneResource::addSkyBox(const QString& name, const QSharedPointer<MaterialInstance>& skybox)
 	{
 		auto lookup = m_skyBoxes.find(name);
 		if (lookup == m_skyBoxes.end())
 		{
-			m_skyBoxes.insert(name, QSharedPointer<Material>(skybox));;
+			m_skyBoxes.insert(name, QSharedPointer<MaterialInstance>(skybox));;
 		}
 	}
 
@@ -79,6 +93,19 @@ namespace CGFF
 			m_skyBoxes.remove(preName);
 		}
 	}
+
+    void SceneResource::changeModelName(const QString& preName, const QString& newName)
+    {
+        if (preName == newName)
+            return;
+
+        auto lookup = m_modelObjects.find(preName);
+        if (lookup != m_modelObjects.end())
+        {
+            m_modelObjects[newName] = lookup.value();
+            m_modelObjects.remove(preName);
+        }
+    }
 
 	QSharedPointer<Shader> SceneResource::getEntityShader(const QString& entityName)
 	{

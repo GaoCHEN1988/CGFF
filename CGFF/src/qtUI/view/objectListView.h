@@ -4,6 +4,9 @@
 #include "baseView.h"
 #include <QWidget>
 #include <QTreeView>
+#include <QLabel>
+#include <QComboBox>
+#include <QCheckBox>
 #include <QStandardItemModel>
 
 namespace QTUI {
@@ -30,6 +33,10 @@ namespace QTUI {
 
 	private:
 		QTreeView * m_treeView;
+        QLabel * m_check_shadow_label;
+        QCheckBox * m_shadow_checkBox;
+        QLabel * m_renderer_label;
+        QComboBox * m_renderer_combobox;
 	};
 
 }

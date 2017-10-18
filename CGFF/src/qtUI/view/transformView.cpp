@@ -38,21 +38,21 @@ namespace QTUI {
             static_cast<float>(m_y_spin_box->value()),
             static_cast<float>(m_z_spin_box->value()));
         if(m_model)
-            m_model->translateCurrentEntity(tanslate);
+            m_model->translateCurrentObject(tanslate);
     }
 
     void TransformView::onRotationXChanged(double value)
     {
         QVector3D axis = QVector3D(1.0, 0.0, 0.0);
         if (m_model)
-           m_model->rotateCurrentEntity(static_cast<float>(value), axis);
+           m_model->rotateCurrentObject(static_cast<float>(value), axis);
     }
 
     void TransformView::onRotationYChanged(double value)
     {
         QVector3D axis = QVector3D(0.0, 1.0, 0.0);
         if (m_model)
-            m_model->rotateCurrentEntity(static_cast<float>(value), axis);
+            m_model->rotateCurrentObject(static_cast<float>(value), axis);
     }
 
     void TransformView::onRotationZChanged(double value)
@@ -60,7 +60,7 @@ namespace QTUI {
         QVector3D axis = QVector3D(0.0, 0.0, 1.0);
 
         if (m_model)
-            m_model->rotateCurrentEntity(static_cast<float>(value), axis);
+            m_model->rotateCurrentObject(static_cast<float>(value), axis);
     }
 
     void TransformView::onScaleChanged(double value)
@@ -70,10 +70,15 @@ namespace QTUI {
             static_cast<float>(m_z_scale_spin_box->value()));
 
         if (m_model)
-            m_model->scaleCurrentEntity(scale);
+            m_model->scaleCurrentObject(scale);
     }
 
-    void TransformView::onCurrentEntitySet(const QString& name, const CGFF::EntityTransformVec& transform)
+    void TransformView::onCurrentEntitySet(const QString& name, const CGFF::TransformVec& transform)
+    {
+        updateView(transform);
+    }
+
+    void TransformView::onCurrentModelObjectSet(const QString& name, const CGFF::TransformVec& transform)
     {
         updateView(transform);
     }
@@ -227,7 +232,7 @@ namespace QTUI {
 			this, &TransformView::onScaleChanged);
 	}
 
-    void TransformView::updateView(const CGFF::EntityTransformVec& transform)
+    void TransformView::updateView(const CGFF::TransformVec& transform)
     {
 		disconnections();
         m_x_spin_box->setValue(static_cast<double>(transform.translateVec.x()));

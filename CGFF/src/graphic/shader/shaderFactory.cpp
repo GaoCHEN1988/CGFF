@@ -56,12 +56,12 @@ namespace CGFF {
 			return nullptr;
 		}
 
-		QSharedPointer<Shader> DebugShader()
+		QSharedPointer<Shader> DebugSceneShader()
 		{
 			switch (Context::getRenderAPI())
 			{
 			case RenderAPI::OPENGL:
-				return Shader::createFromFile("DebugShader",
+				return Shader::createFromFile("DebugSceneShader",
 					"/shaders/debugScene.vert",
 					"/shaders/debugScene.frag");
 			case RenderAPI::DIRECT3D:
@@ -69,5 +69,19 @@ namespace CGFF {
 			}
 			return nullptr;
 		}
+
+        QSharedPointer<Shader> DebugShader()
+        {
+            switch (Context::getRenderAPI())
+            {
+            case RenderAPI::OPENGL:
+                return Shader::createFromFile("DebugShader",
+                    "/shaders/debug.vert",
+                    "/shaders/debug.frag");
+            case RenderAPI::DIRECT3D:
+                return nullptr;
+            }
+            return nullptr;
+        }
 	}
 }

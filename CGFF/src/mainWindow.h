@@ -41,13 +41,14 @@ private:
 	private slots:
 	void onNewProject();
 	void onSaveProject();
-	void onSetStatus();
+    void onSetStatus();
+    void onLoadModel();
 
 private:
 	//ApplicationWindow * m_applicationWindow;
 	CGFF::DebugWindow * m_debugWindow;
     CGFF::LearnGLWindow * m_learnGLWindow;
-    //QWidget *m_centralWidget;
+
     QMenuBar *m_menuBar;
     QToolBar *m_mainToolBar;
     QStatusBar *m_statusBar;
@@ -55,7 +56,8 @@ private:
 	QMenu * m_menuProject;
 	QMenu * m_menuGeometry;
 	QMenu * m_menuLight;
-	QMenu * m_menuCamera;
+    QMenu * m_menuCamera;
+    QMenu * m_menuLoad;
 	QAction *m_newProjectAction;
 	QAction *m_saveProjectAction;
 	QAction *m_playAction;
@@ -64,8 +66,12 @@ private:
 	QAction *m_cubeAction;
 	QAction *m_sphereAction;
 	QAction *m_planeAction;
+    //Light actions
 	QAction *m_lightAction;
+    //camera actions
 	QAction *m_mayaCameraAction;
+    //Load actions
+    QAction *m_loadModelAction;
 
 	QTUI::ExplorerView * m_explorer;
 	QDockWidget * m_explorerDockWidget;

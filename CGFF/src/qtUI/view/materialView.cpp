@@ -36,6 +36,11 @@ namespace QTUI {
 
 	}
 
+    void MaterialView::onCurrentModelSet(const QString& name)
+    {
+
+    }
+
 	void MaterialView::init()
 	{
 		m_layout = new QGridLayout(this);

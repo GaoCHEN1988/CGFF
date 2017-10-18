@@ -22,6 +22,11 @@ namespace CGFF {
 		m_debug3DLayer->addEntity(name);
 	}
 
+    void DebugWindow::onAddModelObject(const QString& name)
+    {
+        m_debug3DLayer->addModelObject(name);
+    }
+
 	void DebugWindow::setupLayers()
 	{
 		//if (!m_debug3DLayer)

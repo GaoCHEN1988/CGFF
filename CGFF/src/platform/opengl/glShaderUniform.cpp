@@ -97,6 +97,7 @@ namespace CGFF {
 		, m_shaderType(shaderType)
 		, m_size(0)
 		, m_register(0)
+        , m_uniforms()
 	{
 
 	}

@@ -11,7 +11,8 @@ namespace CGFF { namespace ShaderFactory {
 		QSharedPointer<Shader> FramebufferShader();
 		QSharedPointer<Shader> BasicLightShader();
 		QSharedPointer<Shader> BatchRendererShader();
-		QSharedPointer<Shader> DebugShader();
+        QSharedPointer<Shader> DebugSceneShader();
+        QSharedPointer<Shader> DebugShader();
 }}
 
 #endif

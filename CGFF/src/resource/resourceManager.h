@@ -5,7 +5,7 @@
 
 namespace CGFF {
 
-	struct EntityTransformMat
+	struct TransformMat
 	{
 		QMatrix4x4 translateMat;
 		QMatrix4x4 rotateMat;
@@ -17,13 +17,13 @@ namespace CGFF {
 		}
 	};
 
-	struct EntityTransformVec
+	struct TransformVec
 	{
 		QVector3D translateVec;
 		QVector3D rotateVec;
 		QVector3D scaleVec;
 
-		EntityTransformVec()
+		TransformVec()
 			: translateVec()
 			, rotateVec()
 			, scaleVec(1.0, 1.0, 1.0)
@@ -62,38 +62,24 @@ namespace CGFF {
 			return m_scene2DName;
 		}
 
-        static QString getEntityHierarchyName()
-        {
-            return m_entityHierarchyName;
-        }
-
-        static QString getLightHierarchyName()
-        {
-            return m_lightHierarchyName;
-        }
-
-        static QString getSkyBoxHierarchyName()
-        {
-            return m_skyBoxHierarchyName;
-        }
-
         static QSharedPointer<Entity> getEntity(const QString& sceneName, const QString& entityName);
         static QSharedPointer<Light> getLight(const QString& sceneName, const QString& lightName);
+        static QSharedPointer<ModelObject> getModelObject(const QString& sceneName, const QString& modelObjName);
 
 	public:
-		static QMap<QString, EntityTransformMat> EntityTransformMats;
-		static QMap<QString, EntityTransformVec> EntityTransformVecs;
+		static QMap<QString, TransformMat> TransformMats;
+		static QMap<QString, TransformVec> TransformVecs;
 
-	private:
+    public:
 		static QMap<QString, QSharedPointer<SceneResource>> m_sceneResources;
 
 		static QString m_scene3DName;
 		static QString m_scene2DName;
 
-        static QString m_entityHierarchyName;
-        static QString m_lightHierarchyName;
-        static QString m_skyBoxHierarchyName;
-
+        static QString EntityHierarchyName;
+        static QString LightHierarchyName;
+        static QString SkyBoxHierarchyName;
+        static QString ModelHierarchyName;
 		//static QSharedPointer<SceneResource> m_currentScene2D;
 		//static QSharedPointer<SceneResource> m_currentScene3D;
 

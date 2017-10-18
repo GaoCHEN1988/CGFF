@@ -17,7 +17,7 @@ struct Light {
     vec3 specular;
 };
 
-uniform vec3 viewPos;
+uniform vec3 sys_CameraPosition;
 
 void main()
 {
@@ -38,7 +38,7 @@ void main()
     vec3 diffuse = light.diffuse * diff * fs_in.color.rgb;  
     
     // specular
-    vec3 viewDir = normalize(viewPos - fs_in.fragPosition.xyz);
+    vec3 viewDir = normalize(sys_CameraPosition - fs_in.fragPosition.xyz);
     vec3 reflectDir = reflect(-lightDir, norm);  
     float spec = pow(max(dot(viewDir, reflectDir), 0.0), 1.0f);
     vec3 specular = light.specular * spec * fs_in.color.rgb;  

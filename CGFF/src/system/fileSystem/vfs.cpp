@@ -11,6 +11,16 @@ namespace CGFF {
 		m_mountPoints[virtualPath].append(physicalPath);
 	}
 
+    QString VFS::getMountedPhysicalPath(const QString& virtualPath)
+    {
+        if (m_mountPoints.find(virtualPath) == m_mountPoints.end())
+        {
+            qFatal("Path is not mounted: %s", virtualPath);
+        }
+
+        return *m_mountPoints[virtualPath].begin();
+    }
+
 	void VFS::unmount(const QString& path)
 	{
 		m_mountPoints[path].clear();

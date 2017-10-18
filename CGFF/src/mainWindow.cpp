@@ -1,5 +1,8 @@
 #include "MainWindow.h"
 #include "utils/qtopengl.h"
+#include "system/fileSystem/vfs.h"
+#include <QFileDialog>
+#include <QMessageBox>
 
 MainWindow::MainWindow(QWidget *parent)
 	: QMainWindow(parent)
@@ -12,6 +15,7 @@ MainWindow::MainWindow(QWidget *parent)
 	, m_menuGeometry(nullptr)
 	, m_menuLight(nullptr)
 	, m_menuCamera(nullptr)
+    , m_menuLoad(nullptr)
 	, m_menuProject(nullptr)
 	, m_newProjectAction(nullptr)
 	, m_saveProjectAction(nullptr)
@@ -22,6 +26,7 @@ MainWindow::MainWindow(QWidget *parent)
 	, m_planeAction(nullptr)
 	, m_lightAction(nullptr)
 	, m_mayaCameraAction(nullptr)
+    , m_loadModelAction(nullptr)
 	, m_explorer(nullptr)
 	, m_explorerDockWidget(nullptr)
 	, m_objectInfo(nullptr)
@@ -46,11 +51,11 @@ void MainWindow::setupUi()
     this->setDocumentMode(false);
 	this->setWindowTitle(QApplication::translate("this", "CGFF", Q_NULLPTR));
 
-	//m_debugWindow = new CGFF::DebugWindow(this);
-	//m_debugWindow->setActive(true);
-    m_learnGLWindow = new CGFF::LearnGLWindow(this);
-    m_learnGLWindow->setActive(true);
-	QWidget * debugWidget = QWidget::createWindowContainer(m_learnGLWindow, this);
+	m_debugWindow = new CGFF::DebugWindow(this);
+	m_debugWindow->setActive(true);
+    //m_learnGLWindow = new CGFF::LearnGLWindow(this);
+    //m_learnGLWindow->setActive(true);
+	QWidget * debugWidget = QWidget::createWindowContainer(m_debugWindow, this);
 	setCentralWidget(debugWidget);
 	
     m_statusBar = new QStatusBar(this);
@@ -77,7 +82,6 @@ void MainWindow::setupDockWidgets()
 	m_explorerDockWidget = new QDockWidget("Explorer",this);
 	m_explorer = new QTUI::ExplorerView(this);
 	m_explorerDockWidget->setWidget(m_explorer);
-    m_explorerDockWidget->hide();
 
 	addDockWidget(Qt::LeftDockWidgetArea, m_explorerDockWidget);
 
@@ -85,7 +89,6 @@ void MainWindow::setupDockWidgets()
 	m_objectList = new QTUI::ObjectListView(this);
 	m_objectList->setModel(m_resourceModel);
 	m_objectListDockWidget->setWidget(m_objectList);
-    m_objectListDockWidget->hide();
 
 	addDockWidget(Qt::RightDockWidgetArea, m_objectListDockWidget);
 
@@ -93,7 +96,6 @@ void MainWindow::setupDockWidgets()
 	m_objectInfo = new QTUI::ObjectInfoView(this);
 	m_objectInfo->setModel(m_resourceModel);
 	m_propertiesDockWidget->setWidget(m_objectInfo);
-    m_propertiesDockWidget->hide();
 
 	addDockWidget(Qt::RightDockWidgetArea, m_propertiesDockWidget);
 }
@@ -140,11 +142,18 @@ void MainWindow::setupMenuBar()
 	m_mayaCameraAction = new QAction("Maya Camera", this);
 	m_menuCamera->addAction(m_mayaCameraAction);
 
-	m_menuBar->addAction(m_menuProject->menuAction());
-	m_menuBar->addAction(m_menuView->menuAction());
+    //Load Menu
+    m_menuLoad = new QMenu("Load", m_menuBar);
+    m_loadModelAction = new QAction("Model", this);
+    m_menuLoad->addAction(m_loadModelAction);
+
+    m_menuBar->addAction(m_menuProject->menuAction());
+    m_menuBar->addAction(m_menuLoad->menuAction());
 	m_menuBar->addAction(m_menuGeometry->menuAction());
 	m_menuBar->addAction(m_menuLight->menuAction());
 	m_menuBar->addAction(m_menuCamera->menuAction());
+    m_menuBar->addAction(m_menuView->menuAction());
+
 
 	this->setMenuBar(m_menuBar);
 }
@@ -173,16 +182,12 @@ void MainWindow::createConnections()
 	connect(m_saveProjectAction, &QAction::triggered,
 		this, &MainWindow::onSaveProject);
 
-	//connect(m_playAction, &QAction::triggered,
-	//	m_debugWindow, &CGFF::BaseWindow::onDisactivate);
-
-	//connect(m_stopAction, &QAction::triggered,
-	//	m_debugWindow, &CGFF::BaseWindow::onActivate);
-
 	connect(m_cubeAction, &QAction::triggered, [=]() { m_resourceModel->onAddEntity(CGFF::EntityType::CUBE); });
 	connect(m_sphereAction, &QAction::triggered, [=]() { m_resourceModel->onAddEntity(CGFF::EntityType::SPHERE); });
-	connect(m_planeAction, &QAction::triggered, [=]() { m_resourceModel->onAddEntity(CGFF::EntityType::PLANE); });
-    //connect(m_resourceModel, &QTUI::ResourceModel::entityAdded, m_debugWindow, &CGFF::DebugWindow::onAddEntity);
+    connect(m_planeAction, &QAction::triggered, [=]() { m_resourceModel->onAddEntity(CGFF::EntityType::PLANE); });
+    connect(m_loadModelAction, &QAction::triggered, this, &MainWindow::onLoadModel);
+    connect(m_resourceModel, &QTUI::ResourceModel::entityAdded, m_debugWindow, &CGFF::DebugWindow::onAddEntity);
+    connect(m_resourceModel, &QTUI::ResourceModel::modelObjectAdded, m_debugWindow, &CGFF::DebugWindow::onAddModelObject);
 
 	connect(m_playAction, &QAction::triggered,
 		this, &MainWindow::onSetStatus);
@@ -212,4 +217,28 @@ void MainWindow::onSetStatus()
 	m_playAction->setEnabled(m_toolBarActionStatus);
 	m_stopAction->setEnabled(!m_toolBarActionStatus);
 	m_toolBarActionStatus = !m_toolBarActionStatus;
+}
+
+void MainWindow::onLoadModel()
+{
+    QFileDialog dialog;
+    QString directoryName = CGFF::VFS::get()->getMountedPhysicalPath("resource");
+    dialog.setDirectory(directoryName);
+    QString fileName = dialog.getOpenFileName(this,
+        tr("Load model"), "",
+        tr("Model (*.obj)"));
+
+    if (fileName.isEmpty())
+        return;
+    else
+    {
+        QFile file(fileName);
+        if (!file.open(QIODevice::ReadOnly)) {
+            QMessageBox::information(this, tr("Unable to open file"), file.errorString());
+            return;
+        }
+
+        m_resourceModel->onLoadModel(fileName);
+    }
+
 }

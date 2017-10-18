@@ -4,6 +4,7 @@
 #include "graphic/meshFactory.h"
 #include "graphic/model.h"
 #include "entity/entity.h"
+#include "entity/modelObject.h"
 #include "graphic/pbrMaterial.h"
 #include "graphic/shader/shaderManager.h"
 #include "graphic/light.h"
@@ -25,7 +26,7 @@ namespace CGFF
 			m_camera = cam;
 		}
 
-		inline const QMap<QString, QSharedPointer<Entity>>& getObjects() const
+		inline const QMap<QString, QSharedPointer<Entity>>& getEntities() const
 		{
 			return m_entities;
 		}
@@ -35,22 +36,31 @@ namespace CGFF
 			return m_lights;
 		}
 
-		inline const QMap<QString, QSharedPointer<Material>>& getSkyBox() const
+		inline const QMap<QString, QSharedPointer<MaterialInstance>>& getSkyBox() const
 		{
 			return m_skyBoxes;
 		}
 
+        inline const QMap<QString, QSharedPointer<ModelObject>>& getModelObject() const
+        {
+            return m_modelObjects;
+        }
+
 		void addLight(const QString& name, const QSharedPointer<Light>& light);
 
-		void addObject(const QString& name, const QSharedPointer<Entity>& object);
+        void addEntity(const QString& name, const QSharedPointer<Entity>& object);
 
-		void addSkyBox(const QString& name, const QSharedPointer<Material>& skybox);
+        void addModelObject(const QString& name, const QSharedPointer<ModelObject>& object);
+
+		void addSkyBox(const QString& name, const QSharedPointer<MaterialInstance>& skybox);
 
 		void changeObjectName(const QString& preName, const QString& newName);
 
 		void changeLightName(const QString& preName, const QString& newName);
 
-		void changeSkyBoxName(const QString& preName, const QString& newName);
+        void changeSkyBoxName(const QString& preName, const QString& newName);
+
+        void changeModelName(const QString& preName, const QString& newName);
 
         QSharedPointer<Shader> getEntityShader(const QString& entityName);
 
@@ -58,9 +68,10 @@ namespace CGFF
 
 	private:
 		QSharedPointer<Camera> m_camera;
-		QMap<QString, QSharedPointer<Entity>> m_entities;
+        QMap<QString, QSharedPointer<Entity>> m_entities;
+        QMap<QString, QSharedPointer<ModelObject>> m_modelObjects;
 		QMap<QString, QSharedPointer<Light>> m_lights;
-		QMap<QString, QSharedPointer<Material>> m_skyBoxes;
+		QMap<QString, QSharedPointer<MaterialInstance>> m_skyBoxes;
 	};
 }
 

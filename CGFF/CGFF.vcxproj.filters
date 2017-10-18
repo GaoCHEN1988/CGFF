@@ -625,6 +625,9 @@
     <ClCompile Include="src\graphic\renderer\renderer.cpp">
       <Filter>Source Files\graphic\renderer</Filter>
     </ClCompile>
+    <ClCompile Include="src\entity\modelObject.cpp">
+      <Filter>Source Files\entity</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <None Include="ClassDiagram.cd" />
@@ -977,6 +980,9 @@
     </ClInclude>
     <ClInclude Include="src\graphic\renderer\renderer.h">
       <Filter>Header Files\graphic\renderer</Filter>
+    </ClInclude>
+    <ClInclude Include="src\entity\modelObject.h">
+      <Filter>Header Files\entity</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

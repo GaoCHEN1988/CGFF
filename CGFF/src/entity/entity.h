@@ -1,5 +1,5 @@
-#ifndef ENTITY_H
-#define ENTITY_H
+#ifndef CGFF_ENTITY_H
+#define CGFF_ENTITY_H
 
 #include "component/components.h"
 #include <QVector>

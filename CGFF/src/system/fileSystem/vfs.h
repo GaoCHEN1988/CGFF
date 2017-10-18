@@ -11,7 +11,8 @@ namespace CGFF {
 	class VFS
 	{
 	public:
-		void mount(const QString& virtualPath, const QString& physicalPath);
+        void mount(const QString& virtualPath, const QString& physicalPath);
+        QString getMountedPhysicalPath(const QString& virtualPath);
 		void unmount(const QString& path);
 		bool resolvePhysicalPath(const QString& path, QString& outPhysicalPath);
 

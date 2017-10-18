@@ -94,6 +94,8 @@ namespace CGFF {
 		{
 			QSharedPointer<uchar> buffer;
 			QSharedPointer<ShaderUniformDeclaration> declaration = findUniformDeclaration(name, buffer);
+            if (declaration.isNull())
+                return;
 			Q_ASSERT(!declaration.isNull());
 			memcpy(buffer.data() + declaration->getOffset(), &data, declaration->getSize());
 		}

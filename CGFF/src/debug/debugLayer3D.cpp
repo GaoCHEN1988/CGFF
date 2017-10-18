@@ -14,7 +14,7 @@ namespace CGFF {
 		, m_lineZ(nullptr)
 	{
 		m_debugShader = ShaderFactory::DebugShader();
-		m_debugMaterial = QSharedPointer<Material>(new Material(m_debugShader));
+		m_debugMaterial = QSharedPointer<MaterialInstance>(new MaterialInstance(QSharedPointer<Material>(new Material(m_debugShader))));
 	}
 
 	void DebugLayer3D::init()
@@ -53,15 +53,12 @@ namespace CGFF {
 
 	void DebugLayer3D::render(QSharedPointer<Renderer3D>& renderer)
 	{
-		QVector3D cameraPosition = m_scene->getCamera()->getPosition();
-		m_debugMaterial->setUniform("viewPos", cameraPosition);
-
-		GLenum error = CGFF::GL->glGetError();
-		if (error != GL_NO_ERROR)
-		{
-			//To do: show error in logging system
-			qFatal("Opengl error!");
-		}
+		//GLenum error = CGFF::GL->glGetError();
+		//if (error != GL_NO_ERROR)
+		//{
+		//	//To do: show error in logging system
+		//	qFatal("Opengl error!");
+		//}
 	}
 
 	void DebugLayer3D::tick()
@@ -97,6 +94,16 @@ namespace CGFF {
 
 	void DebugLayer3D::addEntity(const QString& name)
 	{
-		addEntity(ResourceManager::getSceneResource(ResourceManager::getScene3DName())->getObjects()[name]);
+		addEntity(ResourceManager::getSceneResource(ResourceManager::getScene3DName())->getEntities()[name]);
 	}
+
+    void DebugLayer3D::addModelObject(const QString& name)
+    {
+        QSharedPointer<ModelObject> modelobj = ResourceManager::getSceneResource(ResourceManager::getScene3DName())->getModelObject()[name];
+
+        for (const QSharedPointer<Entity>& entity : modelobj->getEntities())
+        {
+            addEntity(entity);
+        }
+    }
 }

@@ -21,6 +21,8 @@ namespace CGFF {
 		void addEntity(const QSharedPointer<CGFF::Entity>& entity);
 		void addEntity(const QString& name);
 
+        void addModelObject(const QString& name);
+
 	private:
 		QSharedPointer<CGFF::Camera> m_mayaCamera;
 		QSharedPointer<Shader> m_debugShader;
@@ -29,7 +31,7 @@ namespace CGFF {
 		QSharedPointer<CGFF::Entity> m_lineY;
 		QSharedPointer<CGFF::Entity> m_lineZ;
 
-		QSharedPointer<Material> m_debugMaterial;
+		QSharedPointer<MaterialInstance> m_debugMaterial;
 	};
 
 }
