@@ -101,9 +101,9 @@ namespace CGFF {
     {
         QSharedPointer<ModelObject> modelobj = ResourceManager::getSceneResource(ResourceManager::getScene3DName())->getModelObject()[name];
 
-        for (const QSharedPointer<Entity>& entity : modelobj->getEntities())
+        for (const QString& key : modelobj->getEntities().keys())
         {
-            addEntity(entity);
+            addEntity(modelobj->getEntities()[key]);
         }
     }
 }

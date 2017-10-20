@@ -235,7 +235,7 @@ namespace CGFF {
                 if (!tc)
                     qFatal("Mesh does not have transform!"); // Meshes MUST have transforms
 
-                submitLightEntity(mesh->mesh, tc->transform, QVector4D(lights[i].Color, 1.0));
+                submitLightEntity(mesh->mesh, tc->getTransform(), QVector4D(lights[i].Color, 1.0));
             }
         }
     }

@@ -33,6 +33,9 @@ namespace CGFF {
 		void setUniform(const QString& name, uchar* data);
 		void resolveAndSetUniformField(const QSharedPointer<GLShaderUniformDeclaration>& field, uchar* data, int offset);
 
+        QVector<UniformInfo> getShaderUniformsInfo() const override;
+        QVector<ShaderResourceUniformInfo> getShaderResourcesInfo() const override;
+
 		inline QString getName() const override { return m_name; };
 		inline const ShaderUniformBufferList& getVSSystemUniforms() const override
 		{

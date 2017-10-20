@@ -8,7 +8,6 @@
 #include "graphic/model.h"
 #include "entity/entity.h"
 #include "graphic/pbrMaterial.h"
-#include "graphic/shader/shaderManager.h"
 
 namespace CGFF {
     class Test3DLayer : public Layer3D

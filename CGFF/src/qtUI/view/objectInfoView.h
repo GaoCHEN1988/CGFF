@@ -23,9 +23,10 @@ namespace QTUI {
         void setModel(ResourceModel * model) override;
 
         public slots:
-        void onCurrentEntitySet(const QString& name, const CGFF::TransformVec& transform);
-        void onCurrentModelObjectSet(const QString& name, const CGFF::TransformVec& transform);
-		void onCurrentItemNameChanged(const QString& name);
+        void onCurrentEntitySet(const QString& name, const CGFF::UiTransformVec& transform);
+        void onCurrentModelObjectSet(const QString& name, const CGFF::UiTransformVec& transform);
+        void onCurrentItemNameChanged(const QString& name);
+        void onSetEmptyItem();
 
 	private:
 		void init();

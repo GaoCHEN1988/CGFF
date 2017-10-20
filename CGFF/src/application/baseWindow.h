@@ -39,6 +39,9 @@ namespace CGFF {
 		void onActivate();
 		void onDisactivate();
 
+        signals:
+        void initilizeSignal();
+
 	private:
 		void timerEvent(QTimerEvent *event) Q_DECL_OVERRIDE;
 		bool event(QEvent *event) Q_DECL_OVERRIDE;

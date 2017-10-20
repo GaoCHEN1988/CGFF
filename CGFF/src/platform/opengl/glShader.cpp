@@ -217,6 +217,51 @@ namespace CGFF {
         }
     }
 
+    QVector<UniformInfo> GLShader::getShaderUniformsInfo() const
+    {
+        QVector<UniformInfo> result;
+
+        if (!m_VSUserUniformBuffer.isNull())
+        {
+            const ShaderUniformList& uniforms = m_VSUserUniformBuffer->getUniformDeclarations();
+
+            for (uint i = 0; i < uniforms.size(); i++)
+            {
+                UniformInfo uniformInfo = { uniforms[i]->getName(),  uniforms[i]->getType() };
+
+                result.append(uniformInfo);
+            }
+        }
+
+        if (!m_PSUserUniformBuffer.isNull())
+        {
+            const ShaderUniformList& uniforms = m_PSUserUniformBuffer->getUniformDeclarations();
+
+            for (uint i = 0; i < uniforms.size(); i++)
+            {
+                UniformInfo uniformInfo = { uniforms[i]->getName(),  uniforms[i]->getType() };
+
+                result.append(uniformInfo);
+            }
+        }
+    
+        return result;
+    }
+
+    QVector<ShaderResourceUniformInfo> GLShader::getShaderResourcesInfo() const
+    {
+        QVector<ShaderResourceUniformInfo> result;
+
+        for (uint i = 0; i < m_resources.size(); i++)
+        {
+            ShaderResourceUniformInfo resource = { m_resources[i]->getName(),  m_resources[i]->getType() };
+
+            result.append(resource);
+        }
+
+        return result;
+    }
+
     void GLShader::load()
     {
         if (!m_glShaderProgram.addShaderFromSourceCode(QOpenGLShader::Vertex, m_vertexSource))

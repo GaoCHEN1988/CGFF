@@ -1,5 +1,6 @@
 #include "explorerView.h"
 #include "system/fileSystem/vfs.h"
+#include "resource/shaderManager.h"
 
 #include <QHBoxLayout>
 #include <QInputDialog>
@@ -16,7 +17,7 @@ namespace QTUI {
 		, m_treeViews()
 		, m_fileModels()
 	{
-		init();
+        init();
 	}
 
 	void ExplorerView::init()
@@ -72,6 +73,17 @@ namespace QTUI {
 		mountDirectory("Resources/", "resource");
 		mountDirectory("src/graphic/shaders", "shaders");	
 	}
+
+    //Maybe should be somewhere else
+    void ExplorerView::loadResources()
+    {
+        CGFF::ShaderManager::initilize();
+    }
+
+    void ExplorerView::onInitilize()
+    {
+        loadResources();
+    }
 
 	void ExplorerView::onMkdir()
 	{

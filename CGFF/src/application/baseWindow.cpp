@@ -50,6 +50,8 @@ namespace CGFF {
 		{
 			overLayer->init();
 		}
+
+        emit initilizeSignal();
 	}
 
 	void BaseWindow::update()

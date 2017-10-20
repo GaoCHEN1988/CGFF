@@ -27,16 +27,27 @@ namespace QTUI {
 		public slots:
 
         void onCurrentEntitySet(const QString& name);
-        void onCurrentModelSet(const QString& name);
+        void onCurrentModelObjectSet(const QString& name);
+        void onCurrentShaderChanged(const QString& shaderName);
+        void onSetEmpty();
 	private:
 		void init();
 		void setupConnections();
-		void generalizeShaderUniformView(const QList<CGFF::UniformInfo>& uniformList);
-		void generalizeShaderResourceView(const QList<CGFF::ShaderResourceUniformInfo>& resourceList);
+		void generalizeShaderUniformView(const QVector<CGFF::UniformInfo>& uniformList);
+		void generalizeShaderResourceView(const QVector<CGFF::ShaderResourceUniformInfo>& resourceList);
+        void showItems(bool visible);
+        void clearLayout(QLayout* layout);
+        template<typename T>
+        void changeUniformValue(const CGFF::UniformInfo& uniformInfo, const T& data)
+        {
+            m_model->changeCurrentEntityUniformValue(uniformInfo.uniformName, data);
+        }
 
-        void changeUniformValue(const CGFF::UniformInfo& uniformInfo);
+        void changeUniformTexture(const CGFF::ShaderResourceUniformInfo& uniformInfo);
 
 	private:
+
+        bool m_isInitilized;
 
 		QGridLayout * m_layout;
 		QGridLayout * m_uniformLayout;
@@ -53,14 +64,14 @@ namespace QTUI {
 		QComboBox * m_glossMap_comboBox;
 		QComboBox * m_normalMap_comboBox;
 
-        QSpinBox * m_uniformInt_spinbox_x;
-        QSpinBox * m_uniformInt_spinbox_y;
-        QSpinBox * m_uniformInt_spinbox_z;
-        QSpinBox * m_uniformInt_spinbox_w;
-        QDoubleSpinBox * m_uniformFloat_spinbox_x;
-        QDoubleSpinBox * m_uniformFloat_spinbox_y;
-        QDoubleSpinBox * m_uniformFloat_spinbox_z;
-        QDoubleSpinBox * m_uniformFloat_spinbox_w;
+        //QSpinBox * m_uniformInt_spinbox_x;
+        //QSpinBox * m_uniformInt_spinbox_y;
+        //QSpinBox * m_uniformInt_spinbox_z;
+        //QSpinBox * m_uniformInt_spinbox_w;
+        //QDoubleSpinBox * m_uniformFloat_spinbox_x;
+        //QDoubleSpinBox * m_uniformFloat_spinbox_y;
+        //QDoubleSpinBox * m_uniformFloat_spinbox_z;
+        //QDoubleSpinBox * m_uniformFloat_spinbox_w;
 
 	};
 }

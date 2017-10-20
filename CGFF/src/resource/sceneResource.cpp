@@ -128,4 +128,13 @@ namespace CGFF
 
         return nullptr;
     }
+
+    bool SceneResource::findModelObject(const QString& modelName)
+    {
+        auto lookup = m_modelObjects.find(modelName);
+        if (lookup != m_modelObjects.end())
+            return true;
+        else
+            return false;
+    }
 }

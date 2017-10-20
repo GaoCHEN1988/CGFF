@@ -6,7 +6,6 @@
 #include "entity/entity.h"
 #include "entity/modelObject.h"
 #include "graphic/pbrMaterial.h"
-#include "graphic/shader/shaderManager.h"
 #include "graphic/light.h"
 
 namespace CGFF
@@ -65,6 +64,8 @@ namespace CGFF
         QSharedPointer<Shader> getEntityShader(const QString& entityName);
 
         QSharedPointer<MaterialInstance> getEntityMaterialInstance(const QString& entityName);
+
+        bool findModelObject(const QString& modelName);
 
 	private:
 		QSharedPointer<Camera> m_camera;

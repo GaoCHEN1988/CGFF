@@ -15,8 +15,9 @@ namespace CGFF {
 	//QSharedPointer<SceneResource> ResourceManager::m_currentScene2D = nullptr;
 	//QSharedPointer<SceneResource> ResourceManager::m_currentScene3D = nullptr;
 
-	QMap<QString, TransformMat> ResourceManager::TransformMats;
-	QMap<QString, TransformVec> ResourceManager::TransformVecs;
+	QMap<QString, UiTransformMat> ResourceManager::UiTransformMats;
+	QMap<QString, UiTransformVec> ResourceManager::UiTransformVecs;
+    QMap<QString, QSharedPointer<UiUniformDataInterface>> ResourceManager::UiUniformDatas;
 
 	QSharedPointer<SceneResource> ResourceManager::getSceneResource(const QString& name)
 	{
@@ -96,5 +97,23 @@ namespace CGFF {
         }
 
         return nullptr;
+    }
+
+    bool ResourceManager::isModelObjectExisted(const QString& modelObjName)
+    {
+        auto lookup = m_sceneResources.find(m_scene3DName);
+        if (lookup != m_sceneResources.end())
+        {
+            auto lightLookup = lookup.value()->getModelObject().find(modelObjName);
+
+            if (lightLookup != lookup.value()->getModelObject().end())
+            {
+                return true;
+            }
+
+            return false;
+        }
+
+        return false;
     }
 }

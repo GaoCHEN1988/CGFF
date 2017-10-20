@@ -31,6 +31,7 @@ public:
 	~MainWindow();
 
 private:
+    void init();
     void setupUi();
 	void setupDockWidgets();
 	void setupMenuBar();
@@ -45,6 +46,7 @@ private:
     void onLoadModel();
 
 private:
+    CGFF::RenderAPI m_renderApi;
 	//ApplicationWindow * m_applicationWindow;
 	CGFF::DebugWindow * m_debugWindow;
     CGFF::LearnGLWindow * m_learnGLWindow;

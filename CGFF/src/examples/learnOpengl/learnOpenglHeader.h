@@ -13,5 +13,4 @@
 #include "graphic/model.h"
 #include "entity/entity.h"
 #include "graphic/pbrMaterial.h"
-#include "graphic/shader/shaderManager.h"
 #include "graphic/renderer/renderer.h"

@@ -5,7 +5,8 @@
 
 namespace CGFF {
 
-	struct TransformMat
+    //Transform matrix to store transform data of material view
+	struct UiTransformMat
 	{
 		QMatrix4x4 translateMat;
 		QMatrix4x4 rotateMat;
@@ -17,31 +18,37 @@ namespace CGFF {
 		}
 	};
 
-	struct TransformVec
+    //Transform vectors to store transform data of material view
+	struct UiTransformVec
 	{
 		QVector3D translateVec;
 		QVector3D rotateVec;
 		QVector3D scaleVec;
 
-		TransformVec()
+		UiTransformVec()
 			: translateVec()
 			, rotateVec()
 			, scaleVec(1.0, 1.0, 1.0)
 		{}
 	};
 
-	struct UniformInfo
-	{
-		QString uniformName;
-		UniformType uniformType;
-	};
+    //To store uniform data of material view
+    struct UiUniformDataInterface
+    {
 
-	struct ShaderResourceUniformInfo
-	{
-		QString resourceName;
-		ShaderResourceType resourceType;
-	};
+    };
 
+    template <typename T>
+    struct UiUniformData : public UiUniformDataInterface
+    {
+        QString uniformName;
+        T data;
+
+        UiUniformData<T>(const QString& name, const T& d)
+            : uniformName(name)
+            , data(d)
+        {}
+    };
 
 	class ResourceManager
 	{
@@ -65,10 +72,11 @@ namespace CGFF {
         static QSharedPointer<Entity> getEntity(const QString& sceneName, const QString& entityName);
         static QSharedPointer<Light> getLight(const QString& sceneName, const QString& lightName);
         static QSharedPointer<ModelObject> getModelObject(const QString& sceneName, const QString& modelObjName);
-
+        static bool isModelObjectExisted(const QString& modelObjName);
 	public:
-		static QMap<QString, TransformMat> TransformMats;
-		static QMap<QString, TransformVec> TransformVecs;
+		static QMap<QString, UiTransformMat> UiTransformMats;
+        static QMap<QString, UiTransformVec> UiTransformVecs;
+        static QMap<QString, QSharedPointer<UiUniformDataInterface>> UiUniformDatas;
 
     public:
 		static QMap<QString, QSharedPointer<SceneResource>> m_sceneResources;

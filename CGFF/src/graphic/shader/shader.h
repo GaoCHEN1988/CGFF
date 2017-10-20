@@ -14,15 +14,25 @@ namespace CGFF {
 #define SHADER_MID_INDEX        4
 #define SHADER_COLOR_INDEX      5
 
-//#define SHADER_UNIFORM_PROJECTION_MATRIX_NAME	"pr_matrix"
-//#define SHADER_UNIFORM_VIEW_MATRIX_NAME			"vw_matrix"
-//#define SHADER_UNIFORM_MODEL_MATRIX_NAME		"ml_matrix"
 #define SHADER_UNIFORM_PROJECTION_MATRIX_NAME	"sys_ProjectionMatrix"
 #define SHADER_UNIFORM_VIEW_MATRIX_NAME			"sys_ViewMatrix"
 #define SHADER_UNIFORM_MODEL_MATRIX_NAME		"sys_ModelMatrix"
 #define SHADER_UNIFORM_LIGHT_POSITION		    "u_LightPosition"
 #define SHADER_UNIFORM_LIGHT_ATTENUATION		"u_LightAttenuation"
 #define SHADER_UNIFORM_LIGHT_COLOR		        "u_LightColor"
+
+
+    struct UniformInfo
+    {
+        QString uniformName;
+        UniformType uniformType;
+    };
+
+    struct ShaderResourceUniformInfo
+    {
+        QString resourceName;
+        ShaderResourceType resourceType;
+    };
 
 	class Shader
 	{
@@ -42,6 +52,9 @@ namespace CGFF {
 		virtual const ShaderUniformBufferList& getPSSystemUniforms() const = 0;
 		virtual const QSharedPointer<ShaderUniformBufferDeclaration> getVSUserUniformBuffer() const = 0;
 		virtual const QSharedPointer<ShaderUniformBufferDeclaration> getPSUserUniformBuffer() const = 0;
+
+        virtual QVector<CGFF::UniformInfo> getShaderUniformsInfo() const = 0;
+        virtual QVector<CGFF::ShaderResourceUniformInfo> getShaderResourcesInfo() const = 0;
 
 		virtual const ShaderResourceList& getResources() const = 0;
 

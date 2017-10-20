@@ -35,13 +35,22 @@ MainWindow::MainWindow(QWidget *parent)
 	, m_objectList(nullptr)
 	, m_objectListDockWidget(nullptr)
 	, m_resourceModel(nullptr)
+    , m_renderApi(CGFF::RenderAPI::OPENGL)
 {
     setupUi();
+    init();
+
 }
 
 MainWindow::~MainWindow()
 {
 }
+
+void MainWindow::init()
+{
+    CGFF::Context::setRenderAPI(m_renderApi);
+}
+
 void MainWindow::setupUi()
 {
     if (this->objectName().isEmpty())
@@ -51,7 +60,7 @@ void MainWindow::setupUi()
     this->setDocumentMode(false);
 	this->setWindowTitle(QApplication::translate("this", "CGFF", Q_NULLPTR));
 
-	m_debugWindow = new CGFF::DebugWindow(this);
+	m_debugWindow = new CGFF::DebugWindow(this, m_renderApi);
 	m_debugWindow->setActive(true);
     //m_learnGLWindow = new CGFF::LearnGLWindow(this);
     //m_learnGLWindow->setActive(true);
@@ -79,6 +88,7 @@ void MainWindow::setupUi()
 
 void MainWindow::setupDockWidgets()
 {
+    //Explorer Widget should always be set up at first
 	m_explorerDockWidget = new QDockWidget("Explorer",this);
 	m_explorer = new QTUI::ExplorerView(this);
 	m_explorerDockWidget->setWidget(m_explorer);
@@ -195,6 +205,7 @@ void MainWindow::createConnections()
 	connect(m_stopAction, &QAction::triggered,
 		this, &MainWindow::onSetStatus);
 
+    connect(m_debugWindow, &CGFF::DebugWindow::initilizeSignal, m_explorer, &QTUI::ExplorerView::onInitilize);
 }
 
 void MainWindow::createProject()
@@ -219,6 +230,7 @@ void MainWindow::onSetStatus()
 	m_toolBarActionStatus = !m_toolBarActionStatus;
 }
 
+//Load model object from .obj file
 void MainWindow::onLoadModel()
 {
     QFileDialog dialog;

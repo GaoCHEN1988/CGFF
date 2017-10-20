@@ -18,9 +18,7 @@ struct Light
 {
 	vec4 color;
 	vec3 position;
-	float p0;
 	vec3 direction;
-	float p1;
 	vec3 lightVector;
 	float intensity;
 };

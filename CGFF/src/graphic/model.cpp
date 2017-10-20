@@ -1,5 +1,4 @@
 #include "model.h"
-#include "graphic/shader/shaderManager.h"
 #include "system/fileSystem/vfs.h"
 
 namespace CGFF {

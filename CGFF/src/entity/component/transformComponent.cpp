@@ -2,7 +2,8 @@
 
 namespace CGFF {
     TransformComponent::TransformComponent(const QMatrix4x4& transform)
-        : transform(transform)
+        : m_transform(transform)
+        , m_parentTransform()
     {
     }
 

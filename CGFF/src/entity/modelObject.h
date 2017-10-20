@@ -11,17 +11,19 @@ namespace CGFF {
         explicit ModelObject(const QString& name = "", const QSharedPointer<Model>& model = nullptr);
         ~ModelObject();
 
-        void addEntity(const QSharedPointer<Entity>& entity);
+        void addEntity(const QString& name, const QSharedPointer<Entity>& entity);
         void transform(const QMatrix4x4& transform);
-        inline const QVector<QSharedPointer<Entity>>& getEntities() { return m_entities;}
+        inline const QMap<QString, QSharedPointer<Entity>>& getEntities() { return m_entities;}
         inline void setName(const QString& name) { m_name = name; }
         inline QString getName(const QString& name) { return m_name; }
 
     private:
         void load(const QSharedPointer<Model>& model);
     private:
-        QVector<QSharedPointer<Entity>> m_entities;
+        QMap<QString, QSharedPointer<Entity>> m_entities;
         QString m_name;
+        int m_entityCount;
+        QMatrix4x4 m_modelTransform;
     };
 }
 

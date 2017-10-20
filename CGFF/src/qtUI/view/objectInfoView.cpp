@@ -23,24 +23,31 @@ namespace QTUI {
         setupConnections();
     }
 
-    void ObjectInfoView::onCurrentEntitySet(const QString& name, const CGFF::TransformVec& transform)
+    void ObjectInfoView::onCurrentEntitySet(const QString& name, const CGFF::UiTransformVec& transform)
     {
         m_object_name_label->setText(name);
         m_transformView->onCurrentEntitySet(name, transform);
 		m_materialView->onCurrentEntitySet(name);
     }
 
-    void ObjectInfoView::onCurrentModelObjectSet(const QString& name, const CGFF::TransformVec& transform)
+    void ObjectInfoView::onCurrentModelObjectSet(const QString& name, const CGFF::UiTransformVec& transform)
     {
         m_object_name_label->setText(name);
         m_transformView->onCurrentModelObjectSet(name, transform);
-        m_materialView->onCurrentModelSet(name);
+        m_materialView->onCurrentModelObjectSet(name);
     }
 
 	void ObjectInfoView::onCurrentItemNameChanged(const QString& name)
 	{
 		m_object_name_label->setText(name);
 	}
+
+    void ObjectInfoView::onSetEmptyItem()
+    {
+        m_object_name_label->setText("");
+        m_transformView->onSetEmpty();
+        m_materialView->onSetEmpty();
+    }
 
     void ObjectInfoView::init()
     {
@@ -70,6 +77,7 @@ namespace QTUI {
     {
         connect(m_model, &ResourceModel::currentEntitySet, this, &ObjectInfoView::onCurrentEntitySet);
         connect(m_model, &ResourceModel::currentModelObjectSet, this, &ObjectInfoView::onCurrentModelObjectSet);
-		connect(m_model, &ResourceModel::currentItemNameChanged, this, &ObjectInfoView::onCurrentItemNameChanged);
+        connect(m_model, &ResourceModel::currentItemNameChanged, this, &ObjectInfoView::onCurrentItemNameChanged);
+        connect(m_model, &ResourceModel::setEmptyItem, this, &ObjectInfoView::onSetEmptyItem);
     }
 }

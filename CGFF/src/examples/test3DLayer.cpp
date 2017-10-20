@@ -108,7 +108,7 @@ namespace CGFF {
 		m_scene->add(skyboxEntity);
 
 		QSharedPointer<Shader> pbrShader = Shader::createFromFile("AdvancedLighting", "/shaders/AdvancedLighting.vert", "/shaders/AdvancedLighting.frag");
-		ShaderManager::add(pbrShader);
+		//ShaderManager::add(pbrShader);
 		QSharedPointer<PBRMaterial> material = QSharedPointer<PBRMaterial>(new PBRMaterial(pbrShader));
 
 		m_daggerMaterial = QSharedPointer<PBRMaterial>(new PBRMaterial(pbrShader));
@@ -187,7 +187,7 @@ namespace CGFF {
 			QMatrix4x4 trans_dagger;
 			trans_dagger.translate(g_DaggerTransform);
 			trans_dagger.scale(0.2);
-			dagger->transform = trans_dagger;
+			dagger->setTransform(trans_dagger);
 		}
 
 		// Remove the translation part for skybox
@@ -234,7 +234,7 @@ namespace CGFF {
 		{
 		case (Qt::Key_R):
 		{
-			ShaderManager::reload("AdvancedLighting");
+			//ShaderManager::reload("AdvancedLighting");
 			break;
 		}
 		case (Qt::Key_C):

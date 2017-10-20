@@ -283,9 +283,6 @@
     <ClCompile Include="src\graphic\shader\shaderProgram.cpp">
       <Filter>Source Files\graphic\shader</Filter>
     </ClCompile>
-    <ClCompile Include="src\graphic\shader\shaderManager.cpp">
-      <Filter>Source Files\graphic\shader</Filter>
-    </ClCompile>
     <ClCompile Include="src\graphic\shader\shaderFactory.cpp">
       <Filter>Source Files\graphic\shader</Filter>
     </ClCompile>
@@ -628,6 +625,9 @@
     <ClCompile Include="src\entity\modelObject.cpp">
       <Filter>Source Files\entity</Filter>
     </ClCompile>
+    <ClCompile Include="src\resource\shaderManger.cpp">
+      <Filter>Source Files\resource</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <None Include="ClassDiagram.cd" />
@@ -707,9 +707,6 @@
     </ClInclude>
     <ClInclude Include="src\graphic\camera\mayaCamera.h">
       <Filter>Header Files\graphic\camera</Filter>
-    </ClInclude>
-    <ClInclude Include="src\graphic\shader\shaderManager.h">
-      <Filter>Header Files\graphic\shader</Filter>
     </ClInclude>
     <ClInclude Include="src\graphic\shader\shaderProgram.h">
       <Filter>Header Files\graphic\shader</Filter>
@@ -983,6 +980,9 @@
     </ClInclude>
     <ClInclude Include="src\entity\modelObject.h">
       <Filter>Header Files\entity</Filter>
+    </ClInclude>
+    <ClInclude Include="src\resource\shaderManager.h">
+      <Filter>Header Files\resource</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

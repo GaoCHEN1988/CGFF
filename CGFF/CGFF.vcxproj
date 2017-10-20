@@ -222,7 +222,6 @@
     <ClCompile Include="src\graphic\scene2D.cpp" />
     <ClCompile Include="src\graphic\shader\shader.cpp" />
     <ClCompile Include="src\graphic\shader\shaderFactory.cpp" />
-    <ClCompile Include="src\graphic\shader\shaderManager.cpp" />
     <ClCompile Include="src\graphic\shader\shaderProgram.cpp" />
     <ClCompile Include="src\graphic\shader\shaderUniform.cpp" />
     <ClCompile Include="src\graphic\ui\button.cpp" />
@@ -267,6 +266,7 @@
     <ClCompile Include="src\qtUI\view\transformView.cpp" />
     <ClCompile Include="src\resource\resourceManager.cpp" />
     <ClCompile Include="src\resource\sceneResource.cpp" />
+    <ClCompile Include="src\resource\shaderManger.cpp" />
     <ClCompile Include="src\resource\textureManager.cpp" />
     <ClCompile Include="src\system\fileSystem\vfs.cpp" />
     <ClCompile Include="src\utils\qtopengl.cpp" />
@@ -398,7 +398,6 @@
     <ClInclude Include="src\graphic\scene2D.h" />
     <ClInclude Include="src\graphic\shader\shader.h" />
     <ClInclude Include="src\graphic\shader\shaderFactory.h" />
-    <ClInclude Include="src\graphic\shader\shaderManager.h" />
     <ClInclude Include="src\graphic\shader\shaderProgram.h" />
     <ClInclude Include="src\graphic\shader\shaderResource.h" />
     <ClInclude Include="src\graphic\shader\shaderUniform.h" />
@@ -510,6 +509,7 @@
     </CustomBuild>
     <ClInclude Include="src\resource\resourceManager.h" />
     <ClInclude Include="src\resource\sceneResource.h" />
+    <ClInclude Include="src\resource\shaderManager.h" />
     <ClInclude Include="src\resource\textureManager.h" />
     <ClInclude Include="src\system\fileSystem\vfs.h" />
     <ClInclude Include="src\utils\qtopengl.h" />

@@ -73,14 +73,19 @@ namespace QTUI {
             m_model->scaleCurrentObject(scale);
     }
 
-    void TransformView::onCurrentEntitySet(const QString& name, const CGFF::TransformVec& transform)
+    void TransformView::onCurrentEntitySet(const QString& name, const CGFF::UiTransformVec& transform)
     {
         updateView(transform);
     }
 
-    void TransformView::onCurrentModelObjectSet(const QString& name, const CGFF::TransformVec& transform)
+    void TransformView::onCurrentModelObjectSet(const QString& name, const CGFF::UiTransformVec& transform)
     {
         updateView(transform);
+    }
+
+    void TransformView::onSetEmpty()
+    {
+        showItems(false);
     }
 
     void TransformView::init()
@@ -170,6 +175,8 @@ namespace QTUI {
         m_z_scale_spin_box->setValue(1.0);
         m_z_scale_spin_box->setMinimum(0.01);
         layout->addWidget(m_z_scale_spin_box, 2, 10, 1, 2);
+
+        showItems(false);
     }
 
     void TransformView::setupConnections()
@@ -232,8 +239,10 @@ namespace QTUI {
 			this, &TransformView::onScaleChanged);
 	}
 
-    void TransformView::updateView(const CGFF::TransformVec& transform)
+    void TransformView::updateView(const CGFF::UiTransformVec& transform)
     {
+        showItems(true);
+
 		disconnections();
         m_x_spin_box->setValue(static_cast<double>(transform.translateVec.x()));
         m_y_spin_box->setValue(static_cast<double>(transform.translateVec.y()));
@@ -248,5 +257,57 @@ namespace QTUI {
         m_z_scale_spin_box->setValue(static_cast<double>(transform.scaleVec.z()));
 
 		setupConnections();
+    }
+
+    void TransformView::showItems(bool visible)
+    {
+        if (!visible)
+        {
+            m_position->hide();
+            m_x_label->hide();
+            m_y_label->hide();
+            m_z_label->hide();
+            m_x_spin_box->hide();
+            m_y_spin_box->hide();
+            m_z_spin_box->hide();
+            m_rotation->hide();
+            m_x_rotation_label->hide();
+            m_y_rotation_label->hide();
+            m_z_rotation_label->hide();
+            m_x_rotation_spin_box->hide();
+            m_y_rotation_spin_box->hide();
+            m_z_rotation_spin_box->hide();
+            m_scale->hide();
+            m_x_scale_label->hide();
+            m_y_scale_label->hide();
+            m_z_scale_label->hide();
+            m_x_scale_spin_box->hide();
+            m_y_scale_spin_box->hide();
+            m_z_scale_spin_box->hide();
+        }
+        else
+        {
+            m_position->show();
+            m_x_label->show();
+            m_y_label->show();
+            m_z_label->show();
+            m_x_spin_box->show();
+            m_y_spin_box->show();
+            m_z_spin_box->show();
+            m_rotation->show();
+            m_x_rotation_label->show();
+            m_y_rotation_label->show();
+            m_z_rotation_label->show();
+            m_x_rotation_spin_box->show();
+            m_y_rotation_spin_box->show();
+            m_z_rotation_spin_box->show();
+            m_scale->show();
+            m_x_scale_label->show();
+            m_y_scale_label->show();
+            m_z_scale_label->show();
+            m_x_scale_spin_box->show();
+            m_y_scale_spin_box->show();
+            m_z_scale_spin_box->show();
+        }
     }
 }

@@ -9,6 +9,7 @@ namespace QTUI {
 	int ResourceModel::m_cubeCount = 0;
 	int ResourceModel::m_planeCount = 0;
 	int ResourceModel::m_sphereCount = 0;
+    QMap<QString, int> ResourceModel::m_modelCounts;
 
 	ResourceModel::ResourceModel(QObject * parent)
 		: QStandardItemModel(parent)
@@ -46,8 +47,9 @@ namespace QTUI {
 		QStandardItem* itemChild = new QStandardItem(name);
 		m_itemEntity->appendRow(itemChild);
 
-        ResourceManager::TransformMats[name] = {};
-        ResourceManager::TransformVecs[name] = {};
+        ResourceManager::UiTransformMats[name] = {};
+        ResourceManager::UiTransformVecs[name] = {};
+        ResourceManager::UiUniformDatas[name] = {};
 
         emit entityAdded(name);
 
@@ -72,8 +74,9 @@ namespace QTUI {
 		QStandardItem* itemChild = new QStandardItem(name);
 		m_itemEntity->appendRow(itemChild);
 
-        ResourceManager::TransformMats[name] = {};
-        ResourceManager::TransformVecs[name] = {};
+        ResourceManager::UiTransformMats[name] = {};
+        ResourceManager::UiTransformVecs[name] = {};
+        ResourceManager::UiUniformDatas[name] = {};
 
         emit entityAdded(name);
 
@@ -99,8 +102,9 @@ namespace QTUI {
         QStandardItem* itemChild = new QStandardItem(name);
         m_itemEntity->appendRow(itemChild);
 
-        ResourceManager::TransformMats[name] = {};
-        ResourceManager::TransformVecs[name] = {};
+        ResourceManager::UiTransformMats[name] = {};
+        ResourceManager::UiTransformVecs[name] = {};
+        ResourceManager::UiUniformDatas[name] = {};
 
         emit entityAdded(name);
 
@@ -187,11 +191,11 @@ namespace QTUI {
         if (entity)
         {
             TransformComponent* transComponent = entity->getComponent<TransformComponent>();
-            ResourceManager::TransformMats[m_currentEntity].translateMat.setToIdentity();
-            ResourceManager::TransformMats[m_currentEntity].translateMat.translate(tanslate);
-            transComponent->transform = ResourceManager::TransformMats[m_currentEntity].getTransform();
+            ResourceManager::UiTransformMats[m_currentEntity].translateMat.setToIdentity();
+            ResourceManager::UiTransformMats[m_currentEntity].translateMat.translate(tanslate);
+            transComponent->setTransform(ResourceManager::UiTransformMats[m_currentEntity].getTransform());
 
-            ResourceManager::TransformVecs[m_currentEntity].translateVec = tanslate;
+            ResourceManager::UiTransformVecs[m_currentEntity].translateVec = tanslate;
         }
     }
 
@@ -201,18 +205,18 @@ namespace QTUI {
         if (entity)
         {
             if(rotate == QVector3D(1.0, 0.0, 0.0))
-                ResourceManager::TransformVecs[m_currentEntity].rotateVec.setX(angle);
+                ResourceManager::UiTransformVecs[m_currentEntity].rotateVec.setX(angle);
             else if (rotate == QVector3D(0.0, 1.0, 0.0))
-                ResourceManager::TransformVecs[m_currentEntity].rotateVec.setY(angle);
+                ResourceManager::UiTransformVecs[m_currentEntity].rotateVec.setY(angle);
             else if (rotate == QVector3D(0.0, 0.0, 1.0))
-                ResourceManager::TransformVecs[m_currentEntity].rotateVec.setZ(angle);
+                ResourceManager::UiTransformVecs[m_currentEntity].rotateVec.setZ(angle);
 
 			TransformComponent* transComponent = entity->getComponent<TransformComponent>();
-			ResourceManager::TransformMats[m_currentEntity].rotateMat.setToIdentity();
-			ResourceManager::TransformMats[m_currentEntity].rotateMat.rotate(ResourceManager::TransformVecs[m_currentEntity].rotateVec.x(), QVector3D(1.0, 0.0, 0.0));
-			ResourceManager::TransformMats[m_currentEntity].rotateMat.rotate(ResourceManager::TransformVecs[m_currentEntity].rotateVec.y(), QVector3D(0.0, 1.0, 0.0));
-			ResourceManager::TransformMats[m_currentEntity].rotateMat.rotate(ResourceManager::TransformVecs[m_currentEntity].rotateVec.z(), QVector3D(0.0, 0.0, 1.0));
-			transComponent->transform = ResourceManager::TransformMats[m_currentEntity].getTransform();
+			ResourceManager::UiTransformMats[m_currentEntity].rotateMat.setToIdentity();
+			ResourceManager::UiTransformMats[m_currentEntity].rotateMat.rotate(ResourceManager::UiTransformVecs[m_currentEntity].rotateVec.x(), QVector3D(1.0, 0.0, 0.0));
+			ResourceManager::UiTransformMats[m_currentEntity].rotateMat.rotate(ResourceManager::UiTransformVecs[m_currentEntity].rotateVec.y(), QVector3D(0.0, 1.0, 0.0));
+			ResourceManager::UiTransformMats[m_currentEntity].rotateMat.rotate(ResourceManager::UiTransformVecs[m_currentEntity].rotateVec.z(), QVector3D(0.0, 0.0, 1.0));
+			transComponent->setTransform(ResourceManager::UiTransformMats[m_currentEntity].getTransform());
         }
     }
 
@@ -222,11 +226,11 @@ namespace QTUI {
         if (entity)
         {
             TransformComponent* transComponent = entity->getComponent<TransformComponent>();
-            ResourceManager::TransformMats[m_currentEntity].scaleMat.setToIdentity();
-            ResourceManager::TransformMats[m_currentEntity].scaleMat.scale(scale);
-            transComponent->transform = ResourceManager::TransformMats[m_currentEntity].getTransform();
+            ResourceManager::UiTransformMats[m_currentEntity].scaleMat.setToIdentity();
+            ResourceManager::UiTransformMats[m_currentEntity].scaleMat.scale(scale);
+            transComponent->setTransform(ResourceManager::UiTransformMats[m_currentEntity].getTransform());
 
-            ResourceManager::TransformVecs[m_currentEntity].scaleVec = scale;
+            ResourceManager::UiTransformVecs[m_currentEntity].scaleVec = scale;
         }
     }
 
@@ -235,11 +239,17 @@ namespace QTUI {
         QSharedPointer<ModelObject> modelobj = ResourceManager::getModelObject(m_currentScene, m_currentModel);
         if (modelobj)
         {
-            ResourceManager::TransformMats[m_currentModel].translateMat.setToIdentity();
-            ResourceManager::TransformMats[m_currentModel].translateMat.translate(tanslate);
-            modelobj->transform(ResourceManager::TransformMats[m_currentModel].getTransform());
+            ResourceManager::UiTransformMats[m_currentModel].translateMat.setToIdentity();
+            ResourceManager::UiTransformMats[m_currentModel].translateMat.translate(tanslate);
+            modelobj->transform(ResourceManager::UiTransformMats[m_currentModel].getTransform());
 
-            ResourceManager::TransformVecs[m_currentModel].translateVec = tanslate;
+            ResourceManager::UiTransformVecs[m_currentModel].translateVec = tanslate;
+
+            //for (const QString& key : modelobj->getEntities().keys())
+            //{
+            //    ResourceManager::UiTransformMats[key].translateMat = ResourceManager::UiTransformMats[m_currentModel].translateMat;
+            //    ResourceManager::UiTransformVecs[key].translateVec = ResourceManager::UiTransformVecs[m_currentModel].translateVec;
+            //}
         }
     }
     void ResourceModel::rotateCurrentModelObject(float angle, const QVector3D& rotate)
@@ -248,17 +258,24 @@ namespace QTUI {
         if (modelobj)
         {
             if (rotate == QVector3D(1.0, 0.0, 0.0))
-                ResourceManager::TransformVecs[m_currentModel].rotateVec.setX(angle);
+                ResourceManager::UiTransformVecs[m_currentModel].rotateVec.setX(angle);
             else if (rotate == QVector3D(0.0, 1.0, 0.0))
-                ResourceManager::TransformVecs[m_currentModel].rotateVec.setY(angle);
+                ResourceManager::UiTransformVecs[m_currentModel].rotateVec.setY(angle);
             else if (rotate == QVector3D(0.0, 0.0, 1.0))
-                ResourceManager::TransformVecs[m_currentModel].rotateVec.setZ(angle);
+                ResourceManager::UiTransformVecs[m_currentModel].rotateVec.setZ(angle);
 
-            ResourceManager::TransformMats[m_currentModel].rotateMat.setToIdentity();
-            ResourceManager::TransformMats[m_currentModel].rotateMat.rotate(ResourceManager::TransformVecs[m_currentModel].rotateVec.x(), QVector3D(1.0, 0.0, 0.0));
-            ResourceManager::TransformMats[m_currentModel].rotateMat.rotate(ResourceManager::TransformVecs[m_currentModel].rotateVec.y(), QVector3D(0.0, 1.0, 0.0));
-            ResourceManager::TransformMats[m_currentModel].rotateMat.rotate(ResourceManager::TransformVecs[m_currentModel].rotateVec.z(), QVector3D(0.0, 0.0, 1.0));
-            modelobj->transform(ResourceManager::TransformMats[m_currentModel].getTransform());
+            ResourceManager::UiTransformMats[m_currentModel].rotateMat.setToIdentity();
+            ResourceManager::UiTransformMats[m_currentModel].rotateMat.rotate(ResourceManager::UiTransformVecs[m_currentModel].rotateVec.x(), QVector3D(1.0, 0.0, 0.0));
+            ResourceManager::UiTransformMats[m_currentModel].rotateMat.rotate(ResourceManager::UiTransformVecs[m_currentModel].rotateVec.y(), QVector3D(0.0, 1.0, 0.0));
+            ResourceManager::UiTransformMats[m_currentModel].rotateMat.rotate(ResourceManager::UiTransformVecs[m_currentModel].rotateVec.z(), QVector3D(0.0, 0.0, 1.0));
+
+            //for (const QString& key : modelobj->getEntities().keys())
+            //{
+            //    ResourceManager::UiTransformMats[key].rotateMat = ResourceManager::UiTransformMats[m_currentModel].rotateMat;
+            //    ResourceManager::UiTransformVecs[key].rotateVec = ResourceManager::UiTransformVecs[m_currentModel].rotateVec;
+            //}
+
+            modelobj->transform(ResourceManager::UiTransformMats[m_currentModel].getTransform());
         }
     }
 
@@ -267,10 +284,16 @@ namespace QTUI {
         QSharedPointer<ModelObject> modelobj = ResourceManager::getModelObject(m_currentScene, m_currentModel);
         if (modelobj)
         {
-            ResourceManager::TransformMats[m_currentModel].scaleMat.setToIdentity();
-            ResourceManager::TransformMats[m_currentModel].scaleMat.scale(scale);
-            modelobj->transform(ResourceManager::TransformMats[m_currentModel].getTransform());
-            ResourceManager::TransformVecs[m_currentModel].scaleVec = scale;
+            ResourceManager::UiTransformMats[m_currentModel].scaleMat.setToIdentity();
+            ResourceManager::UiTransformMats[m_currentModel].scaleMat.scale(scale);
+            modelobj->transform(ResourceManager::UiTransformMats[m_currentModel].getTransform());
+            ResourceManager::UiTransformVecs[m_currentModel].scaleVec = scale;
+
+            //for (const QString& key : modelobj->getEntities().keys())
+            //{
+            //    ResourceManager::UiTransformMats[key].scaleMat = ResourceManager::UiTransformMats[m_currentModel].scaleMat;
+            //    ResourceManager::UiTransformVecs[key].scaleVec = ResourceManager::UiTransformVecs[m_currentModel].scaleVec;
+            //}
         }
     }
 
@@ -284,41 +307,14 @@ namespace QTUI {
 		return shader->getName();
 	}
 
-	QList<UniformInfo> ResourceModel::getShaderUniforms(const QString& entityName)
+	QVector<UniformInfo> ResourceModel::getShaderUniformsInfo(const QString& entityName)
 	{
-		QSharedPointer<Shader> shader = ResourceManager::getSceneResource(m_currentScene)->getEntityShader(entityName);
-		QList<UniformInfo> result;
-
-        if (!shader->getPSUserUniformBuffer().isNull())
-        {
-            const ShaderUniformList& uniforms = shader->getPSUserUniformBuffer()->getUniformDeclarations();
-
-            for (uint i = 0; i < uniforms.size(); i++)
-            {
-                UniformInfo uniformInfo = { uniforms[i]->getName(),  uniforms[i]->getType() };
-
-                result.append(uniformInfo);
-            }
-        }
-
-		return result;
+		return ResourceManager::getSceneResource(m_currentScene)->getEntityShader(entityName)->getShaderUniformsInfo();
 	}
 
-	QList<CGFF::ShaderResourceUniformInfo> ResourceModel::getShaderResources(const QString& entityName)
+    QVector<CGFF::ShaderResourceUniformInfo> ResourceModel::getShaderResourcesInfo(const QString& entityName)
 	{
-		QSharedPointer<Shader> shader = ResourceManager::getSceneResource(m_currentScene)->getEntityShader(entityName);
-		QList<ShaderResourceUniformInfo> result;
-
-		const ShaderResourceList& resources = shader->getResources();
-
-		for (uint i = 0; i < resources.size(); i++)
-		{
-			ShaderResourceUniformInfo resource = { resources[i]->getName(),  resources[i]->getType() };
-
-			result.append(resource);
-		}
-
-		return result;
+		return ResourceManager::getSceneResource(m_currentScene)->getEntityShader(entityName)->getShaderResourcesInfo();
 	}
 
     void ResourceModel::onAddEntity(CGFF::EntityType type)
@@ -354,11 +350,25 @@ namespace QTUI {
         QSharedPointer<ModelObject> modelobj = QSharedPointer<ModelObject>(new ModelObject(name, model));
         ResourceManager::getSceneResource(m_currentScene)->addModelObject(name, modelobj);
 
+        m_modelCounts[name] = 1;
+
         QStandardItem* itemChild = new QStandardItem(name);
         m_itemModel->appendRow(itemChild);
 
-        ResourceManager::TransformMats[name] = {};
-        ResourceManager::TransformVecs[name] = {};
+        for (const QString& key : modelobj->getEntities().keys())
+        {
+            QStandardItem* itemEntity = new QStandardItem(key);
+            itemChild->appendRow(itemEntity);
+
+            ResourceManager::getSceneResource(m_currentScene)->addEntity(key, modelobj->getEntities()[key]);
+
+            ResourceManager::UiTransformMats[key] = {};
+            ResourceManager::UiTransformVecs[key] = {};
+        }
+
+        ResourceManager::UiTransformMats[name] = {};
+        ResourceManager::UiTransformVecs[name] = {};
+        //ResourceManager::UiUniformDatas[name] = {};
 
         onSetCurrentModel(name);
         emit modelObjectAdded(name);
@@ -368,14 +378,14 @@ namespace QTUI {
     {
         m_currentEntity = name;
         m_currentObjType = CurrentObjectType::ENTITY;
-        emit currentEntitySet(name, ResourceManager::TransformVecs[name]);
+        emit currentEntitySet(name, ResourceManager::UiTransformVecs[name]);
     }
 
     void ResourceModel::onSetCurrentLight(const QString& name)
     {
         m_currentLight = name;
         m_currentObjType = CurrentObjectType::LIGHT;
-        emit currentLightSet(name, ResourceManager::TransformVecs[name]);
+        emit currentLightSet(name, ResourceManager::UiTransformVecs[name]);
     }
 
     void ResourceModel::onSetCurrentSkyBox(const QString& name)
@@ -387,7 +397,7 @@ namespace QTUI {
     {
         m_currentModel = name;
         m_currentObjType = CurrentObjectType::MODEL;
-        emit currentModelObjectSet(name, ResourceManager::TransformVecs[name]);
+        emit currentModelObjectSet(name, ResourceManager::UiTransformVecs[name]);
     }
 
 
@@ -437,6 +447,11 @@ namespace QTUI {
         }
 
 	}
+
+    void ResourceModel::onSetEmptyItem()
+    {
+        emit setEmptyItem();
+    }
 
 	void ResourceModel::onShaderUniformChanged(const QString& name, const UniformType& type)
 	{

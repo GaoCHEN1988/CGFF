@@ -19,13 +19,16 @@ namespace QTUI {
 		virtual ~ExplorerView() {};
 
 		public slots:
-		void onMkdir();
+        void onInitilize();
+        void onMkdir();
 		void onRm();
 
 	private:
+        void loadResources();
 		void init();
 		void mountDirectory(const QString& path, const QString& name);
 		void mountDirs();
+        
 
 	private:
 		//QFileSystemModel *	m_fileModel;

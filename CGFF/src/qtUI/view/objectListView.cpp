@@ -31,20 +31,25 @@ namespace QTUI {
         {
             m_model->onSetCurrentEntity(currentName);
         }
-
-        if (parentName == CGFF::ResourceManager::LightHierarchyName)
+        else if (parentName == CGFF::ResourceManager::LightHierarchyName)
         {
             m_model->onSetCurrentLight(currentName);
         }
-
-        if (parentName == CGFF::ResourceManager::SkyBoxHierarchyName)
+        else if (parentName == CGFF::ResourceManager::SkyBoxHierarchyName)
         {
             m_model->onSetCurrentSkyBox(currentName);
         }
-
-        if (parentName == CGFF::ResourceManager::ModelHierarchyName)
+        else if (parentName == CGFF::ResourceManager::ModelHierarchyName)
         {
             m_model->onSetCurrentModel(currentName);
+        }
+        else if (CGFF::ResourceManager::isModelObjectExisted(parentName))
+        {
+            m_model->onSetCurrentEntity(currentName);
+        }
+        else
+        {
+            m_model->onSetEmptyItem();
         }
     }
 
