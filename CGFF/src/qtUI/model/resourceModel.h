@@ -136,7 +136,7 @@ namespace QTUI {
 		static int m_cubeCount;
 		static int m_planeCount;
         static int m_sphereCount;
-        static QMap<QString, int> m_modelCounts;
+        //static QMap<QString, int> m_modelCounts;
 	};
 }
 

@@ -9,7 +9,7 @@ namespace QTUI {
 	int ResourceModel::m_cubeCount = 0;
 	int ResourceModel::m_planeCount = 0;
 	int ResourceModel::m_sphereCount = 0;
-    QMap<QString, int> ResourceModel::m_modelCounts;
+    //QMap<QString, int> ResourceModel::m_modelCounts;
 
 	ResourceModel::ResourceModel(QObject * parent)
 		: QStandardItemModel(parent)
@@ -347,23 +347,34 @@ namespace QTUI {
 
         QFileInfo file(path);
         QString name = file.baseName();
+        int tmpCount = 0;
+        while (!addNameInSet(name, m_modelObjectNames))
+        {
+            name = name + QString::number(++tmpCount);
+        }
+
         QSharedPointer<ModelObject> modelobj = QSharedPointer<ModelObject>(new ModelObject(name, model));
         ResourceManager::getSceneResource(m_currentScene)->addModelObject(name, modelobj);
-
-        m_modelCounts[name] = 1;
 
         QStandardItem* itemChild = new QStandardItem(name);
         m_itemModel->appendRow(itemChild);
 
         for (const QString& key : modelobj->getEntities().keys())
         {
-            QStandardItem* itemEntity = new QStandardItem(key);
+            int tmpCount = 0;
+            QString tmpName = key;
+            while (!addNameInSet(tmpName, m_entityNames))
+            {
+                tmpName = tmpName + QString::number(++tmpCount);
+            }
+
+            QStandardItem* itemEntity = new QStandardItem(tmpName);
             itemChild->appendRow(itemEntity);
 
-            ResourceManager::getSceneResource(m_currentScene)->addEntity(key, modelobj->getEntities()[key]);
+            ResourceManager::getSceneResource(m_currentScene)->addEntity(tmpName, modelobj->getEntities()[key]);
 
-            ResourceManager::UiTransformMats[key] = {};
-            ResourceManager::UiTransformVecs[key] = {};
+            ResourceManager::UiTransformMats[tmpName] = {};
+            ResourceManager::UiTransformVecs[tmpName] = {};
         }
 
         ResourceManager::UiTransformMats[name] = {};
@@ -416,8 +427,7 @@ namespace QTUI {
             m_currentObjType = CurrentObjectType::ENTITY;
 			emit currentItemNameChanged(m_currentEntity);
 		}
-
-		if (parentName == CGFF::ResourceManager::LightHierarchyName)
+        else if (parentName == CGFF::ResourceManager::LightHierarchyName)
 		{
 			QString preName = m_currentLight;
 			m_currentLight = changeNameInSet(m_currentLight, newName, m_lightNames);
@@ -426,8 +436,7 @@ namespace QTUI {
             m_currentObjType = CurrentObjectType::LIGHT;
 			emit currentItemNameChanged(m_currentLight);
 		}
-
-		if (parentName == CGFF::ResourceManager::SkyBoxHierarchyName)
+        else if (parentName == CGFF::ResourceManager::SkyBoxHierarchyName)
 		{
 			QString preName = m_currentSkybox;
 			m_currentSkybox = changeNameInSet(m_currentSkybox, newName, m_skyboxNames);
@@ -435,15 +444,23 @@ namespace QTUI {
 			item->setText(m_currentSkybox);
 			emit currentItemNameChanged(m_currentSkybox);
 		}
-
-        if (parentName == CGFF::ResourceManager::ModelHierarchyName)
+        else if (parentName == CGFF::ResourceManager::ModelHierarchyName)
         {
             QString preName = m_currentModel;
-            m_currentModel = changeNameInSet(m_currentModel, newName, m_skyboxNames);
+            m_currentModel = changeNameInSet(m_currentModel, newName, m_modelObjectNames);
             ResourceManager::getSceneResource(m_currentScene)->changeModelName(preName, m_currentModel);
             item->setText(m_currentModel);
             m_currentObjType = CurrentObjectType::MODEL;
             emit currentItemNameChanged(m_currentModel);
+        }
+        else if (CGFF::ResourceManager::isModelObjectExisted(parentName))
+        {
+            QString preName = m_currentEntity;
+            m_currentEntity = changeNameInSet(m_currentEntity, newName, m_entityNames);
+            ResourceManager::getSceneResource(m_currentScene)->changeObjectName(preName, m_currentEntity);
+            item->setText(m_currentEntity);
+            m_currentObjType = CurrentObjectType::ENTITY;
+            emit currentItemNameChanged(m_currentEntity);
         }
 
 	}
