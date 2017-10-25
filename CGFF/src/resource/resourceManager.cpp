@@ -17,7 +17,7 @@ namespace CGFF {
 
 	QMap<QString, UiTransformMat> ResourceManager::UiTransformMats;
 	QMap<QString, UiTransformVec> ResourceManager::UiTransformVecs;
-    QMap<QString, QSharedPointer<UiUniformDataInterface>> ResourceManager::UiUniformDatas;
+    QMap<QString, UiUniformDataMap> ResourceManager::UiUniformDatas;
 
 	QSharedPointer<SceneResource> ResourceManager::getSceneResource(const QString& name)
 	{
@@ -115,5 +115,23 @@ namespace CGFF {
         }
 
         return false;
+    }
+
+    QSharedPointer<Texture> ResourceManager::getEnvironment(const QString& sceneName, const QString& name)
+    {
+        auto lookup = m_sceneResources.find(sceneName);
+        if (lookup != m_sceneResources.end())
+        {
+            auto envLookup = lookup.value()->getEnvironments().find(name);
+
+            if (envLookup != lookup.value()->getEnvironments().end())
+            {
+                return envLookup.value();
+            }
+
+            return nullptr;
+        }
+
+        return nullptr;
     }
 }

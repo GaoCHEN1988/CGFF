@@ -1,6 +1,7 @@
 #include "forwardRenderer.h"
 #include "renderer.h"
 #include "graphic/meshFactory.h"
+#include "resource/shaderManager.h"
 #include "examples/learnOpengl/learnGLMeshFactory.h"
 
 namespace CGFF {
@@ -26,6 +27,8 @@ namespace CGFF {
         , m_PSSystemUniformBufferOffsets()
         , m_depthBuffer(nullptr)
         , m_frameBuffer(nullptr)
+        , m_lightSetup(nullptr)
+        , m_lightsArray()
     {
 		setScreenBufferSize(size.width(), size.height());
 		init();
@@ -40,6 +43,8 @@ namespace CGFF {
         , m_PSSystemUniformBufferOffsets()
         , m_depthBuffer(nullptr)
         , m_frameBuffer(nullptr)
+        , m_lightSetup(nullptr)
+        , m_lightsArray()
 	{
 		setScreenBufferSize(width, height);
 		init();
@@ -79,9 +84,9 @@ namespace CGFF {
 
 #ifdef TEST_DEPTH_MAP
 
-        depthMappingShader = Shader::createFromFile("DebugDepthShader",
-            "/shaders/advanced_lighting/3.1.3.shadow_mapping_depth.vs",
-            "/shaders/advanced_lighting/3.1.3.shadow_mapping_depth.fs");
+        depthMappingShader = Shader::createFromFile("Internal_ShadowMappingDepthShader",
+            "/shaders/ShadowMappingDepth.vert",
+            "/shaders/ShadowMappingDepth.frag");
 
         m_depthBuffer = FramebufferDepth::create(SHADOW_WIDTH, SHADOW_HEIGHT);
 
@@ -166,6 +171,54 @@ namespace CGFF {
         //{
         //    memcpy(m_PSSystemUniformBuffer.data() + m_PSSystemUniformBufferOffsets[PSSystemUniformIndex_Lights], &lights[i], sizeof(Light));
         //}
+
+        if (lightSetup.isNull())
+            return;
+
+        m_lightSetup = lightSetup;
+
+        auto lightEntities = m_lightSetup->getLightEntities();
+        auto lights = lightSetup->getLights();
+
+        m_lightsArray.clear();
+        //Releae array memory
+        m_lightsArray.squeeze();
+
+        for (int i = 0; i < lights.size(); i++)
+        {
+            m_lightsArray.append(*lights[i]);
+        }
+
+        if (!m_lightsArray.isEmpty())
+        {
+            g_LightPos = m_lightsArray[0].position;
+        }
+
+        for (int i = 0; i < lightEntities.size(); i++)
+        {
+            if (lightEntities[i].isNull())
+                continue;
+
+            MeshComponent* mesh = lightEntities[i]->getComponent<MeshComponent>();
+            if (mesh)
+            {
+                TransformComponent* tc = lightEntities[i]->getComponent<TransformComponent>();
+                if (!tc)
+                    qFatal("Mesh does not have transform!"); // Meshes MUST have transforms
+
+                submitLightEntity(mesh->mesh, tc->getTransform(), lights[i]->color);
+            }
+        }
+    }
+
+    void ForwardRenderer::submitLightEntity(const QSharedPointer<Mesh>& lightMesh, const QMatrix4x4& transform, const QVector4D& color)
+    {
+        RenderCommand command;
+        command.mesh = lightMesh;
+        command.transform = transform;
+        command.color = color;
+        command.shader = lightMesh->getMaterialInstance()->getMaterial()->getShader();
+        m_lightCommandQueue.push_back(command);
     }
 
 	void ForwardRenderer::endScene()
@@ -206,10 +259,15 @@ namespace CGFF {
 			const RenderCommand& command = m_commandQueue[i];
 			QSharedPointer<MaterialInstance> material = command.mesh->getMaterialInstance();
 			int materialRenderFlags = material->getRenderFlags();
+
+            if (!m_lightsArray.isEmpty())
+            {
+                material->setUniformData("lights", (uchar*)m_lightsArray.data());
+            }
 #ifdef TEST_DEPTH_MAP
-            material->setTexture("shadowMap", m_depthBuffer->getTexture());
-            material->setUniform("lightSpaceMatrix", lightSpaceMatrix);
-            material->setUniform("lightPos", g_LightPos);
+            material->setTexture("u_ShadowMap", m_depthBuffer->getTexture());
+            //material->setUniform("lightSpaceMatrix", lightSpaceMatrix);
+            //material->setUniform("lightPos", g_LightPos);
 #endif
 #ifdef TEST_DEPTH_MAP_CUBE
             material->setTexture("depthMap", m_depthCubeBuffer->getTexture());

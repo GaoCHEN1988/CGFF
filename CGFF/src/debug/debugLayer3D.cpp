@@ -48,6 +48,7 @@ namespace CGFF {
 		m_scene->add(m_lineY);
 		m_scene->add(m_lineZ);
 
+        m_scene->add(QSharedPointer<Light>(new Light(QVector3D(0.8f, 0.8f, 0.8f))));
 		//ResourceManager::getSceneResource(ResourceManager::getScene3DName())->addLight("Light1", QSharedPointer<Light>(new Light(QVector3D(0.8f, 0.8f, 0.8f))));
 	}
 
@@ -105,5 +106,16 @@ namespace CGFF {
         {
             addEntity(modelobj->getEntities()[key]);
         }
+    }
+
+    void DebugLayer3D::addLight(const QString& name)
+    {
+        m_scene->add(ResourceManager::getSceneResource(ResourceManager::getScene3DName())->getLights()[name]);
+    }
+
+    void DebugLayer3D::setSkyBox(const QString& name)
+    {
+        m_scene->setSkyBox(ResourceManager::getSceneResource(ResourceManager::getScene3DName())->getSkyBox()[name],
+            ResourceManager::getSceneResource(ResourceManager::getScene3DName())->getEnvironments()[name]);
     }
 }

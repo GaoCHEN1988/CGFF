@@ -218,8 +218,14 @@ namespace CGFF {
     {
         auto lights = lightSetup->getLights();
 
-        if (lights.size() > 0)
-            m_lightPassPassMaterial->setUniformData("lights", (uchar*)lights.data());
+        for(int i = 0; i < lights.size(); i++)
+        {
+            m_lightsArray.append(*lights[i]);
+
+        }
+        
+        if(!m_lightsArray.isEmpty())
+            m_lightPassPassMaterial->setUniformData("lights", (uchar*)m_lightsArray.data());
 
         auto lightEntities = lightSetup->getLightEntities();
 
@@ -235,7 +241,7 @@ namespace CGFF {
                 if (!tc)
                     qFatal("Mesh does not have transform!"); // Meshes MUST have transforms
 
-                submitLightEntity(mesh->mesh, tc->getTransform(), QVector4D(lights[i].Color, 1.0));
+                submitLightEntity(mesh->mesh, tc->getTransform(), lights[i]->color);
             }
         }
     }

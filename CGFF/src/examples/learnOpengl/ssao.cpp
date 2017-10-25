@@ -42,7 +42,7 @@ namespace LearnGL {
         //Set lights
         g_lights = QSharedPointer<LightSetup>(new LightSetup());
 
-        g_lights->add({ QVector3D(20.0, 8.0, -5.0), QVector3D(0.4, 0.4, 0.7), linear, quadratic });
+        //g_lights->add({ QVector3D(20.0, 8.0, -5.0), QVector3D(0.4, 0.4, 0.7), linear, quadratic });
 
         m_scene->pushLightSetup(g_lights);
 

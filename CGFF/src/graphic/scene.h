@@ -16,10 +16,12 @@ namespace CGFF {
         Scene(QSharedPointer<Camera>& camera);
         virtual~Scene();
         void add(const QSharedPointer<Entity>& entity);
+        void add(const QSharedPointer<Light>& light);
         void pushLightSetup(QSharedPointer<LightSetup>& lightSetup);
         QSharedPointer<LightSetup> popLightSetup();
         void render(QSharedPointer<Renderer3D>& renderer);
-		void setCamera(QSharedPointer<Camera> camera);
+        void setCamera(const QSharedPointer<Camera>& camera);
+        void setSkyBox(const QSharedPointer<Entity>& skyBox, const QSharedPointer<Texture>& environment);
 		void close();
    
         inline const QSharedPointer<Camera>& getCamera() const { return m_camera; }
@@ -29,7 +31,10 @@ namespace CGFF {
     private:
         QVector<QSharedPointer<Entity>> m_entities;
         QSharedPointer<Camera> m_camera;
+        QSharedPointer<LightSetup> m_lightSetup;
         QVector<QSharedPointer<LightSetup>> m_lightSetupStack;
+        QSharedPointer<Entity> m_skyBox;
+        QSharedPointer<Texture> m_environment;
 		QSize m_size;
     };
 }

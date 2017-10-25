@@ -26,7 +26,7 @@ namespace QTUI {
 	private:
         void loadResources();
 		void init();
-		void mountDirectory(const QString& path, const QString& name);
+		void mountDirectory(const QString& path, const QString& name, bool isVisible = true);
 		void mountDirs();
         
 

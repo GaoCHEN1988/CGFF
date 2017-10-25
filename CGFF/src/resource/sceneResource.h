@@ -35,7 +35,11 @@ namespace CGFF
 			return m_lights;
 		}
 
-		inline const QMap<QString, QSharedPointer<MaterialInstance>>& getSkyBox() const
+        inline const QMap<QString, QSharedPointer<Texture>>& getEnvironments() const
+        {
+            return m_environments;
+        }
+        inline const QMap<QString, QSharedPointer<Entity>>& getSkyBox() const
 		{
 			return m_skyBoxes;
 		}
@@ -51,9 +55,9 @@ namespace CGFF
 
         void addModelObject(const QString& name, const QSharedPointer<ModelObject>& object);
 
-		void addSkyBox(const QString& name, const QSharedPointer<MaterialInstance>& skybox);
+		void addSkyBox(const QString& name, const QSharedPointer<Entity>& skybox, const QSharedPointer<Texture>& environment);
 
-		void changeObjectName(const QString& preName, const QString& newName);
+		void changeEntityName(const QString& preName, const QString& newName);
 
 		void changeLightName(const QString& preName, const QString& newName);
 
@@ -61,18 +65,25 @@ namespace CGFF
 
         void changeModelName(const QString& preName, const QString& newName);
 
+        void changeTransformAndUniformName(const QString& preName, const QString& newName);
+
         QSharedPointer<Shader> getEntityShader(const QString& entityName);
+
+        void setEntityShader(const QString& entityName, const QSharedPointer<Shader>& shader);
 
         QSharedPointer<MaterialInstance> getEntityMaterialInstance(const QString& entityName);
 
-        bool findModelObject(const QString& modelName);
+        void setEntityMaterialInstance(const QString& entityName, const QSharedPointer<MaterialInstance>& material);
+
+        bool isModelObjectExisted(const QString& modelName);
 
 	private:
 		QSharedPointer<Camera> m_camera;
         QMap<QString, QSharedPointer<Entity>> m_entities;
         QMap<QString, QSharedPointer<ModelObject>> m_modelObjects;
 		QMap<QString, QSharedPointer<Light>> m_lights;
-		QMap<QString, QSharedPointer<MaterialInstance>> m_skyBoxes;
+        QMap<QString, QSharedPointer<Entity>> m_skyBoxes;
+        QMap<QString, QSharedPointer<Texture>> m_environments;
 	};
 }
 

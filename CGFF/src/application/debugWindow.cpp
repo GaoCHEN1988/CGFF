@@ -27,6 +27,16 @@ namespace CGFF {
         m_debug3DLayer->addModelObject(name);
     }
 
+    void DebugWindow::onAddLight(const QString& name)
+    {
+        m_debug3DLayer->addLight(name);
+    }
+
+    void DebugWindow::onSetSkyBox(const QString& name)
+    {
+        m_debug3DLayer->setSkyBox(name);
+    }
+
 	void DebugWindow::setupLayers()
 	{
 		//if (!m_debug3DLayer)

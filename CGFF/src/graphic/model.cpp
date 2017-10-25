@@ -120,7 +120,16 @@ namespace CGFF {
 
         va->unBind();
 
-        m_meshes.append(QSharedPointer<Mesh>(new Mesh(va, ib, m_materialInstance, m_textures)));
+        if (m_materialInstance.isNull())
+        {
+            m_meshes.append(QSharedPointer<Mesh>(new Mesh(va, ib, m_materialInstance, m_textures)));
+        }
+        else
+        {
+            QSharedPointer<MaterialInstance> tmpMaterial = QSharedPointer<MaterialInstance>(new MaterialInstance(m_materialInstance->getMaterial()));
+            m_meshes.append(QSharedPointer<Mesh>(new Mesh(va, ib, tmpMaterial, m_textures)));
+
+        }
 	}
 
 	uchar* ReadBytes(FILE* file, uchar* buffer, uint size)

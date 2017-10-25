@@ -22,6 +22,8 @@ namespace CGFF {
 		void addEntity(const QString& name);
 
         void addModelObject(const QString& name);
+        void addLight(const QString& name);
+        void setSkyBox(const QString& name);
 
 	private:
 		QSharedPointer<CGFF::Camera> m_mayaCamera;

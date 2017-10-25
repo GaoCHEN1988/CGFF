@@ -6,6 +6,7 @@
 #include <QDoubleSpinBox>
 #include <QComboBox>
 #include <QGridLayout>
+#include <QPushButton>
 
 namespace QTUI {
 
@@ -26,24 +27,29 @@ namespace QTUI {
 
 		public slots:
 
-        void onCurrentEntitySet(const QString& name);
-        void onCurrentModelObjectSet(const QString& name);
+        void onCurrentEntitySet(const QString& name, const CGFF::UiUniformDataMap& uniformMap);
+        void onCurrentLightSet(const QString& name, const CGFF::UiUniformDataMap& uniformMap);
+        void onCurrentModelObjectSet(const QString& name, const CGFF::UiUniformDataMap& uniformMap);
         void onCurrentShaderChanged(const QString& shaderName);
+        void onCurrentModelShaderChanged(const QString& shaderName);
         void onSetEmpty();
 	private:
 		void init();
 		void setupConnections();
-		void generalizeShaderUniformView(const QVector<CGFF::UniformInfo>& uniformList);
-		void generalizeShaderResourceView(const QVector<CGFF::ShaderResourceUniformInfo>& resourceList);
+		void generalizeShaderUniformView(const QVector<CGFF::UniformInfo>& uniformList, const CGFF::UiUniformDataMap& uniformMap, bool isModelObject = false);
+		void generalizeShaderResourceView(const QVector<CGFF::ShaderResourceUniformInfo>& resourceList, const CGFF::UiUniformDataMap& uniformMap, bool isModelObject = false);
         void showItems(bool visible);
         void clearLayout(QLayout* layout);
         template<typename T>
-        void changeUniformValue(const CGFF::UniformInfo& uniformInfo, const T& data)
+        void changeUniformValue(const CGFF::UniformInfo& uniformInfo, const T& data, bool isModelObject = false)
         {
-            m_model->changeCurrentEntityUniformValue(uniformInfo.uniformName, data);
+            if (isModelObject)
+                m_model->changeCurrentModelUniformValue(uniformInfo.uniformName, data);
+            else
+                m_model->changeCurrentEntityUniformValue(uniformInfo.uniformName, data);
         }
 
-        void changeUniformTexture(const CGFF::ShaderResourceUniformInfo& uniformInfo);
+        void changeUniformTexture(QPushButton * button, const CGFF::ShaderResourceUniformInfo& uniformInfo, bool isModelObject = false);
 
 	private:
 
@@ -59,20 +65,6 @@ namespace QTUI {
 		QLabel * m_normalMap_label;
 
 		QComboBox * m_shader_comboBox;
-		QComboBox * m_albedoMap_comboBox;
-		QComboBox * m_specularMap_comboBox;
-		QComboBox * m_glossMap_comboBox;
-		QComboBox * m_normalMap_comboBox;
-
-        //QSpinBox * m_uniformInt_spinbox_x;
-        //QSpinBox * m_uniformInt_spinbox_y;
-        //QSpinBox * m_uniformInt_spinbox_z;
-        //QSpinBox * m_uniformInt_spinbox_w;
-        //QDoubleSpinBox * m_uniformFloat_spinbox_x;
-        //QDoubleSpinBox * m_uniformFloat_spinbox_y;
-        //QDoubleSpinBox * m_uniformFloat_spinbox_z;
-        //QDoubleSpinBox * m_uniformFloat_spinbox_w;
-
 	};
 }
 

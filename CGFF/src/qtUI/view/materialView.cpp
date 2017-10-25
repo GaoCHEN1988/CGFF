@@ -4,7 +4,6 @@
 #include <QSpinBox>
 #include <QDoubleSpinBox>
 #include <QLineEdit>
-#include <QPushButton>
 #include <QFileDialog>
 #include <QMessageBox>
 
@@ -25,7 +24,7 @@ namespace QTUI {
         setupConnections();
 	}
 
-	void MaterialView::onCurrentEntitySet(const QString& name)
+	void MaterialView::onCurrentEntitySet(const QString& name, const CGFF::UiUniformDataMap& uniformMap)
 	{
         if (!m_isInitilized)
         {
@@ -34,12 +33,17 @@ namespace QTUI {
             m_shader_comboBox->clear();
             foreach(QString shaderName, shaderMap.keys())
             {
-                m_shader_comboBox->addItem(shaderName);
+                if (!shaderName.contains("Internal_"))
+                    m_shader_comboBox->addItem(shaderName);
             }
 
             m_isInitilized = true;
-            s_row_count = 0;
         }
+
+        s_row_count = 0;
+
+        disconnect(m_shader_comboBox, static_cast<void(QComboBox::*)(const QString &)>(&QComboBox::currentIndexChanged),
+            this, &MaterialView::onCurrentModelShaderChanged);
 
         showItems(true);
 
@@ -48,9 +52,6 @@ namespace QTUI {
 		if (shaderName.isEmpty())
 			return;
 
-		//m_shader_comboBox->clear();
-		//m_shader_comboBox->addItem(shaderName);
-
         int index = m_shader_comboBox->findText(shaderName);
 
         if(index != -1)
@@ -58,31 +59,90 @@ namespace QTUI {
 
         QVector<CGFF::UniformInfo> shaderUniformInfo = m_model->getShaderUniformsInfo(name);
 
-		generalizeShaderUniformView(shaderUniformInfo);
+		generalizeShaderUniformView(shaderUniformInfo, uniformMap);
 
         QVector<CGFF::ShaderResourceUniformInfo> shaderREsourceInfo = m_model->getShaderResourcesInfo(name);
 
-		generalizeShaderResourceView(shaderREsourceInfo);
+		generalizeShaderResourceView(shaderREsourceInfo, uniformMap);
 
-
+        connect(m_shader_comboBox, static_cast<void(QComboBox::*)(const QString &)>(&QComboBox::currentIndexChanged),
+            this, &MaterialView::onCurrentShaderChanged);
 	}
 
-    void MaterialView::onCurrentModelObjectSet(const QString& name)
+    void MaterialView::onCurrentLightSet(const QString& name, const CGFF::UiUniformDataMap& uniformMap)
     {
 
     }
 
+    void MaterialView::onCurrentModelObjectSet(const QString& name, const CGFF::UiUniformDataMap& uniformMap)
+    {
+        if (!m_isInitilized)
+        {
+            const QMap<QString, QSharedPointer<CGFF::Shader>>& shaderMap = CGFF::ShaderManager::getShaderMap();
+
+            m_shader_comboBox->clear();
+            foreach(QString shaderName, shaderMap.keys())
+            {
+                if (!shaderName.contains("Internal_"))
+                    m_shader_comboBox->addItem(shaderName);
+            }
+
+            m_isInitilized = true;
+        }
+
+        s_row_count = 0;
+
+        disconnect(m_shader_comboBox, static_cast<void(QComboBox::*)(const QString &)>(&QComboBox::currentIndexChanged),
+            this, &MaterialView::onCurrentShaderChanged);
+
+        showItems(true);
+
+        QString shaderName = m_model->getModelShaderName(name);
+
+        if (shaderName.isEmpty())
+            return;
+
+        int index = m_shader_comboBox->findText(shaderName);
+
+        if (index != -1)
+            m_shader_comboBox->setCurrentIndex(index);
+
+        QVector<CGFF::UniformInfo> shaderUniformInfo = m_model->getModelShaderUniformsInfo(name);
+
+        generalizeShaderUniformView(shaderUniformInfo, uniformMap, true);
+
+        QVector<CGFF::ShaderResourceUniformInfo> shaderREsourceInfo = m_model->getModelShaderResourcesInfo(name);
+
+        generalizeShaderResourceView(shaderREsourceInfo, uniformMap, true);
+
+        connect(m_shader_comboBox, static_cast<void(QComboBox::*)(const QString &)>(&QComboBox::currentIndexChanged),
+            this, &MaterialView::onCurrentModelShaderChanged);
+    }
+
     void MaterialView::onCurrentShaderChanged(const QString& shaderName)
     {
-        generalizeShaderUniformView(CGFF::ShaderManager::getShader(shaderName)->getShaderUniformsInfo());
+        generalizeShaderUniformView(CGFF::ShaderManager::getShader(shaderName)->getShaderUniformsInfo(), CGFF::UiUniformDataMap());
 
-        generalizeShaderResourceView(CGFF::ShaderManager::getShader(shaderName)->getShaderResourcesInfo());
+        generalizeShaderResourceView(CGFF::ShaderManager::getShader(shaderName)->getShaderResourcesInfo(), CGFF::UiUniformDataMap());
+
+        m_model->onSetCurrentEntityShader(shaderName);
+    }
+
+    void MaterialView::onCurrentModelShaderChanged(const QString& shaderName)
+    {
+        generalizeShaderUniformView(CGFF::ShaderManager::getShader(shaderName)->getShaderUniformsInfo(), CGFF::UiUniformDataMap(), true);
+
+        generalizeShaderResourceView(CGFF::ShaderManager::getShader(shaderName)->getShaderResourcesInfo(), CGFF::UiUniformDataMap(), true);
+
+        m_model->onSetCurrentModelShader(shaderName);
     }
 
     void MaterialView::onSetEmpty()
     {
         clearLayout(m_uniformLayout);
-
+        clearLayout(m_resourceLayout);
+        m_uniformLayout = nullptr;
+        m_resourceLayout = nullptr;
         showItems(false);
     }
 
@@ -104,16 +164,17 @@ namespace QTUI {
 
 	void MaterialView::setupConnections()
 	{
-        connect(m_shader_comboBox, static_cast<void(QComboBox::*)(const QString &)>(&QComboBox::currentIndexChanged),
-            this, &MaterialView::onCurrentShaderChanged);
+        //connect(m_shader_comboBox, static_cast<void(QComboBox::*)(const QString &)>(&QComboBox::currentIndexChanged),
+        //    this, &MaterialView::onCurrentShaderChanged);
 	}
 
-	void MaterialView::generalizeShaderUniformView(const QVector<CGFF::UniformInfo>& uniformList)
+	void MaterialView::generalizeShaderUniformView(const QVector<CGFF::UniformInfo>& uniformList, const CGFF::UiUniformDataMap& uniformMap, bool isModelObject)
 	{
         clearLayout(m_uniformLayout);
 
-        if (!m_uniformLayout)
-            m_uniformLayout = new QGridLayout(this);
+        delete m_uniformLayout;
+
+        m_uniformLayout = new QGridLayout(this);
 			
 		foreach(const CGFF::UniformInfo& uniform, uniformList)
 		{
@@ -127,11 +188,17 @@ namespace QTUI {
                 m_uniformLayout->addWidget(uniformLabel, s_row_count, 0, 1, 1);
                 QDoubleSpinBox * uniformFloat_spinbox_x = new QDoubleSpinBox(this);
                 uniformFloat_spinbox_x->setMaximum(1000.0);
+
+                if (!uniformMap[uniform.uniformName].isNull())
+                {
+                    uniformFloat_spinbox_x->setValue(
+                        static_cast<double>(qSharedPointerCast<CGFF::UiUniformData<GLfloat>>(uniformMap[uniform.uniformName])->data));
+                }
+
                 m_uniformLayout->addWidget(uniformFloat_spinbox_x, s_row_count, 1, 1, 1);
                 s_row_count++;
-
                 connect(uniformFloat_spinbox_x, static_cast<void(QDoubleSpinBox::*)(double)>(&QDoubleSpinBox::valueChanged),
-                    [=]() { changeUniformValue(uniform, static_cast<GLfloat>(uniformFloat_spinbox_x->value())); });
+                    [=]() { changeUniformValue(uniform, static_cast<GLfloat>(uniformFloat_spinbox_x->value()), isModelObject); });
 				break;
 			}
 			case CGFF::UniformType::GLint:
@@ -140,11 +207,16 @@ namespace QTUI {
 
                 QSpinBox * uniformInt_spinbox_x = new QSpinBox(this);
                 uniformInt_spinbox_x->setMaximum(1000);
+                if (!uniformMap[uniform.uniformName].isNull())
+                {
+                    uniformInt_spinbox_x->setValue(
+                        static_cast<int>(qSharedPointerCast<CGFF::UiUniformData<GLint>>(uniformMap[uniform.uniformName])->data));
+                }
                 m_uniformLayout->addWidget(uniformInt_spinbox_x, s_row_count, 1, 1, 1);
                 s_row_count++;
 
                 connect(uniformInt_spinbox_x, static_cast<void(QSpinBox::*)(int)>(&QSpinBox::valueChanged),
-                    [=]() { changeUniformValue(uniform, static_cast<GLint>(uniformInt_spinbox_x->value())); });
+                    [=]() { changeUniformValue(uniform, static_cast<GLint>(uniformInt_spinbox_x->value()), isModelObject); });
 				break;
 			}
 			case CGFF::UniformType::GLuint:
@@ -153,11 +225,16 @@ namespace QTUI {
 
                 QSpinBox * uniformInt_spinbox_x = new QSpinBox(this);
                 uniformInt_spinbox_x->setMaximum(1000);
+                if (!uniformMap[uniform.uniformName].isNull())
+                {
+                    uniformInt_spinbox_x->setValue(
+                        static_cast<int>(qSharedPointerCast<CGFF::UiUniformData<GLuint>>(uniformMap[uniform.uniformName])->data));
+                }
                 m_uniformLayout->addWidget(uniformInt_spinbox_x, s_row_count, 1, 1, 1);
                 s_row_count++;
 
                 connect(uniformInt_spinbox_x, static_cast<void(QSpinBox::*)(int)>(&QSpinBox::valueChanged),
-                    [=]() { changeUniformValue(uniform, static_cast<GLuint>(uniformInt_spinbox_x->value())); });
+                    [=]() { changeUniformValue(uniform, static_cast<GLuint>(uniformInt_spinbox_x->value()), isModelObject); });
 				break;
 			}
 			case CGFF::UniformType::QVector2D:
@@ -170,18 +247,29 @@ namespace QTUI {
                 QDoubleSpinBox * uniformFloat_spinbox_y = new QDoubleSpinBox(this);
                 uniformFloat_spinbox_y->setMaximum(1000.0);
                 uniformFloat_spinbox_y->setMinimum(-1000.0);
+
+                //Set uniform data in material view
+                if (!uniformMap[uniform.uniformName].isNull())
+                {
+                    uniformFloat_spinbox_x->setValue(
+                        static_cast<double>(qSharedPointerCast<CGFF::UiUniformData<QVector2D>>(uniformMap[uniform.uniformName])->data.x()));
+
+                    uniformFloat_spinbox_y->setValue(
+                        static_cast<double>(qSharedPointerCast<CGFF::UiUniformData<QVector2D>>(uniformMap[uniform.uniformName])->data.y()));
+                }
+
                 m_uniformLayout->addWidget(uniformFloat_spinbox_x, s_row_count, 1, 1, 1);
                 m_uniformLayout->addWidget(uniformFloat_spinbox_y, s_row_count, 2, 1, 1);
 
                 connect(uniformFloat_spinbox_x, static_cast<void(QDoubleSpinBox::*)(double)>(&QDoubleSpinBox::valueChanged),
                     [=]() { changeUniformValue(uniform,
                         QVector2D(uniformFloat_spinbox_x->value(),
-                            uniformFloat_spinbox_y->value())); });
+                            uniformFloat_spinbox_y->value()), isModelObject); });
 
                 connect(uniformFloat_spinbox_y, static_cast<void(QDoubleSpinBox::*)(double)>(&QDoubleSpinBox::valueChanged),
                     [=]() { changeUniformValue(uniform,
                         QVector2D(uniformFloat_spinbox_x->value(),
-                            uniformFloat_spinbox_y->value())); });
+                            uniformFloat_spinbox_y->value()), isModelObject); });
 				break;
 			}
 			case CGFF::UniformType::QVector3D:
@@ -200,6 +288,19 @@ namespace QTUI {
                 uniformFloat_spinbox_z->setMaximum(1000.0);
                 uniformFloat_spinbox_z->setMinimum(-1000.0);
 
+                //Set uniform data in material view
+                if (!uniformMap[uniform.uniformName].isNull())
+                {
+                    uniformFloat_spinbox_x->setValue(
+                        static_cast<double>(qSharedPointerCast<CGFF::UiUniformData<QVector3D>>(uniformMap[uniform.uniformName])->data.x()));
+
+                    uniformFloat_spinbox_y->setValue(
+                        static_cast<double>(qSharedPointerCast<CGFF::UiUniformData<QVector3D>>(uniformMap[uniform.uniformName])->data.y()));
+
+                    uniformFloat_spinbox_z->setValue(
+                        static_cast<double>(qSharedPointerCast<CGFF::UiUniformData<QVector3D>>(uniformMap[uniform.uniformName])->data.z()));
+                }
+
                 m_uniformLayout->addWidget(uniformFloat_spinbox_x, s_row_count, 1, 1, 1);
                 m_uniformLayout->addWidget(uniformFloat_spinbox_y, s_row_count, 2, 1, 1);
                 m_uniformLayout->addWidget(uniformFloat_spinbox_z, s_row_count, 3,  1, 1);
@@ -210,19 +311,19 @@ namespace QTUI {
                     [=]() { changeUniformValue(uniform, 
                         QVector3D(uniformFloat_spinbox_x->value(),
                         uniformFloat_spinbox_y->value(),
-                        uniformFloat_spinbox_z->value())); });
+                        uniformFloat_spinbox_z->value()), isModelObject); });
 
                 connect(uniformFloat_spinbox_y, static_cast<void(QDoubleSpinBox::*)(double)>(&QDoubleSpinBox::valueChanged),
                     [=]() { changeUniformValue(uniform,
                         QVector3D(uniformFloat_spinbox_x->value(),
                             uniformFloat_spinbox_y->value(),
-                            uniformFloat_spinbox_z->value())); });
+                            uniformFloat_spinbox_z->value()), isModelObject); });
 
                 connect(uniformFloat_spinbox_z, static_cast<void(QDoubleSpinBox::*)(double)>(&QDoubleSpinBox::valueChanged),
                     [=]() { changeUniformValue(uniform,
                         QVector3D(uniformFloat_spinbox_x->value(),
                             uniformFloat_spinbox_y->value(),
-                            uniformFloat_spinbox_z->value())); });
+                            uniformFloat_spinbox_z->value()), isModelObject); });
 
 				break;
 			}
@@ -246,6 +347,23 @@ namespace QTUI {
                 uniformFloat_spinbox_w->setMaximum(1000.0);
                 uniformFloat_spinbox_w->setMinimum(-1000.0);
 
+
+                //Set uniform data in material view
+                if (!uniformMap[uniform.uniformName].isNull())
+                {
+                    uniformFloat_spinbox_x->setValue(
+                        static_cast<double>(qSharedPointerCast<CGFF::UiUniformData<QVector4D>>(uniformMap[uniform.uniformName])->data.x()));
+
+                    uniformFloat_spinbox_y->setValue(
+                        static_cast<double>(qSharedPointerCast<CGFF::UiUniformData<QVector4D>>(uniformMap[uniform.uniformName])->data.y()));
+
+                    uniformFloat_spinbox_z->setValue(
+                        static_cast<double>(qSharedPointerCast<CGFF::UiUniformData<QVector4D>>(uniformMap[uniform.uniformName])->data.z()));
+
+                    uniformFloat_spinbox_w->setValue(
+                        static_cast<double>(qSharedPointerCast<CGFF::UiUniformData<QVector4D>>(uniformMap[uniform.uniformName])->data.w()));
+                }
+
                 m_uniformLayout->addWidget(uniformFloat_spinbox_x, s_row_count, 1, 1, 1);
                 m_uniformLayout->addWidget(uniformFloat_spinbox_y, s_row_count, 2, 1, 1);
                 m_uniformLayout->addWidget(uniformFloat_spinbox_z, s_row_count, 3, 1, 1);
@@ -258,28 +376,28 @@ namespace QTUI {
                             QVector4D(uniformFloat_spinbox_x->value(), 
                                       uniformFloat_spinbox_y->value(), 
                                       uniformFloat_spinbox_z->value(), 
-                                      uniformFloat_spinbox_w->value())); });
+                                      uniformFloat_spinbox_w->value()), isModelObject); });
 
                 connect(uniformFloat_spinbox_y, static_cast<void(QDoubleSpinBox::*)(double)>(&QDoubleSpinBox::valueChanged),
                     [=]() { changeUniformValue(uniform,
                         QVector4D(uniformFloat_spinbox_x->value(),
                             uniformFloat_spinbox_y->value(),
                             uniformFloat_spinbox_z->value(),
-                            uniformFloat_spinbox_w->value())); });
+                            uniformFloat_spinbox_w->value()), isModelObject); });
 
                 connect(uniformFloat_spinbox_z, static_cast<void(QDoubleSpinBox::*)(double)>(&QDoubleSpinBox::valueChanged),
                     [=]() { changeUniformValue(uniform,
                         QVector4D(uniformFloat_spinbox_x->value(),
                             uniformFloat_spinbox_y->value(),
                             uniformFloat_spinbox_z->value(),
-                            uniformFloat_spinbox_w->value())); });
+                            uniformFloat_spinbox_w->value()), isModelObject); });
 
                 connect(uniformFloat_spinbox_w, static_cast<void(QDoubleSpinBox::*)(double)>(&QDoubleSpinBox::valueChanged),
                     [=]() { changeUniformValue(uniform,
                         QVector4D(uniformFloat_spinbox_x->value(),
                             uniformFloat_spinbox_y->value(),
                             uniformFloat_spinbox_z->value(),
-                            uniformFloat_spinbox_w->value())); });
+                            uniformFloat_spinbox_w->value()), isModelObject); });
 
 				break;
 			}
@@ -309,12 +427,13 @@ namespace QTUI {
 		m_layout->addLayout(m_uniformLayout, 1, 0, s_row_count, 3);
 	}
 
-	void MaterialView::generalizeShaderResourceView(const QVector<CGFF::ShaderResourceUniformInfo>& resourceList)
+	void MaterialView::generalizeShaderResourceView(const QVector<CGFF::ShaderResourceUniformInfo>& resourceList, const CGFF::UiUniformDataMap& uniformMap, bool isModelObject)
 	{
         clearLayout(m_resourceLayout);
 
-        if(!m_resourceLayout)
-		    m_resourceLayout = new QGridLayout(this);
+        delete m_resourceLayout;
+
+        m_resourceLayout = new QGridLayout(this);
 
 		int row_count = 0;
 
@@ -329,12 +448,18 @@ namespace QTUI {
 			{
                 m_resourceLayout->addWidget(resourceLabel, row_count, 0, 1, 1);
 
-				QLineEdit* line = new QLineEdit(this);
-				QPushButton  *button = new QPushButton("Load", this);
+				QPushButton  *button = new QPushButton("...", this);
+
+                //Set uniform data in material view
+                if (!uniformMap[resource.resourceName].isNull())
+                {
+                    button->setText(qSharedPointerCast<CGFF::UiUniformData<QString>>(uniformMap[resource.resourceName])->data);
+                }
+
                 m_resourceLayout->addWidget(button, row_count, 1, 1, 1);
 
                 connect(button, &QPushButton::clicked,
-                    [=]() { changeUniformTexture(resource); });
+                    [=]() { changeUniformTexture(button, resource, isModelObject); });
 
                 row_count++;
 				break;
@@ -344,10 +469,16 @@ namespace QTUI {
 			{
                 m_resourceLayout->addWidget(resourceLabel, row_count, 0, 1, 1);
 
-				QPushButton  *button = new QPushButton("Load Cube Texture", this);
+				QPushButton  *button = new QPushButton("...", this);
+
+                //Set uniform data in material view
+                if (!uniformMap[resource.resourceName].isNull())
+                {
+                    button->setText(qSharedPointerCast<CGFF::UiUniformData<QStringList>>(uniformMap[resource.resourceName])->data[0]);
+                }
 
                 connect(button, &QPushButton::clicked,
-                    [=]() { changeUniformTexture(resource); });
+                    [=]() { changeUniformTexture(button, resource, isModelObject); });
                 row_count++;
 				break;
 			}
@@ -391,7 +522,7 @@ namespace QTUI {
         }
     }
 
-    void MaterialView::changeUniformTexture(const CGFF::ShaderResourceUniformInfo& uniformInfo)
+    void MaterialView::changeUniformTexture(QPushButton * button, const CGFF::ShaderResourceUniformInfo& uniformInfo, bool isModelObject)
     {
         if (uniformInfo.resourceType == CGFF::ShaderResourceType::TEXTURE2D)
         {
@@ -400,7 +531,7 @@ namespace QTUI {
             dialog.setDirectory(directoryName);
             QString fileName = dialog.getOpenFileName(this,
                 tr("Texture Image"), "",
-                tr("Image (*.png, *.jpg, *.tga)"));
+                tr("Image (*.png; *.jpg; *.tga; *.bmp)"));
 
             if (fileName.isEmpty())
                 return;
@@ -412,29 +543,34 @@ namespace QTUI {
                     return;
                 }
 
-                m_model->changeCurrentEntityTextureUniform(uniformInfo.resourceName, fileName);
+                if(isModelObject)
+                    m_model->changeCurrentModelTextureUniform(uniformInfo.resourceName, fileName);
+
+                else
+                    m_model->changeCurrentEntityTextureUniform(uniformInfo.resourceName, fileName);
+
+                button->setText(fileName);
             }
         }
 
         if (uniformInfo.resourceType == CGFF::ShaderResourceType::TEXTURECUBE)
         {
-            QFileDialog dialog;
-            QString directoryName = CGFF::VFS::get()->getMountedPhysicalPath("resource");
-            dialog.setDirectory(directoryName);
-            QStringList fileNames = dialog.getOpenFileNames(this,
-                tr("Chose 6 Texture Images"), "",
-                tr("Image (*.png, *.jpg, *.tng)"));
+            //QFileDialog dialog;
+            //QString directoryName = CGFF::VFS::get()->getMountedPhysicalPath("resource");
+            //dialog.setDirectory(directoryName);
+            //QStringList fileNames = dialog.getOpenFileNames(this,
+            //    tr("Chose 6 Texture Images"), "",
+            //    tr("Image (*.png; *.jpg; *.tng)"));
+            //if (!fileNames.isEmpty())
+            //{
+            //    if (fileNames.size() != 6)
+            //    {
+            //        QMessageBox::information(this, tr("Unable to import images"), tr("Must have 6 images for cube texture!"));
+            //        return;
+            //    }
 
-            if (!fileNames.isEmpty())
-            {
-                if (fileNames.size() != 6)
-                {
-                    QMessageBox::information(this, tr("Unable to import images"), tr("Must have 6 images for cube texture!"));
-                    return;
-                }
-
-                m_model->changeCurrentEntityTextureUniform(uniformInfo.resourceName, fileNames);
-            }
+            //    m_model->changeCurrentEntityTextureUniform(uniformInfo.resourceName, fileNames);
+            //}
 
         }
     }

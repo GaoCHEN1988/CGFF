@@ -1,5 +1,6 @@
 #include "objectInfoView.h"
 #include <QGridLayout>
+#include <QScrollArea>
 
 namespace QTUI {
 
@@ -23,18 +24,31 @@ namespace QTUI {
         setupConnections();
     }
 
-    void ObjectInfoView::onCurrentEntitySet(const QString& name, const CGFF::UiTransformVec& transform)
+    void ObjectInfoView::onCurrentEntitySet(const QString& name, const CGFF::UiTransformVec& transform, const CGFF::UiUniformDataMap& uniformMap)
     {
         m_object_name_label->setText(name);
-        m_transformView->onCurrentEntitySet(name, transform);
-		m_materialView->onCurrentEntitySet(name);
+        m_transformView->onUpdateCurrentObject(name, transform);
+		m_materialView->onCurrentEntitySet(name, uniformMap);
     }
 
-    void ObjectInfoView::onCurrentModelObjectSet(const QString& name, const CGFF::UiTransformVec& transform)
+    void ObjectInfoView::onCurrentModelObjectSet(const QString& name, const CGFF::UiTransformVec& transform, const CGFF::UiUniformDataMap& uniformMap)
     {
         m_object_name_label->setText(name);
-        m_transformView->onCurrentModelObjectSet(name, transform);
-        m_materialView->onCurrentModelObjectSet(name);
+        m_transformView->onUpdateCurrentObject(name, transform);
+        m_materialView->onCurrentModelObjectSet(name, uniformMap);
+    }
+
+    void ObjectInfoView::onCurrentLightSet(const QString& name, const CGFF::UiTransformVec& transform, const CGFF::UiUniformDataMap& uniformMap)
+    {
+        m_object_name_label->setText(name);
+        m_transformView->onUpdateCurrentObject(name, transform);
+        m_materialView->onCurrentEntitySet(name, uniformMap);
+    }
+    void ObjectInfoView::onCurrentSkyBoxSet(const QString& name)
+    {
+        m_object_name_label->setText(name);
+        m_transformView->onSetEmpty();
+        m_materialView->onSetEmpty();
     }
 
 	void ObjectInfoView::onCurrentItemNameChanged(const QString& name)
@@ -61,15 +75,20 @@ namespace QTUI {
 
         m_material_groupBox = new QGroupBox("Material", this);
         QGridLayout * material_group_layout = new QGridLayout(m_material_groupBox);
-        m_materialView = new MaterialView(this);
-        material_group_layout->addWidget(m_materialView);
 
-        layout->addWidget(m_object_name_label, 0, 0);
-        layout->addWidget(m_transform_groupBox, 1, 0);
-        layout->addWidget(m_material_groupBox, 2, 0);
+        QScrollArea * area = new QScrollArea(m_material_groupBox);
+
+        m_materialView = new MaterialView(this);
+        area->setWidget(m_materialView);
+        area->setWidgetResizable(true);
+        material_group_layout->addWidget(area);
+
+        layout->addWidget(m_object_name_label, 0, 0, 1, 1);
+        layout->addWidget(m_transform_groupBox, 1, 0, 1, 1);
+        layout->addWidget(m_material_groupBox, 2, 0, 4, 1);
 
         layout->setRowStretch(0, 1);
-        layout->setRowStretch(1, 4);
+        layout->setRowStretch(1, 1);
         layout->setRowStretch(2, 4);
     }
 
@@ -77,6 +96,8 @@ namespace QTUI {
     {
         connect(m_model, &ResourceModel::currentEntitySet, this, &ObjectInfoView::onCurrentEntitySet);
         connect(m_model, &ResourceModel::currentModelObjectSet, this, &ObjectInfoView::onCurrentModelObjectSet);
+        connect(m_model, &ResourceModel::currentLightSet, this, &ObjectInfoView::onCurrentLightSet);
+        connect(m_model, &ResourceModel::currentSkyBoxSet, this, &ObjectInfoView::onCurrentSkyBoxSet);
         connect(m_model, &ResourceModel::currentItemNameChanged, this, &ObjectInfoView::onCurrentItemNameChanged);
         connect(m_model, &ResourceModel::setEmptyItem, this, &ObjectInfoView::onSetEmptyItem);
     }

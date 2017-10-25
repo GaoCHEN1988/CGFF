@@ -50,6 +50,8 @@ namespace CGFF {
         {}
     };
 
+    using UiUniformDataMap = QMap<QString, QSharedPointer<UiUniformDataInterface>>;
+
 	class ResourceManager
 	{
 	public:
@@ -73,10 +75,11 @@ namespace CGFF {
         static QSharedPointer<Light> getLight(const QString& sceneName, const QString& lightName);
         static QSharedPointer<ModelObject> getModelObject(const QString& sceneName, const QString& modelObjName);
         static bool isModelObjectExisted(const QString& modelObjName);
+        static QSharedPointer<Texture> getEnvironment(const QString& sceneName, const QString& name);
 	public:
 		static QMap<QString, UiTransformMat> UiTransformMats;
         static QMap<QString, UiTransformVec> UiTransformVecs;
-        static QMap<QString, QSharedPointer<UiUniformDataInterface>> UiUniformDatas;
+        static QMap<QString, UiUniformDataMap> UiUniformDatas;
 
     public:
 		static QMap<QString, QSharedPointer<SceneResource>> m_sceneResources;

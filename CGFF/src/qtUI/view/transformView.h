@@ -24,8 +24,10 @@ namespace QTUI {
         void onRotationZChanged(double value);
         void onScaleChanged(double value);
 
-		void onCurrentEntitySet(const QString& name, const CGFF::UiTransformVec& transform);
-        void onCurrentModelObjectSet(const QString& name, const CGFF::UiTransformVec& transform);
+        //void onCurrentEntitySet(const QString& name, const CGFF::UiTransformVec& transform);
+        //void onCurrentLightSet(const QString& name, const CGFF::UiTransformVec& transform);
+        //void onCurrentModelObjectSet(const QString& name, const CGFF::UiTransformVec& transform);
+        void onUpdateCurrentObject(const QString& name, const CGFF::UiTransformVec& transform);
         void onSetEmpty();
 
     private:

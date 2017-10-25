@@ -39,7 +39,7 @@ struct Attributes
 	vec3 tangent;
 };
 
-uniform Light sys_Light;
+uniform Light lights[16];
 
 // PBR Inputs
 uniform sampler2D u_PreintegratedFG;
@@ -248,7 +248,7 @@ void main()
 
 	vec3 eye = normalize(fs_in.cameraPos - g_Attributes.position);
 
-	Light light = sys_Light;
+	Light light = lights[0];
 	light.intensity = light.intensity; // Attenuate(light);
 	light.lightVector = light.direction; // normalize(light.position - vec3(fs_in.position));
 
@@ -277,7 +277,7 @@ void main()
 	for (int i = 0; i < 1; i++)
 	{
 		int index = int(16.0 * random(floor(fs_in.position.xyz * 1000.0), i)) % 16;
-		visibility -= (1.0 / 4.0) * (1.0 - texture(u_ShadowMap, vec3(fs_in.shadowCoord.xy + poissonDisk[index] / 700.0, (fs_in.shadowCoord.z - bias) / fs_in.shadowCoord.w)));
+		visibility -= (1.0 / 2.0) * (1.0 - texture(u_ShadowMap, vec3(fs_in.shadowCoord.xy + poissonDisk[index] / 700.0, (fs_in.shadowCoord.z - bias) / fs_in.shadowCoord.w)));
 	}
 
 	vec3 finalColor = material.albedo.rgb * diffuse.rgb * visibility + (specular + IBL(light, material, eye)) * visibility;

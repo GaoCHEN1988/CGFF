@@ -7,7 +7,7 @@
 #include "graphic/api/framebufferDepthCube.h"
 #include "graphic/api/framebuffer2D.h"
 
-//#define TEST_DEPTH_MAP
+#define TEST_DEPTH_MAP
 //#define TEST_DEPTH_MAP_CUBE
 //#define TEST_FRAME_BUFFER
 
@@ -26,6 +26,7 @@ namespace CGFF {
         void submit(const RenderCommand& command) override;
         void submitMesh(const QSharedPointer<Mesh>& mesh, const QMatrix4x4& transform) override;
         void submitLightSetup(const QSharedPointer<LightSetup>& lightSetup) override;
+        void submitLightEntity(const QSharedPointer<Mesh>& lightMesh, const QMatrix4x4& transform, const QVector4D& color = QVector4D()) override;
 		void endScene() override;
 		void end() override;
         void flush() override;
@@ -59,6 +60,8 @@ namespace CGFF {
         QSharedPointer<Mesh> m_screenQuad;
         QSharedPointer<MaterialInstance> m_screenQuadMaterial;
 
+        QSharedPointer<LightSetup> m_lightSetup;
+        QVector<Light> m_lightsArray;
     };
 }
 

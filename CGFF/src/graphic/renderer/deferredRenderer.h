@@ -43,6 +43,8 @@ namespace CGFF {
         QVector<uint> m_VSSystemUniformBufferOffsets;
         QVector<uint> m_PSSystemUniformBufferOffsets;
 
+        QVector<Light> m_lightsArray;
+
         QSharedPointer<GBuffer> m_GBuffer;
         uint m_width, m_height;
         QSharedPointer<Shader> m_geometryPassShader;

@@ -21,6 +21,8 @@ namespace CGFF {
 		public slots:
         void onAddEntity(const QString& name);
         void onAddModelObject(const QString& name);
+        void onAddLight(const QString& name);
+        void onSetSkyBox(const QString& name);
 
 	private:
 		void setupLayers() override;

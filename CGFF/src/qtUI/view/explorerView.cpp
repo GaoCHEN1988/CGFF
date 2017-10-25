@@ -43,27 +43,33 @@ namespace QTUI {
 			this, SLOT(onRm()));
 	}
 
-	void ExplorerView::mountDirectory(const QString& path, const QString& name)
+	void ExplorerView::mountDirectory(const QString& path, const QString& name, bool isVisible)
 	{
 		CGFF::VFS::get()->mount(name, path);
 		QFileSystemModel* model = new QFileSystemModel(this);
-		model->setRootPath(path);
-		QTreeView * view = new QTreeView(this);
-		view->setModel(model);
-		view->setRootIndex(model->index(path));
-        view->sortByColumn(0, Qt::SortOrder::AscendingOrder);
-		view->header()->setStretchLastSection(true);
-		view->header()->setSortIndicatorShown(true);
-		view->setSortingEnabled(true);
-#if QT_VERSION >= 0x050000
-		view->header()->setSectionsClickable(true);
-#else
-		view->header()->setClickable(true);
-#endif
-		int index = m_tabWidget->addTab(view, name);
 
-		m_treeViews[index] = view;
-		m_fileModels[index] = model;
+        if (isVisible)
+        {
+            model->setRootPath(path);
+            QTreeView * view = new QTreeView(this);
+            view->setModel(model);
+            view->setRootIndex(model->index(path));
+            view->sortByColumn(0, Qt::SortOrder::AscendingOrder);
+            view->header()->setStretchLastSection(true);
+            view->header()->setSortIndicatorShown(true);
+            view->setSortingEnabled(true);
+#if QT_VERSION >= 0x050000
+            view->header()->setSectionsClickable(true);
+#else
+            view->header()->setClickable(true);
+#endif
+
+            int index = m_tabWidget->addTab(view, name);
+
+            m_treeViews[index] = view;
+            m_fileModels[index] = model;
+        }
+
 	}
 
 	void ExplorerView::mountDirs()
@@ -71,7 +77,7 @@ namespace QTUI {
 		CGFF::VFS::init();
 		m_tabWidget = new QTabWidget(this);
 		mountDirectory("Resources/", "resource");
-		mountDirectory("src/graphic/shaders", "shaders");	
+		mountDirectory("src/graphic/shaders", "shaders", false);	
 	}
 
     //Maybe should be somewhere else

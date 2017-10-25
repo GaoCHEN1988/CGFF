@@ -18,12 +18,33 @@ namespace CGFF {
 		Light(const QVector3D& direction, float intensity = 1.0f, const QVector4D& color = QVector4D(1.0f, 1.0f, 1.0f, 1.0f));
     };
 #endif
+
+    enum class LightType
+    {
+        DIRECTIONAL,
+        SPOT,
+        POINT
+    };
+
     struct Light
     {
-        QVector3D Position;
-        QVector3D Color;
-        float Linear;
-        float Quadratic;
+        QVector4D color;
+        QVector3D position;
+        QVector3D direction;
+        QVector3D lightVector;
+        float intensity;
+
+        Light(const QVector3D& direction = QVector3D(0.0, 0.0, 0.0),
+              const QVector3D& position = QVector3D(0.0, 20.0, 0.0),
+              float intensity = 1.0f, 
+              const QVector4D& color = QVector4D(1.0f, 1.0f, 1.0f, 1.0f))
+            : direction(direction)
+            , position(position)
+            , color(color)
+            , lightVector()
+            , intensity(intensity)
+        {
+        }
     };
 }
 

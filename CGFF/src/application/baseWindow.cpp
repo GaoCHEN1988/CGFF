@@ -30,7 +30,6 @@ namespace CGFF {
 
 	BaseWindow::~BaseWindow()
 	{
-		killTimer(m_timer_id);
 	}
 
 	void BaseWindow::initialize()
@@ -41,6 +40,8 @@ namespace CGFF {
 		m_framePerSecond = 0;
 		m_fps_count = 0;
 
+        emit initilizeSignal();
+
 		for (auto layer : m_layerStack)
 		{
 			layer->init();
@@ -50,8 +51,6 @@ namespace CGFF {
 		{
 			overLayer->init();
 		}
-
-        emit initilizeSignal();
 	}
 
 	void BaseWindow::update()

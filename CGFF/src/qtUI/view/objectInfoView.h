@@ -5,6 +5,7 @@
 #include <QGroupBox>
 #include <QLabel>
 #include <QDoubleSpinBox>
+
 #include "baseView.h"
 #include "transformView.h"
 #include "materialView.h"
@@ -23,8 +24,10 @@ namespace QTUI {
         void setModel(ResourceModel * model) override;
 
         public slots:
-        void onCurrentEntitySet(const QString& name, const CGFF::UiTransformVec& transform);
-        void onCurrentModelObjectSet(const QString& name, const CGFF::UiTransformVec& transform);
+        void onCurrentEntitySet(const QString& name, const CGFF::UiTransformVec& transform, const CGFF::UiUniformDataMap& uniformMap);
+        void onCurrentModelObjectSet(const QString& name, const CGFF::UiTransformVec& transform, const CGFF::UiUniformDataMap& uniformMap);
+        void onCurrentLightSet(const QString& name, const CGFF::UiTransformVec& transform, const CGFF::UiUniformDataMap& uniformMap);
+        void onCurrentSkyBoxSet(const QString& name);
         void onCurrentItemNameChanged(const QString& name);
         void onSetEmptyItem();
 

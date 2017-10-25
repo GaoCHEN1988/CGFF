@@ -118,12 +118,12 @@ namespace CGFF {
 
 	void DebugLayer::closeEvent(QCloseEvent *event)
 	{
-		Layer2D::closeEvent(event);
-		//DebugMenu::get()->closeEvent(event);
-		m_tempSprites.clear();
-		m_FPSLabel.clear();
-		m_memoryUsageLabel.clear();
-		m_frametimeLabel.clear();
+		//Layer2D::closeEvent(event);
+		////DebugMenu::get()->closeEvent(event);
+		//m_tempSprites.clear();
+		//m_FPSLabel.clear();
+		//m_memoryUsageLabel.clear();
+		//m_frametimeLabel.clear();
 	}
 
 }

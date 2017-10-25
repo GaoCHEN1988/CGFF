@@ -44,6 +44,7 @@ private:
 	void onSaveProject();
     void onSetStatus();
     void onLoadModel();
+    void onLoadSkyBoxImages();
 
 private:
     CGFF::RenderAPI m_renderApi;
@@ -69,11 +70,12 @@ private:
 	QAction *m_sphereAction;
 	QAction *m_planeAction;
     //Light actions
-	QAction *m_lightAction;
+	QAction *m_directionalLightAction;
     //camera actions
 	QAction *m_mayaCameraAction;
     //Load actions
     QAction *m_loadModelAction;
+    QAction *m_loadSkyBoxImagesAction;
 
 	QTUI::ExplorerView * m_explorer;
 	QDockWidget * m_explorerDockWidget;

@@ -73,12 +73,22 @@ namespace QTUI {
             m_model->scaleCurrentObject(scale);
     }
 
-    void TransformView::onCurrentEntitySet(const QString& name, const CGFF::UiTransformVec& transform)
-    {
-        updateView(transform);
-    }
+    //void TransformView::onCurrentEntitySet(const QString& name, const CGFF::UiTransformVec& transform)
+    //{
+    //    updateView(transform);
+    //}
 
-    void TransformView::onCurrentModelObjectSet(const QString& name, const CGFF::UiTransformVec& transform)
+    //void TransformView::onCurrentLightSet(const QString& name, const CGFF::UiTransformVec& transform)
+    //{
+    //    updateView(transform);
+    //}
+
+    //void TransformView::onCurrentModelObjectSet(const QString& name, const CGFF::UiTransformVec& transform)
+    //{
+    //    updateView(transform);
+    //}
+
+    void TransformView::onUpdateCurrentObject(const QString& name, const CGFF::UiTransformVec& transform)
     {
         updateView(transform);
     }
@@ -101,7 +111,8 @@ namespace QTUI {
 
         m_x_spin_box = new QDoubleSpinBox(this);
         m_x_spin_box->setValue(0);
-        m_x_spin_box->setMinimum(-100.0);
+        m_x_spin_box->setMinimum(-1000.0);
+        m_x_spin_box->setMaximum(1000.0);
         layout->addWidget(m_x_spin_box, 0, 4, 1, 2);
 
         m_y_label = new QLabel("y", this);
@@ -109,7 +120,8 @@ namespace QTUI {
 
         m_y_spin_box = new QDoubleSpinBox(this);
         m_y_spin_box->setValue(0);
-        m_y_spin_box->setMinimum(-100.0);
+        m_y_spin_box->setMinimum(-1000.0);
+        m_y_spin_box->setMaximum(1000.0);
         layout->addWidget(m_y_spin_box, 0, 7, 1, 2);
 
         m_z_label = new QLabel("z", this);
@@ -117,7 +129,8 @@ namespace QTUI {
 
         m_z_spin_box = new QDoubleSpinBox(this);
         m_z_spin_box->setValue(0);
-        m_z_spin_box->setMinimum(-100.0);
+        m_z_spin_box->setMinimum(-1000.0);
+        m_z_spin_box->setMaximum(1000.0);
         layout->addWidget(m_z_spin_box, 0, 10, 1, 2);
 
         //Rotation
@@ -129,7 +142,8 @@ namespace QTUI {
 
         m_x_rotation_spin_box = new QDoubleSpinBox(this);
         m_x_rotation_spin_box->setValue(0);
-        m_x_rotation_spin_box->setMinimum(-100.0);
+        m_x_rotation_spin_box->setMinimum(-1000.0);
+        m_x_rotation_spin_box->setMaximum(1000.0);
         layout->addWidget(m_x_rotation_spin_box, 1, 4, 1, 2);
 
         m_y_rotation_label = new QLabel("y", this);
@@ -137,7 +151,8 @@ namespace QTUI {
 
         m_y_rotation_spin_box = new QDoubleSpinBox(this);
         m_y_rotation_spin_box->setValue(0);
-        m_y_rotation_spin_box->setMinimum(-100.0);
+        m_y_rotation_spin_box->setMinimum(-1000.0);
+        m_y_rotation_spin_box->setMaximum(1000.0);
         layout->addWidget(m_y_rotation_spin_box, 1, 7, 1, 2);
 
         m_z_rotation_label = new QLabel("z", this);
@@ -145,7 +160,8 @@ namespace QTUI {
 
         m_z_rotation_spin_box = new QDoubleSpinBox(this);
         m_z_rotation_spin_box->setValue(0);
-        m_z_rotation_spin_box->setMinimum(-100.0);
+        m_z_rotation_spin_box->setMinimum(-1000.0);
+        m_z_rotation_spin_box->setMaximum(1000.0);
         layout->addWidget(m_z_rotation_spin_box, 1, 10, 1, 2);
 
         //Scale

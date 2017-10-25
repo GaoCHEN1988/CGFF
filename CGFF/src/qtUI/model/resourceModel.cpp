@@ -1,5 +1,6 @@
 #include "resourceModel.h"
 #include "graphic/shader/shaderFactory.h"
+#include "resource/shaderManager.h"
 #include <QFileInfo>
 
 namespace QTUI {
@@ -9,7 +10,8 @@ namespace QTUI {
 	int ResourceModel::m_cubeCount = 0;
 	int ResourceModel::m_planeCount = 0;
 	int ResourceModel::m_sphereCount = 0;
-    //QMap<QString, int> ResourceModel::m_modelCounts;
+    int ResourceModel::m_lightCount = 0;
+    int ResourceModel::m_skyBoxCount = 0;
 
 	ResourceModel::ResourceModel(QObject * parent)
 		: QStandardItemModel(parent)
@@ -63,11 +65,11 @@ namespace QTUI {
 		QString name = "Plane" + QString::number(++m_planeCount);
 		while (!addNameInSet(name, m_entityNames))
 		{
-			name = "Plane" + QString::number(++m_cubeCount);
+			name = "Plane" + QString::number(++m_planeCount);
 		}
 
 		ResourceManager::getSceneResource(m_currentScene)->addEntity(name,
-			QSharedPointer<Entity>(new Entity(MeshFactory::CreateDebugPlane(64, 64, QVector3D(0, 1, 0),
+			QSharedPointer<Entity>(new Entity(MeshFactory::CreatePlane(100, 100, QVector3D(0, 1, 0),
 				QSharedPointer<MaterialInstance>(new MaterialInstance(
 					QSharedPointer<Material>(new Material(ShaderFactory::DebugSceneShader()))))))));
 
@@ -90,7 +92,7 @@ namespace QTUI {
 		QString name = "Sphere" + QString::number(++m_sphereCount);
 		while (!addNameInSet(name, m_entityNames))
 		{
-			name = "Sphere" + QString::number(++m_cubeCount);
+			name = "Sphere" + QString::number(++m_sphereCount);
 		}
 
         QSharedPointer<Model> sphereModel = QSharedPointer<Model>(new Model("/resource/Sphere.obj", QSharedPointer<MaterialInstance>(new MaterialInstance(
@@ -143,6 +145,25 @@ namespace QTUI {
 		setHorizontalHeaderLabels(QStringList() << QStringLiteral("Scene"));
 	}
 
+    void ResourceModel::addDirectionalLight()
+    {
+        //To do....
+
+        //QString name = "Directional_Light" + QString::number(++m_lightCount);
+        //while (!addNameInSet(name, m_lightNames))
+        //{
+        //    name = "Directional_Light" + QString::number(++m_lightCount);
+        //}
+        //QSharedPointer<Light> light = QSharedPointer<Light>(new Light);
+        //ResourceManager::getSceneResource(m_currentScene)->addLight(name, light);
+        //QStandardItem* itemChild = new QStandardItem(name);
+        //m_itemLight->appendRow(itemChild);
+        //ResourceManager::UiTransformMats[name] = {};
+        //ResourceManager::UiTransformVecs[name] = {};
+        //onSetCurrentLight(name);
+        //emit lightAdded(name);
+    }
+
     void ResourceModel::translateCurrentObject(const QVector3D& tanslate)
     {
         switch (m_currentObjType)
@@ -151,6 +172,7 @@ namespace QTUI {
             translateCurrentEntity(tanslate);
             break;
         case CurrentObjectType::LIGHT:
+            translateCurrentLight(tanslate);
             break;
         case CurrentObjectType::MODEL:
             translateCurrentModelObject(tanslate);
@@ -194,7 +216,6 @@ namespace QTUI {
             ResourceManager::UiTransformMats[m_currentEntity].translateMat.setToIdentity();
             ResourceManager::UiTransformMats[m_currentEntity].translateMat.translate(tanslate);
             transComponent->setTransform(ResourceManager::UiTransformMats[m_currentEntity].getTransform());
-
             ResourceManager::UiTransformVecs[m_currentEntity].translateVec = tanslate;
         }
     }
@@ -229,7 +250,6 @@ namespace QTUI {
             ResourceManager::UiTransformMats[m_currentEntity].scaleMat.setToIdentity();
             ResourceManager::UiTransformMats[m_currentEntity].scaleMat.scale(scale);
             transComponent->setTransform(ResourceManager::UiTransformMats[m_currentEntity].getTransform());
-
             ResourceManager::UiTransformVecs[m_currentEntity].scaleVec = scale;
         }
     }
@@ -242,14 +262,7 @@ namespace QTUI {
             ResourceManager::UiTransformMats[m_currentModel].translateMat.setToIdentity();
             ResourceManager::UiTransformMats[m_currentModel].translateMat.translate(tanslate);
             modelobj->transform(ResourceManager::UiTransformMats[m_currentModel].getTransform());
-
             ResourceManager::UiTransformVecs[m_currentModel].translateVec = tanslate;
-
-            //for (const QString& key : modelobj->getEntities().keys())
-            //{
-            //    ResourceManager::UiTransformMats[key].translateMat = ResourceManager::UiTransformMats[m_currentModel].translateMat;
-            //    ResourceManager::UiTransformVecs[key].translateVec = ResourceManager::UiTransformVecs[m_currentModel].translateVec;
-            //}
         }
     }
     void ResourceModel::rotateCurrentModelObject(float angle, const QVector3D& rotate)
@@ -268,12 +281,6 @@ namespace QTUI {
             ResourceManager::UiTransformMats[m_currentModel].rotateMat.rotate(ResourceManager::UiTransformVecs[m_currentModel].rotateVec.x(), QVector3D(1.0, 0.0, 0.0));
             ResourceManager::UiTransformMats[m_currentModel].rotateMat.rotate(ResourceManager::UiTransformVecs[m_currentModel].rotateVec.y(), QVector3D(0.0, 1.0, 0.0));
             ResourceManager::UiTransformMats[m_currentModel].rotateMat.rotate(ResourceManager::UiTransformVecs[m_currentModel].rotateVec.z(), QVector3D(0.0, 0.0, 1.0));
-
-            //for (const QString& key : modelobj->getEntities().keys())
-            //{
-            //    ResourceManager::UiTransformMats[key].rotateMat = ResourceManager::UiTransformMats[m_currentModel].rotateMat;
-            //    ResourceManager::UiTransformVecs[key].rotateVec = ResourceManager::UiTransformVecs[m_currentModel].rotateVec;
-            //}
 
             modelobj->transform(ResourceManager::UiTransformMats[m_currentModel].getTransform());
         }
@@ -297,6 +304,19 @@ namespace QTUI {
         }
     }
 
+    void ResourceModel::translateCurrentLight(const QVector3D& tanslate)
+    {
+        QSharedPointer<Light> light = ResourceManager::getLight(m_currentScene, m_currentEntity);
+        if (light)
+        {
+            ResourceManager::UiTransformMats[m_currentEntity].translateMat.setToIdentity();
+            ResourceManager::UiTransformMats[m_currentEntity].translateMat.translate(tanslate);
+            light->position = tanslate;
+            ResourceManager::UiTransformVecs[m_currentEntity].translateVec = tanslate;
+        }
+    
+    }
+
 	QString ResourceModel::getShaderName(const QString& entityName)
 	{
 		QSharedPointer<Shader> shader = ResourceManager::getSceneResource(m_currentScene)->getEntityShader(entityName);
@@ -316,6 +336,42 @@ namespace QTUI {
 	{
 		return ResourceManager::getSceneResource(m_currentScene)->getEntityShader(entityName)->getShaderResourcesInfo();
 	}
+
+    QString ResourceModel::getModelShaderName(const QString& modelName)
+    {
+        auto model = ResourceManager::getSceneResource(m_currentScene)->getModelObject()[modelName];
+
+        auto modelEntities = model->getEntities();
+
+        QSharedPointer<Shader> shader = ResourceManager::getSceneResource(m_currentScene)->getEntityShader(modelEntities.begin().key());
+
+        if (shader.isNull())
+            return "";
+
+        return shader->getName();
+    }
+
+    QVector<CGFF::UniformInfo> ResourceModel::getModelShaderUniformsInfo(const QString& modelName)
+    {
+        auto model = ResourceManager::getSceneResource(m_currentScene)->getModelObject()[modelName];
+
+        auto modelEntities = model->getEntities();
+
+        QSharedPointer<Shader> shader = ResourceManager::getSceneResource(m_currentScene)->getEntityShader(modelEntities.begin().key());
+
+        return shader->getShaderUniformsInfo();
+    }
+
+    QVector<CGFF::ShaderResourceUniformInfo> ResourceModel::getModelShaderResourcesInfo(const QString& modelName)
+    {
+        auto model = ResourceManager::getSceneResource(m_currentScene)->getModelObject()[modelName];
+
+        auto modelEntities = model->getEntities();
+
+        QSharedPointer<Shader> shader = ResourceManager::getSceneResource(m_currentScene)->getEntityShader(modelEntities.begin().key());
+
+        return shader->getShaderResourcesInfo();
+    }
 
     void ResourceModel::onAddEntity(CGFF::EntityType type)
     {
@@ -343,7 +399,7 @@ namespace QTUI {
     {
         QSharedPointer<Model> model = QSharedPointer<Model>(new Model(path, 
             QSharedPointer<MaterialInstance>(new MaterialInstance(
-            QSharedPointer<Material>(new Material(ShaderFactory::DebugSceneShader()))))));
+            QSharedPointer<Material>(new Material(ShaderManager::getShader("DebugSceneShader")))))));
 
         QFileInfo file(path);
         QString name = file.baseName();
@@ -375,6 +431,7 @@ namespace QTUI {
 
             ResourceManager::UiTransformMats[tmpName] = {};
             ResourceManager::UiTransformVecs[tmpName] = {};
+            ResourceManager::UiUniformDatas[tmpName] = {};
         }
 
         ResourceManager::UiTransformMats[name] = {};
@@ -384,31 +441,79 @@ namespace QTUI {
         onSetCurrentModel(name);
         emit modelObjectAdded(name);
     }
+    void ResourceModel::onAddLight(const CGFF::LightType& type)
+    {
+        switch (type)
+        {
+        case CGFF::LightType::DIRECTIONAL:
+        {
+            addDirectionalLight();
+            break;
+        }
+        case CGFF::LightType::POINT:
+        {
+            break;
+        }
+        case CGFF::LightType::SPOT:
+        {
+            break;
+        }
+        }
+    }
+
+    void ResourceModel::onLoadSkyBox(const QStringList& images)
+    {
+        QString name = "SkyBox" + QString::number(++m_skyBoxCount);
+        while (!addNameInSet(name, m_skyboxNames))
+        {
+            name = "SkyBox" + QString::number(++m_skyBoxCount);
+        }
+
+        QSharedPointer<Texture> environment = TextureManager::getTextureCube(images);
+        QSharedPointer<Shader> skybox = ShaderManager::getShader("Internal_SkyBoxShader");
+
+        QSharedPointer<MaterialInstance> skyboxMaterial = QSharedPointer<MaterialInstance>(new MaterialInstance(QSharedPointer<Material>(new Material(skybox))));
+        skyboxMaterial->setRenderFlag(Material::RenderFlags::DISABLE_DEPTH_TEST);
+        skyboxMaterial->setTexture("u_EnvironmentMap", environment);
+
+        QSharedPointer<Entity> skyboxEntity = QSharedPointer<Entity>(new Entity(MeshFactory::CreateSkyCube(skyboxMaterial)));
+
+        ResourceManager::getSceneResource(m_currentScene)->addSkyBox(name, skyboxEntity, environment);
+
+        QStandardItem* itemChild = new QStandardItem(name);
+        m_itemSkybox->appendRow(itemChild);
+
+        onSetCurrentSkyBox(name);
+
+        emit skyBoxAdded(name);
+    }
 
     void ResourceModel::onSetCurrentEntity(const QString& name)
     {
         m_currentEntity = name;
         m_currentObjType = CurrentObjectType::ENTITY;
-        emit currentEntitySet(name, ResourceManager::UiTransformVecs[name]);
+        emit currentEntitySet(m_currentEntity, ResourceManager::UiTransformVecs[m_currentEntity], ResourceManager::UiUniformDatas[m_currentEntity]);
     }
 
     void ResourceModel::onSetCurrentLight(const QString& name)
     {
         m_currentLight = name;
         m_currentObjType = CurrentObjectType::LIGHT;
-        emit currentLightSet(name, ResourceManager::UiTransformVecs[name]);
+        emit currentLightSet(m_currentLight, ResourceManager::UiTransformVecs[m_currentLight], ResourceManager::UiUniformDatas[m_currentLight]);
     }
 
     void ResourceModel::onSetCurrentSkyBox(const QString& name)
     {
         m_currentSkybox = name;
+        m_currentObjType = CurrentObjectType::SKYBOX;
+        emit currentSkyBoxSet(name);
     }
 
     void ResourceModel::onSetCurrentModel(const QString& name)
     {
         m_currentModel = name;
         m_currentObjType = CurrentObjectType::MODEL;
-        emit currentModelObjectSet(name, ResourceManager::UiTransformVecs[name]);
+        emit currentModelObjectSet(m_currentModel, ResourceManager::UiTransformVecs[m_currentModel], ResourceManager::UiUniformDatas[m_currentModel]);
     }
 
 
@@ -422,7 +527,7 @@ namespace QTUI {
 		{
 			QString preName = m_currentEntity;
 			m_currentEntity = changeNameInSet(m_currentEntity, newName, m_entityNames);
-			ResourceManager::getSceneResource(m_currentScene)->changeObjectName(preName, m_currentEntity);
+			ResourceManager::getSceneResource(m_currentScene)->changeEntityName(preName, m_currentEntity);
 			item->setText(m_currentEntity);
             m_currentObjType = CurrentObjectType::ENTITY;
 			emit currentItemNameChanged(m_currentEntity);
@@ -457,7 +562,7 @@ namespace QTUI {
         {
             QString preName = m_currentEntity;
             m_currentEntity = changeNameInSet(m_currentEntity, newName, m_entityNames);
-            ResourceManager::getSceneResource(m_currentScene)->changeObjectName(preName, m_currentEntity);
+            ResourceManager::getSceneResource(m_currentScene)->changeEntityName(preName, m_currentEntity);
             item->setText(m_currentEntity);
             m_currentObjType = CurrentObjectType::ENTITY;
             emit currentItemNameChanged(m_currentEntity);
@@ -470,15 +575,39 @@ namespace QTUI {
         emit setEmptyItem();
     }
 
-	void ResourceModel::onShaderUniformChanged(const QString& name, const UniformType& type)
-	{
-		QSharedPointer<Shader> shader = ResourceManager::getSceneResource(m_currentScene)->getEntityShader(name);
-	}
+    void ResourceModel::onSetCurrentEntityShader(const QString& shaderName)
+    {
+        QSharedPointer<Shader> shader = CGFF::ShaderManager::getShader(shaderName);
+        ResourceManager::getSceneResource(m_currentScene)->setEntityShader(m_currentEntity, shader);
+        ResourceManager::UiUniformDatas[m_currentEntity].clear();
+    }
 
-	void ResourceModel::onShaderResourceChanged(const QString& name, const ShaderResourceType& type)
-	{
-		QSharedPointer<Shader> shader = ResourceManager::getSceneResource(m_currentScene)->getEntityShader(name);
-	}
+    void ResourceModel::onSetCurrentModelShader(const QString& shaderName)
+    {
+        QSharedPointer<Shader> shader = CGFF::ShaderManager::getShader(shaderName);
+
+        auto model = ResourceManager::getSceneResource(m_currentScene)->getModelObject()[m_currentModel];
+
+        auto modelEntities = model->getEntities();
+       
+        for (const QString& entity_name : modelEntities.keys())
+        {
+            ResourceManager::getSceneResource(m_currentScene)->setEntityShader(entity_name, shader);
+            ResourceManager::UiUniformDatas[entity_name].clear();
+        }
+
+        ResourceManager::UiUniformDatas[m_currentModel].clear();
+    }
+
+	//void ResourceModel::onShaderUniformChanged(const QString& name, const UniformType& type)
+	//{
+	//	QSharedPointer<Shader> shader = ResourceManager::getSceneResource(m_currentScene)->getEntityShader(name);
+	//}
+
+	//void ResourceModel::onShaderResourceChanged(const QString& name, const ShaderResourceType& type)
+	//{
+	//	QSharedPointer<Shader> shader = ResourceManager::getSceneResource(m_currentScene)->getEntityShader(name);
+	//}
 
 	void ResourceModel::setupConnections()
 	{
