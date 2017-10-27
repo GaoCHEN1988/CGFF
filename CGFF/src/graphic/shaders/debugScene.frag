@@ -18,7 +18,6 @@ struct Light {
 };
 
 uniform vec3 sys_CameraPosition;
-uniform vec3 u_color;
 
 void main()
 {
@@ -31,7 +30,7 @@ void main()
 
 	// ambient
     //vec3 ambient = light.ambient * fs_in.color.rgb;
-    vec3 ambient = light.ambient * u_color;
+    vec3 ambient = light.ambient * vec3(1.0, 1.0, 1.0);
   	
     // diffuse 
     vec3 norm = normalize(fs_in.normal);

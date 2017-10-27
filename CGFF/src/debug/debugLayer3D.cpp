@@ -27,14 +27,14 @@ namespace CGFF {
 			new Entity(MeshFactory::CreateLine(
 				QVector3D(0,0,0), 
 				QVector3D(20,0,0), 
-				QVector4D(0.0, 1.0, 0.0, 1.0),  
+				QVector4D(1.0, 0.0, 0.0, 1.0),  
 				lineInstance)));
 
 		m_lineY = QSharedPointer<Entity>(
 			new Entity(MeshFactory::CreateLine(
 			QVector3D(0, 0, 0),
 			QVector3D(0, 20, 0),
-			QVector4D(1.0, 0.0, 0.0, 1.0),
+			QVector4D(0.0, 1.0, 0.0, 1.0),
 			lineInstance)));
 
 		m_lineZ = QSharedPointer<Entity>(
@@ -48,7 +48,7 @@ namespace CGFF {
 		m_scene->add(m_lineY);
 		m_scene->add(m_lineZ);
 
-        m_scene->add(QSharedPointer<Light>(new Light(QVector3D(0.8f, 0.8f, 0.8f))));
+        //m_scene->add(QSharedPointer<Light>(new Light(QVector3D(0.8f, 0.8f, 0.8f))));
 		//ResourceManager::getSceneResource(ResourceManager::getScene3DName())->addLight("Light1", QSharedPointer<Light>(new Light(QVector3D(0.8f, 0.8f, 0.8f))));
 	}
 

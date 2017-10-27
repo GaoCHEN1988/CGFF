@@ -36,12 +36,7 @@ namespace CGFF {
 		static DebugLayer* s_instance;
 
 	private:
-		//Application& m_Application;
-		QSharedPointer<Label> m_FPSLabel;
-		QSharedPointer<Label> m_memoryUsageLabel;
-		QSharedPointer<Label> m_frametimeLabel;
-		QVector<QSharedPointer<Sprite>> m_tempSprites;
-		
+		QSharedPointer<Label> m_FPSLabel;	
     };
 
 }

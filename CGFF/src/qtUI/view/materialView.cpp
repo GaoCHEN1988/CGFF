@@ -45,6 +45,9 @@ namespace QTUI {
         disconnect(m_shader_comboBox, static_cast<void(QComboBox::*)(const QString &)>(&QComboBox::currentIndexChanged),
             this, &MaterialView::onCurrentModelShaderChanged);
 
+        disconnect(m_shader_comboBox, static_cast<void(QComboBox::*)(const QString &)>(&QComboBox::currentIndexChanged),
+            this, &MaterialView::onCurrentShaderChanged);
+
         showItems(true);
 
 		QString shaderName = m_model->getShaderName(name);
@@ -94,6 +97,9 @@ namespace QTUI {
 
         disconnect(m_shader_comboBox, static_cast<void(QComboBox::*)(const QString &)>(&QComboBox::currentIndexChanged),
             this, &MaterialView::onCurrentShaderChanged);
+
+        disconnect(m_shader_comboBox, static_cast<void(QComboBox::*)(const QString &)>(&QComboBox::currentIndexChanged),
+            this, &MaterialView::onCurrentModelShaderChanged);
 
         showItems(true);
 
