@@ -21,14 +21,19 @@ namespace LearnGL {
     {
         m_objectModel = QSharedPointer<Model>(new Model("/resource/LearnOpenGL/objects/nanosuit/nanosuit.obj", nullptr));
 
+        int count = 0;
         for (const QSharedPointer<Mesh>& mesh : m_objectModel->getMeshes())
         {
+            count++;
+
             QMatrix4x4 trans;
             trans.translate(0.0, 5.0, 0.0);
             trans.rotate(-90.0f, 1.0, 0.0, 0.0);
             QSharedPointer<CGFF::Entity> objectEntity =
                 QSharedPointer<Entity>(new Entity(mesh, trans));
-            m_scene->add(objectEntity);
+            QString name = "ObjectEntity_" + QString::number(count);
+
+            m_scene->add(name, objectEntity);
         }
 
         QMatrix4x4 trans_cube;
@@ -37,14 +42,14 @@ namespace LearnGL {
         meshCube->setInvertedNormal(true);
         m_cube = QSharedPointer<Entity>(new Entity(meshCube, trans_cube));
 
-        m_scene->add(m_cube);
+        m_scene->add("Cube", m_cube);
 
         //Set lights
         g_lights = QSharedPointer<LightSetup>(new LightSetup());
 
         //g_lights->add({ QVector3D(20.0, 8.0, -5.0), QVector3D(0.4, 0.4, 0.7), linear, quadratic });
 
-        m_scene->pushLightSetup(g_lights);
+        //m_scene->pushLightSetup(g_lights);
 
     }
     void SSAO::render()

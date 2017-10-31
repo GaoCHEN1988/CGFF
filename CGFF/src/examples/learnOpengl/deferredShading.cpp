@@ -39,11 +39,17 @@ namespace LearnGL {
             QMatrix4x4 trans;
             trans.translate(g_objectPositions[i]);
 
+            int count = 0;
+
             for (const QSharedPointer<Mesh>& mesh : m_objectModel->getMeshes())
             {
+                count++;
                 QSharedPointer<CGFF::Entity> objectEntity =
                     QSharedPointer<Entity>(new Entity(mesh, trans));
-                m_scene->add(objectEntity);
+
+                QString name = "ObjectEntity" + QString::number(i) + "_" + QString::number(count);
+
+                m_scene->add(name, objectEntity);
             }
         }
 

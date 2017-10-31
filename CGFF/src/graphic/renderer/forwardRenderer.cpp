@@ -17,6 +17,7 @@ namespace CGFF {
     static QMatrix4x4 lightSpaceMatrix;
     static QSharedPointer<Shader>  hdrShader;
     static float exposure = 0.1f;
+    const QVector<Light> * pLightArray = nullptr;
 
     ForwardRenderer::ForwardRenderer(const QSize& size)
         : m_VSSystemUniformBuffer(nullptr)
@@ -27,8 +28,6 @@ namespace CGFF {
         , m_PSSystemUniformBufferOffsets()
         , m_depthBuffer(nullptr)
         , m_frameBuffer(nullptr)
-        , m_lightSetup(nullptr)
-        , m_lightsArray()
     {
 		setScreenBufferSize(size.width(), size.height());
 		init();
@@ -43,8 +42,6 @@ namespace CGFF {
         , m_PSSystemUniformBufferOffsets()
         , m_depthBuffer(nullptr)
         , m_frameBuffer(nullptr)
-        , m_lightSetup(nullptr)
-        , m_lightsArray()
 	{
 		setScreenBufferSize(width, height);
 		init();
@@ -164,35 +161,11 @@ namespace CGFF {
 
     void ForwardRenderer::submitLightSetup(const QSharedPointer<LightSetup>& lightSetup)
     {
-        //To do
-        //auto lights = lightSetup->getLights();
-        //Q_ASSERT(lights.size() <= 1);//To do: support multiple lights
-        //for (int i = 0; i < lights.size(); i++)
-        //{
-        //    memcpy(m_PSSystemUniformBuffer.data() + m_PSSystemUniformBufferOffsets[PSSystemUniformIndex_Lights], &lights[i], sizeof(Light));
-        //}
-
         if (lightSetup.isNull())
             return;
 
-        m_lightSetup = lightSetup;
-
-        auto lightEntities = m_lightSetup->getLightEntities();
-        auto lights = lightSetup->getLights();
-
-        m_lightsArray.clear();
-        //Releae array memory
-        m_lightsArray.squeeze();
-
-        for (int i = 0; i < lights.size(); i++)
-        {
-            m_lightsArray.append(*lights[i]);
-        }
-
-        if (!m_lightsArray.isEmpty())
-        {
-            g_LightPos = m_lightsArray[0].position;
-        }
+        auto lightEntities = lightSetup->getLightEntities();
+        pLightArray = &lightSetup->getLights();
 
         for (int i = 0; i < lightEntities.size(); i++)
         {
@@ -206,7 +179,7 @@ namespace CGFF {
                 if (!tc)
                     qFatal("Mesh does not have transform!"); // Meshes MUST have transforms
 
-                submitLightEntity(mesh->mesh, tc->getTransform(), lights[i]->color);
+                submitLightEntity(mesh->mesh, tc->getTransform(), (*pLightArray)[i].color);
             }
         }
     }
@@ -230,6 +203,7 @@ namespace CGFF {
     {
         // TODO: Batching and sorting
     }
+
     void ForwardRenderer::flush() 
     {
 #ifdef TEST_DEPTH_MAP
@@ -260,9 +234,10 @@ namespace CGFF {
 			QSharedPointer<MaterialInstance> material = command.mesh->getMaterialInstance();
 			int materialRenderFlags = material->getRenderFlags();
 
-            if (!m_lightsArray.isEmpty())
+            if(pLightArray)
             {
-                material->setUniformData("lights", (uchar*)m_lightsArray.data());
+                if (!pLightArray->isEmpty())
+                    material->setUniformData("lights", (uchar*)pLightArray->data());
             }
 #ifdef TEST_DEPTH_MAP
             material->setTexture("u_ShadowMap", m_depthBuffer->getTexture());
@@ -298,7 +273,6 @@ namespace CGFF {
             m_screenQuadMaterial->setUniform("hdr", true);
             m_screenQuadMaterial->setUniform("exposure", exposure);
             m_screenQuad->render(*this);
-
         }
 
 #endif

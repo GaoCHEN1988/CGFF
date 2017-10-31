@@ -7,7 +7,7 @@
 #include "graphic/api/framebufferDepthCube.h"
 #include "graphic/api/framebuffer2D.h"
 
-#define TEST_DEPTH_MAP
+//#define TEST_DEPTH_MAP
 //#define TEST_DEPTH_MAP_CUBE
 //#define TEST_FRAME_BUFFER
 
@@ -59,9 +59,6 @@ namespace CGFF {
 
         QSharedPointer<Mesh> m_screenQuad;
         QSharedPointer<MaterialInstance> m_screenQuadMaterial;
-
-        QSharedPointer<LightSetup> m_lightSetup;
-        QVector<Light> m_lightsArray;
     };
 }
 

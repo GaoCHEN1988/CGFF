@@ -3,65 +3,70 @@
 
 #include "graphic/layer/layer.h"
 #include "graphic/api/context.h"
+#include "qtUI/model/resourceModel.h"
 #include <QWindow>
 #include <QTime>
 
-namespace CGFF {
-	class BaseWindow : public QWindow
-	{
-		Q_OBJECT
 
-	public:
+class BaseWindow : public QWindow
+{
+    Q_OBJECT
 
-		BaseWindow(QWidget * parent, CGFF::RenderAPI api = CGFF::RenderAPI::OPENGL);
-		virtual ~BaseWindow();
+public:
 
-		virtual void initialize();
-		virtual void update();
-		virtual void render();
-		virtual void tick();
-		virtual void renderLater();
-		virtual void renderNow();
-		virtual void setupLayers() = 0;
-		virtual void clearLayers();
+    BaseWindow(QWidget * parent, CGFF::RenderAPI api = CGFF::RenderAPI::OPENGL);
+    virtual ~BaseWindow();
 
-		void pushLayer(QSharedPointer<CGFF::Layer> layer);
-		QSharedPointer<CGFF::Layer> popLayer();
-		QSharedPointer<CGFF::Layer> popLayer(QSharedPointer<CGFF::Layer> layer);
-		void pushOverlay(QSharedPointer<CGFF::Layer> layer);
-		QSharedPointer<CGFF::Layer> popOverlay();
-		QSharedPointer<CGFF::Layer> popOverlay(QSharedPointer<CGFF::Layer> layer);
+    virtual void initialize();
+    virtual void update();
+    virtual void render();
+    virtual void tick();
+    virtual void renderLater();
+    virtual void renderNow();
+    virtual void setupLayers() = 0;
+    virtual void clearLayers();
+    virtual void setModel(QTUI::ResourceModel * model)
+    {
+        m_model = model;
+    }
 
-		inline int getFPS() { return m_framePerSecond; }
-		inline void setActive(bool active) { m_isActive = active; }
+    void pushLayer(QSharedPointer<CGFF::Layer> layer);
+    QSharedPointer<CGFF::Layer> popLayer();
+    QSharedPointer<CGFF::Layer> popLayer(QSharedPointer<CGFF::Layer> layer);
+    void pushOverlay(QSharedPointer<CGFF::Layer> layer);
+    QSharedPointer<CGFF::Layer> popOverlay();
+    QSharedPointer<CGFF::Layer> popOverlay(QSharedPointer<CGFF::Layer> layer);
 
-		public slots:
-		void onActivate();
-		void onDisactivate();
+    inline int getFPS() { return m_framePerSecond; }
+    inline void setActive(bool active) { m_isActive = active; }
 
-        signals:
-        void initilizeSignal();
+    public slots:
+    void onActivate();
+    void onDisactivate();
 
-	private:
-		void timerEvent(QTimerEvent *event) Q_DECL_OVERRIDE;
-		bool event(QEvent *event) Q_DECL_OVERRIDE;
+signals:
+    void initilizeSignal();
 
-		void setUpContext();
+private:
+    void timerEvent(QTimerEvent *event) Q_DECL_OVERRIDE;
+    bool event(QEvent *event) Q_DECL_OVERRIDE;
 
-	private:
-		QVector<QSharedPointer<CGFF::Layer>> m_layerStack;
-		QVector<QSharedPointer<CGFF::Layer>> m_overLayerStack;
+    void setUpContext();
 
-		QTime m_time;
-		int m_framePerSecond;
-		int m_fps_count;
-		int m_timer_id;
+private:
+    QVector<QSharedPointer<CGFF::Layer>> m_layerStack;
+    QVector<QSharedPointer<CGFF::Layer>> m_overLayerStack;
 
-		bool m_isActive;
+    QTime m_time;
+    int m_framePerSecond;
+    int m_fps_count;
+    int m_timer_id;
 
-	protected:
-		QWidget * m_parent;
-	};
-}
+    bool m_isActive;
+
+protected:
+    QWidget * m_parent;
+    QTUI::ResourceModel * m_model;
+};
 
 #endif

@@ -44,21 +44,21 @@ namespace LearnGL {
             128, 128, QVector3D(0, 1, 0),
             m_objectMaterialInstance)));
 
-        m_scene->add(m_plane);
+        m_scene->add("Plane", m_plane);
 
         QMatrix4x4 trans_cube;
         trans_cube.translate(g_CubeTransform);
         m_cube = QSharedPointer<Entity>(new Entity(LearnGL::CreateCube(5,
             m_objectMaterialInstance), trans_cube)) ;
 
-        m_scene->add(m_cube);
+        m_scene->add("Cube1", m_cube);
 
         trans_cube.setToIdentity();
         trans_cube.translate(QVector3D(10.0, 20.0, 0));
         m_cube2 = QSharedPointer<Entity>(new Entity(LearnGL::CreateCube(5,
             m_objectMaterialInstance), trans_cube));
 
-        m_scene->add(m_cube2);
+        m_scene->add("Cube2", m_cube2);
     }
 
     void ShadowMappingDepth::render()

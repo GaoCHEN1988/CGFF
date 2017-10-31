@@ -39,7 +39,8 @@ namespace CGFF
         {
             return m_environments;
         }
-        inline const QMap<QString, QSharedPointer<Entity>>& getSkyBox() const
+
+        inline const QMap<QString, QSharedPointer<Entity>>& getSkyBoxes() const
 		{
 			return m_skyBoxes;
 		}
@@ -49,13 +50,21 @@ namespace CGFF
             return m_modelObjects;
         }
 
-		void addLight(const QString& name, const QSharedPointer<Light>& light);
+        void addLight(const QString& name, const QSharedPointer<Light>& light);
 
-        void addEntity(const QString& name, const QSharedPointer<Entity>& object);
+        void removeLight(const QString& name);
+
+        void addEntity(const QString& name, const QSharedPointer<Entity>& entity);
+
+        void removeEntity(const QString& name);
 
         void addModelObject(const QString& name, const QSharedPointer<ModelObject>& object);
 
-		void addSkyBox(const QString& name, const QSharedPointer<Entity>& skybox, const QSharedPointer<Texture>& environment);
+        void removeModelObject(const QString& name);
+
+        void addSkyBox(const QString& name, const QSharedPointer<Entity>& skybox, const QSharedPointer<Texture>& environment);
+        
+        void removeSkyBox(const QString& name);
 
 		void changeEntityName(const QString& preName, const QString& newName);
 
@@ -77,6 +86,18 @@ namespace CGFF
 
         bool isModelObjectExisted(const QString& modelName);
 
+        void setCurrentSkyBox(const QString& name);
+
+        inline const QSharedPointer<Entity>& getCurrentSkyBox() const
+        {
+            return m_currentSkyBox;
+        }
+
+        inline const QSharedPointer<Texture>& getCurrentEnvironment() const
+        {
+            return m_currentEnvironment;
+        }
+
 	private:
 		QSharedPointer<Camera> m_camera;
         QMap<QString, QSharedPointer<Entity>> m_entities;
@@ -84,6 +105,9 @@ namespace CGFF
 		QMap<QString, QSharedPointer<Light>> m_lights;
         QMap<QString, QSharedPointer<Entity>> m_skyBoxes;
         QMap<QString, QSharedPointer<Texture>> m_environments;
+        QSharedPointer<Entity> m_currentSkyBox;
+        QSharedPointer<Texture> m_currentEnvironment;
+
 	};
 }
 

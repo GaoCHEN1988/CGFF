@@ -2,12 +2,14 @@
 #define CGFF_DEBUG_LAYER_3D_H
 
 #include "graphic/layer/layer3D.h"
+#include "qtUI/model/resourceModel.h"
+
 namespace CGFF {
 
 	class DebugLayer3D : public Layer3D
 	{
 	public:
-		DebugLayer3D(const QSize& size, QWidget *parent = Q_NULLPTR);
+		DebugLayer3D(const QSize& size, QTUI::ResourceModel * model, QWidget *parent = Q_NULLPTR);
 
 		void init() override;
 		void render(QSharedPointer<Renderer3D>& renderer) override;
@@ -18,13 +20,6 @@ namespace CGFF {
 		void mouseMoveEvent(QMouseEvent *event) override;
 		void mouseReleaseEvent(QMouseEvent *event) override;
 
-		void addEntity(const QSharedPointer<CGFF::Entity>& entity);
-		void addEntity(const QString& name);
-
-        void addModelObject(const QString& name);
-        void addLight(const QString& name);
-        void setSkyBox(const QString& name);
-
 	private:
 		QSharedPointer<CGFF::Camera> m_mayaCamera;
 		QSharedPointer<Shader> m_debugShader;
@@ -34,6 +29,8 @@ namespace CGFF {
 		QSharedPointer<CGFF::Entity> m_lineZ;
 
 		QSharedPointer<MaterialInstance> m_debugMaterial;
+
+        QTUI::ResourceModel * m_model;
 	};
 
 }

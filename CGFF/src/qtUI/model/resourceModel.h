@@ -125,27 +125,20 @@ namespace QTUI {
 
 		public slots:
 
-		//void onEntityTranform(const QString& name);
+        void onAddScene(const QString& name);
         void onAddEntity(CGFF::EntityType type);
         void onLoadModel(const QString& path);
         void onAddLight(const CGFF::LightType& type);
         void onLoadSkyBox(const QStringList& images);
-        void onSetCurrentEntity(const QString& name);
-        void onSetCurrentLight(const QString& name);
-        void onSetCurrentSkyBox(const QString& name);
-        void onSetCurrentModel(const QString& name);
+
         void onItemChanged(QStandardItem *item);
-        void onSetEmptyItem();
+        void onCurrentSelectChanged(const QModelIndex &index);
+        void onDeleteItem(const QModelIndex &index);
         void onSetCurrentEntityShader(const QString& shaderName);
         void onSetCurrentModelShader(const QString& shaderName);
-		//void onShaderUniformChanged(const QString& name, const CGFF::UniformType& type);
-		//void onShaderResourceChanged(const QString& name, const CGFF::ShaderResourceType& type);
 
 	signals:
-        void entityAdded(const QString& name);
-        void lightAdded(const QString& name);
-        void modelObjectAdded(const QString& name);
-        void skyBoxAdded(const QString& name);
+
         void currentEntitySet(const QString& name, const CGFF::UiTransformVec& transform, const CGFF::UiUniformDataMap& uniformMap);
         void currentLightSet(const QString& name, const CGFF::UiTransformVec& transform, const CGFF::UiUniformDataMap& uniformMap);
         void currentSkyBoxSet(const QString& name);
@@ -161,7 +154,6 @@ namespace QTUI {
         QString addCube();
         QString addPlane();
         QString addSphere();
-        void addScene();
         void addDirectionalLight();
 
         void translateCurrentEntity(const QVector3D& tanslate);
@@ -174,12 +166,25 @@ namespace QTUI {
 
         void translateCurrentLight(const QVector3D& tanslate);
 
+        void setCurrentEntity(const QString& name);
+        void setCurrentLight(const QString& name);
+        void setCurrentSkyBox(const QString& name);
+        void setCurrentModel(const QString& name);
+
+        void deleteEntity(const QString& name, int row);
+        void deleteLight(const QString& name, int row);
+        void deleteSkybox(const QString& name, int row);
+        void deleteModel(const QString& name, int row);
+
+        QModelIndex getTopParent(QModelIndex itemIndex);
+
+
 	private:
-		QStandardItem* m_itemScene;
-		QStandardItem* m_itemEntity;
-		QStandardItem* m_itemLight;
-        QStandardItem* m_itemSkybox;
-        QStandardItem* m_itemModel;
+        QMap<QString, QStandardItem*> m_sceneItems;
+        QMap<QString, QStandardItem*> m_entityItems;
+        QMap<QString, QStandardItem*> m_lightItems;
+        QMap<QString, QStandardItem*> m_skyboxItems;
+        QMap<QString, QStandardItem*> m_modelObjectItems;
 
         QString m_currentScene;
         QString m_currentEntity;

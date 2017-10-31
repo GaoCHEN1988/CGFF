@@ -1,54 +1,25 @@
 #include "debugWindow.h"
 #include "resource/resourceManager.h"
 
-namespace CGFF {
+DebugWindow * DebugWindow::m_instance = nullptr;
 
-	DebugWindow * DebugWindow::m_instance = nullptr;
-	
-	DebugWindow::DebugWindow(QWidget * parent, CGFF::RenderAPI api)
-		: BaseWindow(parent, api)
-		, m_debug3DLayer(nullptr)
-		, m_debugLayer(nullptr)
-	{
-		m_instance = this;
-	}
+DebugWindow::DebugWindow(QWidget * parent, CGFF::RenderAPI api)
+    : BaseWindow(parent, api)
+    , m_debug3DLayer(nullptr)
+    , m_debugLayer(nullptr)
+{
+    m_instance = this;
+}
 
-	DebugWindow::~DebugWindow()
-	{
-	}
+DebugWindow::~DebugWindow()
+{
+}
 
-	void DebugWindow::onAddEntity(const QString& name)
-	{
-		m_debug3DLayer->addEntity(name);
-	}
+void DebugWindow::setupLayers()
+{
+    m_debug3DLayer = QSharedPointer<CGFF::DebugLayer3D>(new CGFF::DebugLayer3D(this->size(), m_model, m_parent));
+    pushLayer(m_debug3DLayer);
 
-    void DebugWindow::onAddModelObject(const QString& name)
-    {
-        m_debug3DLayer->addModelObject(name);
-    }
-
-    void DebugWindow::onAddLight(const QString& name)
-    {
-        m_debug3DLayer->addLight(name);
-    }
-
-    void DebugWindow::onSetSkyBox(const QString& name)
-    {
-        m_debug3DLayer->setSkyBox(name);
-    }
-
-	void DebugWindow::setupLayers()
-	{
-		//if (!m_debug3DLayer)
-		{
-			m_debug3DLayer = QSharedPointer<CGFF::DebugLayer3D>(new CGFF::DebugLayer3D(this->size(), m_parent));
-			pushLayer(m_debug3DLayer);
-		}
-
-		//if (!m_debugLayer)
-		{
-			m_debugLayer = QSharedPointer<CGFF::DebugLayer>(new CGFF::DebugLayer(this->size(), m_parent));
-			pushOverlay(m_debugLayer);
-		}
-	}
+    m_debugLayer = QSharedPointer<CGFF::DebugLayer>(new CGFF::DebugLayer(this->size(), m_parent));
+    pushOverlay(m_debugLayer);
 }

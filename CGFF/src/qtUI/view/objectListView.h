@@ -23,13 +23,13 @@ namespace QTUI {
 		void setModel(ResourceModel * model) override;
 
 		public slots:
-        void onElementChanged(const QModelIndex &index);
+
+        void onCustomContextMenu(const QPoint &point);
 
 	private:
 		void init();
         void setupConnections();
-        QModelIndex getTopParent(QModelIndex itemIndex);
- 
+        bool isEditableItem(const QModelIndex &index);
 
 	private:
 		QTreeView * m_treeView;

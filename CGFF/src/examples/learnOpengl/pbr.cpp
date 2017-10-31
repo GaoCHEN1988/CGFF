@@ -82,17 +82,18 @@ namespace LearnGL {
                     0.0f
                     ));
                 
-                //m_sphereMesh->setMaterial(material);
-                //QSharedPointer<CGFF::Entity> objectEntity =
-                //    QSharedPointer<Entity>(new Entity(m_sphereMesh, trans));
-                //m_scene->add(objectEntity);
+                int count = 0;
                 for (const QSharedPointer<Mesh>& mesh : m_sphereModel->getMeshes())
                 {
+                    count++;
                     mesh->setMaterial(material);
 
                     QSharedPointer<CGFF::Entity> objectEntity =
                         QSharedPointer<Entity>(new Entity(mesh, trans));
-                    m_scene->add(objectEntity);
+
+                    QString name = "ObjectEntity" + QString::number(row)+ QString::number(col) + "_" + QString::number(count);
+
+                    m_scene->add(name, objectEntity);
                 }
             }
         }

@@ -6,36 +6,40 @@
 #include "camera/camera.h"
 #include "camera/mayaCamera.h"
 #include "camera/fpsCamera.h"
+#include "resource/resourceManager.h"
 
 namespace CGFF {
 
     class Scene
     {
     public:
-        Scene(QSize size);
-        Scene(QSharedPointer<Camera>& camera);
+        Scene(QSize size, const QString& name = "Scene3D");
+        Scene(QSharedPointer<Camera>& camera, const QString& name = "Scene3D");
         virtual~Scene();
-        void add(const QSharedPointer<Entity>& entity);
-        void add(const QSharedPointer<Light>& light);
-        void pushLightSetup(QSharedPointer<LightSetup>& lightSetup);
-        QSharedPointer<LightSetup> popLightSetup();
+        void add(const QString& name, const QSharedPointer<Entity>& entity);
+        void add(const QString& name, const QSharedPointer<Light>& light);
         void render(QSharedPointer<Renderer3D>& renderer);
         void setCamera(const QSharedPointer<Camera>& camera);
         void setSkyBox(const QSharedPointer<Entity>& skyBox, const QSharedPointer<Texture>& environment);
 		void close();
    
         inline const QSharedPointer<Camera>& getCamera() const { return m_camera; }
-        inline const QVector<QSharedPointer<Entity>>& getEntities() const { return m_entities; }
         inline QSize getSize() const { return m_size; }
+        inline QString getName() const { return m_name; }
 
     private:
-        QVector<QSharedPointer<Entity>> m_entities;
+        void initSceneResource();
+
+    private:
+        //QVector<QSharedPointer<Entity>> m_entities;
         QSharedPointer<Camera> m_camera;
-        QSharedPointer<LightSetup> m_lightSetup;
-        QVector<QSharedPointer<LightSetup>> m_lightSetupStack;
-        QSharedPointer<Entity> m_skyBox;
-        QSharedPointer<Texture> m_environment;
+        //QSharedPointer<LightSetup> m_lightSetup;
+        //QVector<QSharedPointer<LightSetup>> m_lightSetupStack;
+        //QSharedPointer<Entity> m_skyBox;
+        //QSharedPointer<Texture> m_environment;
 		QSize m_size;
+        QString m_name;
+        QSharedPointer<SceneResource> m_resource;
     };
 }
 #endif

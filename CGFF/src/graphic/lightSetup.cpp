@@ -13,12 +13,10 @@ namespace CGFF {
         m_lightEntities.clear();
     }
 
-    QSharedPointer<Light> LightSetup::add(const QSharedPointer<Light>& light, const QSharedPointer<Entity>& lightEntity)
+    void LightSetup::add(const Light& light, const QSharedPointer<Entity>& lightEntity)
     {
         m_lights.append(light);
         m_lightEntities.append(lightEntity);
-
-        return light;
     }
 
     void LightSetup::remove(int i)

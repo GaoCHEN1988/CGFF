@@ -4,16 +4,12 @@ namespace CGFF {
 
 	QMap<QString, QSharedPointer<SceneResource>> ResourceManager::m_sceneResources;
 
-	QString ResourceManager::m_scene3DName = "Scene3D";
-	QString ResourceManager::m_scene2DName = "Scene2D";
+	QString ResourceManager::CurrentSceneName = "Scene";
 
     QString ResourceManager::EntityHierarchyName = "Entities";
     QString ResourceManager::LightHierarchyName = "Lights";
     QString ResourceManager::SkyBoxHierarchyName = "SkyBox";
     QString ResourceManager::ModelHierarchyName = "Models";
-
-	//QSharedPointer<SceneResource> ResourceManager::m_currentScene2D = nullptr;
-	//QSharedPointer<SceneResource> ResourceManager::m_currentScene3D = nullptr;
 
 	QMap<QString, UiTransformMat> ResourceManager::UiTransformMats;
 	QMap<QString, UiTransformVec> ResourceManager::UiTransformVecs;
@@ -24,13 +20,11 @@ namespace CGFF {
 		auto lookup = m_sceneResources.find(name);
 		if (lookup != m_sceneResources.end())
 		{
-			//m_currentScene3D = lookup.value();
 			return lookup.value();
 		}
 		else
 		{
 			m_sceneResources.insert(name, QSharedPointer<SceneResource>(new SceneResource));
-			//m_currentScene3D = m_sceneResources[name];
 			return m_sceneResources[name];
 		}
 	}
@@ -101,17 +95,10 @@ namespace CGFF {
 
     bool ResourceManager::isModelObjectExisted(const QString& modelObjName)
     {
-        auto lookup = m_sceneResources.find(m_scene3DName);
-        if (lookup != m_sceneResources.end())
+        for (auto sceneResource: m_sceneResources)
         {
-            auto lightLookup = lookup.value()->getModelObject().find(modelObjName);
-
-            if (lightLookup != lookup.value()->getModelObject().end())
-            {
+            if (sceneResource->isModelObjectExisted(modelObjName))
                 return true;
-            }
-
-            return false;
         }
 
         return false;

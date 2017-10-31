@@ -61,16 +61,6 @@ namespace CGFF {
 		static QSharedPointer<SceneResource> getSceneResource(const QString& name);
 		static void removeSceneResource(const QString& name);
 
-		static QString getScene3DName() 
-		{
-			return m_scene3DName;
-		}
-
-		static QString getScene2DName()
-		{
-			return m_scene2DName;
-		}
-
         static QSharedPointer<Entity> getEntity(const QString& sceneName, const QString& entityName);
         static QSharedPointer<Light> getLight(const QString& sceneName, const QString& lightName);
         static QSharedPointer<ModelObject> getModelObject(const QString& sceneName, const QString& modelObjName);
@@ -84,16 +74,11 @@ namespace CGFF {
     public:
 		static QMap<QString, QSharedPointer<SceneResource>> m_sceneResources;
 
-		static QString m_scene3DName;
-		static QString m_scene2DName;
-
+		static QString CurrentSceneName;
         static QString EntityHierarchyName;
         static QString LightHierarchyName;
         static QString SkyBoxHierarchyName;
         static QString ModelHierarchyName;
-		//static QSharedPointer<SceneResource> m_currentScene2D;
-		//static QSharedPointer<SceneResource> m_currentScene3D;
-
 	};
 }
 

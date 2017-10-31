@@ -3,6 +3,7 @@
 
 #include "graphic/layer/layer3D.h"
 #include "examples/learnOpengl/learnGL.h"
+#include "qtUI/model/resourceModel.h"
 
 namespace CGFF {
 
@@ -22,7 +23,7 @@ namespace CGFF {
 	class App3DLayer : public Layer3D
 	{
 	public:
-		App3DLayer(QSize size, QWidget *parent = Q_NULLPTR);
+		App3DLayer(QSize size, QTUI::ResourceModel * model, QWidget *parent = Q_NULLPTR);
 		virtual ~App3DLayer();
 
 		void init() override;
@@ -43,6 +44,8 @@ namespace CGFF {
         QSharedPointer<LearnGL::DeferredShading> m_deferredShading;
         QSharedPointer<LearnGL::SSAO> m_ssao;
         QSharedPointer<LearnGL::PBR> m_pbr;
+
+        QTUI::ResourceModel * m_model;
 	};
 }
 

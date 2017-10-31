@@ -33,6 +33,7 @@ namespace QTUI {
         void onCurrentShaderChanged(const QString& shaderName);
         void onCurrentModelShaderChanged(const QString& shaderName);
         void onSetEmpty();
+
 	private:
 		void init();
 		void setupConnections();

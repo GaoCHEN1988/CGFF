@@ -34,7 +34,7 @@ namespace LearnGL {
             128, 128, QVector3D(0, 1, 0),
             m_objectMaterialInstance)));
 
-        m_scene->add(m_plane);
+        m_scene->add("Plane", m_plane);
 
     }
     void NormalMapping::render()

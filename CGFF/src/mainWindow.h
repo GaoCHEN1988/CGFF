@@ -49,8 +49,8 @@ private:
 private:
     CGFF::RenderAPI m_renderApi;
 	//ApplicationWindow * m_applicationWindow;
-	CGFF::DebugWindow * m_debugWindow;
-    CGFF::LearnGLWindow * m_learnGLWindow;
+	DebugWindow * m_debugWindow;
+    LearnGLWindow * m_learnGLWindow;
 
     QMenuBar *m_menuBar;
     QToolBar *m_mainToolBar;

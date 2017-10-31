@@ -6,7 +6,7 @@ namespace CGFF
 {
     AppType testType;
 
-    App3DLayer::App3DLayer(QSize size, QWidget *parent)
+    App3DLayer::App3DLayer(QSize size, QTUI::ResourceModel * model, QWidget *parent)
         : Layer3D(QSharedPointer<Scene>(new Scene(size))
             , QSharedPointer<ForwardRenderer>(new ForwardRenderer(size))
             , parent)
@@ -14,6 +14,7 @@ namespace CGFF
         , m_pointShadows(nullptr)
         , m_normalMapping(nullptr)
         , m_parallaxMapping(nullptr)
+        , m_model(model)
     {
     }
 
@@ -24,6 +25,8 @@ namespace CGFF
 
     void App3DLayer::init()
     {
+        m_model->onAddScene(m_scene->getName());
+
         testType = AppType::pbr;
 
         switch (testType)

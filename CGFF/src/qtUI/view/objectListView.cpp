@@ -1,6 +1,7 @@
 #include "objectListView.h"
 #include <QVBoxLayout>
 #include <QGridLayout>
+#include <QMenu>
 
 namespace QTUI {
 
@@ -19,46 +20,32 @@ namespace QTUI {
 	{
 		m_model = model;
 		m_treeView->setModel(m_model);
+        connect(m_treeView, &QTreeView::clicked, m_model, &ResourceModel::onCurrentSelectChanged);
 	}
 
-    void ObjectListView::onElementChanged(const QModelIndex &index)
+    void ObjectListView::onCustomContextMenu(const QPoint &point)
     {
-        QString currentName = index.data(Qt::DisplayRole).toString();
-        QString parentName =index.parent().data(Qt::DisplayRole).toString();
-        QString topParent = getTopParent(index).data().toString();
+        QModelIndex index = m_treeView->indexAt(point);
+        if (index.isValid()) 
+        {
+            if (isEditableItem(index))
+            {
+                QMenu *menu = new QMenu(this);
+                QAction *deleteItemAction = new QAction("Delete", menu);
+                connect(deleteItemAction, &QAction::triggered, [=]() { m_model->onDeleteItem(index); });
 
-        if (parentName == CGFF::ResourceManager::EntityHierarchyName)
-        {
-            m_model->onSetCurrentEntity(currentName);
-        }
-        else if (parentName == CGFF::ResourceManager::LightHierarchyName)
-        {
-            m_model->onSetCurrentLight(currentName);
-        }
-        else if (parentName == CGFF::ResourceManager::SkyBoxHierarchyName)
-        {
-            m_model->onSetCurrentSkyBox(currentName);
-        }
-        else if (parentName == CGFF::ResourceManager::ModelHierarchyName)
-        {
-            m_model->onSetCurrentModel(currentName);
-        }
-        else if (CGFF::ResourceManager::isModelObjectExisted(parentName))
-        {
-            m_model->onSetCurrentEntity(currentName);
-        }
-        else
-        {
-            m_model->onSetEmptyItem();
+                menu->addAction(deleteItemAction);
+                menu->popup(m_treeView->mapToGlobal(point));
+            }
         }
     }
 
 	void ObjectListView::init()
 	{
 		m_treeView = new QTreeView(this);
+        m_treeView->setContextMenuPolicy(Qt::CustomContextMenu);
 
         QVBoxLayout *layout = new QVBoxLayout(this);
-
 		layout->addWidget(m_treeView);
 
         QGridLayout * grid = new QGridLayout(this);
@@ -82,21 +69,22 @@ namespace QTUI {
     void ObjectListView::setupConnections()
     {
         //QObject::connect(m_treeView->selectionModel(), &QItemSelectionModel::selectionChanged, this, &ObjectListView::onElementChanged, Qt::DirectConnection);
-		QObject::connect(m_treeView, &QTreeView::clicked, this, &ObjectListView::onElementChanged);
+        connect(m_treeView, &QTreeView::customContextMenuRequested, this, &ObjectListView::onCustomContextMenu);
     }
 
-    QModelIndex ObjectListView::getTopParent(QModelIndex itemIndex)
+    bool ObjectListView::isEditableItem(const QModelIndex &index)
     {
-        QModelIndex secondItem = itemIndex;
-        while (itemIndex.parent().isValid())
+        QString currentName = index.data(Qt::DisplayRole).toString();
+        QString parentName = index.parent().data(Qt::DisplayRole).toString();
+
+        if (parentName == CGFF::ResourceManager::EntityHierarchyName 
+            || parentName == CGFF::ResourceManager::LightHierarchyName
+            || parentName == CGFF::ResourceManager::SkyBoxHierarchyName
+            || parentName == CGFF::ResourceManager::ModelHierarchyName)
         {
-            secondItem = itemIndex.parent();
-            itemIndex = secondItem;
+            return true;
         }
-        if (secondItem.column() != 0)
-        {
-            secondItem = secondItem.sibling(secondItem.row(), 0);
-        }
-        return secondItem;
+
+        return false;
     }
 }

@@ -216,16 +216,13 @@ namespace CGFF {
     }
     void DeferredRenderer::submitLightSetup(const QSharedPointer<LightSetup>& lightSetup)
     {
+        if (lightSetup.isNull())
+            return;
+
         auto lights = lightSetup->getLights();
-
-        for(int i = 0; i < lights.size(); i++)
-        {
-            m_lightsArray.append(*lights[i]);
-
-        }
         
-        if(!m_lightsArray.isEmpty())
-            m_lightPassPassMaterial->setUniformData("lights", (uchar*)m_lightsArray.data());
+        if(!lights.isEmpty())
+            m_lightPassPassMaterial->setUniformData("lights", (uchar*)lights.data());
 
         auto lightEntities = lightSetup->getLightEntities();
 
@@ -241,7 +238,7 @@ namespace CGFF {
                 if (!tc)
                     qFatal("Mesh does not have transform!"); // Meshes MUST have transforms
 
-                submitLightEntity(mesh->mesh, tc->getTransform(), lights[i]->color);
+                submitLightEntity(mesh->mesh, tc->getTransform(), lights[i].color);
             }
         }
     }

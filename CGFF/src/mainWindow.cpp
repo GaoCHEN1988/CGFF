@@ -64,8 +64,12 @@ void MainWindow::setupUi()
     this->setDocumentMode(false);
 	this->setWindowTitle(QApplication::translate("this", "CGFF", Q_NULLPTR));
 
-	m_debugWindow = new CGFF::DebugWindow(this, m_renderApi);
+    m_resourceModel = new QTUI::ResourceModel(this);
+
+	m_debugWindow = new DebugWindow(this, m_renderApi);
 	m_debugWindow->setActive(true);
+    m_debugWindow->setModel(m_resourceModel);
+
     //m_learnGLWindow = new CGFF::LearnGLWindow(this);
     //m_learnGLWindow->setActive(true);
 	QWidget * debugWidget = QWidget::createWindowContainer(m_debugWindow, this);
@@ -75,7 +79,6 @@ void MainWindow::setupUi()
     m_statusBar->setObjectName(QStringLiteral("m_statusBar"));
     this->setStatusBar(m_statusBar);
 
-	m_resourceModel = new QTUI::ResourceModel(this);
 
 	setupDockWidgets();
 
@@ -194,31 +197,17 @@ void MainWindow::setupToolBar()
 
 void MainWindow::createConnections()
 {
-	connect(m_newProjectAction, &QAction::triggered,
-		this, &MainWindow::onNewProject);
-
-	connect(m_saveProjectAction, &QAction::triggered,
-		this, &MainWindow::onSaveProject);
-
+	connect(m_newProjectAction, &QAction::triggered, this, &MainWindow::onNewProject);
+	connect(m_saveProjectAction, &QAction::triggered, this, &MainWindow::onSaveProject);
 	connect(m_cubeAction, &QAction::triggered, [=]() { m_resourceModel->onAddEntity(CGFF::EntityType::CUBE); });
 	connect(m_sphereAction, &QAction::triggered, [=]() { m_resourceModel->onAddEntity(CGFF::EntityType::SPHERE); });
     connect(m_planeAction, &QAction::triggered, [=]() { m_resourceModel->onAddEntity(CGFF::EntityType::PLANE); });
     connect(m_loadModelAction, &QAction::triggered, this, &MainWindow::onLoadModel);
     connect(m_loadSkyBoxImagesAction, &QAction::triggered, this, &MainWindow::onLoadSkyBoxImages);
     connect(m_directionalLightAction, &QAction::triggered, [=]() { m_resourceModel->onAddLight(CGFF::LightType::DIRECTIONAL); });
-    connect(m_resourceModel, &QTUI::ResourceModel::entityAdded, m_debugWindow, &CGFF::DebugWindow::onAddEntity);
-    connect(m_resourceModel, &QTUI::ResourceModel::modelObjectAdded, m_debugWindow, &CGFF::DebugWindow::onAddModelObject);
-    connect(m_resourceModel, &QTUI::ResourceModel::lightAdded, m_debugWindow, &CGFF::DebugWindow::onAddLight);
-    connect(m_resourceModel, &QTUI::ResourceModel::skyBoxAdded, m_debugWindow, &CGFF::DebugWindow::onSetSkyBox);
-    connect(m_resourceModel, &QTUI::ResourceModel::currentSkyBoxSet, m_debugWindow, &CGFF::DebugWindow::onSetSkyBox);
-
-	connect(m_playAction, &QAction::triggered,
-		this, &MainWindow::onSetStatus);
-
-	connect(m_stopAction, &QAction::triggered,
-		this, &MainWindow::onSetStatus);
-
-    connect(m_debugWindow, &CGFF::DebugWindow::initilizeSignal, m_explorer, &QTUI::ExplorerView::onInitilize);
+	connect(m_playAction, &QAction::triggered, this, &MainWindow::onSetStatus);
+	connect(m_stopAction, &QAction::triggered, this, &MainWindow::onSetStatus);
+    connect(m_debugWindow, &DebugWindow::initilizeSignal, m_explorer, &QTUI::ExplorerView::onInitilize);
 }
 
 void MainWindow::createProject()

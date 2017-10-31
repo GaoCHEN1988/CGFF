@@ -9,6 +9,8 @@ namespace CGFF
 		, m_lights()
 		, m_skyBoxes()
         , m_environments()
+        , m_currentSkyBox(nullptr)
+        , m_currentEnvironment(nullptr)
 	{}
 
 	void SceneResource::addLight(const QString& name, const QSharedPointer<Light>& light)
@@ -16,7 +18,7 @@ namespace CGFF
 		auto lookup = m_lights.find(name);
 		if (lookup == m_lights.end())
 		{
-			m_lights.insert(name, QSharedPointer<Light>(light));
+			m_lights.insert(name, light);
 		}
         else
         {
@@ -25,32 +27,52 @@ namespace CGFF
         }
 	}
 
-	void SceneResource::addEntity(const QString& name, const QSharedPointer<Entity>& object)
+    void SceneResource::removeLight(const QString& name)
+    {
+        m_lights.remove(name);
+    }
+
+	void SceneResource::addEntity(const QString& name, const QSharedPointer<Entity>& entity)
 	{
 		auto lookup = m_entities.find(name);
 		if (lookup == m_entities.end())
 		{
-			m_entities.insert(name, QSharedPointer<Entity>(object));
+			m_entities.insert(name, entity);
 		}
 		else
 		{
 			//TO DO: use message box
-			qWarning("Object with name is existed, use another name.");
+			qWarning("Entity with name is existed, use another name.");
 		}
 	}
+
+    void SceneResource::removeEntity(const QString& name)
+    {
+        m_entities.remove(name);
+    }
 
     void SceneResource::addModelObject(const QString& name, const QSharedPointer<ModelObject>& object)
     {
         auto lookup = m_modelObjects.find(name);
         if (lookup == m_modelObjects.end())
         {
-            m_modelObjects.insert(name, QSharedPointer<ModelObject>(object));
+            m_modelObjects.insert(name, object);
         }
         else
         {
             //TO DO: use message box
-            qWarning("Object with name is existed, use another name.");
+            qWarning("Model Object with name is existed, use another name.");
         }
+    }
+
+    void SceneResource::removeModelObject(const QString& name)
+    {
+        for (const QString& key : m_modelObjects[name]->getEntities().keys())
+        {
+            removeEntity(key);
+        }
+
+        m_modelObjects.remove(name);
     }
 
 	void SceneResource::addSkyBox(const QString& name, const QSharedPointer<Entity>& skybox, const QSharedPointer<Texture>& environment)
@@ -60,13 +82,32 @@ namespace CGFF
 		{
 			m_skyBoxes.insert(name, skybox);
 		}
+        else
+        {
+            //TO DO: use message box
+            qWarning("Skybox with name is existed, use another name.");
+        }
 
         auto lookup2 = m_environments.find(name);
         if (lookup2 == m_environments.end())
         {
             m_environments.insert(name, environment);
         }
+        else
+        {
+            //TO DO: use message box
+            qWarning("Skybox with name is existed, use another name.");
+        }
 	}
+
+    void SceneResource::removeSkyBox(const QString& name)
+    {
+        m_skyBoxes.remove(name);
+        m_environments.remove(name);
+
+        m_currentSkyBox = nullptr;
+        m_currentEnvironment = nullptr;
+    }
 
 	void SceneResource::changeEntityName(const QString& preName, const QString& newName)
 	{
@@ -212,5 +253,28 @@ namespace CGFF
             return true;
         else
             return false;
+    }
+
+    void SceneResource::setCurrentSkyBox(const QString& name)
+    {
+        auto lookup = m_skyBoxes.find(name);
+        if (lookup == m_skyBoxes.end())
+        {
+            m_currentSkyBox = nullptr;
+        }
+        else
+        {
+            m_currentSkyBox = m_skyBoxes[name];
+        }
+
+        auto lookup2 = m_environments.find(name);
+        if (lookup2 != m_environments.end())
+        {
+            m_currentEnvironment = nullptr;
+        }
+        else
+        {
+            m_currentEnvironment = m_environments[name];
+        }
     }
 }

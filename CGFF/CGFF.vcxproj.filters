@@ -256,9 +256,6 @@
     <ClCompile Include="src\debug\debugMenuSlider.cpp">
       <Filter>Source Files\debug</Filter>
     </ClCompile>
-    <ClCompile Include="src\examples\test2DLayer.cpp">
-      <Filter>Source Files\examples</Filter>
-    </ClCompile>
     <ClCompile Include="src\graphic\camera\camera.cpp">
       <Filter>Source Files\graphic\camera</Filter>
     </ClCompile>
@@ -417,9 +414,6 @@
     </ClCompile>
     <ClCompile Include="src\platform\opengl\glShaderPareser.cpp">
       <Filter>Source Files\platform\opengl</Filter>
-    </ClCompile>
-    <ClCompile Include="src\examples\test3DLayer.cpp">
-      <Filter>Source Files\examples</Filter>
     </ClCompile>
     <ClCompile Include="src\system\fileSystem\vfs.cpp">
       <Filter>Source Files\system\fileSystem</Filter>
@@ -654,9 +648,6 @@
     <ClInclude Include="src\common.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="src\examples\test2DLayer.h">
-      <Filter>Header Files\examples</Filter>
-    </ClInclude>
     <ClInclude Include="src\graphic\irenderable.h">
       <Filter>Header Files\graphic</Filter>
     </ClInclude>
@@ -866,9 +857,6 @@
     </ClInclude>
     <ClInclude Include="src\platform\opengl\glShaderPareser.h">
       <Filter>Header Files\platform\opengl</Filter>
-    </ClInclude>
-    <ClInclude Include="src\examples\test3DLayer.h">
-      <Filter>Header Files\examples</Filter>
     </ClInclude>
     <ClInclude Include="src\system\fileSystem\vfs.h">
       <Filter>Header Files\system\fileSystem</Filter>

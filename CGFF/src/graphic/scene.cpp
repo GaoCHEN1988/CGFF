@@ -2,59 +2,33 @@
 
 namespace CGFF {
 
-    Scene::Scene(QSize size)
+    Scene::Scene(QSize size, const QString& name)
 		: m_camera(nullptr)
 		, m_size(size)
-        , m_lightSetup(nullptr)
-        , m_skyBox(nullptr)
-        , m_environment(nullptr)
+        , m_name(name)
     {
-        QMatrix4x4 m;
-        m.perspective(65.0f, float(m_size.width()) / float(m_size.height()), 0.1f, 1000.0f);
-        m_camera = QSharedPointer<Camera>(new MayaCamera(m));
+        initSceneResource();
     }
 
-    Scene::Scene(QSharedPointer<Camera>& camera)
+    Scene::Scene(QSharedPointer<Camera>& camera, const QString& name)
         : m_camera(camera)
-        , m_lightSetup(nullptr)
-        , m_skyBox(nullptr)
-        , m_environment(nullptr)
+        , m_name(name)
     {
+        initSceneResource();
     }
 
     Scene::~Scene()
     {
-        m_entities.clear();
     }
 
-    void Scene::add(const QSharedPointer<Entity>& entity)
+    void Scene::add(const QString& name, const QSharedPointer<Entity>& entity)
     {
-        m_entities.append(entity);
-        if (!entity->getComponent<TransformComponent>())
-        {
-            qDebug("Entity does not have Transform Component, creating...");
-            entity->addComponent(QSharedPointer<Component>(new TransformComponent(QMatrix4x4())));
-        }
+        m_resource->addEntity(name, entity);
     }
 
-    void Scene::add(const QSharedPointer<Light>& light)
+    void Scene::add(const QString& name, const QSharedPointer<Light>& light)
     {
-        if (m_lightSetup.isNull())
-            m_lightSetup = QSharedPointer<LightSetup>(new LightSetup);
-
-        m_lightSetup->add(light);
-    }
-
-    void Scene::pushLightSetup(QSharedPointer<LightSetup>& lightSetup)
-    {
-        m_lightSetupStack.append(lightSetup);
-    }
-
-    QSharedPointer<LightSetup> Scene::popLightSetup()
-    {
-        QSharedPointer<LightSetup> lightSetup = m_lightSetupStack.back();
-        m_lightSetupStack.pop_back();
-        return lightSetup;
+        m_resource->addLight(name, light);
     }
 
     void Scene::render(QSharedPointer<Renderer3D>& renderer)
@@ -63,12 +37,12 @@ namespace CGFF {
         renderer->begin();
 		renderer->beginScene(m_camera);
 
-        if (!m_skyBox.isNull())
+        if (!m_resource->getCurrentSkyBox().isNull())
         {
-            MeshComponent* mesh = m_skyBox->getComponent<MeshComponent>();
+            MeshComponent* mesh = m_resource->getCurrentSkyBox()->getComponent<MeshComponent>();
             if (mesh)
             {
-                TransformComponent* tc = m_skyBox->getComponent<TransformComponent>();
+                TransformComponent* tc = m_resource->getCurrentSkyBox()->getComponent<TransformComponent>();
                 if (!tc)
                     qFatal("Mesh does not have transform!"); // Meshes MUST have transforms
 
@@ -78,15 +52,19 @@ namespace CGFF {
             }
         }
 
-        if (!m_lightSetup.isNull())
+        if (!m_resource->getLights().isEmpty())
         {
-            renderer->submitLightSetup(m_lightSetup);
+            QSharedPointer<LightSetup> lightSetup = QSharedPointer<LightSetup>(new LightSetup);
+
+            for (QSharedPointer<Light> light : m_resource->getLights())
+            {
+                lightSetup->add(*light);
+            }
+
+            renderer->submitLightSetup(lightSetup);
         }
 
-        //for (uint i = 0; i < m_lightSetupStack.size(); i++)
-        //    renderer->submitLightSetup(m_lightSetupStack[i]);
-
-        for (QSharedPointer<Entity> entity : m_entities)
+        for (QSharedPointer<Entity> entity : m_resource->getEntities())
         {
             MeshComponent* mesh = entity->getComponent<MeshComponent>();
             if (mesh)
@@ -95,8 +73,8 @@ namespace CGFF {
                 if(!tc)
                     qFatal("Mesh does not have transform!"); // Meshes MUST have transforms
 
-                if(!m_environment.isNull())
-                    mesh->mesh->getMaterialInstance()->setTexture("u_EnvironmentMap", m_environment);
+                if(!m_resource->getCurrentEnvironment().isNull())
+                    mesh->mesh->getMaterialInstance()->setTexture("u_EnvironmentMap", m_resource->getCurrentEnvironment());
 
                 renderer->submitMesh(mesh->mesh, tc->getTransform());
             }
@@ -108,19 +86,24 @@ namespace CGFF {
 
 	void Scene::setCamera(const QSharedPointer<Camera>& camera)
 	{
-		m_camera = camera;
+        m_resource->setCamera(camera);
+        m_camera = m_resource->getCamera();
 		m_camera->focus();
 	}
 
-    void Scene::setSkyBox(const QSharedPointer<Entity>& skyBox, const QSharedPointer<Texture>& environment)
-    {
-        m_environment = environment;
-        m_skyBox = skyBox;
-    }
-
 	void Scene::close()
 	{
-		m_entities.clear();
-		m_lightSetupStack.clear();
 	}
+
+    void Scene::initSceneResource()
+    {
+        ResourceManager::CurrentSceneName = m_name;
+        m_resource = ResourceManager::getSceneResource(m_name);
+
+        QMatrix4x4 m;
+        m.perspective(65.0f, float(m_size.width()) / float(m_size.height()), 0.1f, 1000.0f);
+        m_resource->setCamera(QSharedPointer<Camera>(new MayaCamera(m)));
+        m_camera = m_resource->getCamera();
+
+    }
 }

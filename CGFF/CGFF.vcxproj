@@ -186,8 +186,6 @@
     <ClCompile Include="src\examples\learnOpengl\pointShadows.cpp" />
     <ClCompile Include="src\examples\learnOpengl\shadowMappingDepth.cpp" />
     <ClCompile Include="src\examples\learnOpengl\ssao.cpp" />
-    <ClCompile Include="src\examples\test2DLayer.cpp" />
-    <ClCompile Include="src\examples\test3DLayer.cpp" />
     <ClCompile Include="src\graphic\API\context.cpp" />
     <ClCompile Include="src\graphic\api\framebuffer.cpp" />
     <ClCompile Include="src\graphic\api\framebuffer2D.cpp" />
@@ -349,8 +347,6 @@
     <ClInclude Include="src\examples\learnOpengl\pointShadows.h" />
     <ClInclude Include="src\examples\learnOpengl\shadowMappingDepth.h" />
     <ClInclude Include="src\examples\learnOpengl\ssao.h" />
-    <ClInclude Include="src\examples\test2DLayer.h" />
-    <ClInclude Include="src\examples\test3DLayer.h" />
     <ClInclude Include="src\graphic\API\context.h" />
     <ClInclude Include="src\graphic\api\framebuffer.h" />
     <ClInclude Include="src\graphic\api\framebuffer2D.h" />

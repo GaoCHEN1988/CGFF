@@ -12,14 +12,14 @@ namespace CGFF {
         LightSetup();
         ~LightSetup();
 
-        QSharedPointer<Light> add(const QSharedPointer<Light>& light, const QSharedPointer<Entity>& lightEntity = nullptr);
+        void add(const Light& light, const QSharedPointer<Entity>& lightEntity = nullptr);
         void remove(int i);
 
-        inline const QVector<QSharedPointer<Light>>& getLights() const { return m_lights; }
+        inline const QVector<Light>& getLights() const { return m_lights; }
         inline const QVector<QSharedPointer<Entity>>& getLightEntities() const { return m_lightEntities; }
 
     private:
-        QVector<QSharedPointer<Light>> m_lights;
+        QVector<Light> m_lights;
         QVector<QSharedPointer<Entity>> m_lightEntities;
     };
 }

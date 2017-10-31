@@ -5,33 +5,30 @@
 #include "debug/debugLayer.h"
 #include "Debug/debugLayer3D.h"
 
-namespace CGFF {
+class DebugWindow : public BaseWindow
+{
+    Q_OBJECT
 
-	class DebugWindow : public BaseWindow 
-	{
-		Q_OBJECT
+public:
 
-	public:
+    DebugWindow(QWidget * parent, CGFF::RenderAPI api = CGFF::RenderAPI::OPENGL);
+    virtual ~DebugWindow();
 
-		DebugWindow(QWidget * parent, CGFF::RenderAPI api = CGFF::RenderAPI::OPENGL);
-		virtual ~DebugWindow();
+    inline static DebugWindow* getApplication() { return m_instance; }
 
-		inline static DebugWindow* getApplication() { return m_instance; }
+    //public slots:
+//      void onAddEntity(const QString& name);
+//      void onAddModelObject(const QString& name);
+//      void onAddLight(const QString& name);
+//      void onSetSkyBox(const QString& name);
 
-		public slots:
-        void onAddEntity(const QString& name);
-        void onAddModelObject(const QString& name);
-        void onAddLight(const QString& name);
-        void onSetSkyBox(const QString& name);
+private:
+    void setupLayers() override;
+private:
+    static DebugWindow * m_instance;
 
-	private:
-		void setupLayers() override;
-	private:
-		static DebugWindow * m_instance;
-
-		QSharedPointer<CGFF::DebugLayer3D> m_debug3DLayer;
-		QSharedPointer<CGFF::DebugLayer> m_debugLayer;
-	};
-}
+    QSharedPointer<CGFF::DebugLayer3D> m_debug3DLayer;
+    QSharedPointer<CGFF::DebugLayer> m_debugLayer;
+};
 
 #endif

@@ -41,7 +41,7 @@ namespace LearnGL {
         m_cube = QSharedPointer<Entity>(new Entity(LearnGL::CreateCube(5,
             m_objectMaterialInstance), trans_cube));
 
-        m_scene->add(m_cube);
+        m_scene->add("Cube1", m_cube);
 
         g_lights.push_back({ QVector3D(0.0f, 5.0f, 49.0f), QVector3D(200.0f, 200.0f, 200.0f) });
         g_lights.push_back({ QVector3D(0.0f, 1.0f, 10.0f), QVector3D(0.6f, 0.0f, 0.0f) });
